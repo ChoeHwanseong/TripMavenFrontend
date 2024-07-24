@@ -1,0 +1,197 @@
+/* 기존 스타일... */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+/* 전체 기본 스타일 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Showcase 스타일 */
+.showcase {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.showcase video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 내비게이션 스타일 */
+.nav h1 {
+    font-family: 'Dancing Script', sans-serif;
+    font-size: 38px;
+    color: #2BD9FE;
+    margin: 0;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 1%;
+    align-items: center;
+    z-index: 2;
+}
+
+.navbar {
+    list-style-type: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0;
+    z-index: 3;
+}
+
+.navbar li {
+    margin-right: 3.5rem;
+    font-size: 18px;
+    font-family: 'Varela Round', sans-serif;
+    z-index: 4;
+}
+
+.navbar li a {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    transition: color 0.3s, background-color 0.3s;
+    z-index: 5;
+}
+
+#log {
+    text-decoration: none;
+    background-color: #2BD9FE;
+    color: white;
+    font-family: 'Varela Round', sans-serif;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5%;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#log:hover {
+    background-color: white;
+    color: #2BD9FE;
+}
+
+/* Glass 영역 스타일 */
+.glass {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.info h1 {
+    font-family: 'Dancing Script', sans-serif;
+    font-size: 50px;
+    color: white;
+    text-align: center;
+}
+
+.sub {
+    margin-top: 2%;
+}
+
+.info p {
+    font-family: 'Varela Round', sans-serif;
+    color: white;
+    font-size: 25px;
+    text-align: center;
+}
+
+#but {
+    width: 290px;
+    height: 57px;
+    border-radius: 64px;
+    background-color: rgba(255, 255, 255, 0);
+    border: 3px solid;
+    border-color: white;
+    color: white;
+    font-family: 'Varela Round', sans-serif;
+    font-size: 19px;
+    margin-top: 5%;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* 미디어 쿼리 */
+@media (min-aspect-ratio: 16/9) {
+    .showcase video {
+        object-fit: cover;
+    }
+}
+
+/* 창 크기가 줄어들 때 스타일 조정 */
+@media (max-width: 768px) {
+    .nav h1 {
+        display: none;
+    }
+
+    .navbar li {
+        margin-right: 1rem;
+    }
+
+    #log {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+}
+
+/* 로그인 모달 스타일 추가 */
+.modal {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    z-index: 9999; /* 최상단에 위치 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+    transition: opacity 0.4s ease;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    opacity: 0; /* 기본적으로 투명 */
+    transform: translateY(-50px); /* 기본적으로 위로 이동 */
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: -2;
+}
+
+.modal.show .modal-content {
+    opacity: 1; /* 모달이 보일 때 불투명 */
+    transform: translateY(0); /* 모달이 보일 때 원위치 */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
