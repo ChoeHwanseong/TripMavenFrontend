@@ -20,6 +20,15 @@ export default function Login(){
                 <div className="col-auto">
                     <button className="btn btn-danger" >로그인</button>
                 </div>
+                <div className="col-auto">
+                    <button className="btn btn-danger" >네이버 로그인</button>
+                </div>
+                <div className="col-auto">
+                    <button className="btn btn-danger" >구글 로그인</button>
+                </div>
+                <div className="col-auto">
+                    <button className="btn btn-danger" >카카오 로그인</button>
+                </div>
             </div>
         </form>
     </>
