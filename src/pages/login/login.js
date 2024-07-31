@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import './login.css';
-import '@fortawesome/fontawesome-free/css/all.min.css'; // Font Awesome 아이콘 스타일 불러오기
-import travelImage from '../images/travel.jpg'; // 배경 이미지 불러오기
+import './login.css'; // 현재 로컬 적용이 아직 되어있지않아 다른 css파일 사용시 잠시 주석처리 할것
+import '@fortawesome/fontawesome-free/css/all.min.css'; // FontAwesome 아이콘 스타일 불러오기
+import travelImage from '../images/travel.jpg'; // 배경 이미지 불러오기(테스트중이라 잠시 public에서 빼내옴 테스트완료후 수정예정)
 
 const Login = () => {
   useEffect(() => {
