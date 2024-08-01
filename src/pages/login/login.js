@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './login.css'; // 현재 로컬 적용이 아직 되어있지않아 다른 css파일 사용시 잠시 주석처리 할것
 import '@fortawesome/fontawesome-free/css/all.min.css'; // FontAwesome 아이콘 스타일 불러오기 사용은 README에 간략히 기술
-import travelImage from '../images/travel.jpg'; // 배경 이미지 불러오기(테스트중이라 잠시 public에서 빼내옴 테스트완료후 수정예정)
+
 
 const Login = () => {
   useEffect(() => {
@@ -12,7 +12,7 @@ const Login = () => {
     document.body.style.display = 'flex'; // flexbox 사용
     document.body.style.justifyContent = 'center'; // 수평 중앙 정렬
     document.body.style.alignItems = 'center'; // 수직 중앙 정렬
-    document.body.style.backgroundImage = `url(${travelImage})`; // 배경 이미지 설정
+    document.body.style.backgroundImage = `url(/images/travel.jpg)`; // 배경 이미지 설정
     document.body.style.backgroundSize = 'cover'; // 배경 이미지가 전체를 덮도록 설정
     document.body.style.flexDirection = 'column'; // flexbox의 방향을 열로 설정
 
