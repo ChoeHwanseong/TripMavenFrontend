@@ -10,6 +10,7 @@
 .headerFrame {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     width: 100%;
 }
 
@@ -29,12 +30,15 @@
     border: 1px solid #ccc;
     border-radius: 20px;
     margin-right: 20px;
-    max-width: 300px;
+    width: 500px;
 }
-
+.nav{
+    display: flex;
+}
 .navFrame {
     display: flex;
     align-items: center;
+    
 }
 
 .navItems {
