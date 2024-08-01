@@ -1,0 +1,101 @@
+/* src/styles/Footer.css */
+.footer,
+.footer * {
+  box-sizing: border-box;
+}
+
+.footer {
+  background: #ffffff;
+  height: 235px;
+  position: relative;
+  overflow: hidden;
+}
+.footer-frame {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.footer-logo {
+  color: #617ee5;
+  text-align: left;
+  font-family: "Poppins-SemiBold", sans-serif;
+  font-size: 32px;
+  line-height: 34px;
+  font-weight: 600;
+  
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.footer-description {
+  color: #49454f;
+  text-align: left;
+  font-family: "Poppins-SemiBold", sans-serif;
+  font-size: 14px;
+  line-height: 28px;
+  width: 306px;
+}
+
+.footer-description-main {
+  font-family: "Poppins-SemiBold", sans-serif;
+  font-weight: 600;
+}
+
+.footer-description-sub {
+  font-family: "Poppins-Regular", sans-serif;
+  font-weight: 400;
+}
+
+.social-icons {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+  width: 145px;
+}
+
+.social-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 22px;
+  height: 22px;
+}
+
+.naver {
+  background: #03c75a;
+  border-radius: 9999px;
+}
+
+.naver-logo {
+  width: 20px;
+  height: 20px;
+}
+
+.kakao {
+  width: 23px;
+  height: 23px;
+  object-fit: cover;
+}
+
+.google {
+  width: 19px;
+  height: 19px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 40px;
+  
+  
+}
+
+.footer-link {
+  color: #49454f;
+  text-align: left;
+  font-family: "Poppins-Regular", sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+}
