@@ -2,63 +2,62 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f5f5f5;
   padding: 20px 40px;
   text-align: center;
 }
 
-.footer-left {
+.footerLeft {
   text-align: left;
 }
 
-.trip-maven {
+.tripMaven {
   font-size: 24px;
   font-weight: bold;
   color: #007bff;
 }
 
-.happy-find-reporter {
+.happyFindReporter {
   margin-top: 10px;
 }
 
-.happy-find-reporter-span {
+.happyFindReporterSpan {
   display: block;
   font-size: 16px;
   color: #666;
 }
 
-.happy-find-reporter-span2 {
+.happyFindReporterSpan2 {
   font-size: 14px;
   color: #999;
 }
 
-.footer-right {
+.footerRight {
   text-align: right;
 }
 
-.footer-links {
+.footerLinks {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 10px;
 }
 
-.footer-link {
+.footerLink {
   font-size: 14px;
   color: #007bff;
   margin-left: 20px;
   text-decoration: none;
 }
 
-.footer-link:hover {
+.footerLink:hover {
   text-decoration: underline;
 }
 
-.footer-icons {
+.footerIcons {
   display: flex;
   justify-content: flex-end;
 }
 
-.sns-icon {
+.snsIcon {
   width: 24px;
   height: 24px;
   margin-left: 10px;
