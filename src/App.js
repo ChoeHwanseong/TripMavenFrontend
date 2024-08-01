@@ -4,6 +4,8 @@ import React from 'react';
 import Home from "./pages/home";
 import Template from "./pages/template";
 import './styles/App.css';
+import Login from './pages/login/Login';
+
 
 
 function App() {
@@ -12,7 +14,7 @@ function App() {
 
       <Route element={<Template />}>
         <Route path="/" element={<Home />} />
-        
+        <Route path='/login' element={<Login />} />
       </Route>
 
     </Routes>
