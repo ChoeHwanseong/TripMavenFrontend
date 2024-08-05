@@ -1,0 +1,111 @@
+/* InquiryPage.module.css */
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .sidebar {
+    width: 200px;
+    padding-right: 20px;
+  }
+  
+  .sidebarTitle {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #000;
+  }
+  
+  .menu {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .menuItem {
+    margin-bottom: 10px;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .menuItem:hover,
+  .active {
+    color: #007bff;
+  }
+  
+  .mainContent {
+    flex-grow: 1;
+    padding-left: 20px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .inquiryButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .inquiryButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .table th,
+  .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2em;
+  }
+  
+  .pagination span {
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .pagination span:hover {
+    color: #007bff;
+  }
+  
+  .currentPage {
+    font-weight: bold;
+  }
+  

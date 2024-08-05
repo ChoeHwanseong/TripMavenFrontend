@@ -14,6 +14,13 @@ import MemberList from './adminmypage/memberlist';
 import AdminAsk from './adminmypage/adminask';
 import AdminReport from './adminmypage/adminreport';
 import AdminProfile from './adminmypage/adminprofile';
+import ProfilePage from './guidemypage/profile';
+import MyPostDetails from './guidemypage/mypostdetails';
+import MyPost from './guidemypage/mypost';
+import Inquiry from './guidemypage/inquiry';
+import AiServicePage from './guidemypage/mypageaiservice';
+
+
 
 function App() {
   return <>
@@ -31,14 +38,20 @@ function App() {
         <Route path='/adminask' element={<AdminAsk />} />
         <Route path='/adminreport' element={<AdminReport />} />
         <Route path='/adminprofile' element={<AdminProfile />} />
-      </Route>
 
+        <Route path="/" element={<Home/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/cs" element={<CSBoard/>}/>
+        <Route path='/signup' element={<Signup/>}/>
+        <Route path='/profile' element={<ProfilePage/>}/>
+        <Route path='/mypostdetail' element={<MyPostDetails/>}/>
+        <Route path='/mypost' element={<MyPost/>}/>
+        <Route path='/inquiry' element={<Inquiry/>}/>
+        <Route path='/mypageai' element={<AiServicePage/>}/>
+      </Route>
     </Routes>
 
   </>
 }
 
 export default App;
-
-
-
