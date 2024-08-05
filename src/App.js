@@ -4,7 +4,8 @@ import React from 'react';
 import Home from "./pages/home";
 import Template from "./pages/template";
 import './styles/App.css';
-import Login from './pages/login/Login';
+import Login from './pages/login/login';
+import Signup from './pages/login/SignUp';
 
 
 
@@ -15,6 +16,7 @@ function App() {
       <Route element={<Template />}>
         <Route path="/" element={<Home />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
       </Route>
 
     </Routes>

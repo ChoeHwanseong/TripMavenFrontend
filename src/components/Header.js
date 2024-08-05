@@ -46,7 +46,6 @@ const Header = () => {
                                 </div>
                             </div>
                             <button className={styles.navButton} onClick={() => navigate('/register-guide')}>가이드 등록</button>
-                            <button className={styles.navButton} onClick={() => navigate('/signup')}>회원가입</button>
                         </div>
                         <button className={styles.loginButton} onClick={() => navigate('/login')}>
                             로그인
