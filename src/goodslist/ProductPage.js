@@ -6,7 +6,7 @@ const ProductPage = () => {
     const [products, setProducts] = useState([]); // 상품 목록을 관리하는 상태 변수
     const [hasMore, setHasMore] = useState(true); // 더 불러올 데이터가 있는지 여부를 관리하는 상태 변수
     const { ref, inView } = useInView({
-        threshold: 1, // 요소가 100% 보일 때 트리거
+        threshold: 0, // 요소가 100% 보일 때 트리거
     });
 
     // 데이터를 더 가져오는 함수
