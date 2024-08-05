@@ -6,7 +6,6 @@ import Template from "./pages/template";
 import Login from "./pages/login/login";
 import CSBoard from './pages/csBoard';
 import './styles/App.css';
-import Login from './pages/login/login';
 import Signup from './pages/login/SignUp';
 
 
@@ -19,7 +18,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cs" element={<CSBoard/>}></Route>
-        <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
       </Route>
 
