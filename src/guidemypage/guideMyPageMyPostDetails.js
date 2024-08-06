@@ -2,9 +2,12 @@
 import React, { useState } from 'react';
 import styles from '../styles/Mypostdetails.module.css';
 import { useNavigate } from 'react-router-dom';
-
-const MyPostDetails = () => {
+import styles from '../styles/GuideMyPageMyPostDetails.module.css';
+const GuideMyPageMyPostDetails = () => {
   const navigate = useNavigate();
+
+
+
   const [activeDay, setActiveDay] = useState(null);
 
   const toggleDay = (day) => {
@@ -178,4 +181,4 @@ const MyPostDetails = () => {
   );
 };
 
-export default MyPostDetails;
+export default GuideMyPageMyPostDetails;

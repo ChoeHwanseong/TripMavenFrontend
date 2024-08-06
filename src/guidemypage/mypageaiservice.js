@@ -2,9 +2,11 @@
 import React from 'react';
 import styles from '../styles/MyPageAIService.module.css';
 import { useNavigate } from 'react-router-dom';
-
-const AiServicePage = () => {
+import styles from '../styles/GuideMyPageAIService.module.css';
+const GuideMyPageAiService = () => {
   const navigate = useNavigate();
+
+
   const aiEvaluations = [
     { id: 9621, type: '모의테스트', description: '우도 히든 스팟 탐험: 함께 떠나는 특별한 여행 (중급)', date: '2024-08-01', score: 80 },
     { id: 1212, type: '실전 테스트', description: '우도에서 즐기는 완벽한 하루: 가이드와 함께하는 숨은 명소 탐방 (실행)', date: '2023-12-31', score: 60 },
@@ -93,4 +95,4 @@ const AiServicePage = () => {
   );
 };
 
-export default AiServicePage;
+export default GuideMyPageAiService;

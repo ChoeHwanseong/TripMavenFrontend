@@ -2,9 +2,11 @@
 import React from 'react';
 import styles from '../styles/Mypost.module.css';
 import { useNavigate } from 'react-router-dom';
-
-const MyPost = () => {
+import styles from '../styles/GuideMyPageMyPost.module.css';
+const GuideMyPageMyPost = () => {
   const navigate = useNavigate();
+
+
   const posts = [
     { id: 9621, location: '부산', title: '부산', date: '2024-08-01', status: '평가 완료', registration: '등록', likes: 9 },
     { id: 1212, location: '제주도', title: '제주도', date: '2023-12-31', status: '평가 완료', registration: '등록', likes: 2 },
@@ -67,4 +69,4 @@ const MyPost = () => {
   );
 };
 
-export default MyPost;
+export default GuideMyPageMyPost;
