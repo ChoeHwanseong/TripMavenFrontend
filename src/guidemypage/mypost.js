@@ -1,8 +1,10 @@
 // PostManagementPage.js
 import React from 'react';
 import styles from '../styles/Mypost.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const MyPost = () => {
+  const navigate = useNavigate();
   const posts = [
     { id: 9621, location: '부산', title: '부산', date: '2024-08-01', status: '평가 완료', registration: '등록', likes: 9 },
     { id: 1212, location: '제주도', title: '제주도', date: '2023-12-31', status: '평가 완료', registration: '등록', likes: 2 },
@@ -14,12 +16,11 @@ const MyPost = () => {
       <aside className={styles.sidebar}>
         <h2 className={styles.sidebarTitle}>My Page</h2>
         <ul className={styles.menu}>
-          <li className={styles.menuItem}>내 정보 관리</li>
-          <li className={`${styles.menuItem} ${styles.active}`}>내 게시물 관리</li>
-          <li className={styles.menuItem}>1:1문의 내역</li>
-          <li className={styles.menuItem}>찜 목록</li>
-          <li className={styles.menuItem}>채팅방</li>
-          <li className={styles.menuItem}>ai 서비스</li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/profile')}>내 정보 관리</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/mypost')}>내 게시물 관리</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/inquiry')}>1:1문의 내역</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/chat')}>채팅방</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/mypageaiservice')}>ai 서비스</button></li>
         </ul>
       </aside>
 

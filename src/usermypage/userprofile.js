@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../styles/UserProfile.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
   const [nickname, setNickname] = useState('냥안아샴');
@@ -15,15 +16,17 @@ const MyPage = () => {
     e.preventDefault();
     alert('수정 완료');
   };
-
+  const navigate = useNavigate();
   return (
+    
     <div className={styles.container}>
       <div className={styles.sidebar}>
         <h2>My Page</h2>
         <ul>
-          <li>내 정보 관리</li>
-          <li>이용후기</li>
-          <li>1:1문의 내역</li>
+        <li><button className={styles.navButton} onClick={()=>navigate('/userprofile')}>내 정보 관리</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/userreview')}>이용후기</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/userask')}>1:1문의 내역</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/userask')}>찜 목록</button></li>
           <li>채팅방</li>
         </ul>
       </div>

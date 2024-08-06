@@ -1,19 +1,20 @@
 // ProfilePage.js
 import React from 'react';
 import styles from '../styles/Profile.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
   return (
     <div className={styles.container}>
       <aside className={styles.sidebar}>
         <h2 className={styles.sidebarTitle}>My Page</h2>
         <ul className={styles.menu}>
-          <li className={styles.menuItem}><span>내 정보 관리</span></li>
-          <li className={styles.menuItem}>내 게시물 관리</li>
-          <li className={styles.menuItem}>1:1문의 내역</li>
-          <li className={styles.menuItem}>찜 목록</li>
-          <li className={styles.menuItem}>채팅방</li>
-          <li className={styles.menuItem}>ai 서비스</li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/profile')}>내 정보 관리</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/mypost')}>내 게시물 관리</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/inquiry')}>1:1문의 내역</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/chat')}>채팅방</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/mypageaiservice')}>ai 서비스</button></li>
         </ul>
       </aside>
 

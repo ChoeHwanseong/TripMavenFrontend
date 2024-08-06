@@ -19,7 +19,9 @@ import MyPostDetails from './guidemypage/mypostdetails';
 import MyPost from './guidemypage/mypost';
 import Inquiry from './guidemypage/inquiry';
 import AiServicePage from './guidemypage/mypageaiservice';
-
+import AIService from './aiservicepage/aiservice';
+import TermsService from './termsofservice/termsservice';
+import RegisterGuide from './registerguidepage/registerguide';
 
 
 function App() {
@@ -38,6 +40,10 @@ function App() {
         <Route path='/adminask' element={<AdminAsk />} />
         <Route path='/adminreport' element={<AdminReport />} />
         <Route path='/adminprofile' element={<AdminProfile />} />
+        <Route path='/termsservice' element={<TermsService/>}/>
+        <Route path='/aiservice' element={<AIService/>}/>
+        <Route path='/registerguide' element={<RegisterGuide/>}/>
+
 
         <Route path="/" element={<Home/>}/>
         <Route path="/login" element={<Login/>}/>

@@ -1,7 +1,9 @@
 import React from 'react';
 import styles from '../styles/UserAsk.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const InquiryHistory = () => {
+  const navigate = useNavigate();
   const inquiries = [
     { id: 9621, title: '탈퇴 프로세스', date: '2024-08-01', status: '처리중' },
     { id: 9622, title: '게시글 작성 문의', date: '2023-12-31', status: '처리 완료' },
@@ -12,9 +14,10 @@ const InquiryHistory = () => {
       <div className={styles.sidebar}>
         <h2>My Page</h2>
         <ul>
-          <li>내 정보 관리</li>
-          <li>이용후기</li>
-          <li>1:1문의 내역</li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/userprofile')}>내 정보 관리</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/userreview')}>이용후기</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/userask')}>1:1문의 내역</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/userask')}>찜 목록</button></li>
           <li>채팅방</li>
         </ul>
       </div>
