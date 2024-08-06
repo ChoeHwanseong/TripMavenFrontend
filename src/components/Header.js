@@ -19,7 +19,7 @@ const Header = () => {
                     <div className={styles.navFrame}>
                         <div className={styles.navItems}>
                             <button className={styles.navButton} onClick={() => navigate('/')}>Home</button>
-                            <button className={styles.navButton} onClick={() => navigate('/ai-service')}>AI 서비스</button>
+                            <button className={styles.navButton} onClick={() => navigate('/aiservice')}>AI 서비스</button>
                             <div className={styles.dropdown}>
                                 <button className={styles.dropdownButton}>
                                     마이 페이지
@@ -45,7 +45,7 @@ const Header = () => {
                                     <a href="/logout">로그아웃</a>
                                 </div>
                             </div>
-                            <button className={styles.navButton} onClick={() => navigate('/register-guide')}>가이드 등록</button>
+                            <button className={styles.navButton} onClick={() => navigate('/registerguide')}>가이드 등록</button>
                         </div>
                         <button className={styles.loginButton} onClick={() => navigate('/login')}>
                             로그인

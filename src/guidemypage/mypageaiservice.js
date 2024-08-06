@@ -1,8 +1,12 @@
 // AiServicePage.js
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../styles/GuideMyPageAIService.module.css';
 
 const GuideMyPageAiService = () => {
+  const navigate = useNavigate();
+
+
   const aiEvaluations = [
     { id: 9621, type: '모의테스트', description: '우도 히든 스팟 탐험: 함께 떠나는 특별한 여행 (중급)', date: '2024-08-01', score: 80 },
     { id: 1212, type: '실전 테스트', description: '우도에서 즐기는 완벽한 하루: 가이드와 함께하는 숨은 명소 탐방 (실행)', date: '2023-12-31', score: 60 },
@@ -14,12 +18,11 @@ const GuideMyPageAiService = () => {
       <aside className={styles.sidebar}>
         <h2 className={styles.sidebarTitle}>My Page</h2>
         <ul className={styles.menu}>
-          <li className={styles.menuItem}>내 정보 관리</li>
-          <li className={styles.menuItem}>내 게시물 관리</li>
-          <li className={styles.menuItem}>1:1문의 내역</li>
-          <li className={styles.menuItem}>찜 목록</li>
-          <li className={styles.menuItem}>채팅방</li>
-          <li className={`${styles.menuItem} ${styles.active}`}>ai 서비스</li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/profile')}>내 정보 관리</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/mypost')}>내 게시물 관리</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/inquiry')}>1:1문의 내역</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/chat')}>채팅방</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/mypageaiservice')}>ai 서비스</button></li>
         </ul>
       </aside>
 

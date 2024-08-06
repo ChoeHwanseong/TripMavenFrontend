@@ -1,7 +1,10 @@
 import React from 'react';
 import styles from '../styles/Footer.module.css'; // CSS 모듈 파일을 불러옵니다.
+import { Navigate, useNavigate } from 'react-router-dom';
+
 
 const Footer = ({ className, ...props }) => {
+  const navigate = useNavigate();
   return (
     <div className={`${styles.footer} ${className}`}>
       <div className={styles.footerLeft}>
@@ -19,7 +22,7 @@ const Footer = ({ className, ...props }) => {
       <div className={styles.footerRight}>
         <div className={styles.footerLinks}>
           <a href="#" className={styles.footerLink}>사이트소개</a>
-          <a href="#" className={styles.footerLink}>이용약관</a>
+          <a href="#" className={styles.footerLink}><button className={styles.navButton} onClick={()=>navigate('/termsservice')}>이용약관</button></a>
           <a href="#" className={styles.footerLink}>1:1문의</a>
           <a href="#" className={styles.footerLink}>고객센터</a>
         </div>
