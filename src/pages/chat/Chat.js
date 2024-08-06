@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styles from '../styles/Chat.module.css'; // CSS 모듈을 import 합니다
-import faviImg from '../images/favicon.png'; // 챗봇 버튼에 사용할 이미지
-import '@fortawesome/react-fontawesome'; // FontAwesome 아이콘 사용을 위한 import
+import styles from '../../styles/Chat.module.css';
+import faviImg from '../../images/favicon.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons'; // 필요한 아이콘 임포트
 
 const ChatPopup = () => {
   const [isVisible, setIsVisible] = useState(false); // 챗봇 팝업의 표시 상태를 관리하는 상태 변수
@@ -61,7 +62,7 @@ const ChatPopup = () => {
             <header className={styles.chatHeader}>
               <span className={styles.chatTitle}>1:1 Chatting System</span> {/* 챗봇 헤더 제목 */}
               <button className={styles.chatClose} onClick={toggleChat}>
-                <i className="fas fa-times" style={{color : 'white'}}></i> {/* 닫기 버튼 */}
+                <FontAwesomeIcon icon={faTimes} /> {/* 닫기 버튼 */}
               </button>
             </header>
             <div className={styles.chatBody} id="chatBody">
