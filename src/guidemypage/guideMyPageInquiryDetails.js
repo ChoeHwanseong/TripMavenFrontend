@@ -1,8 +1,8 @@
-// InquiryPage.js
+// InquiryDetails.js
 import React from 'react';
-import styles from '../styles/Inquiry.module.css';
+import styles from '../styles/GuideMyPageInquiryDetails.css';
 
-const Inquiry = () => {
+const GuideMyPageInquiryDetails = () => {
   const inquiries = [
     { id: 9621, userId: 'kim', type: '가이드', title: '', date: '2024-08-01', status: '처리 완료' },
     { id: 1212, userId: 'lee', type: '일반 고객', title: '', date: '2023-12-31', status: '처리 완료' },
@@ -63,4 +63,4 @@ const Inquiry = () => {
   );
 };
 
-export default Inquiry;
+export default GuideMyPageInquiryDetails;

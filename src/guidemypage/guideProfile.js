@@ -1,8 +1,8 @@
-// ProfilePage.js
+// guideProfile.js
 import React from 'react';
-import styles from '../styles/Profile.module.css';
+import styles from '../styles/GuideProfile.module.css';
 
-const ProfilePage = () => {
+const GuideProfile = () => {
   return (
     <div className={styles.container}>
       <aside className={styles.sidebar}>
@@ -80,4 +80,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default GuideProfile;

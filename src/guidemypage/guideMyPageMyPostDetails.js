@@ -1,8 +1,8 @@
 // MyPostDetails.js
 import React, { useState } from 'react';
-import styles from '../styles/Mypostdetails.module.css';
+import styles from '../styles/GuideMyPageMyPostDetails.module.css';
 
-const MyPostDetails = () => {
+const GuideMyPageMyPostDetails = () => {
   const [activeDay, setActiveDay] = useState(null);
 
   const toggleDay = (day) => {
@@ -177,4 +177,4 @@ const MyPostDetails = () => {
   );
 };
 
-export default MyPostDetails;
+export default GuideMyPageMyPostDetails;
