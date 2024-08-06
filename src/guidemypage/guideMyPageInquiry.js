@@ -1,8 +1,10 @@
 // 문의하기.jsx
 import React from 'react';
 import styles from '../styles/GuideMyPageInquiry.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const GuideMyPageInquiry = () => {
+  const navigate = useNavigate();
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>문의 하기</h2>
