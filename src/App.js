@@ -19,6 +19,7 @@ import MyPostDetails from './guidemypage/mypostdetails';
 import MyPost from './guidemypage/mypost';
 import Inquiry from './guidemypage/inquiry';
 import AiServicePage from './guidemypage/mypageaiservice';
+import Landing from './pages/landing/landing';
 
 
 
@@ -38,7 +39,8 @@ function App() {
         <Route path='/adminask' element={<AdminAsk />} />
         <Route path='/adminreport' element={<AdminReport />} />
         <Route path='/adminprofile' element={<AdminProfile />} />
-
+        <Route path="/landing" element={<Landing />}/>
+  
         <Route path="/" element={<Home/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/cs" element={<CSBoard/>}/>
