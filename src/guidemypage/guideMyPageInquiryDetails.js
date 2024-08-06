@@ -1,6 +1,6 @@
 // InquiryDetails.js
 import React from 'react';
-import styles from '../styles/Inquiry.module.css';
+
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/GuideMyPageInquiryDetails.css';
 const GuideMyPageInquiryDetails = () => {

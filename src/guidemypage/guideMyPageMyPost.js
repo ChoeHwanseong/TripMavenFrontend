@@ -1,6 +1,6 @@
 // PostManagementPage.js
 import React from 'react';
-import styles from '../styles/Mypost.module.css';
+
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/GuideMyPageMyPost.module.css';
 const GuideMyPageMyPost = () => {

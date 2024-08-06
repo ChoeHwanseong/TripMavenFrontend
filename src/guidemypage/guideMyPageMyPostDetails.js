@@ -1,6 +1,6 @@
 // MyPostDetails.js
 import React, { useState } from 'react';
-import styles from '../styles/Mypostdetails.module.css';
+
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/GuideMyPageMyPostDetails.module.css';
 const GuideMyPageMyPostDetails = () => {

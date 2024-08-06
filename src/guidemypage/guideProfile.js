@@ -1,6 +1,6 @@
 // guideProfile.js
 import React from 'react';
-import styles from '../styles/Profile.module.css';
+
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/GuideProfile.module.css';
 

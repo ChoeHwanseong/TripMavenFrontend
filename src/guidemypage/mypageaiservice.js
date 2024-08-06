@@ -1,8 +1,8 @@
 // AiServicePage.js
 import React from 'react';
-import styles from '../styles/MyPageAIService.module.css';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/GuideMyPageAIService.module.css';
+
 const GuideMyPageAiService = () => {
   const navigate = useNavigate();
 
