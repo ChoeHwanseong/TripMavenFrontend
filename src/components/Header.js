@@ -18,7 +18,7 @@ const Header = () => {
                     />
                     <div className={styles.navFrame}>
                         <div className={styles.navItems}>
-                            <button className={styles.navButton} onClick={() => navigate('/')}>Home</button>
+                            <button className={styles.navButton} onClick={() => navigate('/home')}>Home</button>
                             <button className={styles.navButton} onClick={() => navigate('/aiservice')}>AI 서비스</button>
                             <div className={styles.dropdown}>
                                 <button className={styles.dropdownButton}>
