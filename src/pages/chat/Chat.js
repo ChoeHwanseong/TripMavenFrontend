@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styles from '../styles/Chat.module.css'; // CSS 모듈을 import 합니다
-import faviImg from '../images/favicon.png'; // 챗봇 버튼에 사용할 이미지
+import styles from '../../styles/Chat.module.css'; // CSS 모듈을 import 합니다
+import faviImg from '../../images/favicon.png'; // 챗봇 버튼에 사용할 이미지
 import '@fortawesome/react-fontawesome'; // FontAwesome 아이콘 사용을 위한 import
 
 const ChatPopup = () => {
