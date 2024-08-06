@@ -20,17 +20,18 @@ import MyPost from './guidemypage/mypost';
 import Inquiry from './guidemypage/inquiry';
 import AiServicePage from './guidemypage/mypageaiservice';
 import Landing from './pages/landing/landing';
+import Chat from './pages/chat/Chat';
 
 
 
 function App() {
   return <>
     <Routes>
-
+     <Route path="/" element={<Landing />} />
       <Route element={<Template />}>
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/cs" element={<CSBoard/>}></Route>
+        <Route path="/cs" element={<CSBoard/>}/>
         <Route path='/signup' element={<Signup />} />
         <Route path='/userprofile' element={<UserProfile />} />
         <Route path='/userask' element={<UserAsk />} />
@@ -39,15 +40,10 @@ function App() {
         <Route path='/adminask' element={<AdminAsk />} />
         <Route path='/adminreport' element={<AdminReport />} />
         <Route path='/adminprofile' element={<AdminProfile />} />
-        <Route path="/landing" element={<Landing />}/>
-  
-        <Route path="/" element={<Home/>}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/cs" element={<CSBoard/>}/>
-        <Route path='/signup' element={<Signup/>}/>
         <Route path='/profile' element={<ProfilePage/>}/>
         <Route path='/mypostdetail' element={<MyPostDetails/>}/>
         <Route path='/mypost' element={<MyPost/>}/>
+        <Route path='/chat' element={<Chat/>}/>
         <Route path='/inquiry' element={<Inquiry/>}/>
         <Route path='/mypageai' element={<AiServicePage/>}/>
       </Route>
