@@ -32,9 +32,11 @@ import Chat from './pages/chat/Chat';
 
 function App() {
   return <>
-    <Routes>
+      <Routes>
+
+    <Route path="/" element={<Landing />}/>
     <Route element={<Template/>}>
-      <Route path="/" element={<Landing />}/>
+      
         <Route path="/home" element={<Home />}/>
         <Route path="/login" element={<Login />}/>
         <Route path="/cs" element={<CSBoard/>}/>
