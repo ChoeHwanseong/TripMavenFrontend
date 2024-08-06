@@ -74,7 +74,7 @@ const Landing = () => {
                 프리랜서 여행 가이드의 완벽한 파트너,<br />
                 AI 기술로 더 편리한 서비스를 경험하세요.
               </h2>
-              <a className="btn btn-primary" href="../main/main.js">시작하기</a>
+              <a className="btn btn-primary" href="/home">시작하기</a>
             </div>
           </div>
         </div>
