@@ -31,7 +31,7 @@ import ProductBoard from './pages/productPage/ProductBoard';
 import PaymentForm from './pages/payment/payment';
 import OrderPopup from './pages/payment/paymentProc';
 import PaymentConfirmation from './pages/payment/paymentConfirm';
-
+import BigChat from './pages/chat/BigChat';
 
 function App() {
   return <>
@@ -65,6 +65,7 @@ function App() {
         <Route path='/paymentproc' element={<OrderPopup/>}/>
         <Route path='/payment' element={<PaymentForm/>}/>
         <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
+        <Route path='/bigChat' element={<BigChat/>}/>
       </Route>
     </Routes>
   </>

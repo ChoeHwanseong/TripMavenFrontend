@@ -1,0 +1,188 @@
+/* CSS 파일: ChatPage.css */
+
+.container {
+    display: flex;
+    height: 100vh;
+    background-color: #f0f0f0;
+  }
+  
+  .sidebar {
+    width: 15%;
+    padding: 20px;
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+  }
+  
+  .groupChatButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .messagesSection {
+    width: 25%;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    background-color: #fff;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .messagesTitle {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .searchNewChat {
+    display: flex;
+    align-items: center;
+  }
+  
+  .searchInput {
+    width: 150px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .newChatButton {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .chatList {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .chatItem {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .profileImage {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .chatInfo {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .chatName {
+    font-weight: bold;
+  }
+  
+  .chatTime {
+    font-size: 12px;
+    color: #888;
+  }
+  
+  .chatSection {
+    width: 60%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+  }
+  
+  .chatHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .chatMessages {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+  
+  .message {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .message.sent {
+    flex-direction: row-reverse;
+  }
+  
+  .messageBubble {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #f1f1f1;
+    position: relative;
+  }
+  
+  .message.sent .messageBubble {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .messageTime {
+    font-size: 10px;
+    color: #666;
+    position: absolute;
+    bottom: -15px;
+    right: 10px;
+  }
+  
+  .chatInputSection {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+  }
+  
+  .chatInput {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+  
+  .sendButton,
+  .attachmentButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .attachmentButton {
+    background-color: #f1f1f1;
+    color: #007bff;
+    margin-left: 10px;
+  }
+  
