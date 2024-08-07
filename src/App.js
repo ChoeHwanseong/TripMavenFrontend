@@ -28,6 +28,9 @@ import GuideMyPageAIService from './pages/guidemypage/guidemypageaiservice/guide
 import Landing from './pages/landing/landing';
 import Chat from './pages/chat/Chat';
 import ProductBoard from './pages/productPage/ProductBoard';
+import OrderPopup from './pages/payment/paymentProc';
+import PaymentConfirmation from './pages/payment/paymentConfirm';
+import PaymentForm from './pages/payment/payment';
 
 
 function App() {
@@ -36,19 +39,12 @@ function App() {
       <Route path="/" element={<Landing />}/>
       <Route element={<Template/>}>
         <Route path="/home" element={<Home />}/>
-
         <Route path='/adminreport' element={<AdminReport />}/>
         <Route path='/adminprofile' element={<AdminProfile />}/>
         <Route path='/adminask' element={<AdminAsk/>}/>
         <Route path='/memberlist' element={<MemberList/>}/>
-
-
         <Route path='/aiservice' element={<AIService/>}/>
-
-
         <Route path="/cs" element={<CSBoard/>}/>
-
-
         <Route path='/guideprofile' element={<GuideProfile/>}/>
         <Route path='/guidemypagemypostdetails' element={<GuideMyPageMyPostDetails/>}/>
         <Route path='/guidemypagemypost' element={<GuideMyPageMyPost/>}/>
@@ -57,27 +53,19 @@ function App() {
         <Route path='/guidemypagepost' element={<GuideMyPagePost/>}/>
         <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
         <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
-
-
         <Route path="/login" element={<Login />}/>
         <Route path='/signup' element={<Signup/>}/>
-        
-
         <Route path='/userreview' element={<UserReview/>}/>
         <Route path='/userprofile' element={<UserProfile/>}/>
         <Route path='/userask' element={<UserAsk/>}/>
-        
-
         <Route path='/registerguide' element={<RegisterGuide/>}/>
-
-
         <Route path='/chat' element={<Chat/>}/>
-
-
         <Route path='/product' element={<ProductBoard/>}/>
-
-
         <Route path='/termsservice' element={<TermsService/>}/>
+        <Route path='/paymentproc' element={<OrderPopup/>}/>
+        <Route path='/payment' element={<PaymentForm/>}/>
+        <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
+
       </Route>
     </Routes>
   </>
