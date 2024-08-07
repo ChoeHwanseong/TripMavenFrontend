@@ -1,0 +1,99 @@
+.container {
+    width: 1440px;
+    height: 1024px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+  }
+  
+  .paymentForm {
+    width: 500px;
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    text-align: left;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .paymentMethods h2, .cardInfo h2 {
+    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+
+  .inputGroup {
+    margin-bottom: 5px;
+  }
+  
+  .inputLabel {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 2px;
+  }
+  
+  .inputField {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .methodIcons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  .methodIcons img {
+    width: 60px;
+    height: auto;
+  }
+  
+  .cardInfo input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .checkboxLabel {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .checkboxLabel input {
+    margin-right: 10px;
+  }
+  
+  .buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px; /* 상단 여백 추가 */
+  }
+  
+  .payButton {
+    width: auto; /* 100%에서 auto로 변경 */
+    padding: 10px 20px; /* 좌우 패딩 조정 */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .payButton:hover {
+    background-color: #0056b3;
+  }
