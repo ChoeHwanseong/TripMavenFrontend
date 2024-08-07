@@ -18,58 +18,91 @@ const Login = () => {
         console.log('Auto Login:', autoLogin);
     };
 
-    return <>
-        <div className={styles.container}>
-            <div className={styles.loginBox}>
-                <h1 className={styles.title}>로그인</h1>
-                <div className={styles.inputGroup}>
-                    <label htmlFor="email">이메일</label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={handleEmailChange}
-                        placeholder="이메일 입력"
-                    />
-                </div>
-                <div className={styles.inputGroup}>
-                    <label htmlFor="password">비밀번호</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={handlePasswordChange}
-                        placeholder="비밀번호 입력"
-                    />
-                </div>
-                <div className={styles.options}>
-                    <div className={styles.autoLogin}>
+    const googleLogin = () => {
+        // Google OAuth2 인증 URL로 리다이렉트
+        window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    };
+
+    const kakaoLogin = () => {
+        // Kakao OAuth2 인증 URL로 리다이렉트
+        window.location.href = 'http://localhost:8080/oauth2/authorization/kakao';
+    };
+
+    const naverLogin = () => {
+        // Naver OAuth2 인증 URL로 리다이렉트
+        window.location.href = 'http://localhost:8080/oauth2/authorization/naver';
+    };
+
+    return (
+        <>
+            <div className={styles.container}>
+                <div className={styles.loginBox}>
+                    <h1 className={styles.title}>로그인</h1>
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="email">이메일</label>
                         <input
-                            type="checkbox"
-                            id="auto-login"
-                            checked={autoLogin}
-                            onChange={handleAutoLoginChange}
+                            type="email"
+                            id="email"
+                            value={email}
+                            onChange={handleEmailChange}
+                            placeholder="이메일 입력"
                         />
-                        <label htmlFor="auto-login">자동 로그인</label>
                     </div>
-                </div>
-                <button className={styles.loginButton} onClick={handleLogin}>로그인</button>
-                <div className={styles.extraOptions}>
-                    <NavLink className={styles.extraOption} to="/signup" >회원가입</NavLink>
-                    <span className={styles.separator}>|</span>
-                    <a href="#" className={styles.extraOption}>아이디/비밀번호 찾기</a>
-                </div>
-                <div className={styles.snsLogin}>
-                    <span className={styles.snsLoginText}>SNS 간편 로그인</span>
-                    <div className={styles.snsIcons}>
-                        <img src="/images/google.png" alt="Google" className={styles.snsIcon} />
-                        <img src="/images/naver.png" alt="Naver" className={styles.snsIcon} />
-                        <img src="/images/kakao.png" alt="Kakao" className={styles.snsIcon} />
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="password">비밀번호</label>
+                        <input
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={handlePasswordChange}
+                            placeholder="비밀번호 입력"
+                        />
+                    </div>
+                    <div className={styles.options}>
+                        <div className={styles.autoLogin}>
+                            <input
+                                type="checkbox"
+                                id="auto-login"
+                                checked={autoLogin}
+                                onChange={handleAutoLoginChange}
+                            />
+                            <label htmlFor="auto-login">자동 로그인</label>
+                        </div>
+                    </div>
+                    <button className={styles.loginButton} onClick={handleLogin}>로그인</button>
+                    <div className={styles.extraOptions}>
+                        <NavLink className={styles.extraOption} to="/signup" >회원가입</NavLink>
+                        <span className={styles.separator}>|</span>
+                        <a href="#" className={styles.extraOption}>아이디/비밀번호 찾기</a>
+                    </div>
+                    <div className={styles.snsLogin}>
+                        <span className={styles.snsLoginText}>SNS 간편 로그인</span>
+                        <div className={styles.snsIcons}>
+                            {/* 각 SNS 아이콘에 클릭 이벤트 핸들러 설정 */}
+                            <img
+                                src="/images/google.png"
+                                alt="Google"
+                                className={styles.snsIcon}
+                                onClick={googleLogin}
+                            />
+                            <img
+                                src="/images/naver.png"
+                                alt="Naver"
+                                className={styles.snsIcon}
+                                onClick={naverLogin}
+                            />
+                            <img
+                                src="/images/kakao.png"
+                                alt="Kakao"
+                                className={styles.snsIcon}
+                                onClick={kakaoLogin}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </>
+    );
 };
 
 export default Login;
