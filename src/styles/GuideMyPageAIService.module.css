@@ -1,0 +1,181 @@
+/* AiServicePage.module.css */
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .sidebar {
+    width: 200px;
+    padding-right: 20px;
+  }
+  .navButton {
+    margin: 0 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+}
+
+.navButton:hover, .dropdownButton:hover {
+    color: #007bff;
+}
+  .sidebarTitle {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #000;
+  }
+  
+  .menu {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .menuItem {
+    margin-bottom: 10px;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .menuItem:hover,
+  .active {
+    color: #007bff;
+  }
+  
+  .mainContent {
+    flex-grow: 1;
+    padding-left: 20px;
+  }
+  
+  .title {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .charts {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .chart {
+    text-align: center;
+  }
+  
+  .chart img {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .evaluationScore {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .scoreCircle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid #007bff;
+    color: #007bff;
+    font-size: 1.2em;
+  }
+  
+  .scoreText {
+    font-size: 0.9em;
+  }
+  
+  .scoreNumber {
+    font-size: 2em;
+    font-weight: bold;
+  }
+  
+  .aiButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .aiButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .table th,
+  .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2em;
+  }
+  
+  .pagination span {
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .pagination span:hover {
+    color: #007bff;
+  }
+  
+  .currentPage {
+    font-weight: bold;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #0056b3;
+  }
+  

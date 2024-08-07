@@ -1,4 +1,5 @@
 .header {
+    top:0;
     position: fixed;
     display: flex;
     align-items: center;
@@ -6,7 +7,7 @@
     padding: 10px 40px;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 1400px;
+    width: 1440px;
 }
 
 .headerFrame {
@@ -57,11 +58,19 @@
     color: #333;
     cursor: pointer;
 }
-
+.navButton1{
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+}
 .navButton:hover, .dropdownButton:hover {
     color: #007bff;
 }
-
+.navButton1:hover, .dropdownButton:hover {
+    color: #007bff;
+}
 .dropdown {
     position: relative;
     display: inline-block;

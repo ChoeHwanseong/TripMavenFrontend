@@ -1,0 +1,151 @@
+/* GuideProfile.module.css */
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .sidebar {
+    width: 200px;
+    padding-right: 20px;
+  }
+  .navButton {
+    margin: 0 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+}
+
+.navButton:hover, .dropdownButton:hover {
+    color: #007bff;
+}
+  .sidebarTitle {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #000;
+  }
+  
+  .menu {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .menuItem {
+    margin-bottom: 10px;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .menuItem:hover {
+    color: #007bff;
+  }
+  
+  .mainContent {
+    flex-grow: 1;
+  }
+  
+  .title {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .profileSection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .avatarContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .fileButton {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #fff;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .fileButton:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .infoSection,
+  .extraSection {
+    flex-grow: 1;
+  }
+  
+  .formGroup {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"],
+  textarea,
+  select {
+    padding: 10px;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    font-size: 1em;
+    width: 100%;
+  }
+  
+  .searchButton {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #fff;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .searchButton:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .submitButton {
+    align-self: flex-end;
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submitButton:hover {
+    background-color: #0056b3;
+  }
+  

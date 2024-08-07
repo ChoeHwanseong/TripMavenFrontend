@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import './landing.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faMapMarkedAlt, faEnvelope, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
-import { faTwitter, faFacebookF } from '@fortawesome/free-brands-svg-icons';
-
+import Footer from '../../components/Footer';
 // 이미지 파일을 import
-import sightseeingImage from '../images/sightseeing.jpg';
+import sightseeingImage from '../../images/sightseeing.jpg';
 
 const Landing = () => {
   useEffect(() => {
@@ -75,7 +74,7 @@ const Landing = () => {
                 프리랜서 여행 가이드의 완벽한 파트너,<br />
                 AI 기술로 더 편리한 서비스를 경험하세요.
               </h2>
-              <a className="btn btn-primary" href="../main/main.js">시작하기</a>
+              <a className="btn btn-primary" href="/home">시작하기</a>
             </div>
           </div>
         </div>
@@ -172,16 +171,9 @@ const Landing = () => {
               </div>
             </div>
           </div>
-          <div className="social d-flex justify-content-center">
-            <a className="mx-2" style={{color:'blue'}} href="#!"><FontAwesomeIcon icon={faTwitter} /></a>
-            <a className="mx-2" style={{color:'blue'}} href="#!"><FontAwesomeIcon icon={faFacebookF} /></a>
-          </div>
         </div>
       </section>
-
-      <footer className="footer bg-white small text-center text-black-75">
-        <div className="container px-4 px-lg-5">Copyright &copy; TRIP MAVEN 2024</div>
-      </footer>
+      <Footer />
     </div>
   );
 };
