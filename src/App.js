@@ -28,7 +28,7 @@ import GuideMyPageAIService from './pages/guidemypage/guidemypageaiservice/guide
 import Landing from './pages/landing/landing';
 import Chat from './pages/chat/Chat';
 import ProductBoard from './pages/productPage/ProductBoard';
-
+import BigChat from './pages/chat/BigChat';
 
 function App() {
   return <>
@@ -59,6 +59,8 @@ function App() {
         <Route path='/chat' element={<Chat/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
         <Route path='/termsservice' element={<TermsService/>}/>
+
+        <Route path='/bigChat' element={<BigChat/>}/>
       </Route>
     </Routes>
   </>
