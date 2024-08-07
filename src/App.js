@@ -28,14 +28,6 @@ import GuideMyPageAIService from './pages/guidemypage/guidemypageaiservice/guide
 import Landing from './pages/landing/landing';
 import Chat from './pages/chat/Chat';
 import ProductBoard from './pages/productPage/ProductBoard';
-import ComplaintForm from './pages/report/ComplaintForm';
-import PasswordChangeForm from './pages/login/PasswordChangeForm';
-import FindPassword1 from './pages/login/FindPassword1';
-import FindPassword2 from './pages/login/FindPassword2';
-import FindPassword3 from './pages/login/FindPassword3';
-import FindID1 from './pages/login/FindId1';
-import FindId2 from './pages/login/FindId2';
-import UserAskPage from './pages/usermypage/UserAskPage';
 
 
 function App() {
@@ -44,19 +36,12 @@ function App() {
       <Route path="/" element={<Landing />}/>
       <Route element={<Template/>}>
         <Route path="/home" element={<Home />}/>
-
         <Route path='/adminreport' element={<AdminReport />}/>
         <Route path='/adminprofile' element={<AdminProfile />}/>
         <Route path='/adminask' element={<AdminAsk/>}/>
         <Route path='/memberlist' element={<MemberList/>}/>
-
-
         <Route path='/aiservice' element={<AIService/>}/>
-
-
         <Route path="/cs" element={<CSBoard/>}/>
-
-
         <Route path='/guideprofile' element={<GuideProfile/>}/>
         <Route path='/guidemypagemypostdetails' element={<GuideMyPageMyPostDetails/>}/>
         <Route path='/guidemypagemypost' element={<GuideMyPageMyPost/>}/>
@@ -65,43 +50,15 @@ function App() {
         <Route path='/guidemypagepost' element={<GuideMyPagePost/>}/>
         <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
         <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
-
-
         <Route path="/login" element={<Login />}/>
         <Route path='/signup' element={<Signup/>}/>
-        
-
         <Route path='/userreview' element={<UserReview/>}/>
         <Route path='/userprofile' element={<UserProfile/>}/>
         <Route path='/userask' element={<UserAsk/>}/>
-        
-
         <Route path='/registerguide' element={<RegisterGuide/>}/>
-
-
         <Route path='/chat' element={<Chat/>}/>
-
-
         <Route path='/product' element={<ProductBoard/>}/>
-
-
         <Route path='/termsservice' element={<TermsService/>}/>
-
-        <Route path='/report' element={<ComplaintForm/>}/>
-
-
-
-        <Route path='/passwordchange' element={<PasswordChangeForm/>}/>
-
-        <Route path='/findpassword1' element={<FindPassword1/>}/>
-        <Route path='/findpassword2' element={<FindPassword2/>}/>
-        <Route path='/findpassword3' element={<FindPassword3/>}/>
-        <Route path='/findId1' element={<FindID1/>}/>
-        <Route path='/findId2' element={<FindId2/>}/>
-
-        <Route path='/useraskpage' element={<UserAskPage/>}/>
-
-
       </Route>
     </Routes>
   </>
