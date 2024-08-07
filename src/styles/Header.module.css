@@ -1,13 +1,15 @@
 .header {
+    /*border: 1px black solid;*/
     top:0;
     position: fixed;
-    display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 10px 40px;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 1440px;
+    max-width: 1440px;
+    min-width: 1440px;
+    width: 100%;
+    
 }
 
 .headerFrame {
@@ -20,7 +22,7 @@
 .logoButton {
     font-size: 24px;
     font-weight: bold;
-    color: #007bff;
+    color: #0066ff;
     background: none;
     border: none;
     cursor: pointer;
@@ -33,7 +35,7 @@
     border: 1px solid #ccc;
     border-radius: 20px;
     margin-right: 20px;
-    width: 500px;
+    width: 1000px;
 }
 .nav{
     display: flex;
@@ -66,10 +68,10 @@
     cursor: pointer;
 }
 .navButton:hover, .dropdownButton:hover {
-    color: #007bff;
+    color: #0066ff;
 }
 .navButton1:hover, .dropdownButton:hover {
-    color: #007bff;
+    color: #0066ff;
 }
 .dropdown {
     position: relative;
@@ -119,9 +121,9 @@
 
 .loginButton {
     padding: 8px 16px;
-    background-color: #007bff;
+    background-color: #0066ff;
     border: none;
-    border-radius: 20px;
+    border-radius: 5px;
     color: #fff;
     cursor: pointer;
     font-size: 16px;

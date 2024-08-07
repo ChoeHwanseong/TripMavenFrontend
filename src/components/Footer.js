@@ -21,15 +21,10 @@ const Footer = ({ className, ...props }) => {
       </div>
       <div className={styles.footerRight}>
         <div className={styles.footerLinks}>
-          <a href="#" className={styles.footerLink}>사이트소개</a>
           <a href="#" className={styles.footerLink}><button className={styles.navButton} onClick={()=>navigate('/termsservice')}>이용약관</button></a>
+          <a href="#" className={styles.footerLink}>사이트소개</a>
           <a href="#" className={styles.footerLink}>1:1문의</a>
           <a href="#" className={styles.footerLink}>고객센터</a>
-        </div>
-        <div className={styles.footerIcons}>
-          <img src="/images/naver.png" alt="Naver" className={styles.snsIcon} />
-          <img src="/images/kakao.png" alt="Kakao" className={styles.snsIcon} />
-          <img src="/images/google.png" alt="Google" className={styles.snsIcon} />
         </div>
       </div>
     </div>

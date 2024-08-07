@@ -1,30 +1,23 @@
 .footer {
+  /*border: 1px black solid;*/
+  bottom: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
   text-align: center;
+  min-width: 1440px;  
+  width: 100%;
 }
 
 .footerLeft {
   text-align: left;
 }
 
-.navButton {
-  margin: 0 10px;
-  background: none;
-  border: none;
-  color: #007bff;
-  cursor: pointer;
-}
-
-.navButton:hover, .dropdownButton:hover {
-  color: #000000;
-}
 .tripMaven {
   font-size: 24px;
   font-weight: bold;
-  color: #007bff;
+  color: #0066ff;
 }
 
 .happyFindReporter {
@@ -39,7 +32,7 @@
 
 .happyFindReporterSpan2 {
   font-size: 14px;
-  color: #999;
+  color: #666;
 }
 
 .footerRight {
@@ -54,7 +47,7 @@
 
 .footerLink {
   font-size: 14px;
-  color: #007bff;
+  color: #666;
   margin-left: 20px;
   text-decoration: none;
 }
@@ -63,9 +56,16 @@
   text-decoration: underline;
 }
 
-.footerIcons {
-  display: flex;
-  justify-content: flex-end;
+.navButton:hover, .dropdownButton:hover {
+  color: #000000;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  color: #000000;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .snsIcon {

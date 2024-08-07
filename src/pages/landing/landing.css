@@ -3792,15 +3792,15 @@ textarea.form-control-lg {
 .navbar {
   --bs-navbar-padding-x: 0; /* 네비게이션 바의 수평 패딩 */
   --bs-navbar-padding-y: 0.5rem; /* 네비게이션 바의 수직 패딩 */
-  --bs-navbar-color: rgba(77, 152, 244, 0.901); /* 네비게이션 바 텍스트의 기본 색상 */
-  --bs-navbar-hover-color: rgba(77, 152, 244, 0.901); /* 네비게이션 바 텍스트의 호버 색상 */
+  --bs-navbar-color: #0066FF; /* 네비게이션 바 텍스트의 기본 색상 */
+  --bs-navbar-hover-color: #0066FF; /* 네비게이션 바 텍스트의 호버 색상 */
   --bs-navbar-disabled-color: rgba(0, 0, 0, 0.3); /* 네비게이션 바 텍스트의 비활성화 색상 */
-  --bs-navbar-active-color: rgba(77, 152, 244, 0.901); /* 네비게이션 바 텍스트의 활성화 색상 */
+  --bs-navbar-active-color: #0066FF; /* 네비게이션 바 텍스트의 활성화 색상 */
   --bs-navbar-brand-padding-y: 0.3125rem; /* 네비게이션 바 브랜드의 수직 패딩 */
   --bs-navbar-brand-margin-end: 1rem; /* 네비게이션 바 브랜드의 끝쪽 마진 */
   --bs-navbar-brand-font-size: 1.5rem; /* 네비게이션 바 브랜드의 글꼴 크기 */
-  --bs-navbar-brand-color: rgba(77, 152, 244, 0.901); /* 네비게이션 바 브랜드의 색상 */
-  --bs-navbar-brand-hover-color: rgba(77, 152, 244, 0.901); /* 네비게이션 바 브랜드의 호버 색상 */
+  --bs-navbar-brand-color: #0066FF; /* 네비게이션 바 브랜드의 색상 */
+  --bs-navbar-brand-hover-color: #0066FF; /* 네비게이션 바 브랜드의 호버 색상 */
   --bs-navbar-nav-link-padding-x: 0.5rem; /* 네비게이션 바 링크의 수평 패딩 */
   --bs-navbar-toggler-padding-y: 0.25rem; /* 네비게이션 바 토글러의 수직 패딩 */
   --bs-navbar-toggler-padding-x: 0.75rem; /* 네비게이션 바 토글러의 수평 패딩 */
@@ -10986,7 +10986,7 @@ body {
   outline: none;
 }
 #mainNav .navbar-brand {
-  color: #000;
+  color: #0066FF;
   font-weight: 700;
   padding: 0.9rem 0;
 }
@@ -11009,7 +11009,7 @@ body {
   }
   #mainNav .navbar-brand {
     padding: 0.5rem 0;
-    color: rgba(255, 255, 255, 0.5);
+    
   }
   #mainNav .nav-link {
     transition: none;

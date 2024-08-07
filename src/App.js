@@ -5,7 +5,7 @@ import Home from "./pages/home";
 import Template from "./pages/template";
 import Login from "./pages/login/login";
 import CSBoard from './pages/csBoard';
-import './styles/App.css';
+import './App.css';
 import Signup from './pages/login/SignUp';
 import UserProfile from './usermypage/userprofile';
 import UserAsk from './usermypage/userask';

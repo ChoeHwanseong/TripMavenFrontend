@@ -1,3 +1,11 @@
+.layout {
+    max-width: 1440px;
+    width: 100%;
+}
+
 .container {
+    width: 100%;
     margin-top: 200px;
+    margin-bottom: 100px;
+
 }

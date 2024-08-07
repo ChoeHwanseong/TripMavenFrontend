@@ -7,11 +7,14 @@ import style from "../styles/Template.module.css";
 export default function Template(){
 
     return <>
+        
         <Header />
-        <div className={style.container}>
-            <Outlet/>
+        <div className={style.layout}>
+            <div className={style.container}>
+                <Outlet/>
+            </div>
+            <Footer />
         </div>
-        <Footer />
     
     </>
 }
