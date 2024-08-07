@@ -6,3 +6,4 @@ npm install react-router-dom@6 이것두
      npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons @fortawesome/free-brands-svg-icons
      npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
 8/1  전역 설정이있어서 개별 적용을 위해 login.css를 login.module.css로 변경함 login.css는 삭제해도 무방
+8/7  npm install react-icons 설치 필요 import { AiOutlinePaperClip } from 'react-icons/ai 이부분
