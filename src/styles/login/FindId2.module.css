@@ -1,0 +1,74 @@
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .idList {
+    padding: 20px;
+    background-color: #f7faff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .radioLabel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .signupDate {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .buttonGroup {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+  
+  .loginButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .loginButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .findPasswordButton {
+    padding: 10px 20px;
+    background-color: transparent;
+    color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .findPasswordButton:hover {
+    background-color: #f0f0f0;
+  }
+  

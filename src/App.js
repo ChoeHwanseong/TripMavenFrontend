@@ -28,9 +28,6 @@ import GuideMyPageAIService from './pages/guidemypage/guidemypageaiservice/guide
 import Landing from './pages/landing/landing';
 import Chat from './pages/chat/Chat';
 import ProductBoard from './pages/productPage/ProductBoard';
-import OrderPopup from './pages/payment/paymentProc';
-import PaymentConfirmation from './pages/payment/paymentConfirm';
-import PaymentForm from './pages/payment/payment';
 
 
 function App() {
@@ -62,10 +59,6 @@ function App() {
         <Route path='/chat' element={<Chat/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
         <Route path='/termsservice' element={<TermsService/>}/>
-        <Route path='/paymentproc' element={<OrderPopup/>}/>
-        <Route path='/payment' element={<PaymentForm/>}/>
-        <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
-
       </Route>
     </Routes>
   </>
