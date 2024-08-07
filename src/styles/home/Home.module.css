@@ -105,4 +105,21 @@
     margin-bottom: 8px;
     color: #333;
   }
+
+  .viewAllButton {
+    padding: 10px 20px;
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .destinationsTitleviewAllButton{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
   
