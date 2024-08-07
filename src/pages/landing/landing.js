@@ -51,7 +51,7 @@ const Landing = () => {
     <div id="page-top">
       <nav className="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
         <div className="container px-4 px-lg-5">
-          <a className="navbar-brand" href="#page-top" style={{ color: 'skyblue' }}>Trip Maven</a>
+          <a className="navbar-brand" href="#page-top" style={{ color: 'skyblue' }}>TripMaven</a>
           <button className="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             Menu <FontAwesomeIcon icon={faBars} />
           </button>
@@ -69,7 +69,7 @@ const Landing = () => {
         <div className="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
           <div className="d-flex justify-content-center">
             <div className="text-center">
-              <h1 className="mx-auto my-2 text-uppercase mb-4">TRIP MAVEN</h1>
+              <h1 className="mx-auto my-2 text-uppercase mb-4">TRIPMAVEN</h1>
               <h2 className="text-black-25 mx-auto mt-4 mb-5">
                 프리랜서 여행 가이드의 완벽한 파트너,<br />
                 AI 기술로 더 편리한 서비스를 경험하세요.
