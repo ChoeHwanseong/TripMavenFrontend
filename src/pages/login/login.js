@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/Login.module.css';
+import styles from '../../styles/login/Login.module.css';
 import { NavLink } from 'react-router-dom';
 
 const Login = () => {
