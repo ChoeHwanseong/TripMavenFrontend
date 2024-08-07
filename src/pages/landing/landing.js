@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './landing.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faMapMarkedAlt, faEnvelope, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../../components/Footer';
 // 이미지 파일을 import

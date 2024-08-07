@@ -33,7 +33,7 @@ const GuideProfile = () => {
             <div className={styles.infoSection}>
               <div className={styles.formGroup}>
                 <label htmlFor="nickname">닉네임</label>
-                <input type="text" id="nickname" value="냥만아삼" readOnly />
+                <input type="text" id="nickname" value="낭만아삼" readOnly />
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="email">이메일</label>

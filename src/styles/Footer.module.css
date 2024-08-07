@@ -43,12 +43,13 @@
   display: flex;
   justify-content: flex-end;
   margin-bottom: 10px;
+  align-items: center;
 }
 
 .footerLink {
   font-size: 14px;
   color: #666;
-  margin-left: 20px;
+  margin: 0 15px;
   text-decoration: none;
 }
 
@@ -68,8 +69,7 @@
   font-weight: bold;
 }
 
-.snsIcon {
-  width: 24px;
-  height: 24px;
-  margin-left: 10px;
+.bar {
+  color: #999;
+
 }

@@ -1,5 +1,7 @@
 import React from 'react';
 import styles from '../styles/Header.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
@@ -8,14 +10,16 @@ const Header = () => {
     return (
         <header className={styles.header}>
             <div className={styles.headerFrame}>
-                <button className={styles.logoButton} onClick={() => navigate('/')}>TripMaven</button>
+                <button className={styles.logoButton} onClick={() => navigate('/home')}>TripMaven</button>
                 <div className={styles.nav}>
-                    
-                    <input
-                        type="text"
-                        className={styles.searchInput}
-                        placeholder="검색어를 입력하세요"
-                    />
+                    <div className={styles.inputstyle}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.icon}/>
+                        <input
+                            type="text"
+                            className={styles.searchInput}
+                            placeholder="검색어를 입력하세요"
+                        />
+                    </div>
                     <div className={styles.navFrame}>
                         <div className={styles.navItems}>
                             <button className={styles.navButton} onClick={() => navigate('/home')}>Home</button>
@@ -41,7 +45,7 @@ const Header = () => {
                                 </button>
                                 <div className={styles.dropdownContent}>
                                     <a><button className={styles.navButton1} onClick={() => navigate('/guideProfile')}>프로필</button></a>
-                                    <a><button className={styles.navButton1} onClick={() => navigate('/settings')}>설정</button></a>
+                                    <a><button className={styles.navButton1} onClick={() => navigate('/guideMyPageInquiryDetails')}>문의내역</button></a>
                                     <a><button className={styles.navButton1} onClick={() => navigate('/logout')}>로그아웃</button></a>
                                 </div>
                             </div>
