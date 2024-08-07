@@ -10,11 +10,11 @@ const GuideMyPagePost = () => {
             <div className={styles.sidebar}>
                 <h1 className={styles.title}>My Page</h1>
                 <ul className={styles.menu}>
-                    <li><button className={styles.navButton} onClick={()=>navigate('/guideProfile')}>내 정보 관리</button></li>
-                    <li><button className={styles.navButton} onClick={()=>navigate('/guideMyPageMyPost')}>내 게시물 관리</button></li>
-                    <li><button className={styles.navButton} onClick={()=>navigate('/guideMyPageInquiryDetails')}>1:1문의 내역</button></li>
+                    <li><button className={styles.navButton} onClick={()=>navigate('/guideprofile')}>내 정보 관리</button></li>
+                    <li><button className={styles.navButton} onClick={()=>navigate('/guidemypagemypost')}>내 게시물 관리</button></li>
+                    <li><button className={styles.navButton} onClick={()=>navigate('/guidemypageinquirydetails')}>1:1문의 내역</button></li>
                     <li><button className={styles.navButton} onClick={()=>navigate('/chat')}>채팅방</button></li>
-                    <li><button className={styles.navButton} onClick={()=>navigate('/mypageaiservice')}>ai 서비스</button></li>
+                    <li><button className={styles.navButton} onClick={()=>navigate('/guidemypageaiservice')}>ai 서비스</button></li>
                 </ul>
             </div>
             <div className={styles.content}>
