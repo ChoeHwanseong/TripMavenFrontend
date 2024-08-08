@@ -28,19 +28,19 @@ import GuideMyPageAIService from './pages/guidemypage/guidemypageaiservice/guide
 import Landing from './pages/landing/landing';
 import Chat from './pages/chat/Chat';
 import ProductBoard from './pages/productPage/ProductBoard';
+import PaymentForm from './pages/payment/payment';
 import OrderPopup from './pages/payment/paymentProc';
 import PaymentConfirmation from './pages/payment/paymentConfirm';
-import PaymentForm from './pages/payment/payment';
-
+import BigChat from './pages/chat/BigChat';
 
 function App() {
   return <>
     <Routes>
-      <Route path="/" element={<Landing />}/>
+      <Route path="/" element={<Landing/>}/>
       <Route element={<Template/>}>
-        <Route path="/home" element={<Home />}/>
-        <Route path='/adminreport' element={<AdminReport />}/>
-        <Route path='/adminprofile' element={<AdminProfile />}/>
+        <Route path="/home" element={<Home/>}/>
+        <Route path='/adminreport' element={<AdminReport/>}/>
+        <Route path='/adminprofile' element={<AdminProfile/>}/>
         <Route path='/adminask' element={<AdminAsk/>}/>
         <Route path='/memberlist' element={<MemberList/>}/>
         <Route path='/aiservice' element={<AIService/>}/>
@@ -53,7 +53,7 @@ function App() {
         <Route path='/guidemypagepost' element={<GuideMyPagePost/>}/>
         <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
         <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
-        <Route path="/login" element={<Login />}/>
+        <Route path="/login" element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/userreview' element={<UserReview/>}/>
         <Route path='/userprofile' element={<UserProfile/>}/>
@@ -65,7 +65,7 @@ function App() {
         <Route path='/paymentproc' element={<OrderPopup/>}/>
         <Route path='/payment' element={<PaymentForm/>}/>
         <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
-
+        <Route path='/bigChat' element={<BigChat/>}/>
       </Route>
     </Routes>
   </>

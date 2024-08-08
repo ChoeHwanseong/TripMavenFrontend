@@ -1,7 +1,10 @@
 import React from 'react';
 import styles from '../../styles/adminmypage/AdminAsk.module.css';
+import SideMenu from '../../components/sideMenu';
+
 
 const AdminAsk = () => {
+
   const inquiries = [
     {
       inquiryId: 9621,
@@ -31,15 +34,7 @@ const AdminAsk = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.sidebar}>
-        <h2>My Page</h2>
-        <ul>
-          <li>내 정보 관리</li>
-          <li>회원 목록</li>
-          <li>1:1문의 내역</li>
-          <li>신고 내역</li>
-        </ul>
-      </div>
+      <SideMenu/>
 
       <div className={styles.content}>
         <div className={styles.header}>

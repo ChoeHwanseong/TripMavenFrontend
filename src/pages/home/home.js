@@ -1,7 +1,10 @@
 import React from 'react';
 import styles from '../../styles/home/Home.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.container}>
       <div className={styles.searchBar}>
@@ -19,7 +22,10 @@ const Home = () => {
       </div>
 
       <div className={styles.popularDestinations}>
-        <h2 className={styles.destinationsTitle}>인기 여행지</h2>
+        <div className={styles.destinationsTitleviewAllButton}>
+          <h2 className={styles.destinationsTitle}>인기 여행지</h2> 
+          <button className={styles.viewAllButton} onClick={() => navigate('/product')}>모두보기</button>
+        </div>
         <div className={styles.destinationList}>
           {['부산', '제주', '서울', '강릉', '가평'].map((city, index) => (
             <div key={index} className={styles.destinationCard}>
@@ -32,6 +38,8 @@ const Home = () => {
             </div>
           ))}
         </div>
+      
+
       </div>
 
       <div className={styles.infoSection}>

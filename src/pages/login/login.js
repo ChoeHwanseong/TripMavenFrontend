@@ -73,7 +73,11 @@ const Login = () => {
                     <div className={styles.extraOptions}>
                         <NavLink className={styles.extraOption} to="/signup" >회원가입</NavLink>
                         <span className={styles.separator}>|</span>
-                        <a href="#" className={styles.extraOption}>아이디/비밀번호 찾기</a>
+
+                        <NavLink className={styles.extraOption} to="/findId1">아이디찾기</NavLink>
+                        <span className={styles.separator}>|</span>
+
+                        <NavLink className={styles.extraOption} to="/findpassword1">비밀번호 찾기</NavLink>
                     </div>
                     <div className={styles.snsLogin}>
                         <span className={styles.snsLoginText}>SNS 간편 로그인</span>

@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 const GuideMyPageInquiry = () => {
   const navigate = useNavigate();
-  return (
+
+  return <>
     <div className={styles.container}>
       <h2 className={styles.title}>문의 하기</h2>
       <div className={styles.form}>
@@ -21,7 +22,7 @@ const GuideMyPageInquiry = () => {
         <button className={styles.submitButton}>등록 하기</button>
       </div>
     </div>
-  );
+  </>
 };
 
 export default GuideMyPageInquiry;
