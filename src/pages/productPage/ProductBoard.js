@@ -45,12 +45,6 @@ const ProductBoard = () => {
 
     return (
         <div className={styles.container}>
-            {/* 검색 입력 필드 */}
-            <input
-                type="text"
-                className={styles.searchInput}
-                placeholder="검색어를 입력하세요"
-            />
             <div className={styles.productList}>
                 {/* 제품 목록을 렌더링 */}
                 {products.map((product, index) => (

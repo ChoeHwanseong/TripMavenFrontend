@@ -4,11 +4,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f5f5f5;
+    background-color: #ffffff;
   }
   
   .paymentForm {
     width: 500px;
+    border: 1px solid #ccc;
     background-color: white;
     padding: 40px;
     border-radius: 10px;
@@ -36,7 +37,7 @@
   .inputLabel {
     display: block;
     font-size: 12px;
-    color: #666;
+    color: #000;
     margin-bottom: 2px;
   }
   
@@ -86,7 +87,7 @@
   .payButton {
     width: auto; /* 100%에서 auto로 변경 */
     padding: 10px 20px; /* 좌우 패딩 조정 */
-    background-color: #007bff;
+    background-color: #0066ff;
     color: white;
     border: none;
     border-radius: 4px;

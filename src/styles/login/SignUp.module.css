@@ -71,7 +71,7 @@
 .searchButton {
     width: 60px;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #0066ff;
     border: none;
     border-radius: 4px;
     color: white;
@@ -89,7 +89,7 @@
 .signupButton {
     width: 100%;
     padding: 12px;
-    background-color: #007bff;
+    background-color: #0066ff;
     border: none;
     border-radius: 4px;
     color: white;
@@ -100,5 +100,5 @@
 }
 
 .signupButton:hover {
-    background-color: #0056b3;
+    background-color: #0066ff;
 }

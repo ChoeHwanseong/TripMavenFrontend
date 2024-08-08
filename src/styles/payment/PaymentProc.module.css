@@ -25,7 +25,7 @@
     font-size: 32px;
     margin-bottom: 20px;
     text-align: left;
-    color: #4a90e2;
+    color: #0066ff;
     font-weight: bold;
   }
   
@@ -67,7 +67,7 @@
   }
   
   .paymentButton {
-    background-color: #4a90e2;
+    background-color: #0066ff;
     color: white;
     border: none;
     padding: 10px;
@@ -77,5 +77,5 @@
   }
   
   .paymentButton:hover {
-    background-color: #357abd;
+    background-color: #0056b3;
   }

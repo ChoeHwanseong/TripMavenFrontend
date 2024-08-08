@@ -1,6 +1,7 @@
 /* AdminAsk.module.css */
 
 .container {
+    margin-top: 100px;
     display: flex;
     flex-direction: row;
     padding: 20px;
@@ -8,6 +9,7 @@
   }
   
   .sidebar {
+    margin-left: 50px;
     width: 20%;
     border-right: 1px solid #ddd;
     padding-right: 20px;
@@ -34,7 +36,7 @@
   
   .sidebar ul li:nth-child(3) {
     font-weight: bold;
-    color: #007bff;
+    color: #0066ff;
   }
   
   .content {

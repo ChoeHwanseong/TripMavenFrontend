@@ -20,7 +20,7 @@
 }
 
 .navButton:hover, .dropdownButton:hover {
-    color: #007bff;
+    color: #0066ff;
 }
   .sidebarTitle {
     font-size: 1.5em;
@@ -42,7 +42,7 @@
   
   .menuItem:hover,
   .active {
-    color: #007bff;
+    color: #0066ff;
   }
   
   .mainContent {
@@ -64,7 +64,7 @@
   
   .createButton {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #0066ff;
     border: none;
     border-radius: 5px;
     color: #fff;
@@ -113,7 +113,7 @@
   }
   
   .pagination span:hover {
-    color: #007bff;
+    color: #0066ff;
   }
   
   .currentPage {
