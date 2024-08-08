@@ -20,17 +20,17 @@ const Login = () => {
 
     const googleLogin = () => {
         // Google OAuth2 인증 URL로 리다이렉트
-        window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+        window.location.href = 'http://localhost:5346/oauth2/authorization/google';
     };
 
     const kakaoLogin = () => {
         // Kakao OAuth2 인증 URL로 리다이렉트
-        window.location.href = 'http://localhost:8080/oauth2/authorization/kakao';
+        window.location.href = 'http://localhost:5346/oauth2/authorization/kakao';
     };
 
     const naverLogin = () => {
         // Naver OAuth2 인증 URL로 리다이렉트
-        window.location.href = 'http://localhost:8080/oauth2/authorization/naver';
+        window.location.href = 'http://localhost:5346/oauth2/authorization/naver';
     };
 
     return (
