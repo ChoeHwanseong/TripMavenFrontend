@@ -4,7 +4,7 @@ import faviImg from '../../images/favicon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'; // 필요한 아이콘 임포트
 
-const ChatPopup = () => {
+const Chat = () => {
   const [isVisible, setIsVisible] = useState(false); // 챗봇 팝업의 표시 상태를 관리하는 상태 변수
   const chatInputRef = useRef(null); // 입력 필드에 대한 참조를 생성
 
@@ -81,4 +81,4 @@ const ChatPopup = () => {
   );
 };
 
-export default ChatPopup;
+export default Chat;

@@ -14,11 +14,11 @@ const GuideProfile = () => {
       <aside className={styles.sidebar}>
         <h2 className={styles.sidebarTitle}>My Page</h2>
         <ul className={styles.menu}>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guideProfile')}>내 정보 관리</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guideMyPageMyPost')}>내 게시물 관리</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guideMyPageInquiryDetails')}>1:1문의 내역</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/guideprofile')}>내 정보 관리</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/guidemypagemypost')}>내 게시물 관리</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/guidemypageinquirydetails')}>1:1문의 내역</button></li>
           <li><button className={styles.navButton} onClick={()=>navigate('/chat')}>채팅방</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/mypageaiservice')}>ai 서비스</button></li>
+          <li><button className={styles.navButton} onClick={()=>navigate('/guidemypageaiservice')}>ai 서비스</button></li>
         </ul>
       </aside>
 
@@ -72,9 +72,7 @@ const GuideProfile = () => {
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="about">자기소개</label>
-                <textarea id="about" rows="4" readOnly>
-                  안녕하세요. 저는 냥만아삼 입니다. 저의 가이드는 가견적으로 되었어요.
-                </textarea>
+                <textarea id="about" rows="4" readOnly value="안녕하세요. 저는 냥만아삼 입니다. 저의 가이드는 가견적으로 되었어요."></textarea>
               </div>
             </div>
           </div>

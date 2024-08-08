@@ -44,8 +44,8 @@ const Header = () => {
                                     </svg>
                                 </button>
                                 <div className={styles.dropdownContent}>
-                                    <a><button className={styles.navButton1} onClick={() => navigate('/guideProfile')}>프로필</button></a>
-                                    <a><button className={styles.navButton1} onClick={() => navigate('/guideMyPageInquiryDetails')}>문의내역</button></a>
+                                    <a><button className={styles.navButton1} onClick={() => navigate('/guideprofile')}>프로필</button></a>
+                                    <a><button className={styles.navButton1} onClick={() => navigate('/guidemypageinquirydetails')}>문의내역</button></a>
                                     <a><button className={styles.navButton1} onClick={() => navigate('/logout')}>로그아웃</button></a>
                                 </div>
                             </div>
