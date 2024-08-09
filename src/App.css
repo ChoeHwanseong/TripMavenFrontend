@@ -10,6 +10,9 @@ html,
     margin: 0 auto; /* 수평으로 가운데 정렬 */
     padding: 0; /* 양쪽에 약간의 여백 추가 */
     min-height: 100vh; /* 페이지 전체 높이 유지 */
+
+    min-width: 1100px;
+    max-width: 1440px;
 }
 
 * {
