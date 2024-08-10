@@ -20,17 +20,20 @@ const Login = () => {
 
     const googleLogin = () => {
         // Google OAuth2 인증 URL로 리다이렉트
-        window.location.href = 'http://localhost:5346/oauth2/authorization/google';
+        window.location.href = 'http://localhost:9099/oauth2/authorization/google';
     };
 
     const kakaoLogin = () => {
-        // Kakao OAuth2 인증 URL로 리다이렉트
-        window.location.href = 'http://localhost:5346/oauth2/authorization/kakao';
+        const clientId = '7d447677dbee7f604d966911a044f55e'; // 환경 변수에서 클라이언트 ID를 가져옵니다.
+        const redirectUri = 'http://localhost:9099/login/oauth2/code/kakao'; // 리다이렉트 URI
+        const encodedRedirectUri = encodeURIComponent(redirectUri); // 리다이렉트 URI를 인코딩합니다.
+
+        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}`;
     };
 
     const naverLogin = () => {
         // Naver OAuth2 인증 URL로 리다이렉트
-        window.location.href = 'http://localhost:5346/oauth2/authorization/naver';
+        window.location.href = 'http://localhost:9099/oauth2/authorization/naver';
     };
 
     return (
