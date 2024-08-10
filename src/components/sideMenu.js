@@ -27,8 +27,8 @@ import { menuData } from '../config/myPageEndPoint';
         ]
     };
 */
-const DecideSideMenu=(nowPageEndPoint)=>{
-    for(let key in menuData){
+const DecideSideMenu = (nowPageEndPoint) => {
+    for (let key in menuData) {
         let endPoints = menuData[key]
         /*
             endPoints=
@@ -39,15 +39,15 @@ const DecideSideMenu=(nowPageEndPoint)=>{
                 { name: "신고 내역", path: "/adminreport" }
             ]
          */
-        for(let i=0;i<endPoints.length;i++){
-            if(nowPageEndPoint == endPoints[i]['path']) return endPoints
-            else if(nowPageEndPoint == endPoints[i]['path']) return endPoints
-            else if(nowPageEndPoint == endPoints[i]['path']) return endPoints
+        for (let i = 0; i < endPoints.length; i++) {
+            if (nowPageEndPoint == endPoints[i]['path']) return endPoints
+            else if (nowPageEndPoint == endPoints[i]['path']) return endPoints
+            else if (nowPageEndPoint == endPoints[i]['path']) return endPoints
         }
     }
 }
 
-const SideMenu = ({role}) => {
+const SideMenu = ({ role }) => {
 
     //endpoint 받아오기(location.pathname)
     const location = useLocation();
@@ -59,12 +59,17 @@ const SideMenu = ({role}) => {
     return <>
         <div className={styles.sidebar}>
             <div>
-                <h2>My Page</h2>
-                <ul>    
+                <img
+                    src="../../images/mypageLogo.png"
+                    alt="mypagelogo"
+                    className={styles.mypageLogo}
+                    onClick={() => navigate('/mypageprofile')}
+                />
+                <ul>
                     {menuItems && menuItems.map((item, index) => {
                         const isActive = location.pathname === item.path;
-                        return(
-                            <li key={index}><button className={`${styles.navButton} ${isActive ? styles.active : ''}`} onClick={()=>navigate(item.path)}>{item.name}</button></li>
+                        return (
+                            <li key={index}><button className={`${styles.navButton} ${isActive ? styles.active : ''}`} onClick={() => navigate(item.path)}>{item.name}</button></li>
                         )
                     })}
                 </ul>

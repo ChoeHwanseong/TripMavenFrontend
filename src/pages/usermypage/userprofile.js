@@ -3,7 +3,7 @@ import styles from '../../styles/usermypage/UserProfile.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
-  const [nickname, setNickname] = useState('냥안아샴');
+  const [nickname, setNickname] = useState('낭만아삼');
   const [email, setEmail] = useState('dlwns0784@gmail.com');
   const [phone, setPhone] = useState('010-4294-3686');
   const [region, setRegion] = useState('부산');

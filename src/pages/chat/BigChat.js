@@ -4,9 +4,7 @@ import styles from '../../styles/chat/BigChat.module.css';
 function BigChat() {
   return (
     <div className={styles.container}>
-      <div className={styles.sidebar}>
-        <button className={styles.groupChatButton}>그룹채팅방</button>
-      </div>
+      
 
       <div className={styles.messagesSection}>
         <div className={styles.header}>
@@ -17,14 +15,14 @@ function BigChat() {
               className={styles.searchInput}
               placeholder="검색어를 입력하세요"
             />
-            <button className={styles.newChatButton}>새 채팅 +</button>
+            <button className={styles.newChatButton}>새채팅+</button>
           </div>
         </div>
 
         <div className={styles.chatList}>
           <div className={styles.chatItem}>
             <img
-              src="/profile1.png"
+              src="../images/choehwanseong.png"
               alt="profile"
               className={styles.profileImage}
             />
@@ -36,7 +34,7 @@ function BigChat() {
 
           <div className={styles.chatItem}>
             <img
-              src="/profile2.png"
+              src="../images/defaultimage.png"
               alt="profile"
               className={styles.profileImage}
             />
@@ -50,14 +48,14 @@ function BigChat() {
 
       <div className={styles.chatSection}>
         <div className={styles.chatHeader}>
-          <span className={styles.chatName}>초애환성</span>
+          <h2 className={styles.chatName}>초애환성</h2>
           <button className={styles.infoButton}>i</button>
         </div>
 
         <div className={styles.chatMessages}>
           <div className={styles.message}>
             <img
-              src="/profile1.png"
+              src="../images/choehwanseong.png"
               alt="profile"
               className={styles.profileImage}
             />
@@ -73,7 +71,7 @@ function BigChat() {
               <span className={styles.messageTime}>8:00 PM</span>
             </div>
             <img
-              src="/profile2.png"
+              src="../images/defaultimage.png"
               alt="profile"
               className={styles.profileImage}
             />
@@ -86,8 +84,8 @@ function BigChat() {
             className={styles.chatInput}
             placeholder="입력해주세요"
           />
-          <button className={styles.sendButton}>▶</button>
-          <button className={styles.attachmentButton}>📎</button>
+          <button className={styles.sendButton}><img src="../images/sendbutton.png"/></button>
+          <button className={styles.attachmentButton}><img src="../images/filebutton.png"/></button>
         </div>
       </div>
     </div>

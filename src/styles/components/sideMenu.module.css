@@ -1,10 +1,11 @@
-
 .sidebar {
     width: 20%;
     border-right: 1px solid #ddd;
-    padding-right: 20px;
+    padding-right: 5px;
     color: #333;
     display: flex;
+    margin-left: 40px;
+    margin-top: 20px;
 }
 
 .sidebar h2 {
@@ -18,13 +19,17 @@
     padding: 0;
     margin: 0;
 }
-  
+
+.mypageLogo {
+    margin-bottom: 15px;
+}
+
 .sidebar ul li {
     margin-bottom: 10px;
     font-size: 16px;
     cursor: pointer;
 }
-  
+
 .active {
     font-weight: bold;
     color: #0066ff;
@@ -38,6 +43,7 @@
     cursor: pointer;
 }
 
-.navButton:hover, .dropdownButton:hover {
+.navButton:hover,
+.dropdownButton:hover {
     color: #0066ff;
 }

@@ -33,6 +33,7 @@ import OrderPopup from './pages/payment/paymentProc';
 import PaymentConfirmation from './pages/payment/paymentConfirm';
 import BigChat from './pages/chat/BigChat';
 import MyPageTemplate from './pages/mypage/myPageTemplate';
+import MypageProfile from './pages/mypage/myPageProfile';
 
 function App() {
   return <>
@@ -40,7 +41,7 @@ function App() {
       <Route path="/" element={<Landing/>}/>
       <Route element={<Template/>}>
         <Route path="/home" element={<Home/>}/>
-
+        <Route path='/mypageprofile' element={<MypageProfile />}/>
         <Route element={<MyPageTemplate/>}>
           <Route path='/adminreport' element={<AdminReport/>}/>
           <Route path='/adminprofile' element={<AdminProfile/>}/>
