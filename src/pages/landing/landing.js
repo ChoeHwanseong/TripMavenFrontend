@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../../styles/landing/Landing.module.css';
+import styles from '../../styles/landing/landing.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faMapMarkedAlt, faEnvelope, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../../components/Footer';

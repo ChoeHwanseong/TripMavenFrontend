@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styles from '../../styles/chat/Chat.module.css';
+import styles from '../../styles/chat/chat.module.css';
 import faviImg from '../../images/favicon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'; // 필요한 아이콘 임포트

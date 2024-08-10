@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/usermypage/UserReview.module.css';
+import styles from '../../styles/usermypage/userReview.module.css';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -35,7 +35,6 @@ const ReviewPage = () => {
         <div className={styles.reviewSection}>
           <div className={styles.header}>
             <h2>리뷰 작성</h2>
-            <span className={styles.writePrompt}>리뷰 작성을 도와줄까요?</span>
           </div>
 
           <div className={styles.reviewList}>

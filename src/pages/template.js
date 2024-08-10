@@ -1,7 +1,8 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import style from "../styles/Template.module.css";
+import style from "../styles/template.module.css";
+import Chat from "./chat/chat";
 
 //레이아웃용 컴포넌트
 export default function Template(){
@@ -13,6 +14,7 @@ export default function Template(){
             <div className={style.container}>
                 <Outlet/>
             </div>
+            <Chat/>
             <Footer />
         </div>
     

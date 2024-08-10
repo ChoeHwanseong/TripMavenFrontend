@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import styles from '../../styles/productPage/ProductBoard.module.css';
+import styles from '../../styles/productPage/productBoard.module.css';
 
 const ProductBoard = () => {
     const [products, setProducts] = useState([]); // 상품 목록을 관리하는 상태 변수

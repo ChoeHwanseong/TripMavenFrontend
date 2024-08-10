@@ -1,8 +1,7 @@
 // MyPage.jsx
 import React from 'react';
-import styles from '../../styles/guidemypage/GuideMyPagePost.module.css';
+import styles from '../../styles/guidemypage/guideMyPagePost.module.css';
 import { useNavigate } from 'react-router-dom';
-import SideMenu from '../../components/sideMenu';
 
 const GuideMyPagePost = () => {
     const navigate = useNavigate();

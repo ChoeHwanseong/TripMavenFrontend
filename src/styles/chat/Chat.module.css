@@ -7,7 +7,6 @@
   flex-direction: column; /* 세로 방향으로 정렬 */
   align-items: center; /* 가로 방향으로 중앙 정렬 */
   justify-content: center; /* 세로 방향으로 중앙 정렬 */
-  min-height: 100vh; /* 최소 높이를 화면 전체로 설정 */
   font-family: 'Arial', sans-serif; /* 기본 폰트 설정 */
 }
 
@@ -15,13 +14,14 @@
 .chatButton {
   position: fixed; /* 화면의 고정 위치에 배치 */
   right: 15px; /* 화면 오른쪽에서 15px 떨어진 위치 */
-  bottom: 75px; /* 화면 아래쪽에서 75px 떨어진 위치 */
+  bottom: 90px; /* 화면 아래쪽에서 75px 떨어진 위치 */
   width: 60px; /* 버튼의 너비 */
   height: 60px; /* 버튼의 높이 */
-  z-index: 99; /* 다른 요소들보다 위에 표시되도록 설정 */
+  z-index: 101; /* 다른 요소들보다 위에 표시되도록 설정 */
   border-radius: 50%; /* 버튼을 둥글게 설정 */
   object-fit: cover; /* 이미지가 버튼 영역에 맞게 조정 */
-  border: 2px solid black; /* 검은색 테두리 */
+  border: 2px solid #0066ff; /* 검은색?? 우리 테마색? 테두리 */
+  background-color: #ffffff; /* 배경은??? */
 }
 
 /* 챗봇 팝업의 열림 애니메이션 */
@@ -52,8 +52,8 @@
 .chatPopup {
   display: none; /* 기본적으로 표시되지 않음 */
   position: fixed; /* 화면의 고정 위치에 배치 */
-  bottom: 15px; /* 화면 아래쪽에서 15px 떨어진 위치 */
-  right: 15px; /* 화면 오른쪽에서 15px 떨어진 위치 */
+  bottom: 160px; /* 화면 아래쪽에서 15px 떨어진 위치 */
+  right: 20px; /* 화면 오른쪽에서 15px 떨어진 위치 */
   width: 360px; /* 팝업의 너비 */
   height: 640px; /* 팝업의 높이 */
   border: 2px solid #0066ff; /* 검은색 테두리 */

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/usermypage/UserProfile.module.css';
+import styles from '../../styles/usermypage/userProfile.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
@@ -17,6 +17,7 @@ const MyPage = () => {
     alert('수정 완료');
   };
   const navigate = useNavigate();
+  
   return (
     
     <div className={styles.container}>

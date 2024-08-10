@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/payment/PaymentConfirm.module.css';
+import styles from '../../styles/payment/payment.module.css';
 
 const PaymentConfirmation = () => {
   return (

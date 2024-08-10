@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/login/FindPassword3.module.css';
+import styles from '../../styles/login/findPassword3.module.css';
 
 const FindPassword3 = () => {
   return (

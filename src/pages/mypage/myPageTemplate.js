@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/mypage/MyPageTemplate.module.css';
+import styles from '../../styles/mypage/myPageTemplate.module.css';
 import SideMenu from '../../components/sideMenu';
 import { Outlet } from 'react-router-dom';
 

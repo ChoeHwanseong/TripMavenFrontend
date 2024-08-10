@@ -6,10 +6,6 @@
   padding: 20px;
 }
 
-.sidebar {
-  width: 200px;
-  padding-right: 20px;
-}
 .navButton {
   margin: 0 10px;
   background: none;
@@ -20,7 +16,7 @@
 }
 
 .navButton:hover, .dropdownButton:hover {
-  color: #007bff;
+  color: #0066ff;
 }
 .sidebarTitle {
   font-size: 1.5em;
@@ -42,7 +38,7 @@
 
 .menuItem:hover,
 .active {
-  color: #007bff;
+  color: #0066ff;
 }
 
 .mainContent {
@@ -88,7 +84,7 @@
 .aiButton {
   margin-bottom: 20px;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #0066ff;
   border: none;
   border-radius: 5px;
   color: #fff;
@@ -120,7 +116,7 @@
 }
 
 .tags {
-  color: #007bff;
+  color: #0066ff;
   font-style: italic;
 }
 
@@ -133,6 +129,7 @@
 .starRating,
 .aiRating {
   color: #f39c12;
+  margin: 0 20px;
 }
 
 .itinerary {
@@ -189,7 +186,7 @@
 .toggleButton {
   background: none;
   border: none;
-  color: #007bff;
+  color: #0066ff;
   font-size: 1em;
   cursor: pointer;
   transition: color 0.3s;
@@ -212,7 +209,7 @@
 .timelinePoint {
   width: 10px;
   height: 10px;
-  background-color: #007bff;
+  background-color: #0066ff;
   border-radius: 50%;
   margin-right: 10px;
   margin-top: 10px;
@@ -255,7 +252,7 @@
 
 .actionButton {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #0066ff;
   border: none;
   border-radius: 5px;
   color: #fff;
@@ -270,9 +267,30 @@
 
 .value a {
   text-decoration: none;
-  color: #007bff;
+  color: #0066ff;
 }
 
 .value a:hover {
   text-decoration: underline;
+}
+
+.toggleAllButtonFlex {
+  margin: 5px 3px;
+  display: flex;
+  justify-content: end;
+}
+
+.toggleAllButton {
+  padding: 5px 10px;
+  background-color: #0066ff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toggleAllButton:hover {
+  background-color: #0056b3;
 }

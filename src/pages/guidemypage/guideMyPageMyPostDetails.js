@@ -1,18 +1,29 @@
 // MyPostDetails.js
 import React, { useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/guidemypage/GuideMyPageMyPostDetails.module.css';
-import SideMenu from '../../components/sideMenu';
+import styles from '../../styles/guidemypage/guideMyPageMyPostDetails.module.css';
+
 const GuideMyPageMyPostDetails = () => {
   const navigate = useNavigate();
 
-
-
-  const [activeDay, setActiveDay] = useState(null);
+  const [activeDays, setActiveDays] = useState([]); //다중 스테이트 관리를 위한 배열
+  const [allOpen, setAllOpen] = useState(false); // 모두 열기/닫기 상태 관리
 
   const toggleDay = (day) => {
-    setActiveDay(activeDay === day ? null : day);
+    if (activeDays.includes(day)) {
+      setActiveDays(activeDays.filter((activeDay) => activeDay !== day));
+    } else {
+      setActiveDays([...activeDays, day]);
+    }
+  };
+
+  const toggleAllDays = () => {
+    if (allOpen) {
+      setActiveDays([]); // 모두 닫기
+    } else {
+      setActiveDays([1, 2, 3]); // 모두 열기(하드코딩인데 바꿔야함)
+    }
+    setAllOpen(!allOpen); // 상태 변경
   };
 
   return (
@@ -84,16 +95,22 @@ const GuideMyPageMyPostDetails = () => {
             </div>
           </div>
 
+          <div className={styles.toggleAllButtonFlex}>
+            <button className={styles.toggleAllButton} onClick={toggleAllDays}>
+              {allOpen ? '모두 닫기' : '모두 열기'}
+            </button>
+          </div>
+
           <div className={styles.accordion}>
             {[1, 2, 3].map((day) => (
               <div key={day} className={styles.accordionItem}>
                 <div className={styles.accordionHeader} onClick={() => toggleDay(day)}>
                   <span>{day}일차</span>
                   <button className={styles.toggleButton}>
-                    {activeDay === day ? '상세 닫기' : '상세 보기'}
+                    {activeDays.includes(day) ? '상세 닫기' : '상세 보기'}
                   </button>
                 </div>
-                {activeDay === day && (
+                {activeDays.includes(day) && (
                   <div className={styles.accordionContent}>
                     {/* 각 일정의 활동 내용 */}
                     <div className={styles.timeline}>
@@ -164,7 +181,7 @@ const GuideMyPageMyPostDetails = () => {
         <div className={styles.actions}>
           <button className={styles.actionButton}>수정 하기</button>
           <button className={styles.actionButton}>삭제 하기</button>
-          <button className={styles.actionButton}>목록</button>
+          <button className={styles.actionButton} onClick={()=>navigate('/guidemypagemypost')}>목록</button>
         </div>
       
       </main>

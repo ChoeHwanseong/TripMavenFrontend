@@ -2,8 +2,7 @@
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/guidemypage/GuideMyPageInquiryDetails.module.css';
-import SideMenu from '../../components/sideMenu';
+import styles from '../../styles/guidemypage/guideMyPageInquiryDetails.module.css';
 const GuideMyPageInquiryDetails = () => {
   const navigate = useNavigate();
 

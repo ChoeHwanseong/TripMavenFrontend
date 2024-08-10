@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from '../../../styles/guidemypage/guidemypageaiservice/GuideMyPageAIService.module.css';
-import AIServices from './AIService';
+import styles from '../../../styles/guidemypage/guidemypageaiservice/guideMyPageAIService.module.css';
+import AIServices from './aIService';
 import SideMenu from '../../../components/sideMenu';
 
 const GuideMyPageAIService = () => {

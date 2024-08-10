@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/chat/BigChat.module.css';
+import styles from '../../styles/chat/bigChat.module.css';
 
 function BigChat() {
   return (

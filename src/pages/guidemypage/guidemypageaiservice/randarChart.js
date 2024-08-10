@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/guidemypage/guidemypageaiservice/RanderChart.module.css';
+import styles from '../../../styles/guidemypage/guidemypageaiservice/randerChart.module.css';
 
 const RadarChart = ({ period, score }) => {
     return (

@@ -12,6 +12,9 @@ export default function CSBoard(){
         setOpen(newOpen);
     };
 
+    
+
+
     return <>
         <div className={styles.container}>
             <Outlet/>

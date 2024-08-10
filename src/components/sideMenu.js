@@ -40,9 +40,9 @@ const DecideSideMenu=(nowPageEndPoint)=>{
             ]
          */
         for(let i=0;i<endPoints.length;i++){
-            if(nowPageEndPoint == endPoints[i]['path']) return endPoints
-            else if(nowPageEndPoint == endPoints[i]['path']) return endPoints
-            else if(nowPageEndPoint == endPoints[i]['path']) return endPoints
+            if(nowPageEndPoint.toLowerCase() == endPoints[i]['path']) return endPoints
+            else if(nowPageEndPoint.toLowerCase() == endPoints[i]['path']) return endPoints
+            else if(nowPageEndPoint.toLowerCase() == endPoints[i]['path']) return endPoints
         }
     }
 }
@@ -62,10 +62,16 @@ const SideMenu = ({role}) => {
                 <h2>My Page</h2>
                 <ul>    
                     {menuItems && menuItems.map((item, index) => {
-                        const isActive = location.pathname === item.path;
-                        return(
-                            <li key={index}><button className={`${styles.navButton} ${isActive ? styles.active : ''}`} onClick={()=>navigate(item.path)}>{item.name}</button></li>
-                        )
+                        let isActive = null;
+                        if(location.pathname.toLowerCase().includes('details'))
+                            isActive = location.pathname.toLowerCase().replace('details','') === item.path;
+                        else isActive = location.pathname === item.path;
+                        
+                        if(item.name){
+                            return(
+                                <li key={index}><button className={`${styles.navButton} ${isActive ? styles.active : ''}`} onClick={()=>navigate(item.path)}>{item.name}</button></li>
+                            )
+                        }
                     })}
                 </ul>
             </div>

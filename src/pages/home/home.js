@@ -1,9 +1,11 @@
 import React from 'react';
-import styles from '../../styles/home/Home.module.css';
+import styles from '../../styles/home/home.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
+
+
 
   return (
     <div className={styles.container}>
@@ -11,11 +13,6 @@ const Home = () => {
         <input
           type="text"
           placeholder="검색어를 입력하세요"
-          className={styles.searchInput}
-        />
-        <input
-          type="text"
-          placeholder="날짜를 선택해주세요"
           className={styles.searchInput}
         />
         <button className={styles.searchButton}>검색</button>
