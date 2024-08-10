@@ -8,3 +8,4 @@ npm install react-router-dom@6 이것두
 8/1  전역 설정이있어서 개별 적용을 위해 login.css를 login.module.css로 변경함 login.css는 삭제해도 무방
 8/7  npm install react-icons [설치 필요] [import { AiOutlinePaperClip } from 'react-icons/ai 이부분]
      npm install react-intersection-observer [설치 필요]
+8/10 파일명은 카멜케이스로 ex) userProfile.js, guideMyPageAIService.module.css
