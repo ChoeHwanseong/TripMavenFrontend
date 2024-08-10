@@ -5,7 +5,6 @@
     padding-right: 20px;
     color: #333;
     display: flex;
-    
 }
 
 .sidebar h2 {
@@ -26,7 +25,7 @@
     cursor: pointer;
 }
   
-.sidebar ul li:nth-child(3) {
+.active {
     font-weight: bold;
     color: #0066ff;
 }
@@ -36,7 +35,6 @@
     background: none;
     border: none;
     font-size: 16px;
-    color: #333;
     cursor: pointer;
 }
 
