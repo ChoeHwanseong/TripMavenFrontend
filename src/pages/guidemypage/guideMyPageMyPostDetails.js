@@ -68,9 +68,9 @@ const GuideMyPageMyPostDetails = () => {
         <button className={styles.aiButton}>AI 교육 들어보기</button>
 
         <div className={styles.imageGallery}>
-          <img src="/path/to/image1.jpg" alt="이미지1" className={styles.image} />
-          <img src="/path/to/image2.jpg" alt="이미지2" className={styles.image} />
-          <img src="/path/to/image3.jpg" alt="이미지3" className={styles.image} />
+          <img src="../images/jeju2.png" alt="이미지1" className={styles.image} />
+          <img src="../images/jeju3.png" alt="이미지2" className={styles.image} />
+          <img src="../images/jeju1.png" alt="이미지3" className={styles.image} />
         </div>
 
         <div className={styles.description}>
@@ -119,7 +119,7 @@ const GuideMyPageMyPostDetails = () => {
                         <div className={styles.timelineContent}>
                           <h4>스카이워터쇼</h4>
                           <p>문섬의 다양한 수중 액티비티와 문섬의 파노라마 전망</p>
-                          <img src="/path/to/image1.jpg" alt="스카이워터쇼" />
+                          <img src="../images/skywatershow.png" alt="스카이워터쇼" />
                         </div>
                       </div>
                       <div className={styles.timelineItem}>
@@ -127,7 +127,7 @@ const GuideMyPageMyPostDetails = () => {
                         <div className={styles.timelineContent}>
                           <h4>고사리 흑돼지 불고기</h4>
                           <p>제주의 대표적인 흑돼지 불고기</p>
-                          <img src="/path/to/image2.jpg" alt="고사리 흑돼지 불고기" />
+                          <img src="../images/gosariblackpig.png" alt="고사리 흑돼지 불고기" />
                         </div>
                       </div>
                       <div className={styles.timelineItem}>

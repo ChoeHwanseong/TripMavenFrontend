@@ -27,8 +27,8 @@ import { menuData } from '../config/myPageEndPoint';
         ]
     };
 */
-const DecideSideMenu=(nowPageEndPoint)=>{
-    for(let key in menuData){
+const DecideSideMenu = (nowPageEndPoint) => {
+    for (let key in menuData) {
         let endPoints = menuData[key]
         /*
             endPoints=
@@ -47,7 +47,7 @@ const DecideSideMenu=(nowPageEndPoint)=>{
     }
 }
 
-const SideMenu = ({role}) => {
+const SideMenu = ({ role }) => {
 
     //endpoint 받아오기(location.pathname)
     const location = useLocation();
@@ -59,8 +59,13 @@ const SideMenu = ({role}) => {
     return <>
         <div className={styles.sidebar}>
             <div>
-                <h2>My Page</h2>
-                <ul>    
+                <img
+                    src="../../images/mypageLogo.png"
+                    alt="mypagelogo"
+                    className={styles.mypageLogo}
+                    onClick={() => navigate('/mypageprofile')}
+                />
+                <ul>
                     {menuItems && menuItems.map((item, index) => {
                         let isActive = null;
                         if(location.pathname.toLowerCase().includes('details'))

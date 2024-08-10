@@ -130,7 +130,7 @@
 
 /* 스크롤바 막대 설정 */
 .chatBody::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 255, 0.793); /* 스크롤바 막대의 배경 색상 */
+  background-color: #0066ff; /* 스크롤바 막대의 배경 색상 */
   border-radius: 10px; /* 스크롤바 막대의 모서리 둥글게 설정 */
   border: 3px solid rgba(255, 255, 255, 0.6); /* 스크롤바 막대의 테두리 설정 */
 }

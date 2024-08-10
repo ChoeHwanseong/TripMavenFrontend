@@ -103,7 +103,7 @@ const AdminProfile = () => {
             </label>
             <div className={styles.fileInput}>
               <input
-                type="text"
+                type="files"
                 id="certificate"
                 value={certificate}
                 onChange={(e) => setCertificate(e.target.value)}
