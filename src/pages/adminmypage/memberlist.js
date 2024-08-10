@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from '../../styles/adminmypage/memberList.module.css';
-import SideMenu from '../../components/sideMenu';
 
 const MemberList = () => {
   const members = [

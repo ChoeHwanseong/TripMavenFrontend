@@ -1,7 +1,5 @@
 import React from 'react';
 import styles from '../../styles/adminmypage/adminAsk.module.css';
-import SideMenu from '../../components/sideMenu';
-
 
 const AdminAsk = () => {
 

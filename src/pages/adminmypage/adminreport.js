@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from '../../styles/adminmypage/adminReport.module.css';
-import SideMenu from '../../components/sideMenu';
 
 const AdminReport = () => {
   const reports = [
