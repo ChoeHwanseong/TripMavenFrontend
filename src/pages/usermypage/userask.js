@@ -11,16 +11,6 @@ const InquiryHistory = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.sidebar}>
-        <h2>My Page</h2>
-        <ul>
-          <li><button className={styles.navButton} onClick={()=>navigate('/userprofile')}>내 정보 관리</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/userreview')}>이용후기</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/userask')}>1:1문의 내역</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/userask')}>찜 목록</button></li>
-          <li>채팅방</li>
-        </ul>
-      </div>
 
       <div className={styles.content}>
         <div className={styles.header}>

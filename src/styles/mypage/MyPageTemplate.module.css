@@ -1,0 +1,10 @@
+.page {
+    display: flex;
+    flex-direction: row;
+    font-family: Arial, sans-serif;
+}
+
+.content {
+    width: 80%;
+    padding: 20px;
+}

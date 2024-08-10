@@ -93,7 +93,6 @@ const Signup = () => {
                         <option value="">성별을 선택하세요</option>
                         <option value="male">남성</option>
                         <option value="female">여성</option>
-                        <option value="other">기타</option>
                     </select>
                 </div>
                 <div className={styles.inputGroup}>

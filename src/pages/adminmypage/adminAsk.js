@@ -34,7 +34,6 @@ const AdminAsk = () => {
 
   return (
     <div className={styles.container}>
-      <SideMenu/>
 
       <div className={styles.content}>
         <div className={styles.header}>
