@@ -1,6 +1,6 @@
 // 문의하기.jsx
 import React from 'react';
-import styles from '../../styles/guidemypage/GuideMyPageInquiry.module.css';
+import styles from '../../styles/guidemypage/guideMyPageInquiry.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const GuideMyPageInquiry = () => {

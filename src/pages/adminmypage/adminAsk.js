@@ -1,7 +1,5 @@
 import React from 'react';
-import styles from '../../styles/adminmypage/AdminAsk.module.css';
-import SideMenu from '../../components/sideMenu';
-
+import styles from '../../styles/adminmypage/adminAsk.module.css';
 
 const AdminAsk = () => {
 
@@ -34,7 +32,6 @@ const AdminAsk = () => {
 
   return (
     <div className={styles.container}>
-      <SideMenu/>
 
       <div className={styles.content}>
         <div className={styles.header}>

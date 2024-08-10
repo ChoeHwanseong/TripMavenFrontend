@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/guidemypage/GuideMyPageInquiryDetails.module.css';
+import styles from '../../styles/guidemypage/guideMyPageInquiryDetails.module.css';
 const GuideMyPageInquiryDetails = () => {
   const navigate = useNavigate();
 
@@ -15,16 +15,6 @@ const GuideMyPageInquiryDetails = () => {
 
   return (
     <div className={styles.container}>
-      <aside className={styles.sidebar}>
-        <h2 className={styles.sidebarTitle}>My Page</h2>
-        <ul className={styles.menu}>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guideprofile')}>내 정보 관리</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guidemypagemypost')}>내 게시물 관리</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guidemypageinquirydetails')}>1:1문의 내역</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/chat')}>채팅방</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guidemypageaiservice')}>ai 서비스</button></li>
-        </ul>
-      </aside>
 
       <main className={styles.mainContent}>
         <div className={styles.header}>

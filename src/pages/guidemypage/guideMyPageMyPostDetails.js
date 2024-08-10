@@ -1,31 +1,33 @@
 // MyPostDetails.js
 import React, { useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/guidemypage/GuideMyPageMyPostDetails.module.css';
+import styles from '../../styles/guidemypage/guideMyPageMyPostDetails.module.css';
+
 const GuideMyPageMyPostDetails = () => {
   const navigate = useNavigate();
 
-
-
-  const [activeDay, setActiveDay] = useState(null);
+  const [activeDays, setActiveDays] = useState([]); //다중 스테이트 관리를 위한 배열
+  const [allOpen, setAllOpen] = useState(false); // 모두 열기/닫기 상태 관리
 
   const toggleDay = (day) => {
-    setActiveDay(activeDay === day ? null : day);
+    if (activeDays.includes(day)) {
+      setActiveDays(activeDays.filter((activeDay) => activeDay !== day));
+    } else {
+      setActiveDays([...activeDays, day]);
+    }
+  };
+
+  const toggleAllDays = () => {
+    if (allOpen) {
+      setActiveDays([]); // 모두 닫기
+    } else {
+      setActiveDays([1, 2, 3]); // 모두 열기(하드코딩인데 바꿔야함)
+    }
+    setAllOpen(!allOpen); // 상태 변경
   };
 
   return (
     <div className={styles.container}>
-      <aside className={styles.sidebar}>
-        <h2 className={styles.sidebarTitle}>My Page</h2>
-        <ul className={styles.menu}>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guideprofile')}>내 정보 관리</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guidemypagemypost')}>내 게시물 관리</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guidemypageinquirydetails')}>1:1문의 내역</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/chat')}>채팅방</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guidemypageaiservice')}>ai 서비스</button></li>
-        </ul>
-      </aside>
 
       <main className={styles.mainContent}>
         <div className={styles.header}>
@@ -66,9 +68,9 @@ const GuideMyPageMyPostDetails = () => {
         <button className={styles.aiButton}>AI 교육 들어보기</button>
 
         <div className={styles.imageGallery}>
-          <img src="/path/to/image1.jpg" alt="이미지1" className={styles.image} />
-          <img src="/path/to/image2.jpg" alt="이미지2" className={styles.image} />
-          <img src="/path/to/image3.jpg" alt="이미지3" className={styles.image} />
+          <img src="../images/jeju2.png" alt="이미지1" className={styles.image} />
+          <img src="../images/jeju3.png" alt="이미지2" className={styles.image} />
+          <img src="../images/jeju1.png" alt="이미지3" className={styles.image} />
         </div>
 
         <div className={styles.description}>
@@ -93,16 +95,22 @@ const GuideMyPageMyPostDetails = () => {
             </div>
           </div>
 
+          <div className={styles.toggleAllButtonFlex}>
+            <button className={styles.toggleAllButton} onClick={toggleAllDays}>
+              {allOpen ? '모두 닫기' : '모두 열기'}
+            </button>
+          </div>
+
           <div className={styles.accordion}>
             {[1, 2, 3].map((day) => (
               <div key={day} className={styles.accordionItem}>
                 <div className={styles.accordionHeader} onClick={() => toggleDay(day)}>
                   <span>{day}일차</span>
                   <button className={styles.toggleButton}>
-                    {activeDay === day ? '상세 닫기' : '상세 보기'}
+                    {activeDays.includes(day) ? '상세 닫기' : '상세 보기'}
                   </button>
                 </div>
-                {activeDay === day && (
+                {activeDays.includes(day) && (
                   <div className={styles.accordionContent}>
                     {/* 각 일정의 활동 내용 */}
                     <div className={styles.timeline}>
@@ -111,7 +119,7 @@ const GuideMyPageMyPostDetails = () => {
                         <div className={styles.timelineContent}>
                           <h4>스카이워터쇼</h4>
                           <p>문섬의 다양한 수중 액티비티와 문섬의 파노라마 전망</p>
-                          <img src="/path/to/image1.jpg" alt="스카이워터쇼" />
+                          <img src="../images/skywatershow.png" alt="스카이워터쇼" />
                         </div>
                       </div>
                       <div className={styles.timelineItem}>
@@ -119,7 +127,7 @@ const GuideMyPageMyPostDetails = () => {
                         <div className={styles.timelineContent}>
                           <h4>고사리 흑돼지 불고기</h4>
                           <p>제주의 대표적인 흑돼지 불고기</p>
-                          <img src="/path/to/image2.jpg" alt="고사리 흑돼지 불고기" />
+                          <img src="../images/gosariblackpig.png" alt="고사리 흑돼지 불고기" />
                         </div>
                       </div>
                       <div className={styles.timelineItem}>
@@ -173,7 +181,7 @@ const GuideMyPageMyPostDetails = () => {
         <div className={styles.actions}>
           <button className={styles.actionButton}>수정 하기</button>
           <button className={styles.actionButton}>삭제 하기</button>
-          <button className={styles.actionButton}>목록</button>
+          <button className={styles.actionButton} onClick={()=>navigate('/guidemypagemypost')}>목록</button>
         </div>
       
       </main>

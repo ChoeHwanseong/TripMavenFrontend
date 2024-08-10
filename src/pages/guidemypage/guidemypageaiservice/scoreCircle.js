@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/guidemypage/guidemypageaiservice/ScoreCircle.module.css';
+import styles from '../../../styles/guidemypage/guidemypageaiservice/scoreCircle.module.css';
 
 const ScoreCircle = ({ score }) => {
     const degree = (score / 100) * 360;

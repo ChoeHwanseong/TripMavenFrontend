@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles/components/Footer.module.css'; // CSS 모듈 파일을 불러옵니다.
+import styles from '../styles/components/footer.module.css'; // CSS 모듈 파일을 불러옵니다.
 import { Navigate, useNavigate } from 'react-router-dom';
 
 

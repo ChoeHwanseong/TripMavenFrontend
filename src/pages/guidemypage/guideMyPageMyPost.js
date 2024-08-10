@@ -2,11 +2,11 @@
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/guidemypage/GuideMyPageMyPost.module.css';
+import styles from '../../styles/guidemypage/guideMyPageMyPost.module.css';
 const GuideMyPageMyPost = () => {
   const navigate = useNavigate();
 
-
+  //나중에 db에서 불러오는 리스트
   const posts = [
     { id: 9621, location: '부산', title: '부산', date: '2024-08-01', status: '평가 완료', registration: '등록', likes: 9 },
     { id: 1212, location: '제주도', title: '제주도', date: '2023-12-31', status: '평가 완료', registration: '등록', likes: 2 },
@@ -15,16 +15,6 @@ const GuideMyPageMyPost = () => {
 
   return (
     <div className={styles.container}>
-      <aside className={styles.sidebar}>
-        <h2 className={styles.sidebarTitle}>My Page</h2>
-        <ul className={styles.menu}>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guideprofile')}>내 정보 관리</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guidemypagemypost')}>내 게시물 관리</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guidemypageinquirydetails')}>1:1문의 내역</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/chat')}>채팅방</button></li>
-          <li><button className={styles.navButton} onClick={()=>navigate('/guidemypageaiservice')}>ai 서비스</button></li>
-        </ul>
-      </aside>
 
       <main className={styles.mainContent}>
         <div className={styles.header}>
@@ -49,7 +39,7 @@ const GuideMyPageMyPost = () => {
               <tr key={post.id}>
                 <td>{post.id}</td>
                 <td>{post.location}</td>
-                <td>{post.title}</td>
+                <td onClick={()=>navigate('/guidemypagemypostdetails')}><div className={styles.postLinkPointer}>{post.title}</div></td>
                 <td>{post.date}</td>
                 <td>{post.status}</td>
                 <td>{post.registration}</td>

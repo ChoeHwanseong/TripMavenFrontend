@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/payment/PaymentProc.module.css';
+import styles from '../../styles/payment/paymentProc.module.css';
 
 const OrderPopup = () => {
   return (

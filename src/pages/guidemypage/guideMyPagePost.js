@@ -1,22 +1,12 @@
 // MyPage.jsx
 import React from 'react';
-import styles from '../../styles/guidemypage/GuideMyPagePost.module.css';
+import styles from '../../styles/guidemypage/guideMyPagePost.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const GuideMyPagePost = () => {
     const navigate = useNavigate();
     return (
         <div className={styles.container}>
-            <div className={styles.sidebar}>
-                <h1 className={styles.title}>My Page</h1>
-                <ul className={styles.menu}>
-                    <li><button className={styles.navButton} onClick={()=>navigate('/guideprofile')}>내 정보 관리</button></li>
-                    <li><button className={styles.navButton} onClick={()=>navigate('/guidemypagemypost')}>내 게시물 관리</button></li>
-                    <li><button className={styles.navButton} onClick={()=>navigate('/guidemypageinquirydetails')}>1:1문의 내역</button></li>
-                    <li><button className={styles.navButton} onClick={()=>navigate('/chat')}>채팅방</button></li>
-                    <li><button className={styles.navButton} onClick={()=>navigate('/guidemypageaiservice')}>ai 서비스</button></li>
-                </ul>
-            </div>
             <div className={styles.content}>
                 <div className={styles.postheader}>
                     <h2 className={styles.subtitle}>게시물 작성</h2>
