@@ -1,17 +1,45 @@
 // InquiryDetails.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import styles from '../../styles/guidemypage/GuideMyPageInquiryDetails.module.css';
+import { Box } from '@mui/material';
+import { csfetchData } from '../../utils/csData';
+import axios from 'axios';
+import { fetchData } from '../../utils/memberData';
+
+
 const GuideMyPageInquiryDetails = () => {
+
+  const [inquiries, setInquiries] = useState([]);
+  const [hoveredRow, setHoveredRow] = useState(null);
+
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const getCSData = async () => {
+      try {
+        const fetchedData = await csfetchData();
+        setInquiries(fetchedData);
+      } catch (error) {
+        console.error('에러났당', error);
+      }
+    };
 
-  const inquiries = [
-    { id: 9621, userId: 'kim', type: '가이드', title: '', date: '2024-08-01', status: '처리 완료' },
-    { id: 1212, userId: 'lee', type: '일반 고객', title: '', date: '2023-12-31', status: '처리 완료' },
-    { id: 9622, userId: 'park', type: '가이드', title: '가이드 등록을 했는데 게시글이 올라가지 않아요', date: '2024-03-19', status: '처리 완료' },
-  ];
+
+    getCSData();
+  }, []);
+
+  const handleMouseEnter = (index) => {
+    setHoveredRow(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredRow(null);
+  }
+
+
+
 
   return (
     <div className={styles.container}>
@@ -34,16 +62,31 @@ const GuideMyPageInquiryDetails = () => {
             </tr>
           </thead>
           <tbody>
-            {inquiries.map((inquiry) => (
-              <tr key={inquiry.id}>
-                <td>{inquiry.id}</td>
-                <td>{inquiry.userId}</td>
-                <td>{inquiry.type}</td>
-                <td>{inquiry.title}</td>
-                <td>{inquiry.date}</td>
-                <td>{inquiry.status}</td>
-              </tr>
-            ))}
+
+          {inquiries.map((inquiry, index) => (
+                <Box
+                component="tr"
+                key={index}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
+                sx={{
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s',
+                  '&:hover': {
+                    color : 'black',
+                    backgroundColor: '#D0F0FF',
+                  },
+                }}
+              >       
+                  <td>{inquiry.id}</td>
+                  <td>{inquiry.member.name}</td>
+                  <td>{inquiry.member.role}</td>
+                  <td onClick={()=>navigate('/GuideMyPageInquiryDetailsViews')}><div className={styles.postLinkPointer}>{inquiry.title}</div></td>
+                  <td>{inquiry.createdAt.split('T')[0]}</td> {/* 날짜만 표시 */}
+                  <td>{inquiry.isactive?'유':'무'}</td> {/* 상태 표시 */}
+                  </Box>
+              ))} 
+
           </tbody>
         </table>
 
