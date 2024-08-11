@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/mypage/myProfile.module.css';
+import styles from '../../styles/mypage/MyProfile.module.css';
 
 const MypageProfile = () => {
   const navigate = useNavigate();

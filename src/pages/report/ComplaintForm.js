@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/report/complaintForm.module.css';
+import styles from '../../styles/report/ComplaintForm.module.css';
 
 const ComplaintForm = () => {
   return (

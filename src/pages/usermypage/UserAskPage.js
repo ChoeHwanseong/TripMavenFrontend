@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/usermypage/userAskPage.module.css';
+import styles from '../../styles/usermypage/UserAskPage.module.css';
 
 const UserAskPage = () => {
   return (

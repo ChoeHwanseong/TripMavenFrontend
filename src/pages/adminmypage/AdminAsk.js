@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/adminmypage/adminAsk.module.css';
+import styles from '../../styles/adminmypage/AdminAsk.module.css';
 
 const AdminAsk = () => {
 

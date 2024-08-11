@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/guidemypage/guidemypagelike/pinItem.module.css';
+import styles from '../../../styles/guidemypage/guidemypagelike/PinItem.module.css';
 
 const PinItem = ({ pin }) => {
     return (

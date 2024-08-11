@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from '../../styles/mypage/myPageTemplate.module.css';
-import SideMenu from '../../components/sideMenu';
+import styles from '../../styles/mypage/MyPageTemplate.module.css';
+import SideMenu from '../../components/SideMenu';
 import { Outlet } from 'react-router-dom';
 
 //마이페이지 템플릿

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/usermypage/userAsk.module.css';
+import styles from '../../styles/usermypage/UserAsk.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const InquiryHistory = () => {

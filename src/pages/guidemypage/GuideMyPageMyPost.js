@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/guidemypage/guideMyPageMyPost.module.css';
+import styles from '../../styles/guidemypage/GuideMyPageMyPost.module.css';
 const GuideMyPageMyPost = () => {
   const navigate = useNavigate();
 

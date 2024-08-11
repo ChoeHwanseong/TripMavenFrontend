@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from '../../../styles/guidemypage/guidemypageaiservice/aiService.module.css';
-import RadarChart from './randarChart';
-import ScoreCircle from './scoreCircle';
+import styles from '../../../styles/guidemypage/guidemypageaiservice/AIService.module.css';
+import RadarChart from './RandarChart';
+import ScoreCircle from './ScoreCircle';
 
 const AIService = () => {
     const scores = [

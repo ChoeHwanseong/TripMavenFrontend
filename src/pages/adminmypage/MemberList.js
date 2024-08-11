@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/adminmypage/memberList.module.css';
+import styles from '../../styles/adminmypage/MemberList.module.css';
 
 const MemberList = () => {
   const members = [

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/login/findId1.module.css';
+import styles from '../../styles/login/FindId1.module.css';
 
 const FindID1 = () => {
   return (

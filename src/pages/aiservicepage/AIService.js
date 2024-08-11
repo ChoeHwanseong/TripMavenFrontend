@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/aiservicepage/aiService.module.css';
+import styles from '../../styles/aiservicepage/AIService.module.css';
 import mockTestImage from '../../images/mockTestImage.png'; // replace with actual path
 import realTestImage from '../../images/realTestImage.png'; // replace with actual path
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/adminmypage/adminProfile.module.css';
+import styles from '../../styles/adminmypage/AdminProfile.module.css';
 
 const AdminProfile = () => {
   const [nickname, setNickname] = useState('관리자');

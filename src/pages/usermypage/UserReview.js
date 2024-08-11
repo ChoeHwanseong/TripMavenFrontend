@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/usermypage/userReview.module.css';
+import styles from '../../styles/usermypage/UserReview.module.css';
 import { useNavigate } from 'react-router-dom';
 
 

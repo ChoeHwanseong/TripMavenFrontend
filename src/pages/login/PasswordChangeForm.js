@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/login/passwordChangeForm.module.css';
+import styles from '../../styles/login/PasswordChangeForm.module.css';
 
 const PasswordChangeForm = () => {
   return (

@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import styles from '../styles/components/sideMenu.module.css';
-import { menuData } from '../config/myPageEndPoint';
+import styles from '../styles/components/SideMenu.module.css';
+import { menuData } from '../config/MyPageEndPoint';
 
 //메뉴 데이터 구조
 /*

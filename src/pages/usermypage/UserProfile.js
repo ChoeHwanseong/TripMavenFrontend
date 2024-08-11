@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/usermypage/userProfile.module.css';
+import styles from '../../styles/usermypage/UserProfile.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {

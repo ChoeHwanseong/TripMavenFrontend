@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../../styles/usermypage/userLike.module.css';
+import styles from '../../styles/usermypage/UserLike.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 

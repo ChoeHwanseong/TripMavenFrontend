@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/guidemypage/guidemypagelike/guideMyPageLike.module.css';
+import styles from '../../../styles/guidemypage/guidemypagelike/GuideMyPageLike.module.css';
 import PinItem from './pinItem';
 
 const GuideMyPageLike = () => {

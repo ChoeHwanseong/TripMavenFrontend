@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import styles from '../../styles/csboard/csBoard.module.css';
+import styles from '../../styles/csboard/CSBoard.module.css';
 import { useState } from "react";
 
 //레이아웃용 컴포넌트
