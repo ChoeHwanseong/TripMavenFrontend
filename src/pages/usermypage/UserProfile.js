@@ -18,7 +18,7 @@ const MyPage = () => {
     alert('수정 완료');
   };
   const navigate = useNavigate();
-
+   
   
   return (
     
