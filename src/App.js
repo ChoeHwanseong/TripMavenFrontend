@@ -7,10 +7,10 @@ import Template from "./pages/Template";
 import Login from "./pages/login/LogIn";
 import CSBoard from './pages/csboard/CSBoard';
 import Signup from './pages/login/SignUp';
-import UserProfile from './pages/usermypage/UserProfile';
+
 import UserAsk from './pages/usermypage/UserAsk';
 import UserReview from './pages/usermypage/UserReview';
-import MemberList from './pages/adminmypage/MemberList';
+
 import AdminAsk from './pages/adminmypage/AdminAsk';
 import AdminReport from './pages/adminmypage/AdminReport';
 import AdminProfile from './pages/adminmypage/AdminProfile';
@@ -34,6 +34,8 @@ import BigChat from './pages/chat/BigChat';
 import MyPageTemplate from './pages/mypage/MyPageTemplate';
 import MypageProfile from './pages/mypage/MyPageProfile';
 import UserLike from './pages/usermypage/UserLike';
+import MemberList from './pages/adminmypage/MemberList';
+import UserProfile from './pages/usermypage/UserProfile';
 
 function App() {
 
