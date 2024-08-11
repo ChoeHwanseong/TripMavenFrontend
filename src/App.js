@@ -10,7 +10,7 @@ import Signup from './pages/login/SignUp';
 import UserProfile from './pages/usermypage/UserProfile';
 import UserAsk from './pages/usermypage/UserAsk';
 import UserReview from './pages/usermypage/UserReview';
-import MemberList from './pages/adminmypage/MemberList';
+import MemberList from './pages/adminmypage/MemberList'
 import AdminAsk from './pages/adminmypage/AdminAsk';
 import AdminReport from './pages/adminmypage/AdminReport';
 import AdminProfile from './pages/adminmypage/AdminProfile';
