@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../../styles/usermypage/UserProfile.module.css';
 import { useNavigate } from 'react-router-dom';
+import { fetchData } from '../../utils/memberData';
 
 const MyPage = () => {
   const [nickname, setNickname] = useState('냥안아샴');
@@ -17,6 +18,8 @@ const MyPage = () => {
     alert('수정 완료');
   };
   const navigate = useNavigate();
+
+  
   return (
     
     <div className={styles.container}>
