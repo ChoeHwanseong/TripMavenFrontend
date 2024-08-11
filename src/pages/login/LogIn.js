@@ -12,10 +12,27 @@ const Login = () => {
     const handleAutoLoginChange = () => setAutoLogin(!autoLogin);
 
     const handleLogin = () => {
-        // 로그인 로직 추가
-        console.log('Email:', email);
-        console.log('Password:', password);
-        console.log('Auto Login:', autoLogin);
+        const loginData = {
+            email: email,
+            password: password,
+            autoLogin: autoLogin,
+        };
+    
+        fetch('http://localhost:9099/loginProcess', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(loginData),
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/home'; // 로그인 성공 시 홈으로 이동
+            } else {
+                alert('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
+            }
+        })
+        .catch(error => console.error('로그인 요청 중 오류 발생:', error));
     };
 
     const googleLogin = () => {
@@ -32,8 +49,11 @@ const Login = () => {
     };
 
     const naverLogin = () => {
-        // Naver OAuth2 인증 URL로 리다이렉트
-        window.location.href = 'http://localhost:9099/oauth2/authorization/naver';
+        const clientId = 'PlCIV6K_oOCiNadhp2VS'; // 환경 변수에서 클라이언트 ID를 가져옵니다.
+        const redirectUri = 'http://localhost:9099/login/oauth2/code/naver'; // 리다이렉트 URI
+        const encodedRedirectUri = encodeURIComponent(redirectUri); // 리다이렉트 URI를 인코딩합니다.
+
+        window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}`;
     };
 
     return (
