@@ -1,9 +1,9 @@
 // 문의하기.jsx
 import React from 'react';
-import styles from '../../styles/guidemypage/GuideMyPageInquiry.module.css';
+import styles from '../../styles/guidemypage/GuideAsk.module.css';
 import { useNavigate } from 'react-router-dom';
 
-const GuideMyPageInquiry = () => {
+const GuideAsk = () => {
   const navigate = useNavigate();
 
   return <>
@@ -25,4 +25,4 @@ const GuideMyPageInquiry = () => {
   </>
 };
 
-export default GuideMyPageInquiry;
+export default GuideAsk;

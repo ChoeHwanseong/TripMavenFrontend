@@ -14,7 +14,7 @@ const InquiryHistory = () => {
 
       <div className={styles.content}>
         <div className={styles.header}>
-          <h2>문의 내역</h2>
+          <h1>문의 내역</h1>
           <button className={styles.button}>문의 하기</button>
         </div>
 

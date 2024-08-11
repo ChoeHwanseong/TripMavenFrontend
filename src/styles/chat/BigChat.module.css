@@ -115,6 +115,7 @@
   .chatMessages {
     flex-grow: 1;
     overflow-y: auto;
+    z-index: 0;
   }
   
   .message {
@@ -133,6 +134,7 @@
     border-radius: 20px;
     background-color: #f1f1f1;
     position: relative;
+    z-index: 2;
   }
   
   .message.sent .messageBubble {

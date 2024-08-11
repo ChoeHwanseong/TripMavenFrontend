@@ -19,9 +19,7 @@ const AdminProfile = () => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.header}>
-          프로필
-        </div>
+        <h1>프로필</h1>
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputContainer}>
             <div className={styles.profilePicContainer}>

@@ -26,10 +26,10 @@ const AdminReport = () => {
 
       <div className={styles.content}>
         <div className={styles.header}>
-          <h2>신고 내역</h2>
+          <h1>신고 내역</h1>
           <div className={styles.admin}>
-            <div className={styles.adminIcon}>
-              <span>👤</span>
+            <div className={styles.adminImage}>
+              <img src="../../../images/defaultimage.png"/>
             </div>
             <span>관리자</span>
           </div>

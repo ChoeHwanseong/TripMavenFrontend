@@ -7,7 +7,6 @@ import Template from "./pages/Template";
 import Login from "./pages/login/LogIn";
 import CSBoard from './pages/csboard/CSBoard';
 import Signup from './pages/login/SignUp';
-import UserProfile from './pages/usermypage/UserProfile';
 import UserAsk from './pages/usermypage/UserAsk';
 import UserReview from './pages/usermypage/UserReview';
 import MemberList from './pages/adminmypage/MemberList';
@@ -17,11 +16,7 @@ import AdminProfile from './pages/adminmypage/AdminProfile';
 import AIService from './pages/aiservicepage/AIService';
 import TermsService from './pages/termsofservice/TermsService';
 import RegisterGuide from './pages/registerguidepage/RegisterGuide';
-import GuideProfile from './pages/guidemypage/GuideProfile';
-import GuideMyPagePost from './pages/guidemypage/GuideMyPagePost';
 //import GuideMyPageLike from './pages/guidemypage/guidemypagelike/guideMyPageLike';
-import GuideMyPageInquiry from './pages/guidemypage/GuideMyPageInquiry';
-import GuideMyPageInquiryDetails from './pages/guidemypage/GuideMyPageInquiryDetails';
 import GuideMyPageMyPost from './pages/guidemypage/GuideMyPageMyPost';
 import GuideMyPageMyPostDetails from './pages/guidemypage/GuideMyPageMyPostDetails';
 import GuideMyPageAIService from './pages/guidemypage/guidemypageaiservice/GuideMyPageAIService';
@@ -34,6 +29,8 @@ import BigChat from './pages/chat/BigChat';
 import MyPageTemplate from './pages/mypage/MyPageTemplate';
 import MypageProfile from './pages/mypage/MyPageProfile';
 import UserLike from './pages/usermypage/UserLike';
+import GuideAsk from './pages/guidemypage/GuideAsk';
+import GuideAskDetails from './pages/guidemypage/GuideAskDetails';
 
 function App() {
 
@@ -47,26 +44,23 @@ function App() {
       <Route path="/" element={<Landing/>}/>
       <Route element={<Template/>}>
         <Route path="/home" element={<Home/>}/>
-        <Route path='/mypageprofile' element={<MypageProfile />}/>
         <Route element={<MyPageTemplate/>}>
+          <Route path='/mypageprofile' element={<MypageProfile />}/>
           <Route path='/adminreport' element={<AdminReport/>}/>
           <Route path='/adminprofile' element={<AdminProfile/>}/>
           <Route path='/adminask' element={<AdminAsk/>}/>
           <Route path='/memberlist' element={<MemberList/>}/>
           
-          <Route path='/guideprofile' element={<GuideProfile/>}/>
           <Route path='/guidemypagemypostdetails' element={<GuideMyPageMyPostDetails/>}/>
-          <Route path='/guidemypagemypost' element={<GuideMyPageMyPost/>}/>
-          <Route path='/guidemypageinquirydetails' element={<GuideMyPageInquiryDetails/>}/>
-          <Route path='/guidemypageinquiry' element={<GuideMyPageInquiry/>}/>
-          <Route path='/guidemypagepost' element={<GuideMyPagePost/>}/>
+          <Route path='/guidemypost' element={<GuideMyPageMyPost/>}/>
+          <Route path='/guideaskdetails' element={<GuideAskDetails/>}/>
+          <Route path='/guideask' element={<GuideAsk/>}/>
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
           <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
            */}
 
           <Route path='/userreview' element={<UserReview/>}/>
-          <Route path='/userprofile' element={<UserProfile/>}/>
           <Route path='/userask' element={<UserAsk/>}/>
           <Route path='/userlike' element={<UserLike/>}/>
 

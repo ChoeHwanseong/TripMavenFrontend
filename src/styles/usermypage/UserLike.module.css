@@ -1,5 +1,5 @@
 .container {
-  padding-top: 80px;  /* 헤더의 높이에 맞춰 패딩 조절 */
+  margin-left: 30px;
   padding-bottom: 60px;  /* 푸터의 높이에 맞춰 패딩 조절 */
   min-height: 100vh;  /* 컨테이너가 최소한 전체 뷰포트 높이를 차지하도록 설정 */
 }

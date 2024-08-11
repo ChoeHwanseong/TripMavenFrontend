@@ -1,24 +1,6 @@
-.page {
+.container {
     display: flex;
-    flex-direction: row;
-    font-family: Arial, sans-serif;
-}
-
-.sidebar {
-    width: 20%;
-    padding: 20px;
-}
-
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar li {
-    margin-bottom: 10px;
-}
-
-.content {
-    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
 }

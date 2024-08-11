@@ -34,7 +34,7 @@ const ReviewPage = () => {
       <div className={styles.content}>
         <div className={styles.reviewSection}>
           <div className={styles.header}>
-            <h2>리뷰 작성</h2>
+            <h1>리뷰 작성</h1>
           </div>
 
           <div className={styles.reviewList}>

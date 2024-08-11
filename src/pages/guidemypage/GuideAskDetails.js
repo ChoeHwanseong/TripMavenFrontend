@@ -2,8 +2,8 @@
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/guidemypage/GuideMyPageInquiryDetails.module.css';
-const GuideMyPageInquiryDetails = () => {
+import styles from '../../styles/guidemypage/GuideAskDetails.module.css';
+const GuideAskDetails = () => {
   const navigate = useNavigate();
 
 
@@ -57,4 +57,4 @@ const GuideMyPageInquiryDetails = () => {
   );
 };
 
-export default GuideMyPageInquiryDetails;
+export default GuideAskDetails;

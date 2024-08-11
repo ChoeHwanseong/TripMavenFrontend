@@ -31,7 +31,7 @@ const GuideMyPageMyPostDetails = () => {
 
       <main className={styles.mainContent}>
         <div className={styles.header}>
-          <h1 className={styles.title}>내 게시물 상세보기 <span className={styles.editIcon}>✏️</span></h1>
+          <h1 className={styles.title}>내 게시물 상세보기<img src="../../../images/pen.svg" className={styles.editIcon} /></h1>
         </div>
 
         <table className={styles.infoTable}>
@@ -64,9 +64,9 @@ const GuideMyPageMyPostDetails = () => {
             </tr>
           </tbody>
         </table>
-
-        <button className={styles.aiButton}>AI 교육 들어보기</button>
-
+        <div className={styles.buttonControl}>
+          <button className={styles.aiButton}>AI 교육 들어보기</button>
+        </div>
         <div className={styles.imageGallery}>
           <img src="../images/jeju2.png" alt="이미지1" className={styles.image} />
           <img src="../images/jeju3.png" alt="이미지2" className={styles.image} />
@@ -181,11 +181,11 @@ const GuideMyPageMyPostDetails = () => {
         <div className={styles.actions}>
           <button className={styles.actionButton}>수정 하기</button>
           <button className={styles.actionButton}>삭제 하기</button>
-          <button className={styles.actionButton} onClick={()=>navigate('/guidemypagemypost')}>목록</button>
+          <button className={styles.actionButton} onClick={() => navigate('/guidemypagemypost')}>목록</button>
         </div>
-      
+
       </main>
-    </div>  
+    </div>
   );
 };
 
