@@ -7,38 +7,8 @@
   font-family: Arial, sans-serif;
 }
 
-.sidebar {
-  width: 20%;
-  border-right: 1px solid #ddd;
-  padding-right: 20px;
-  color: #333;
-}
-
-.sidebar h2 {
-  font-size: 24px;
-  margin-bottom: 15px;
-  font-weight: bold;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar ul li {
-  margin-bottom: 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.sidebar ul li:nth-child(2) {
-  font-weight: bold;
-  color: #007bff;
-}
-
 .content {
-  width: 80%;
+  width: 100%;
   padding: 20px;
 }
 
@@ -77,11 +47,11 @@
 }
 
 .reviewButton {
-  background-color: #007bff;
+  background-color: #0066ff;
   color: white;
   padding: 5px 15px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -139,7 +109,7 @@
 }
 
 .pageControl:hover {
-  color: #007bff;
+  color: #0066ff;
 }
 
 .writePrompt {

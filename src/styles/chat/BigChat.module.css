@@ -3,7 +3,7 @@
 .container {
     display: flex;
     height: 100vh;
-    background-color: #f0f0f0;
+    background-color: #fff;
   }
   
   .sidebar {
@@ -13,19 +13,9 @@
     border-right: 1px solid #ddd;
   }
   
-  .groupChatButton {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
   .messagesSection {
-    width: 25%;
-    padding: 20px;
+    width: 420px;
+    padding-right: 20px;
     border-right: 1px solid #ddd;
     background-color: #fff;
   }
@@ -40,6 +30,7 @@
   .messagesTitle {
     font-size: 18px;
     font-weight: bold;
+    margin-right: 8px;
   }
   
   .searchNewChat {
@@ -55,9 +46,11 @@
   }
   
   .newChatButton {
+    width: 90px;
+    height: 40px;
     margin-left: 10px;
     padding: 5px 10px;
-    background-color: #007bff;
+    background-color: #0066ff;
     color: white;
     border: none;
     border-radius: 4px;
@@ -91,6 +84,10 @@
   
   .chatName {
     font-weight: bold;
+  }
+  
+  .infoButton {
+    border-radius: 10px;
   }
   
   .chatTime {
@@ -166,9 +163,8 @@
     margin-right: 10px;
   }
   
-  .sendButton,
-  .attachmentButton {
-    background-color: #007bff;
+  .sendButton {
+    background-color: #0066ff;
     color: white;
     border: none;
     border-radius: 50%;
@@ -181,8 +177,15 @@
   }
   
   .attachmentButton {
-    background-color: #f1f1f1;
-    color: #007bff;
+    background-color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
     margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
   }
   

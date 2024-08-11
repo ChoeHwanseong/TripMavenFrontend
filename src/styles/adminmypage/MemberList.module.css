@@ -34,7 +34,7 @@
   
   .sidebar ul li:nth-child(2) {
     font-weight: bold;
-    color: #007bff;
+    color: #0066ff;
   }
   
   .content {
@@ -108,6 +108,6 @@
   }
   
   .pageControl:hover {
-    color: #007bff;
+    color: #0066ff;
   }
   
