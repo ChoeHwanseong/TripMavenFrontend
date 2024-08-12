@@ -8,6 +8,8 @@ import { Box } from '@mui/material';
 import { csfetchData } from '../../utils/csData';
 
 
+import axios from 'axios';
+import { fetchData } from '../../utils/memberData';
 
 const GuideAskDetails = () => {
 
@@ -81,7 +83,7 @@ const GuideAskDetails = () => {
                   <td>{inquiry.id}</td>
                   <td>{inquiry.member.name}</td>
                   <td>{inquiry.member.role}</td>
-                  <td onClick={()=>navigate('/GuideMyPageInquiryDetailsViews')}><div className={styles.postLinkPointer}>{inquiry.title}</div></td>
+                  <td onClick={()=>navigate('/guideaskdetailsviews')}><div className={styles.postLinkPointer}>{inquiry.title}</div></td>
                   <td>{inquiry.createdAt.split('T')[0]}</td> {/* 날짜만 표시 */}
                   <td>{inquiry.isactive?'유':'무'}</td> {/* 상태 표시 */}
                   </Box>
