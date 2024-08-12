@@ -45,7 +45,7 @@ function App() {
       <Route element={<Template/>}>
         <Route path="/home" element={<Home/>}/>
         <Route element={<MyPageTemplate/>}>
-          <Route path='/mypageprofile' element={<MypageProfile />}/>
+          <Route path='/mypageprofile' element={<MypageProfile/>}/>
           <Route path='/adminreport' element={<AdminReport/>}/>
           <Route path='/adminprofile' element={<AdminProfile/>}/>
           <Route path='/adminask' element={<AdminAsk/>}/>

@@ -5,7 +5,27 @@ export const fetchData = async () => {
     const res = await axios.get('/members');
     //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
     return res.data;
-  } catch (error) {
+  }
+  catch (error) {
+    console.error('에러났당', error);
+    throw error; 
+  }
+};
+
+export const SignUp = async (form) => {
+  try {
+    axios.post('/signup', form)
+    .then(response => {
+      // 성공적으로 응답을 받았을 때의 처리
+      console.log('Response:', response.data);
+    })
+    .catch(error => {
+      // 오류가 발생했을 때의 처리
+      console.error('Error:', error);
+    });
+    //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
+  }
+  catch (error) {
     console.error('에러났당', error);
     throw error; 
   }
