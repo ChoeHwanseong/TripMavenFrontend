@@ -1,6 +1,9 @@
 // InquiryDetails.js
 import React, { useEffect, useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+import styles from '../../styles/guidemypage/GuideAskDetails.module.css';
+
 import { NavLink, useNavigate } from 'react-router-dom';
 import styles from '../../styles/guidemypage/GuideMyPageInquiryDetails.module.css';
 import { Box } from '@mui/material';
@@ -9,7 +12,7 @@ import axios from 'axios';
 import { fetchData } from '../../utils/memberData';
 
 
-const GuideMyPageInquiryDetails = () => {
+const GuideAskDetails = () => {
 
   const [inquiries, setInquiries] = useState([]);
   const [hoveredRow, setHoveredRow] = useState(null);
@@ -100,4 +103,4 @@ const GuideMyPageInquiryDetails = () => {
   );
 };
 
-export default GuideMyPageInquiryDetails;
+export default GuideAskDetails;

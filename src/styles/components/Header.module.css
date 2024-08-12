@@ -9,6 +9,7 @@
     max-width: 1440px;
     min-width: 1440px;
     width: 100%;
+    z-index: 10;
     
 }
 

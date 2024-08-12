@@ -51,10 +51,10 @@ const MemberList = () => {
 
       <div className={styles.content}>
         <div className={styles.header}>
-          <h2>회원 목록</h2>
+          <h1 className={styles.title}>회원 목록</h1>
           <div className={styles.admin}>
-            <div className={styles.adminIcon}>
-              <span>👤</span>
+            <div className={styles.adminImage}>
+              <img src="../../../images/defaultimage.png"/>
             </div>
             <span>관리자</span>
           </div>

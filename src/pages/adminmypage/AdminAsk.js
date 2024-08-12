@@ -35,10 +35,10 @@ const AdminAsk = () => {
 
       <div className={styles.content}>
         <div className={styles.header}>
-          <h2>1:1 문의 내역</h2>
+          <h1>1:1 문의 내역</h1>
           <div className={styles.admin}>
-            <div className={styles.adminIcon}>
-              <span>👤</span>
+            <div className={styles.adminImage}>
+              <img src="../../../images/defaultimage.png"/>
             </div>
             <span>관리자</span>
           </div>

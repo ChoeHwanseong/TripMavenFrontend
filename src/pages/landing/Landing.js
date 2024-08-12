@@ -11,11 +11,8 @@ const Landing = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 100) {
-        setIsNavbarShrunk(true);
-      } else {
-        setIsNavbarShrunk(false);
-      }
+      // 스크롤 위치가 100px를 넘으면 내비게이션 바 스타일 변경
+      setIsNavbarShrunk(window.scrollY > 100);
     };
 
     const handleResize = () => {
@@ -26,6 +23,9 @@ const Landing = () => {
 
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
+
+    // 초기 스크롤 위치 확인
+    handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -116,24 +116,24 @@ const Landing = () => {
       </section>
 
       <section className={styles.contactSection} id="contact">
-  <div className={styles.contactContainer}>
-    <div className={styles.contactCard}>
-      <FontAwesomeIcon icon={faMapMarkedAlt} className={styles.contactIcon} />
-      <h4 className={styles.contactTitle}>ADDRESS</h4>
-      <div className={styles.contactInfo}>소재지</div>
-    </div>
-    <div className={styles.contactCard}>
-      <FontAwesomeIcon icon={faEnvelope} className={styles.contactIcon} />
-      <h4 className={styles.contactTitle}>EMAIL</h4>
-      <div className={styles.contactInfo}>이메일 주소</div>
-    </div>
-    <div className={styles.contactCard}>
-      <FontAwesomeIcon icon={faMobileAlt} className={styles.contactIcon} />
-      <h4 className={styles.contactTitle}>PHONE</h4>
-      <div className={styles.contactInfo}>전화번호</div>
-    </div>
-  </div>
-</section>
+        <div className={styles.contactContainer}>
+          <div className={styles.contactCard}>
+            <FontAwesomeIcon icon={faMapMarkedAlt} className={styles.contactIcon} />
+            <h4 className={styles.contactTitle}>ADDRESS</h4>
+            <div className={styles.contactInfo}>소재지</div>
+          </div>
+          <div className={styles.contactCard}>
+            <FontAwesomeIcon icon={faEnvelope} className={styles.contactIcon} />
+            <h4 className={styles.contactTitle}>EMAIL</h4>
+            <div className={styles.contactInfo}>이메일 주소</div>
+          </div>
+          <div className={styles.contactCard}>
+            <FontAwesomeIcon icon={faMobileAlt} className={styles.contactIcon} />
+            <h4 className={styles.contactTitle}>PHONE</h4>
+            <div className={styles.contactInfo}>전화번호</div>
+          </div>
+        </div>
+      </section>
       <Footer />
     </div>
   );
