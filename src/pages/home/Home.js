@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from '../../styles/home/Home.module.css';
 import { useNavigate } from 'react-router-dom';
+import KoreaWeatherMap from './KoreaWeathermap'; // KoreaWeatherMap import
+import RegionEventInfo from './RegionEvent';
 
 const Home = () => {
   const navigate = useNavigate();
-
-
 
   return (
     <div className={styles.container}>
@@ -15,12 +15,17 @@ const Home = () => {
           placeholder="검색어를 입력하세요"
           className={styles.searchInput}
         />
+        <input
+          type="text"
+          placeholder="날짜를 선택해주세요"
+          className={styles.searchInput}
+        />
         <button className={styles.searchButton}>검색</button>
       </div>
 
       <div className={styles.popularDestinations}>
         <div className={styles.destinationsTitleviewAllButton}>
-          <h2 className={styles.destinationsTitle}>인기 여행지</h2> 
+          <h2 className={styles.destinationsTitle}>인기 여행지</h2>
           <button className={styles.viewAllButton} onClick={() => navigate('/product')}>모두보기</button>
         </div>
         <div className={styles.destinationList}>
@@ -35,26 +40,16 @@ const Home = () => {
             </div>
           ))}
         </div>
-      
-
       </div>
 
       <div className={styles.infoSection}>
         <div className={styles.infoBox}>
-          <h3 className={styles.infoTitle}>날씨</h3>
-          <ul className={styles.infoList}>
-            {['부산', '서울', '제주', '강릉', '전주', '가평'].map((city, index) => (
-              <li key={index}>{city}</li>
-            ))}
-          </ul>
+          <h3 className={styles.infoTitle}>기상정보</h3>
+          <KoreaWeatherMap width="100%" height="400px"/> 
         </div>
         <div className={styles.infoBox}>
           <h3 className={styles.infoTitle}>지역 뉴스</h3>
-          <ul className={styles.infoList}>
-            {['부산', '서울', '제주', '강릉', '전주', '가평'].map((city, index) => (
-              <li key={index}>{city}</li>
-            ))}
-          </ul>
+          <RegionEventInfo width="100%" height="400px"/>
         </div>
       </div>
     </div>

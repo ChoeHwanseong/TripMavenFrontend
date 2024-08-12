@@ -10,7 +10,7 @@ const Login = () => {
     const handleEmailChange = (e) => setEmail(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
     const handleAutoLoginChange = () => setAutoLogin(!autoLogin);
-
+    
     const handleLogin = () => {
         const loginData = {
             email: email,
@@ -37,20 +37,20 @@ const Login = () => {
 
     const googleLogin = () => {
         // Google OAuth2 인증 URL로 리다이렉트
-        window.location.href = 'http://localhost:9099/oauth2/authorization/google';
+        window.location.href = process.env.REACT_APP_GOOGLE_URL;
     };
 
     const kakaoLogin = () => {
-        const clientId = '7d447677dbee7f604d966911a044f55e'; // 환경 변수에서 클라이언트 ID를 가져옵니다.
-        const redirectUri = 'http://localhost:9099/login/oauth2/code/kakao'; // 리다이렉트 URI
+        const clientId = process.env.REACT_APP_KAKAO_CLIENT_ID; // 환경 변수에서 클라이언트 ID를 가져옵니다.
+        const redirectUri = process.env.REACT_APP_KAKAO_URL; // 리다이렉트 URI
         const encodedRedirectUri = encodeURIComponent(redirectUri); // 리다이렉트 URI를 인코딩합니다.
 
         window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}`;
     };
 
     const naverLogin = () => {
-        const clientId = 'PlCIV6K_oOCiNadhp2VS'; // 환경 변수에서 클라이언트 ID를 가져옵니다.
-        const redirectUri = 'http://localhost:9099/login/oauth2/code/naver'; // 리다이렉트 URI
+        const clientId = process.env.REACT_APP_NAVER_CLIENT_ID; // 환경 변수에서 클라이언트 ID를 가져옵니다.
+        const redirectUri = process.env.REACT_APP_NAVER_URL; // 리다이렉트 URI
         const encodedRedirectUri = encodeURIComponent(redirectUri); // 리다이렉트 URI를 인코딩합니다.
 
         window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}`;
