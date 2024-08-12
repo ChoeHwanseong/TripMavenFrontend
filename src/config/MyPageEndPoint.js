@@ -13,7 +13,8 @@ export const menuData = {
         { name: "채팅방", path: "/bigchat" },
         { name: "AI 서비스", path: "/guidemypageaiservice" },
         {path: "/guidemypagemypostdetails" }, //내 게시물 상세보기는 메뉴 내용엔 없음
-        {path: "/guideask" }
+        {path: "/guideask" },
+        {path: "/guideaskdetailsview"}
     ],
     user: [
         { name: "내 정보 관리", path: "/mypageprofile" },
