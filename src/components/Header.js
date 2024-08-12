@@ -45,7 +45,7 @@ const Header = () => {
                                 </button>
                                 <div className={styles.dropdownContent}>
                                     <a><button className={styles.navButton1} onClick={() => navigate('/mypageprofile')}>프로필</button></a>
-                                    <a><button className={styles.navButton1} onClick={() => navigate('/guidemypageinquirydetails')}>문의내역</button></a>
+                                    <a><button className={styles.navButton1} onClick={() => navigate('/guideaskdetails')}>문의내역</button></a>
                                     <a><button className={styles.navButton1} onClick={() => navigate('/logout')}>로그아웃</button></a>
                                 </div>
                             </div>

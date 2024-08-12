@@ -1,15 +1,9 @@
 // InquiryDetails.js
 import React, { useEffect, useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/guidemypage/GuideAskDetails.module.css';
-
 import { Box } from '@mui/material';
-import { csfetchData } from '../../utils/csData';
-
-
-import axios from 'axios';
-import { fetchData } from '../../utils/memberData';
+import { csfetchAllData } from '../../utils/csfetchAllData';
 
 const GuideAskDetails = () => {
 
@@ -21,7 +15,7 @@ const GuideAskDetails = () => {
   useEffect(() => {
     const getCSData = async () => {
       try {
-        const fetchedData = await csfetchData();
+        const fetchedData = await csfetchAllData();
         setInquiries(fetchedData);
       } catch (error) {
         console.error('에러났당', error);
@@ -83,7 +77,7 @@ const GuideAskDetails = () => {
                   <td>{inquiry.id}</td>
                   <td>{inquiry.member.name}</td>
                   <td>{inquiry.member.role}</td>
-                  <td onClick={()=>navigate('/guideaskdetailsviews')}><div className={styles.postLinkPointer}>{inquiry.title}</div></td>
+                  <td onClick={()=>navigate(`/guideaskdetailsview/${inquiry.id}`)}><div className={styles.postLinkPointer}>{inquiry.title}</div></td>
                   <td>{inquiry.createdAt.split('T')[0]}</td> {/* 날짜만 표시 */}
                   <td>{inquiry.isactive?'유':'무'}</td> {/* 상태 표시 */}
                   </Box>
