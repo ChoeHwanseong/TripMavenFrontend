@@ -34,7 +34,10 @@ const GuideAskDetails = () => {
     setHoveredRow(null);
   }
 
-
+  const handleClick = (inquiry) => {
+    navigate('/guideaskdetailsview');
+    
+  };
 
 
   return (
@@ -65,6 +68,7 @@ const GuideAskDetails = () => {
                 key={index}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={handleMouseLeave}
+                onClick={() => handleClick(inquiry)}
                 sx={{
                   cursor: 'pointer',
                   transition: 'background-color 0.3s',
@@ -77,7 +81,7 @@ const GuideAskDetails = () => {
                   <td>{inquiry.id}</td>
                   <td>{inquiry.member.name}</td>
                   <td>{inquiry.member.role}</td>
-                  <td onClick={()=>navigate(`/guideaskdetailsview/${inquiry.id}`)}><div className={styles.postLinkPointer}>{inquiry.title}</div></td>
+                  <td><div className={styles.postLinkPointer}>{inquiry.title}</div></td>
                   <td>{inquiry.createdAt.split('T')[0]}</td> {/* 날짜만 표시 */}
                   <td>{inquiry.isactive?'유':'무'}</td> {/* 상태 표시 */}
                   </Box>
@@ -94,6 +98,7 @@ const GuideAskDetails = () => {
       </main>
     </div>
   );
+
 };
 
 export default GuideAskDetails;

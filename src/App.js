@@ -13,7 +13,7 @@ import UserAsk from './pages/usermypage/UserAsk';
 
 
 import UserReview from './pages/usermypage/UserReview';
-import MemberList from './pages/adminmypage/MemberList'
+
 import AdminAsk from './pages/adminmypage/AdminAsk';
 import AdminReport from './pages/adminmypage/AdminReport';
 import AdminProfile from './pages/adminmypage/AdminProfile';
@@ -37,8 +37,9 @@ import UserLike from './pages/usermypage/UserLike';
 
 import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuideAskDetails from './pages/guidemypage/GuideAskDetails';
-import InquiryDetails from './pages/guidemypage/GuideAskDetailsView';
+
 import GuideAskDetailsView from './pages/guidemypage/GuideAskDetailsView';
+import MemberList from './pages/adminmypage/MemberList';
 
 function App() {
 
