@@ -4,12 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/guidemypage/GuideAskDetails.module.css';
 
-import { NavLink, useNavigate } from 'react-router-dom';
-import styles from '../../styles/guidemypage/GuideMyPageInquiryDetails.module.css';
 import { Box } from '@mui/material';
 import { csfetchData } from '../../utils/csData';
-import axios from 'axios';
-import { fetchData } from '../../utils/memberData';
+
 
 
 const GuideAskDetails = () => {

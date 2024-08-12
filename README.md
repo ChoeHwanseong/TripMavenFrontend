@@ -15,3 +15,4 @@ npm install react-router-dom@6 이것두
      git config core.ignorecase false
 08/11 npm install axios
       npm install @mui/material @emotion/react @emotion/styled --save
+      npm install react-simple-maps d3-geo
