@@ -1,12 +1,11 @@
 // InquiryDetails.js
 import React, { useEffect, useState } from 'react';
+
+import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/guidemypage/GuideAskDetails.module.css';
 
-import { NavLink, useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
-import { csfetchData } from '../../utils/csData';
-
-
+import { csfetchAllData } from '../../utils/csfetchAllData';
 
 const GuideAskDetails = () => {
 
@@ -18,7 +17,7 @@ const GuideAskDetails = () => {
   useEffect(() => {
     const getCSData = async () => {
       try {
-        const fetchedData = await csfetchData();
+        const fetchedData = await csfetchAllData();
         setInquiries(fetchedData);
       } catch (error) {
         console.error('에러났당', error);
@@ -62,14 +61,30 @@ const GuideAskDetails = () => {
           </thead>
           <tbody>
 
-          {inquiries.map((inquiry, index)=>(
-            <Box component="tr" key={index} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={handleMouseLeave} sx={{cursor:'pointer', transition:'background-color 0.3s', '&:hover':{color:'black', backgroundColor:'#D0F0FF'}}}>
-              <td>{inquiry.id}</td>
-              <td>{inquiry.member.name}</td>
-              <td>{inquiry.member.role}</td>
-              <td onClick={()=>navigate('/GuideMyPageInquiryDetailsViews')}><div className={styles.postLinkPointer}>{inquiry.title}</div></td>
-              <td>{inquiry.createdAt.split('T')[0]}</td> {/* 날짜만 표시 */}
-              <td>{inquiry.isactive?'유':'무'}</td> {/* 상태 표시 */}</Box>))}
+          {inquiries.map((inquiry, index) => (
+                <Box
+                component="tr"
+                key={index}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
+                sx={{
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s',
+                  '&:hover': {
+                    color : 'black',
+                    backgroundColor: '#D0F0FF',
+                  },
+                }}
+              >       
+                  <td>{inquiry.id}</td>
+                  <td>{inquiry.member.name}</td>
+                  <td>{inquiry.member.role}</td>
+                  <td onClick={()=>navigate('/GuideMyPageInquiryDetailsViews')}><div className={styles.postLinkPointer}>{inquiry.title}</div></td>
+                  <td>{inquiry.createdAt.split('T')[0]}</td> {/* 날짜만 표시 */}
+                  <td>{inquiry.isactive?'유':'무'}</td> {/* 상태 표시 */}
+                  </Box>
+              ))} 
+
           </tbody>
         </table>
 

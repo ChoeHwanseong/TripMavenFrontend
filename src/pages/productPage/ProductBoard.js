@@ -45,6 +45,10 @@ const ProductBoard = () => {
 
     return (
         <div className={styles.container}>
+            <div>
+                <h1>상품 게시판</h1>
+                <h3>'XX'의 대한 검색 결과 입니다</h3>
+            </div>
             <div className={styles.productList}>
                 {/* 제품 목록을 렌더링 */}
                 {products.map((product, index) => (

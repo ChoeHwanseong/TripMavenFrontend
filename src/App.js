@@ -37,6 +37,8 @@ import UserLike from './pages/usermypage/UserLike';
 
 import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuideAskDetails from './pages/guidemypage/GuideAskDetails';
+import InquiryDetails from './pages/guidemypage/GuideAskDetailsView';
+import GuideAskDetailsView from './pages/guidemypage/GuideAskDetailsView';
 
 function App() {
 
@@ -60,6 +62,7 @@ function App() {
           <Route path='/guidemypagemypostdetails' element={<GuideMyPageMyPostDetails/>}/>
           <Route path='/guidemypost' element={<GuideMyPageMyPost/>}/>
           <Route path='/guideaskdetails' element={<GuideAskDetails/>}/>
+          <Route path='/guideaskdetailsview' element={<GuideAskDetailsView/>}/>
           <Route path='/guideask' element={<GuideAsk/>}/>
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
