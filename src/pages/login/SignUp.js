@@ -17,7 +17,7 @@ const Signup = () => {
     );
     const region = useValid('', (value) => !value ? '관심 지역을 선택하세요' : '');
     const gender = useValid('', (value) => !value ? '성별을 선택하세요' : '');
-    const birthDate = useValid('', (value) => !value ? '생년월일을 입력하세요' : '');
+    const birthday = useValid('', (value) => !value ? '생년월일을 입력하세요' : '');
     const address = useValid('', (value) => !value ? '주소를 입력하세요' : '');
 
     const handleSubmit = (e) => {
@@ -29,17 +29,16 @@ const Signup = () => {
             !passwordConfirm.error &&
             !region.error &&
             !gender.error &&
-            !birthDate.error &&
+            !birthday.error &&
             !address.error
         ) {
             const form = {
                 email: email.value,
                 name: name.value,
                 password: password.value,
-                passwordConfirm: passwordConfirm.value,
                 region: region.value,
                 gender: gender.value,
-                birthDate: birthDate.value,
+                birthday: birthday.value,
                 address: address.value
             };
             // 회원가입 로직 처리
@@ -166,13 +165,13 @@ const Signup = () => {
                     <label htmlFor="birthdate">생년월일</label>
                     <input
                         type="date"
-                        id="birthdate"
-                        name="birthdate"
-                        value={birthDate.value}
-                        onChange={birthDate.onChange}
+                        id="birthday"
+                        name="birthday"
+                        value={birthday.value}
+                        onChange={birthday.onChange}
                         className={styles.dateInput}
                     />
-                    {birthDate.error && <p className={styles.error}>{birthDate.error}</p>}
+                    {birthday.error && <p className={styles.error}>{birthday.error}</p>}
                 </div>
 
                 <div className={styles.inputGroup}>

@@ -86,7 +86,7 @@ const KoreaWeatherMap = () => {
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{
-            scale: 5500, // 스케일 증가
+            scale: 5500, // 스케일 증가 
             center: [129, 35.5] // 중심점 조정
           }}
           style={{ width: '100%', height: '100%' }} // 지도 크기를 컨테이너에 맞춤
