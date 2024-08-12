@@ -8,6 +8,7 @@ import { Box } from '@mui/material';
 import { csfetchData } from '../../utils/csData';
 
 
+
 const GuideAskDetails = () => {
 
   const [inquiries, setInquiries] = useState([]);
