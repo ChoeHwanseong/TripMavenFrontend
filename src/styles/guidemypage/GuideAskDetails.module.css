@@ -1,9 +1,27 @@
-/* PostManagementPage.module.css */
+/* InquiryPage.module.css */
 .container {
   display: flex;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menuItem {
+  margin-bottom: 10px;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.menuItem:hover,
+.active {
+  color: #0066ff;
 }
 
 .mainContent {
@@ -18,8 +36,12 @@
   margin-bottom: 20px;
 }
 
+.title {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
 
-.createButton {
+.inquiryButton {
   padding: 10px 20px;
   background-color: #0066ff;
   border: none;
@@ -30,7 +52,7 @@
   transition: background-color 0.3s;
 }
 
-.createButton:hover {
+.inquiryButton:hover {
   background-color: #0056b3;
 }
 

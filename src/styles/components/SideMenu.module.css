@@ -1,11 +1,11 @@
 .sidebar {
     width: 20%;
-    border-right: 1px solid #ddd;
     padding-right: 5px;
     color: #333;
     display: flex;
     margin-left: 40px;
     margin-top: 20px;
+    position: fixed;
 }
 
 .sidebar h2 {

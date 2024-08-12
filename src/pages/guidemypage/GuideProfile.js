@@ -62,7 +62,7 @@ const GuideProfile = () => {
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="about">자기소개</label>
-                <textarea id="about" rows="4" readOnly value="안녕하세요. 저는 냥만아삼 입니다. 저의 가이드는 가견적으로 되었어요."></textarea>
+                <textarea id="about" rows="4" readOnly value="안녕하세요. 저는 낭만아삼 입니다. 저는 야무져요."></textarea>
               </div>
             </div>
           </div>

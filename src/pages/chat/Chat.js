@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from '../../styles/chat/Chat.module.css';
 import faviImg from '../../images/favicon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons'; // 필요한 아이콘 임포트
+import { faTimes, faHeadset } from '@fortawesome/free-solid-svg-icons'; // 필요한 아이콘 임포트
 
 const Chat = () => {
   const [isVisible, setIsVisible] = useState(false); // 챗봇 팝업의 표시 상태를 관리하는 상태 변수
@@ -53,7 +53,9 @@ const Chat = () => {
   return (
     <div className={styles.container}>
       <a href="#" onClick={toggleChat}>
-        <img className={styles.chatButton} src={faviImg} alt="Chat" /> {/* 챗봇 버튼 */}
+        <div className={styles.chatButton}>
+          <FontAwesomeIcon icon={faHeadset} className={styles.chatIcon} />
+        </div>
       </a>
 
       {isVisible && (

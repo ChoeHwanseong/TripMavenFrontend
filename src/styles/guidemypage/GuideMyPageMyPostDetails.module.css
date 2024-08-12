@@ -6,41 +6,6 @@
   padding: 20px;
 }
 
-.navButton {
-  margin: 0 10px;
-  background: none;
-  border: none;
-  font-size: 16px;
-  color: #333;
-  cursor: pointer;
-}
-
-.navButton:hover, .dropdownButton:hover {
-  color: #0066ff;
-}
-.sidebarTitle {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-  color: #000;
-}
-
-.menu {
-  list-style: none;
-  padding: 0;
-}
-
-.menuItem {
-  margin-bottom: 10px;
-  color: #555;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.menuItem:hover,
-.active {
-  color: #0066ff;
-}
-
 .mainContent {
   flex-grow: 1;
   padding-left: 20px;
@@ -59,8 +24,9 @@
 }
 
 .editIcon {
-  font-size: 0.8em;
-  color: #555;
+ width: 27px;
+ height: 27px;
+ margin-left: 6px;
 }
 
 .infoTable {
@@ -74,11 +40,17 @@
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
+  font-size: 15px;
 }
 
 .infoTable th {
   background-color: #f2f2f2;
   font-weight: bold;
+}
+
+.buttonControl {
+  display: flex;
+  justify-content: end;
 }
 
 .aiButton {
@@ -90,7 +62,8 @@
   color: #fff;
   font-size: 1em;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: 0.3s;
+  
 }
 
 .aiButton:hover {
@@ -104,6 +77,7 @@
 }
 
 .image {
+  margin-left: 3px;
   width: calc(33.333% - 10px);
   height: auto;
   border-radius: 5px;

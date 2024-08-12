@@ -5,6 +5,7 @@
 }
 
 .content {
+    margin-left: 280px;
     width: 80%;
-    padding: 20px;
+    padding: 30px 0 0 20px;
 }

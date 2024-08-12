@@ -17,7 +17,7 @@ const MypageProfile = () => {
         <form className={styles.form}>
           <div className={styles.profileSection}>
             <div className={styles.avatarContainer}>
-              <img src="/path/to/avatar.png" alt="프로필 이미지" className={styles.avatar} />
+              <img src="../../../images/defaultimage.png" alt="프로필 이미지" className={styles.avatar} />
               <button type="button" className={styles.fileButton}>파일 찾기</button>
             </div>
             <div className={styles.infoSection}>
@@ -31,7 +31,7 @@ const MypageProfile = () => {
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="phone">전화번호</label>
-                <input type="tel" id="phone" value="010-4294-3686" readOnly />
+                <input type="tel" id="phone" value="010-2216-0361" readOnly />
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="region">관심 지역</label>
@@ -62,7 +62,7 @@ const MypageProfile = () => {
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="about">자기소개</label>
-                <textarea id="about" rows="4" readOnly value="안녕하세요. 저는 냥만아삼 입니다. 저의 가이드는 가견적으로 되었어요."></textarea>
+                <textarea id="about" rows="4" readOnly value="안녕하세요. 저는 낭만아삼 입니다. 저는 야무져요."></textarea>
               </div>
             </div>
           </div>

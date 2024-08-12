@@ -1,17 +1,17 @@
 /* UserAsk.module.css */
 
 .container {
-    display: flex;
-    flex-direction: row;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .content {
-    width: 80%;
-    padding: 20px;
-  }
-  
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.content {
+  width: 100%;
+  padding: 20px;
+}
   .header {
     display: flex;
     justify-content: space-between;

@@ -48,6 +48,7 @@ const UserLike = () => {
 
   return (
     <div className={styles.container}>
+      <h1>찜 목록</h1>
       <div className={styles.productList}>
         {/* 제품 목록을 렌더링 */}
         {products.map((product, index) => (
