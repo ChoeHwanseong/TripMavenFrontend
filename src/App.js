@@ -9,9 +9,9 @@ import CSBoard from './pages/csboard/CSBoard';
 import Signup from './pages/login/SignUp';
 
 import UserAsk from './pages/usermypage/UserAsk';
-import UserReview from './pages/usermypage/UserReview';
 
-import UserAsk from './pages/usermypage/UserAsk';
+
+
 import UserReview from './pages/usermypage/UserReview';
 import MemberList from './pages/adminmypage/MemberList'
 import AdminAsk from './pages/adminmypage/AdminAsk';
@@ -33,8 +33,8 @@ import BigChat from './pages/chat/BigChat';
 import MyPageTemplate from './pages/mypage/MyPageTemplate';
 import MypageProfile from './pages/mypage/MyPageProfile';
 import UserLike from './pages/usermypage/UserLike';
-import MemberList from './pages/adminmypage/MemberList';
-import UserProfile from './pages/usermypage/UserProfile';
+
+
 import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuideAskDetails from './pages/guidemypage/GuideAskDetails';
 
