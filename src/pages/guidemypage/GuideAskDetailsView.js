@@ -30,9 +30,9 @@ const GuideAskDetailsView = () => {
 
     return (
         <div className={styles.inquiryDetails}>
-            <div className={styles.title}>
-                <h1>문의 내역 <small className={styles.titlesmall}>상세보기</small></h1>
-            </div>
+        <div className={styles.header}>
+            <h1 className={styles.title}>문의 내역<small className={styles.titlesmall}>상세보기</small></h1>
+          </div>
             <table className={styles.table}>
                 <tbody>
                     <Box
@@ -74,7 +74,7 @@ const GuideAskDetailsView = () => {
                 </tbody>
             </table>
             <div className={styles.buttonContainer}>
-                <button className={styles.button}>수정 하기</button>
+                <button className={styles.button} onClick={() => navigate(`/guideaskupdate/${inquiry.id}`)}>수정 하기</button>
                 <button className={styles.button}>삭제 하기</button>
                 <button className={styles.button} onClick={() => navigate('/guideaskdetails')}>목록</button>
             </div>

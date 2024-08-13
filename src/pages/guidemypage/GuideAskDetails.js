@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/guidemypage/GuideAskDetails.module.css';
 
 import { Box } from '@mui/material';
-import { csfetchAllData } from '../../utils/csfetchAllData';
+import { csfetchAllData } from '../../utils/csfetchData';
 
 const GuideAskDetails = () => {
 
@@ -48,7 +48,7 @@ const GuideAskDetails = () => {
       <main className={styles.mainContent}>
         <div className={styles.header}>
           <h1 className={styles.title}>문의 내역</h1>
-          <button className={styles.inquiryButton} onClick={()=>navigate('/guideMyPageInquiry')}>문의 하기</button>
+          <button className={styles.inquiryButton} onClick={()=>navigate('/guideAsk')}>문의 하기</button>
         </div>
 
         <table className={styles.table}>

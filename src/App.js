@@ -34,13 +34,13 @@ import MyPageTemplate from './pages/mypage/MyPageTemplate';
 import MypageProfile from './pages/mypage/MyPageProfile';
 import UserLike from './pages/usermypage/UserLike';
 
-
-import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuideAskDetails from './pages/guidemypage/GuideAskDetails';
 
 
 import MemberList from './pages/adminmypage/MemberList';
 import GuideAskDetailsView from './pages/guidemypage/GuideAskDetailsView';
+import GuideAskUpdate from './pages/guidemypage/GuideAskUpdate';
+import GuideAsk from './pages/guidemypage/GuideAsk';
 
 function App() {
 
@@ -78,6 +78,9 @@ function App() {
           <Route path='/bigChat' element={<BigChat/>}/>
           <Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />
           <Route path="/mypageprofile/:id" element={<MypageProfile />} />
+
+          <Route path="/guideAsk" element={<GuideAsk />} />
+          <Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />
         </Route>
 
         <Route path='/aiservice' element={<AIService/>}/>

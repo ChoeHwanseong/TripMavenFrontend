@@ -25,6 +25,7 @@ export const fetchedData = async (id) => {
   }
 };
 
+
 //await axios 꼭 붙이기
 export const SignUp = async (form) => {
   await axios.post('/signup', form)
@@ -38,3 +39,4 @@ export const SignUp = async (form) => {
   });
   //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
 };
+
