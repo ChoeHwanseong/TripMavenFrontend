@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import dummyImg from '../../images/dummyImg.png';
 
 const API_KEY = 'fxK0NInA37%2B5%2FUmqb3ZtIqKfeJDzlDS9iU9A25kDySbSG2wyyzESFN8pUjf1G3sBAqnKnI0ZkDOCaNC8PDJTxg%3D%3D';
 const BASE_URL = 'https://apis.data.go.kr/B551011/KorService1';
@@ -78,6 +79,14 @@ const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
     }
   }, [selectedRegion]);
 
+  const formatDate = (dateString) => {
+    if (!dateString || dateString.length !== 8) return dateString;
+    const year = dateString.slice(0, 4);
+    const month = dateString.slice(4, 6);
+    const day = dateString.slice(6, 8);
+    return `${year}.${month}.${day}`;
+  };
+
   const fetchRegions = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/areaCode1`, {
@@ -99,7 +108,6 @@ const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
       if (apiResponse && apiResponse.header.resultCode === "0000") {
         const regions = apiResponse.body.items.item;
         setRegions(regions);
-        // 여기서 더 이상 첫 번째 지역을 자동 선택하지 않습니다.
       } else {
         throw new Error(apiResponse?.header?.resultMsg || '알 수 없는 API 오류');
       }
@@ -272,7 +280,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
                 }}
               >
                 <img 
-                  src={event.firstimage2 || 'https://via.placeholder.com/300x150?text=No+Image'}
+                  src={event.firstimage2 || dummyImg}
                   alt={event.title}
                   style={{ 
                     maxWidth: '100%', 
@@ -285,7 +293,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
                 />
                 <h3 style={{ margin: '0 0 5px 0', fontSize: '16px' }}>{event.title}</h3>
                 <p style={{ margin: '0 0 3px 0', fontSize: '14px' }}>
-                  기간: {event.eventstartdate} ~ {event.eventenddate}
+                  기간: {formatDate(event.eventstartdate)} ~ {formatDate(event.eventenddate)}
                 </p>
                 <p style={{ margin: '0', fontSize: '14px' }}>장소: {event.addr1}</p>
               </div>
@@ -305,18 +313,18 @@ const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
         <p>지역을 선택하면 행사 정보가 표시됩니다.</p>
       )}
 
-<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         {eventDetails && (
           <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             <h2 style={{ marginTop: '0', marginBottom: '10px' }}>{eventDetails.title}</h2>
             <div style={{ flex: 1, overflow: 'auto' }}>
-              <img 
-                src={eventDetails.firstimage || 'https://via.placeholder.com/400x300?text=No+Image'} 
+              <img
+                src={eventDetails.firstimage || dummyImg}
                 alt={eventDetails.title}
-                style={{ 
-                  width: '100%', 
+                style={{
+                  width: '100%',
                   height: '200px',
-                  objectFit: 'cover', 
+                  objectFit: 'cover',
                   marginBottom: '20px'
                 }}
               />
