@@ -59,6 +59,7 @@
 
 .navButton:hover, .dropdownButton:hover {
   color: #000000;
+  font-weight: bold;
 }
 
 .navButton {
@@ -66,7 +67,6 @@
   border: none;
   color: #000000;
   cursor: pointer;
-  font-weight: bold;
 }
 
 .bar {
