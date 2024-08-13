@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/adminmypage/MemberList.module.css';
-import {Box} from '@mui/material';
+import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { fetchData } from '../../utils/memberData';
 
@@ -34,17 +34,7 @@ const MemberList = () => {
   }
 
   const handleClick = (user) => {
-    switch (user.role) {
-      case 'user':
-        navigate('/userprofile');
-        break;
-      case 'admin':
-        navigate('/adminProfile');
-        break;
-      case 'guide':
-        navigate('/guidemypagelike/guideProfile');
-        break;
-    }
+    navigate(`/mypageprofile/${user.id}`);
   };
 
   return (
@@ -77,9 +67,8 @@ const MemberList = () => {
           </thead>
          
           <tbody>
-          
-          {data.map((user, index) => (
-                <Box
+            {data.map((user, index) => (
+              <Box
                 component="tr"
                 key={index}
                 onMouseEnter={() => handleMouseEnter(index)}
@@ -91,9 +80,8 @@ const MemberList = () => {
                   '&:hover': {
                     color : 'black',
                     backgroundColor: '#D0F0FF',
-                  },
-                }}
-             >        
+                  }
+                }}>
                   <td>{user.id}</td>
                   <td>{user.name}</td>
                   <td>{user.role}</td>
@@ -102,8 +90,8 @@ const MemberList = () => {
                   <td>{user.address}</td>
                   <td>{user.createdAt.split('T')[0]}</td> {/* 시간까지나옴 스플릿으로 앞부분만뿌려주기 */}
                   <td>{user.guidelicense?'무':'유'}</td> {/* 자격증 디폴트값 무 false면 유 */} 
-                  </Box>       
-              ))} 
+                </Box>       
+            ))} 
           </tbody>
         </table>
 
