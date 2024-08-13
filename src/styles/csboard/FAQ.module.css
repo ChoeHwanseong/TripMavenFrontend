@@ -1,0 +1,55 @@
+.faq {
+    margin: 20px;
+    padding: 20px;
+}
+
+.title {
+    margin-bottom: 20px;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.tab.active {
+    font-weight: bold;
+    border-bottom: 2px solid #000;
+}
+
+.questions {
+    display: flex;
+    flex-direction: column;
+}
+
+.question {
+    border-top: 1px solid #ddd;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.questionTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.arrow {
+    font-size: 12px;
+}
+
+.answer {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+}

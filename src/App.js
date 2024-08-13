@@ -39,6 +39,7 @@ import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuideAskDetails from './pages/guidemypage/GuideAskDetails';
 import InquiryDetails from './pages/guidemypage/GuideAskDetailsView';
 import GuideAskDetailsView from './pages/guidemypage/GuideAskDetailsView';
+import FAQ from './pages/csboard/FAQ';
 
 function App() {
 
@@ -78,6 +79,7 @@ function App() {
 
         <Route path='/aiservice' element={<AIService/>}/>
         <Route path="/cs" element={<CSBoard/>}/>
+        <Route path="/faq" element={<FAQ />}/>
 
         <Route path="/login" element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
