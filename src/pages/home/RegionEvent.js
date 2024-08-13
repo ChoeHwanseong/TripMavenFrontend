@@ -56,6 +56,11 @@ const Modal = ({ isOpen, onClose, children }) => {
   );
 };
 
+const extractUrl = (htmlString) => {
+  const match = htmlString.match(/href="([^"]*)/);
+  return match ? match[1] : null;
+};
+
 const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
   const [regions, setRegions] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState('');
@@ -329,9 +334,22 @@ const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
                 }}
               />
               <div style={{ textAlign: 'left' }}>
-                <p><strong>전화번호:</strong> {eventDetails.tel || '정보 없음'}</p>
                 <p><strong>주소:</strong> {eventDetails.addr1} {eventDetails.addr2}</p>
+                <p><strong>전화번호:</strong> {eventDetails.tel || '정보 없음'}</p>
                 <p><strong>개요:</strong> {eventDetails.overview}</p>
+                {eventDetails.homepage && (
+                  <p>
+                  <strong>홈페이지:</strong>{' '}
+                  <a 
+                    href={extractUrl(eventDetails.homepage)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none", color: "#0066ff" }} // 밑줄 제거 및 색상 추가
+                  >
+                    {extractUrl(eventDetails.homepage)}
+                  </a>
+                </p>
+                )}
               </div>
             </div>
           </div>
