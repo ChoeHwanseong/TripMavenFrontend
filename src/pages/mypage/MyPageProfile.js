@@ -14,8 +14,9 @@ const MypageProfile = () => {
   useEffect(() => {
     const getData = async () => {
       try {
+        console.log(id)
         const fetchData = await fetchedData(id);
-      
+        
         setProfileData(fetchData);
       } catch (error) {
         console.error('에러났당', error);
@@ -73,7 +74,7 @@ const MypageProfile = () => {
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="birthday">생년월일</label>
-                <input type="text" id="birthday" value={profileData.birthday.split('T')[0]} />
+                <input type="text" id="birthday" value={profileData.birthday} />
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="certificate">자격증</label>
