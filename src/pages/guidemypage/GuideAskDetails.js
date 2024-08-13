@@ -9,7 +9,7 @@ import { csfetchAllData } from '../../utils/csfetchAllData';
 
 const GuideAskDetails = () => {
 
-  const [inquiries, setInquiries] = useState([]);
+  const [inquiry, setInquiries] = useState([]);
   const [hoveredRow, setHoveredRow] = useState(null);
 
   const navigate = useNavigate();
@@ -37,9 +37,9 @@ const GuideAskDetails = () => {
   }
 
   const handleClick = (inquiry) => {
-    navigate('/guideaskdetailsview');
-    
+    navigate(`/guideaskdetailsview/${inquiry.id}`);
   };
+  
 
 
   return (
@@ -64,7 +64,7 @@ const GuideAskDetails = () => {
           </thead>
           <tbody>
 
-          {inquiries.map((inquiry, index) => (
+          {inquiry.map((inquiry, index) => (
                 <Box
                 component="tr"
                 key={index}

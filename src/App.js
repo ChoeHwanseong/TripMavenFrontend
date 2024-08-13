@@ -38,8 +38,9 @@ import UserLike from './pages/usermypage/UserLike';
 import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuideAskDetails from './pages/guidemypage/GuideAskDetails';
 
-import GuideAskDetailsView from './pages/guidemypage/GuideAskDetailsView';
+
 import MemberList from './pages/adminmypage/MemberList';
+import GuideAskDetailsView from './pages/guidemypage/GuideAskDetailsView';
 
 function App() {
 
@@ -54,7 +55,7 @@ function App() {
       <Route element={<Template/>}>
         <Route path="/home" element={<Home/>}/>
         <Route element={<MyPageTemplate/>}>
-          <Route path='/mypageprofile' element={<MypageProfile/>}/>
+
           <Route path='/adminreport' element={<AdminReport/>}/>
           <Route path='/adminprofile' element={<AdminProfile/>}/>
           <Route path='/adminask' element={<AdminAsk/>}/>
@@ -63,7 +64,7 @@ function App() {
           <Route path='/guidemypagemypostdetails' element={<GuideMyPageMyPostDetails/>}/>
           <Route path='/guidemypost' element={<GuideMyPageMyPost/>}/>
           <Route path='/guideaskdetails' element={<GuideAskDetails/>}/>
-          <Route path='/guideaskdetailsview' element={<GuideAskDetailsView/>}/>
+  
           <Route path='/guideask' element={<GuideAsk/>}/>
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
@@ -75,6 +76,8 @@ function App() {
           <Route path='/userlike' element={<UserLike/>}/>
 
           <Route path='/bigChat' element={<BigChat/>}/>
+          <Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />
+          <Route path="/mypageprofile/:id" element={<MypageProfile />} />
         </Route>
 
         <Route path='/aiservice' element={<AIService/>}/>
@@ -89,7 +92,7 @@ function App() {
         <Route path='/paymentproc' element={<OrderPopup/>}/>
         <Route path='/payment' element={<PaymentForm/>}/>
         <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
-        
+       
       </Route>
     </Routes>
   </>

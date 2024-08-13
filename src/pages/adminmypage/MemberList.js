@@ -33,8 +33,8 @@ const MemberList = () => {
     setHoveredRow(null);
   }
 
-  const handleClick = () => {
-    navigate('/mypageprofile');
+  const handleClick = (user) => {
+    navigate(`/mypageprofile/${user.id}`);
   };
 
   return (
@@ -73,7 +73,7 @@ const MemberList = () => {
                 key={index}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => handleClick()}
+                onClick={() => handleClick(user)}
                 sx={{
                   cursor: 'pointer',
                   transition: 'background-color 0.3s',
