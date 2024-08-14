@@ -41,6 +41,7 @@ import MemberList from './pages/adminmypage/MemberList';
 import GuideAskDetailsView from './pages/guidemypage/GuideAskDetailsView';
 import GuideAskUpdate from './pages/guidemypage/GuideAskUpdate';
 import GuideAsk from './pages/guidemypage/GuideAsk';
+import GuidePost from './pages/guidemypage/GuidePost';
 
 function App() {
 
@@ -61,7 +62,7 @@ function App() {
           <Route path='/adminask' element={<AdminAsk/>}/>
           <Route path='/memberlist' element={<MemberList/>}/>
           
-          <Route path='/guidemypagemypostdetails' element={<GuideMyPageMyPostDetails/>}/>
+          <Route path='/guidemypagemypostdetails/:id' element={<GuideMyPageMyPostDetails/>}/>
           <Route path='/guidemypost' element={<GuideMyPageMyPost/>}/>
           <Route path='/guideaskdetails' element={<GuideAskDetails/>}/>
   
@@ -81,6 +82,7 @@ function App() {
 
           <Route path="/guideAsk" element={<GuideAsk />} />
           <Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />
+          <Route path='/guidePost' element={<GuidePost/>}/>
         </Route>
 
         <Route path='/aiservice' element={<AIService/>}/>
