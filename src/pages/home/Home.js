@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../../styles/home/Home.module.css';
 import { useNavigate } from 'react-router-dom';
-import KoreaWeatherMap from './KoreaWeatherMap'; // KoreaWeatherMap import
+import KoreaWeatherMap from './KoreaWeather'; // KoreaWeather import
 import RegionEventInfo from './RegionEvent';
 
 const Home = () => {
@@ -48,7 +48,7 @@ const Home = () => {
           <KoreaWeatherMap width="100%" height="400px"/> 
         </div>
         <div className={styles.infoBox}>
-          <h3 className={styles.infoTitle}>지역 뉴스</h3>
+          <h3 className={styles.infoTitle}>지역 행사</h3>
           <RegionEventInfo width="100%" height="400px"/>
         </div>
       </div>

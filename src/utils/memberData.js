@@ -15,6 +15,7 @@ export const fetchData = async () => {
 
 export const fetchedData = async (id) => {
   try {
+    console.log(id)
     const res = await axios.get(`/members/id/${id}`);
     //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
     return res.data;
@@ -24,6 +25,7 @@ export const fetchedData = async (id) => {
     throw error; 
   }
 };
+
 
 //await axios 꼭 붙이기
 export const SignUp = async (form) => {
@@ -38,3 +40,4 @@ export const SignUp = async (form) => {
   });
   //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
 };
+

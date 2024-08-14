@@ -18,7 +18,7 @@ import AdminAsk from './pages/adminmypage/AdminAsk';
 import AdminReport from './pages/adminmypage/AdminReport';
 import AdminProfile from './pages/adminmypage/AdminProfile';
 import AIService from './pages/aiservicepage/AIService';
-import TermsService from './pages/termsofservice/TermsService';
+import TermsService from './pages/infopage/TermsService';
 import RegisterGuide from './pages/registerguidepage/RegisterGuide';
 //import GuideMyPageLike from './pages/guidemypage/guidemypagelike/guideMyPageLike';
 import GuideMyPageMyPost from './pages/guidemypage/GuideMyPageMyPost';
@@ -34,13 +34,15 @@ import MyPageTemplate from './pages/mypage/MyPageTemplate';
 import MypageProfile from './pages/mypage/MyPageProfile';
 import UserLike from './pages/usermypage/UserLike';
 
-
-import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuideAskDetails from './pages/guidemypage/GuideAskDetails';
 
 
 import MemberList from './pages/adminmypage/MemberList';
 import GuideAskDetailsView from './pages/guidemypage/GuideAskDetailsView';
+import GuideAskUpdate from './pages/guidemypage/GuideAskUpdate';
+import GuideAsk from './pages/guidemypage/GuideAsk';
+import FAQ from './pages/csboard/FAQ';
+import SiteIntroduction from './pages/infopage/SiteInfo';
 
 function App() {
 
@@ -78,10 +80,14 @@ function App() {
           <Route path='/bigChat' element={<BigChat/>}/>
           <Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />
           <Route path="/mypageprofile/:id" element={<MypageProfile />} />
+
+          <Route path="/guideAsk" element={<GuideAsk />} />
+          <Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />
         </Route>
 
         <Route path='/aiservice' element={<AIService/>}/>
         <Route path="/cs" element={<CSBoard/>}/>
+        <Route path="/faq" element={<FAQ />}/>
 
         <Route path="/login" element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
@@ -89,6 +95,7 @@ function App() {
         <Route path='/registerguide' element={<RegisterGuide/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
         <Route path='/termsservice' element={<TermsService/>}/>
+        <Route path='/siteinfo' element={<SiteIntroduction />}/>
         <Route path='/paymentproc' element={<OrderPopup/>}/>
         <Route path='/payment' element={<PaymentForm/>}/>
         <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
