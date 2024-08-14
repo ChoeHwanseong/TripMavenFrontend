@@ -73,7 +73,7 @@ const KoreaWeatherMap = () => {
   const getRegionWeather = (geo) => {
     const mapRegionName = geo.properties.name;
     const weather = weatherData[mapRegionName];
-    console.log('Getting weather for:', mapRegionName, weather);
+    //console.log('Getting weather for:', mapRegionName, weather);
     return weather || { city: mapRegionName, error: '날씨 정보 없음' };
   };
 
