@@ -4,10 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faHeadset } from '@fortawesome/free-solid-svg-icons'; // 필요한 아이콘 임포트
 import axios from 'axios';
 
-// 발급받은 OpenAI API 키를 변수로 저장
-const apiKey = 'sk-3Psu9bGHtzwsaoZI15OyUanv23VvEQCa5xqxkSZrOGT3BlbkFJ85cTMIN2rNJkT6L6ysy0QWIGpWGvtUyGTa41GGoPYA';
-
-
+      // 발급받은 OpenAI API 키를 변수로 저장
+      const apiKey = 'sk-3Psu9bGHtzwsaoZI15OyUanv23VvEQCa5xqxkSZrOGT3BlbkFJ85cTMIN2rNJkT6L6ysy0QWIGpWGvtUyGTa41GGoPYA';
 
 const Chat = () => {
   const [isVisible, setIsVisible] = useState(false); // 챗봇 팝업의 표시 상태를 관리하는 상태 변수
@@ -35,51 +33,53 @@ const Chat = () => {
       chatBody.scrollTop = chatBody.scrollHeight; // 스크롤을 맨 아래로 이동
 
       try {
-        // OpenAI API 호출하여 답변 받기
         const apiResponse = await axios.post(
-            'https://api.openai.com/v1/completions',
+            'https://api.openai.com/v1/chat/completions',
             {
-                prompt: message,
-                model: 'gpt-3.5-turbo',
-                max_tokens: 100,
+                model: 'gpt-4',
+                messages: [
+                    { role: 'user', content: message }  
+                ]
             },
             {
                 headers: {
-                    Authorization: `Bearer ${apiKey}`,
-                },
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                }
             }
         );
-
-        // OpenAI API에서 받은 답변
-        const botAnswer = apiResponse.data.choices[0].text.trim();
-
-        // 받은 답변을 화면에 표시
+    
+        const botAnswer = apiResponse.data.choices[0].message.content.trim();
+    
         const botMessageElement = document.createElement('div');
         botMessageElement.classList.add(styles.message, styles.received);
         botMessageElement.innerHTML = `<p>${botAnswer}</p>`;
         chatBody.appendChild(botMessageElement);
-
-        // 질문과 답변을 백엔드에 저장
-        await axios.post('/chatbot/post', {
+    
+        
+        setChatHistory([...chatHistory, { inquery: message, answer: botAnswer }]);
+    
+       
+        await axios.post('/chatbot', {
             inquery: message,
             answer: botAnswer,
         });
-
-        // 대화 기록 업데이트
-        setChatHistory([...chatHistory, { inquery: message, answer: botAnswer }]);
-
+    
     } catch (error) {
-        if (error.response && error.response.status === 429) {
-            console.error('Too many requests. Please wait before trying again.');
+        if (error.response) {
+            console.error('Error response data:', error.response.data);
+            console.error('Error status:', error.response.status);
+            console.error('Error headers:', error.response.headers);
+        } else if (error.request) {
+            console.error('No response received:', error.request);
         } else {
-            console.error('Error fetching chatbot response:', error);
+            console.error('Error setting up the request:', error.message);
         }
     }
-
       chatBody.scrollTop = chatBody.scrollHeight;
     }
   };
-  // 컴포넌트가 마운트되거나 `isVisible` 상태가 변경될 때 키 다운 이벤트 리스너 설정
+ 
   useEffect(() => {
     const handleKeyDown = (event) => {
       // Enter 키를 누르면 메시지 전송 함수 호출
