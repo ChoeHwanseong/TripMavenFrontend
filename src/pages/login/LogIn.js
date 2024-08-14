@@ -18,12 +18,12 @@ const Login = () => {
         };
 
         fetch('http://localhost:9099/loginProcess', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            method: 'GET',
+            headers: {'Content-Type': 'application/json',},
             body: JSON.stringify(loginData),
-        })
+        },
+        console.log(loginData)
+        )
             .then(response => {
                 if (response.ok) {
                     window.location.href = '/home'; // 로그인 성공 시 홈으로 이동

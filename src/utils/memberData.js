@@ -14,7 +14,6 @@ export const fetchData = async () => {
 };
 
 //회원가입
-
 export const fetchedData = async (id) => {
   try {
     //console.log(id) //디버그용
