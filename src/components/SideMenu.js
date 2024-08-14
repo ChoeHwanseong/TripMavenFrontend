@@ -39,10 +39,11 @@ const DecideSideMenu = (nowPageEndPoint) => {
                 { name: "신고 내역", path: "/adminreport" }
             ]
          */
+        const nowPageEndPoint_= '/'+nowPageEndPoint.toLowerCase().split('/')[1]
         for(let i=0;i<endPoints.length;i++){
-            if(nowPageEndPoint.toLowerCase() == endPoints[i]['path']) return endPoints
-            else if(nowPageEndPoint.toLowerCase() == endPoints[i]['path']) return endPoints
-            else if(nowPageEndPoint.toLowerCase() == endPoints[i]['path']) return endPoints
+            if(nowPageEndPoint_ == endPoints[i]['path']) return endPoints
+            else if(nowPageEndPoint_ == endPoints[i]['path']) return endPoints
+            else if(nowPageEndPoint_ == endPoints[i]['path']) return endPoints
         }
     }
 }

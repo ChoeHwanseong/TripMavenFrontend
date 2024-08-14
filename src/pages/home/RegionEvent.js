@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import dummyImg from '../../images/dummyImg.png';
 
 const API_KEY = 'fxK0NInA37%2B5%2FUmqb3ZtIqKfeJDzlDS9iU9A25kDySbSG2wyyzESFN8pUjf1G3sBAqnKnI0ZkDOCaNC8PDJTxg%3D%3D';
 const BASE_URL = 'https://apis.data.go.kr/B551011/KorService1';
 
-// 간단한 모달 컴포넌트
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
@@ -25,26 +28,49 @@ const Modal = ({ isOpen, onClose, children }) => {
         backgroundColor: 'white',
         padding: '20px',
         borderRadius: '8px',
-        maxWidth: '80%',
-        maxHeight: '80%',
-        overflow: 'auto'
+        width: '90%',
+        maxWidth: '500px',
+        height: '90%',
+        maxHeight: '600px',
+        overflow: 'auto',
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column'
       }}>
-        <button onClick={onClose} style={{ float: 'right' }}>Close</button>
+        <button 
+          onClick={onClose} 
+          style={{ 
+            position: 'absolute', 
+            top: '10px', 
+            right: '10px',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer'
+          }}
+        >
+          <X size={24} />
+        </button>
         {children}
       </div>
     </div>
   );
 };
 
-const RegionEventInfo = () => {
+const extractUrl = (htmlString) => {
+  const match = htmlString.match(/href="([^"]*)/);
+  return match ? match[1] : null;
+};
+
+const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
   const [regions, setRegions] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState('');
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [currentEventIndex, setCurrentEventIndex] = useState(0);
   const [eventDetails, setEventDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [direction, setDirection] = useState(0);
 
   useEffect(() => {
     fetchRegions();
@@ -53,8 +79,18 @@ const RegionEventInfo = () => {
   useEffect(() => {
     if (selectedRegion) {
       fetchEvents(selectedRegion);
+    } else {
+      setEvents([]);
     }
   }, [selectedRegion]);
+
+  const formatDate = (dateString) => {
+    if (!dateString || dateString.length !== 8) return dateString;
+    const year = dateString.slice(0, 4);
+    const month = dateString.slice(4, 6);
+    const day = dateString.slice(6, 8);
+    return `${year}.${month}.${day}`;
+  };
 
   const fetchRegions = async () => {
     try {
@@ -114,6 +150,7 @@ const RegionEventInfo = () => {
         const items = apiResponse.body.items.item;
         const fetchedEvents = Array.isArray(items) ? items : items ? [items] : [];
         setEvents(fetchedEvents);
+        setCurrentEventIndex(0);
       } else {
         throw new Error(apiResponse?.header?.resultMsg || '알 수 없는 API 오류');
       }
@@ -152,6 +189,7 @@ const RegionEventInfo = () => {
       if (apiResponse && apiResponse.header.resultCode === "0000") {
         const details = apiResponse.body.items.item[0];
         setEventDetails(details);
+        setIsModalOpen(true);
       } else {
         throw new Error(apiResponse?.header?.resultMsg || '알 수 없는 API 오류');
       }
@@ -165,21 +203,32 @@ const RegionEventInfo = () => {
     setSelectedRegion(e.target.value);
   };
 
-  const handleEventClick = (event) => {
-    setSelectedEvent(event);
-    fetchEventDetails(event.contentid);
-    setIsModalOpen(true);
+  const handlePrevEvent = () => {
+    setDirection(-1);
+    setCurrentEventIndex((prevIndex) => 
+      prevIndex > 0 ? prevIndex - 1 : events.length - 1
+    );
+  };
+
+  const handleNextEvent = () => {
+    setDirection(1);
+    setCurrentEventIndex((prevIndex) => 
+      prevIndex < events.length - 1 ? prevIndex + 1 : 0
+    );
+  };
+
+  const handleEventClick = () => {
+    if (events[currentEventIndex]) {
+      fetchEventDetails(events[currentEventIndex].contentid);
+    }
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      
+    <div style={{ width, height, overflow: 'hidden' }}>
       <select 
         value={selectedRegion} 
         onChange={handleRegionChange}
-        style={{ marginBottom: '20px', padding: '5px' }}
+        style={{ marginBottom: '10px', padding: '5px', width: '100%' }}
       >
         <option value="">지역을 선택하세요</option>
         {regions.map((region) => (
@@ -188,67 +237,121 @@ const RegionEventInfo = () => {
           </option>
         ))}
       </select>
+  
+      {loading && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100% - 40px)' }}>
+          <CircularProgress />
+        </Box>
+      )}
+  
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      {loading && <p>로딩 중...</p>}
+      {!loading && !error && events.length > 0 && (
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between',
+          height: 'calc(100% - 40px)',
+          overflow: 'hidden'
+        }}>
+          <button onClick={handlePrevEvent} style={{ background: 'none', border: 'none', cursor: 'pointer', zIndex: 2 }}>
+            <ChevronLeft size={24} />
+          </button>
+          <div style={{ 
+            width: 'calc(100% - 60px)', 
+            height: '100%',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            {events.map((event, index) => (
+              <div
+                key={event.contentid}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: `${(index - currentEventIndex) * 100}%`,
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: '10px',
+                  boxSizing: 'border-box',
+                  textAlign: 'center',
+                  transition: 'all 0.3s ease',
+                  transform: `translateX(${direction * (index === currentEventIndex ? 0 : 100)}%)`,
+                  opacity: index === currentEventIndex ? 1 : 0,
+                }}
+              >
+                <img 
+                  src={event.firstimage2 || dummyImg}
+                  alt={event.title}
+                  style={{ 
+                    maxWidth: '100%', 
+                    maxHeight: '60%', 
+                    objectFit: 'cover',
+                    marginBottom: '10px',
+                    cursor: 'pointer'
+                  }}
+                  onClick={handleEventClick}
+                />
+                <h3 style={{ margin: '0 0 5px 0', fontSize: '16px' }}>{event.title}</h3>
+                <p style={{ margin: '0 0 3px 0', fontSize: '14px' }}>
+                  기간: {formatDate(event.eventstartdate)} ~ {formatDate(event.eventenddate)}
+                </p>
+                <p style={{ margin: '0', fontSize: '14px' }}>장소: {event.addr1}</p>
+              </div>
+            ))}
+          </div>
+          <button onClick={handleNextEvent} style={{ background: 'none', border: 'none', cursor: 'pointer', zIndex: 2 }}>
+            <ChevronRight size={24} />
+          </button>
+        </div>
+      )}
 
-      {!loading && !error && events.length === 0 && selectedRegion && (
+      {!loading && !error && selectedRegion && events.length === 0 && (
         <p>선택한 지역의 행사 정보가 없습니다.</p>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
-        {events.map((event) => (
-          <div 
-            key={event.contentid} 
-            style={{ 
-              border: '1px solid #ddd', 
-              borderRadius: '8px',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-              cursor: 'pointer'
-            }}
-            onClick={() => handleEventClick(event)}
-          >
-            <div style={{ 
-              width: '100%', 
-              height: '100px',
-              overflow: 'hidden'
-            }}>
-              <img 
-                src={event.firstimage2 || 'https://via.placeholder.com/300x150?text=No+Image'}
-                alt={event.title} 
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
-                  objectFit: 'cover'
-                }} 
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = 'https://via.placeholder.com/300x150?text=No+Image';
-                }}
-              />
-            </div>
-            <div style={{ padding: '10px' }}>
-              <h3 style={{ margin: '0 0 5px 0', fontSize: '16px' }}>{event.title}</h3>
-              <p style={{ margin: '0 0 3px 0', fontSize: '14px' }}>기간: {event.eventstartdate} ~ {event.eventenddate}</p>
-              <p style={{ margin: '0', fontSize: '14px' }}>장소: {event.addr1}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+      {!loading && !error && !selectedRegion && (
+        <p>지역을 선택하면 행사 정보가 표시됩니다.</p>
+      )}
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         {eventDetails && (
-          <div>
-            <h2>{selectedEvent?.title}</h2>
-            <img 
-              src={eventDetails.firstimage || 'https://via.placeholder.com/400x300?text=No+Image'} 
-              alt={eventDetails.title}
-              style={{ width: '100%', maxHeight: '300px', objectFit: 'cover', marginBottom: '20px' }}
-            />
-            <p><strong>전화번호:</strong> {eventDetails.tel || '정보 없음'}</p>
-            <p><strong>주소:</strong> {eventDetails.addr1} {eventDetails.addr2}</p>
-            <p><strong>개요:</strong> {eventDetails.overview}</p>
+          <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h2 style={{ marginTop: '0', marginBottom: '10px' }}>{eventDetails.title}</h2>
+            <div style={{ flex: 1, overflow: 'auto' }}>
+              <img
+                src={eventDetails.firstimage || dummyImg}
+                alt={eventDetails.title}
+                style={{
+                  width: '100%',
+                  height: '200px',
+                  objectFit: 'cover',
+                  marginBottom: '20px'
+                }}
+              />
+              <div style={{ textAlign: 'left' }}>
+                <p><strong>주소:</strong> {eventDetails.addr1} {eventDetails.addr2}</p>
+                <p><strong>전화번호:</strong> {eventDetails.tel || '정보 없음'}</p>
+                <p><strong>개요:</strong> {eventDetails.overview}</p>
+                {eventDetails.homepage && (
+                  <p>
+                  <strong>홈페이지:</strong>{' '}
+                  <a 
+                    href={extractUrl(eventDetails.homepage)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none", color: "#0066ff" }} // 밑줄 제거 및 색상 추가
+                  >
+                    {extractUrl(eventDetails.homepage)}
+                  </a>
+                </p>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </Modal>

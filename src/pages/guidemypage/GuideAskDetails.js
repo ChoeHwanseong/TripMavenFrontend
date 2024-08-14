@@ -50,7 +50,6 @@ const GuideAskDetails = () => {
           <h1 className={styles.title}>문의 내역</h1>
           <button className={styles.inquiryButton} onClick={()=>navigate('/guideAsk')}>문의 하기</button>
         </div>
-
         <table className={styles.table}>
           <thead>
             <tr>
@@ -63,7 +62,6 @@ const GuideAskDetails = () => {
             </tr>
           </thead>
           <tbody>
-
           {inquiry.map((inquiry, index) => (
                 <Box
                 component="tr"
