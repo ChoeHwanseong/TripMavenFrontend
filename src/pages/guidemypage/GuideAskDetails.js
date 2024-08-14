@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/guidemypage/GuideAskDetails.module.css';
 
 import { Box } from '@mui/material';
-import { csfetchAllData } from '../../utils/csfetchAllData';
+import { csfetchAllData } from '../../utils/csfetchData';
 
 const GuideAskDetails = () => {
 
-  const [inquiries, setInquiries] = useState([]);
+  const [inquiry, setInquiries] = useState([]);
   const [hoveredRow, setHoveredRow] = useState(null);
 
   const navigate = useNavigate();
@@ -36,7 +36,10 @@ const GuideAskDetails = () => {
     setHoveredRow(null);
   }
 
-
+  const handleClick = (inquiry) => {
+    navigate(`/guideaskdetailsview/${inquiry.id}`);
+  };
+  
 
 
   return (
@@ -45,9 +48,8 @@ const GuideAskDetails = () => {
       <main className={styles.mainContent}>
         <div className={styles.header}>
           <h1 className={styles.title}>문의 내역</h1>
-          <button className={styles.inquiryButton} onClick={()=>navigate('/guideMyPageInquiry')}>문의 하기</button>
+          <button className={styles.inquiryButton} onClick={()=>navigate('/guideAsk')}>문의 하기</button>
         </div>
-
         <table className={styles.table}>
           <thead>
             <tr>
@@ -60,13 +62,13 @@ const GuideAskDetails = () => {
             </tr>
           </thead>
           <tbody>
-
-          {inquiries.map((inquiry, index) => (
+          {inquiry.map((inquiry, index) => (
                 <Box
                 component="tr"
                 key={index}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={handleMouseLeave}
+                onClick={() => handleClick(inquiry)}
                 sx={{
                   cursor: 'pointer',
                   transition: 'background-color 0.3s',
@@ -79,7 +81,7 @@ const GuideAskDetails = () => {
                   <td>{inquiry.id}</td>
                   <td>{inquiry.member.name}</td>
                   <td>{inquiry.member.role}</td>
-                  <td onClick={()=>navigate('/GuideMyPageInquiryDetailsViews')}><div className={styles.postLinkPointer}>{inquiry.title}</div></td>
+                  <td><div className={styles.postLinkPointer}>{inquiry.title}</div></td>
                   <td>{inquiry.createdAt.split('T')[0]}</td> {/* 날짜만 표시 */}
                   <td>{inquiry.isactive?'유':'무'}</td> {/* 상태 표시 */}
                   </Box>
@@ -96,6 +98,7 @@ const GuideAskDetails = () => {
       </main>
     </div>
   );
+
 };
 
 export default GuideAskDetails;

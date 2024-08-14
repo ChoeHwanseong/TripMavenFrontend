@@ -19,7 +19,7 @@ const GuideAsk = () => {
           <label htmlFor="content" className={styles.label}>내용을 입력하세요</label>
           <textarea id="content" className={styles.textarea}></textarea>
         </div>
-        <button className={styles.submitButton}>등록 하기</button>
+        <button className={styles.submitButton} onClick={() => navigate('/guideaskdetails')}>등록 하기</button>
       </div>
     </div>
   </>

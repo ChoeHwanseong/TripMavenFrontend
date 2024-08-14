@@ -14,6 +14,21 @@ export const fetchData = async () => {
 };
 
 //회원가입
+
+export const fetchedData = async (id) => {
+  try {
+    console.log(id)
+    const res = await axios.get(`/members/id/${id}`);
+    //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
+    return res.data;
+  }
+  catch (error) {
+    console.error('에러났당', error);
+    throw error; 
+  }
+};
+
+
 //await axios 꼭 붙이기
 export const SignUp = async (form) => {
   await axios.post('/signup', form)

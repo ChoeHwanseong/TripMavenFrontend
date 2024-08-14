@@ -7,95 +7,73 @@ import { Box } from '@mui/material';
 const GuideAskDetailsView = () => {
 
     const { id } = useParams();
-    const [inquiries, setInquiries] = useState([]);
-    const [hoveredRow, setHoveredRow] = useState(null);
+    const [inquiry, setInquiry] = useState(null);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         const getCSData = async () => {
-          try {
-            const fetchedData = await csfetchData();
- 
-            setInquiries(fetchedData);
-          } catch (error) {
-            console.error('에러났당', error);
-          }
+            try {
+                const fetchedData = await csfetchData(id);
+                setInquiry(fetchedData);
+            } catch (error) {
+                console.error('에러났당', error);
+            }
         };
-      
-    getCSData();
-    }, [id]);
-    
-    const handleMouseEnter = (index) => {
-        setHoveredRow(index);
-    };
-    
-    const handleMouseLeave = () => {
-        setHoveredRow(null);
-    }
-    
 
+        getCSData();
+    }, [id]);
+
+    if (!inquiry) {
+        return <div>로딩중</div>; {/* 이코드 지우면 inquery.id 가져올때 오류발생할수도있음 */ }
+    }
 
     return (
-        <div className={styles.inquiryDetails}>
-            <div className={styles.title}>
-                <h1>문의 내역<small className={styles.titlesmall}>상세보기</small></h1>
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <h1 className={styles.title}>문의 내역<small className={styles.titleSmall}>상세보기</small></h1>
+                <button className={styles.inquiryButton} onClick={() => navigate('/guideAsk')}>문의 하기</button>
             </div>
+
             <table className={styles.table}>
                 <tbody>
-
-
-            {inquiries.map((inquiry, index) => (   
-                    <Box
-                    component="tr"
-                    key={index}
-                    onMouseEnter={() => handleMouseEnter(index)}
-                    onMouseLeave={handleMouseLeave}
-                    sx={{
-                      cursor: 'pointer',
-                      transition: 'background-color 0.3s',
-                      '&:hover': {
-                        color : 'black',
-                        backgroundColor: '#D0F0FF',
-                      },
-                    }}
-                  > 
-
-                    <tr>               
-                        <td>작성번호</td>
-                        <td>{inquiry.id}</td>
-                        <td>분류</td>
-                        <td>{inquiry.member.role}</td>
+                    <tr>
+                        <td className={styles.label}>작성번호</td>
+                        <td className={styles.value}>9622</td>
+                        <td className={styles.label}>분류</td>
+                        <td className={styles.value}>가이드</td>
                     </tr>
                     <tr>
-                        <td>아이디</td>
-                        <td>{inquiry.member.name}</td>
-                        <td>작성일</td>
-                        <td>{inquiry.member.createdAt}</td>
+                        <td className={styles.label}>아이디</td>
+                        <td className={styles.value}>park</td>
+                        <td className={styles.label}>작성일</td>
+                        <td className={styles.value}>2024-03-19</td>
                     </tr>
                     <tr>
-                        <td>제목</td>
-                        <td colSpan="3">{inquiry.title}</td>
+                        <td className={styles.label}>제목</td>
+                        <td className={styles.value} colSpan="3">가이드 등록을 했는데 게시글이 올라가지 않아요</td>
                     </tr>
                     <tr>
-                        <td>내용</td>
-                        <td colSpan="3">{inquiry.content}</td>
+                        <td className={styles.fullLabel} colSpan="4">내용</td>
                     </tr>
                     <tr>
-                        <td>답변</td>
-                        <td colSpan="3">{inquiry.comments}</td>
+                        <td className={styles.fullValue} colSpan="4">가이드 등록을 했는데 게시글이 올라가지 않아요.....내용 주세요</td>
                     </tr>
-
-                    </Box>))}
-
+                    <tr>
+                        <td className={styles.fullLabelDark} colSpan="4">답변</td>
+                    </tr>
+                    <tr>
+                        <td className={styles.fullValue} colSpan="4">으이궁 잘 좀 하지</td>
+                    </tr>
                 </tbody>
             </table>
-            <div className={styles.buttonContainer}>
-                <button className={styles.button}>수정 하기</button>
-                <button className={styles.button}>삭제 하기</button>
-                <button className={styles.button} onClick={()=>navigate('/guideaskdetails')}>목록</button>
+            <div className={styles.actions}>
+                <button className={styles.actionButton}>수정 하기</button>
+                <button className={styles.actionButton}>삭제 하기</button>
+                <button className={styles.actionButton} onClick={() => navigate('/guidemypagemypost')}>목록</button>
             </div>
         </div>
+
     );
 };
 

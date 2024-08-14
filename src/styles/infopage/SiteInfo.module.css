@@ -1,0 +1,76 @@
+/* SiteIntroduction.module.css */
+
+.container {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.headerImage {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+}
+
+.backgroundImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.content {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 80px;
+}
+
+.logoImgage {
+    margin-top: 10px;
+    width: 270px;
+    height: 60px;
+    margin-right: -280px;
+}
+
+.description {
+    font-size: 18px;
+    line-height: 1.5;
+    font-weight: bold;
+}
+
+.features {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.AI_Image {
+    width: 330px;
+    height: 230px;
+    margin-left: 120px;
+}
+
+.featureImage {
+    width: 330px;
+    height: 230px;
+    margin-right: 140px;
+}
+
+.featureText {
+    font-size: 18px;
+    line-height: 1.5;
+    font-weight: bold;
+}
+
+.text {
+    font-weight: bold;
+    font-size: 22px;
+    margin-top: 20px;
+}
