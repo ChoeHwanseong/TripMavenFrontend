@@ -24,7 +24,7 @@ const Home = () => {
       </div>
 
       <div className={styles.popularDestinations}>
-        <div className={styles.destinationsTitleviewAllButton}>
+        <div className={styles.destinationsTitleViewAllButton}>
           <h2 className={styles.destinationsTitle}>인기 여행지</h2>
           <button className={styles.viewAllButton} onClick={() => navigate('/product')}>모두보기</button>
         </div>
