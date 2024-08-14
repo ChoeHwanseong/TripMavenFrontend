@@ -17,7 +17,7 @@ const Home = () => {
         />
         <input
           type="text"
-          placeholder="날짜를 선택해주세요"
+          placeholder="일수를 선택해주세요"
           className={styles.searchInput}
         />
         <button className={styles.searchButton}>검색</button>
