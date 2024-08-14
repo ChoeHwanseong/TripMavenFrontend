@@ -42,6 +42,8 @@ import GuideAskDetailsView from './pages/guidemypage/GuideAskDetailsView';
 import GuideAskUpdate from './pages/guidemypage/GuideAskUpdate';
 import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuidePost from './pages/guidemypage/GuidePost';
+import SiteIntroduction from './pages/infopage/SiteInfo';
+import FAQ from './pages/csboard/FAQ';
 
 function App() {
 
@@ -87,8 +89,8 @@ function App() {
 
         <Route path='/aiservice' element={<AIService/>}/>
         <Route path="/cs" element={<CSBoard/>}/>
-
-
+        <Route path="/siteinfo" element={<SiteIntroduction/>}/>
+        <Route path="/faq" element={<FAQ/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
 
