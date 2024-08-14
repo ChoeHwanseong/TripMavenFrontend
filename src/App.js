@@ -87,7 +87,7 @@ function App() {
 
         <Route path='/aiservice' element={<AIService/>}/>
         <Route path="/cs" element={<CSBoard/>}/>
-        <Route path="/faq" element={<FAQ />}/>
+
 
         <Route path="/login" element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
@@ -95,7 +95,7 @@ function App() {
         <Route path='/registerguide' element={<RegisterGuide/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
         <Route path='/termsservice' element={<TermsService/>}/>
-        <Route path='/siteinfo' element={<SiteIntroduction />}/>
+
         <Route path='/paymentproc' element={<OrderPopup/>}/>
         <Route path='/payment' element={<PaymentForm/>}/>
         <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
