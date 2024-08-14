@@ -1,17 +1,47 @@
 // PostManagementPage.js
-import React from 'react';
-
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../styles/guidemypage/GuideMyPageMyPost.module.css';
+import { Box } from '@mui/material';
+import { productFetchAllData } from '../../utils/productData';
+
+
 const GuideMyPageMyPost = () => {
+  const [posts, setPosts] = useState(null);
+  const [hoveredRow, setHoveredRow] = useState(null);
+
   const navigate = useNavigate();
 
-  //나중에 db에서 불러오는 리스트
-  const posts = [
-    { id: 9621, location: '부산', title: '부산', date: '2024-08-01', status: '평가 완료', registration: '등록', likes: 9 },
-    { id: 1212, location: '제주도', title: '제주도', date: '2023-12-31', status: '평가 완료', registration: '등록', likes: 2 },
-    { id: 7681, location: '경주', title: '[경주 2박 3일] 경주월드#불국사#이금철 식당', date: '2024-03-19', status: '평가 대기', registration: '미등록', likes: 0 },
-  ];
+  useEffect(() => {
+    const getPostData = async () => {
+      try {
+        const fetchData = await productFetchAllData();
+        console.log('fetchData: ',fetchData);
+        setPosts(fetchData);
+      } catch (error) {
+        console.error('에러났당', error);
+      }
+    };
+
+    getPostData();
+  }, []);
+
+  const handleClick = (posts) => {
+    navigate(`/guidemypagemypostdetails/${posts.id}`,{state:posts});
+  };
+
+  const handleMouseEnter = (index) => {
+    setHoveredRow(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredRow(null);
+  }
+
+  if (!posts) {
+    return <div>로딩중</div>; 
+  }
+
 
   return (
     <div className={styles.container}>
@@ -35,17 +65,33 @@ const GuideMyPageMyPost = () => {
             </tr>
           </thead>
           <tbody>
-            {posts.map((post) => (
-              <tr key={post.id}>
+
+          {posts.map((post, index) => (
+            <Box
+              component="tr"
+              key={index}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
+              onClick={() => handleClick(post)}
+              sx={{
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s',
+                  '&:hover': {
+                    color : 'black',
+                    backgroundColor: '#D0F0FF',
+                  },
+                }}
+              >
                 <td>{post.id}</td>
-                <td>{post.location}</td>
-                <td onClick={()=>navigate('/guidemypagemypostdetails')}><div className={styles.postLinkPointer}>{post.title}</div></td>
-                <td>{post.date}</td>
-                <td>{post.status}</td>
-                <td>{post.registration}</td>
-                <td>{post.likes}</td>
-              </tr>
-            ))}
+                <td>{post.city}</td>
+                <td>{post.title}</td>
+                <td>{post.createdAt.split('T')[0]}</td>
+                <td>{post.isEvaluation}</td>
+                <td>{post.isActive?'유':'무'}</td>
+                <td>0</td>
+              </Box>
+              ))}
+            
           </tbody>
         </table>
 

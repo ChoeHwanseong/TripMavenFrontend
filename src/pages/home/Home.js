@@ -32,7 +32,7 @@ const Home = () => {
           {['부산', '제주', '서울', '강릉', '가평'].map((city, index) => (
             <div key={index} className={styles.destinationCard}>
               <img
-                src={`./path/to/image${index + 1}.jpg`} // replace with actual paths
+                src={`/images/mainpage/${index+1}.png`} // 시발 한글 못읽어
                 alt={city}
                 className={styles.destinationImage}
               />

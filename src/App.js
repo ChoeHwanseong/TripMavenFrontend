@@ -41,8 +41,7 @@ import MemberList from './pages/adminmypage/MemberList';
 import GuideAskDetailsView from './pages/guidemypage/GuideAskDetailsView';
 import GuideAskUpdate from './pages/guidemypage/GuideAskUpdate';
 import GuideAsk from './pages/guidemypage/GuideAsk';
-import FAQ from './pages/csboard/FAQ';
-import SiteIntroduction from './pages/infopage/SiteInfo';
+import GuidePost from './pages/guidemypage/GuidePost';
 
 function App() {
 
@@ -63,7 +62,7 @@ function App() {
           <Route path='/adminask' element={<AdminAsk/>}/>
           <Route path='/memberlist' element={<MemberList/>}/>
           
-          <Route path='/guidemypagemypostdetails' element={<GuideMyPageMyPostDetails/>}/>
+          <Route path='/guidemypagemypostdetails/:id' element={<GuideMyPageMyPostDetails/>}/>
           <Route path='/guidemypost' element={<GuideMyPageMyPost/>}/>
           <Route path='/guideaskdetails' element={<GuideAskDetails/>}/>
   
@@ -83,11 +82,12 @@ function App() {
 
           <Route path="/guideAsk" element={<GuideAsk />} />
           <Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />
+          <Route path='/guidePost' element={<GuidePost/>}/>
         </Route>
 
         <Route path='/aiservice' element={<AIService/>}/>
         <Route path="/cs" element={<CSBoard/>}/>
-        <Route path="/faq" element={<FAQ />}/>
+
 
         <Route path="/login" element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
@@ -95,7 +95,7 @@ function App() {
         <Route path='/registerguide' element={<RegisterGuide/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
         <Route path='/termsservice' element={<TermsService/>}/>
-        <Route path='/siteinfo' element={<SiteIntroduction />}/>
+
         <Route path='/paymentproc' element={<OrderPopup/>}/>
         <Route path='/payment' element={<PaymentForm/>}/>
         <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
