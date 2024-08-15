@@ -49,10 +49,6 @@ import AskDetails from './pages/askpage/Askdetails';
 import AskDetailsView from './pages/askpage/AskDetailsView';
 import AskUpdate from './pages/askpage/AskUpdate';
 
-import GuideAskUpdates from './pages/guidemypage/GuideAskUpdates';
-
-import AskAll from './pages/askpage/AskAll';
-import AskDetailsView from './pages/askpage/AskDetailsView';
 
 
 function App() {
@@ -85,10 +81,8 @@ function App() {
   
           {/*<Route path='/guideask' element={<GuideAsk/>}/>*/}
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
-          <Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />
           <Route path="/guideAsk" element={<GuideAsk />} />
-          <Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />
-          <Route path="/guideaskupdates/:id" element={<GuideAskUpdates/>} />
+        
           <Route path='/guidePost' element={<GuidePost/>}/>
 
           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
