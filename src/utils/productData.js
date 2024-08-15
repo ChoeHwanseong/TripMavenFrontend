@@ -43,9 +43,28 @@ export const productFetchTitleAndContent = async (keyword) => {
   }
 }
 
-export const createPost = async () => {
+export const createPost = async (data) => {
   try {
-    const res = await axios.post('/product');
+    console.log('수정된 데이타: ',data);
+    console.log('수정된 데이타 제목: ',data.title);
+    console.log('수정된 데이타 내용: ',data.content);
+    console.log('수정된 데이타 회원번호: ',data.members_id);
+    const res = await axios.post('/product',data);
+    return res.data;
+  } catch (error) {
+    console.error('에러났당', error);
+    throw error; 
+  }
+};
+
+
+export const updatePost = async (data) => {
+  try {
+    console.log('수정된 데이타: ',data);
+    console.log('수정된 데이타 제목: ',data.title);
+    console.log('수정된 데이타 내용: ',data.content);
+    console.log('수정된 데이타 회원번호: ',data.members_id);
+    const res = await axios.put(`/product/${data.members_id}`,data);
     return res.data;
   } catch (error) {
     console.error('에러났당', error);

@@ -49,6 +49,7 @@ import AskDetails from './pages/askpage/Askdetails';
 import AskDetailsView from './pages/askpage/AskDetailsView';
 import AskUpdate from './pages/askpage/AskUpdate';
 import ReviewDetails from './pages/usermypage/UserReviewDetails';
+import GuideUpdatePost from './pages/guidemypage/GuideUpdatePost';
 
 
 
@@ -84,8 +85,9 @@ function App() {
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
           <Route path="/guideAsk" element={<GuideAsk />} />
         
-          <Route path='/guidePost' element={<GuidePost/>}/>
-
+          <Route path='/guidePost/:id' element={<GuidePost/>}/>
+          <Route path='/guideUpdatePost/:id' element={<GuideUpdatePost/>}/>
+          
           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
           <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
            */}
