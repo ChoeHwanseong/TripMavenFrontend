@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from '../styles/components/Header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { menuData } from '../config/MyPageEndPoint';
+import { RoleContext } from './context/roleContext';
 
 
 const Header = () => {
     const navigate = useNavigate();
-
-    const [role, setRole] = useState('admin');
-    const [menuList, setMenuList] = useState(menuData[role]);
-    useEffect(()=>{
-        setMenuList(menuData[role])
-    }, [role])
+    const {role, setRole} = useContext(RoleContext);
+    
+    let menuList = menuData[role]
     
     //role에 따라서 마이페이지에 있는 메뉴 변경하기
     //로그인한 사용자 role 가져오기
 
-    //console.log(role); //디버그용
-    //console.log(menuList); //디버그용
+    console.log(role); //디버그용
+    console.log(menuList); //디버그용
     return (
         <header className={styles.header}>
             <div className={styles.headerFrame}>
