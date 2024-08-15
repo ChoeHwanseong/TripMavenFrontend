@@ -4,26 +4,19 @@ import styles from '../../styles/productPage/ProductBoard.module.css';
 import { useLocation } from 'react-router-dom';
 import { productFetchTitleAndContent } from '../../utils/productData';
 import { RoleContext } from '../../components/context/roleContext';
-import Modal from '../../components/loading/modal';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const ProductBoard = () => {
     const location = useLocation();
-    //context로 template.js에서 관리하고 있음
-    //검색어
+    //검색어를 context로 관리함. template.js에 있음
     const {searchKeyword, setSearchKeyword} = useContext(RoleContext);
 
-    const [products, setProducts] = useState([]); // 상품 목록을 관리하는 상태 변수
+    const [products, setProducts] = useState([]); // 상품 목록 스테이트
     const [hasMore, setHasMore] = useState(true); // 더 불러올 데이터가 있는지 여부를 관리하는 상태 변수
     const { ref, inView } = useInView({
         threshold: 0, // 요소가 100% 보일 때 트리거
     });
-
-    const queryParams = new URLSearchParams(location.search);
-    const city = queryParams.get('city');
-
-    //로딩 화면을 모달로 띄우기
-    const [showModal, setShowModal] = useState(false);
-
 
     // 데이터를 더 가져오는 함수
     const fetchMoreData = async () => {
@@ -33,26 +26,20 @@ const ProductBoard = () => {
             return;
         }
 
-        // 데이터를 가져오는 것을 시뮬레이션(더미데이터 나중에 지울거임)
-        const newProducts = Array.from({ length: 20 }, (_, index) => ({
-            title: `Product ${products.length + index + 1}`, // 새로운 제품 제목
-            description: 'This is a description.', // 제품 설명
-            image: 'https://via.placeholder.com/150', // 이미지 URL (placeholder 이미지)
-            tags: ['경주', '기차', '연인', '친구', '황리단길'], // 태그(지금은 디폴트지만 내용에 맞게 가져와야 함)
-            rating: (Math.random() * 5).toFixed(1), // 0부터 5까지의 무작위 평점
-            reviewCount: Math.floor(Math.random() * 100) // 0부터 100까지의 무작위 리뷰 수
-        }));
+        //필요항목
+        // tags         //태그(product엔터티에 추가해야함)(#으로구분해서 적는걸로, 나중에 #으로 스플릿)
+        // rating       //점수(리뷰점수인가여? ai점수인가여?)
+        // reviewCount  //리뷰 수(고객 리뷰에서 카운트해야함)
+        // image        //대표 이미지 URL (placeholder 이미지)(없으면 기본 이미지)
 
         const results = await productFetchTitleAndContent(searchKeyword);
         console.log('검색 결과:', results);
-        const list = [];
-        list.push(...results);
 
         // 기존 제품 목록에 새로운 제품을 추가하여 상태를 업데이트
-        setProducts((prevProducts) => [...prevProducts, ...list]);
+        setProducts((prevProducts) => [...prevProducts, ...results]);
     };
 
-    // 컴포넌트가 처음 렌더링될 때 fetchMoreData 함수를 호출하여 초기 데이터를 가져옵니다.
+    // 컴포넌트가 처음 렌더링될 때 fetchMoreData 함수를 호출하여 초기 데이터 가져오기
     useEffect(() => {
         fetchMoreData();
     }, []);
@@ -70,7 +57,7 @@ const ProductBoard = () => {
                 <h1>상품 게시판</h1>
                 <h3>'{searchKeyword}'의 대한 검색 결과 입니다</h3>
             </div>
-            {showModal && <Modal/>}
+            
             <div className={styles.productList}>
                 {/* 제품 목록을 렌더링 */}
                 {products && products.map((product, index) => (
@@ -81,7 +68,7 @@ const ProductBoard = () => {
                             {/* 제품 제목 */}
                             <h3>{product.title}</h3>
                             {/* 제품 설명 */}
-                            <p>{product.description}</p>
+                            <p>{product.content}</p>
                             {/* 제품 태그 */}
                             <div className={styles.tags}>
 
@@ -101,7 +88,10 @@ const ProductBoard = () => {
                 ))}
             </div>
             <div ref={ref} className={styles.loadingIndicator}>
-                {hasMore && <p>Loading...</p>}
+                {hasMore && 
+                <Box>
+                    <CircularProgress />
+                </Box>}
             </div>
         </div>
     );

@@ -29,9 +29,13 @@ const Header = () => {
     const location = useLocation();
     
     const navigate = useNavigate();
-    // 입력한 검색어 관리
+    
+    //로그인한 사용자 role 가져오기(로그인 구현하면 변경할 예정)
+    // + 입력한 검색어 관리(전역 스테이트)
     const {role, setRole,searchKeyword, setSearchKeyword} = useContext(RoleContext);
-    //로그인한 사용자 role 가져오기
+    // !location.pathname.includes('product') && setSearchKeyword('')
+    
+    //role에 따라서 마이페이지에 있는 메뉴 변경하기
     let menuList = menuData[role]
 
     // Modal 상태 관리
@@ -39,38 +43,21 @@ const Header = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-
-    
-   
-
     // 검색어에 따라 searchPost 상태 업데이트
     const handleInputPost = (event) => {
         setSearchKeyword(event.target.value);
     };
 
-    // enter를 이용한 검색
+    // 엔터키로 이동
     const handleEnterPress = (event) => {
         //console.log(event.key); //디버그용
-        if (event.key === 'Enter') {
-        performSearch();
-        
-        }
+        if (event.key === 'Enter') handleNavigatePage();
     }
-    // 검색
-    const performSearch = async () => {
+    const handleNavigatePage = ()=>{
         console.log('검색 실행:', searchKeyword);
-        try {
-            //const results = await productFetchTitleAndContent(searchPost);
-            //console.log('검색 결과:', results);
-            navigate('/product'); 
-        } catch (error) {
-            console.error('검색 중 에러 발생:', error);
-        }
-    };
+        navigate('/product');
+    }
     
-    //role에 따라서 마이페이지에 있는 메뉴 변경하기
-    
-   
     //console.log(role); //디버그용
     //console.log(menuList); //디버그용
 
@@ -87,16 +74,16 @@ const Header = () => {
                             type="text"
                             className={styles.searchInput}
                             placeholder="검색어를 입력하세요"
-                            value={ searchKeyword}
+                            value={searchKeyword}
                             onChange={handleInputPost}
                             onKeyDown={handleEnterPress}
                         />
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.icon} onClick={()=>performSearch()}/>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.icon} onClick={handleNavigatePage}/>
                     </div>
                     <div className={styles.navFrame}>
                         <div className={styles.navItems}>
-                            <button className={styles.navButton} onClick={() => navigate('/home')}>Home</button>
-                            <button className={styles.navButton} onClick={() => navigate('/aiservice')}>AI 서비스</button>
+                            <button className={styles.navButton} onClick={() => {setSearchKeyword(''); navigate('/home')}}>Home</button>
+                            <button className={styles.navButton} onClick={() => {setSearchKeyword(''); navigate('/aiservice')}}>AI 서비스</button>
                             <div className={styles.dropdown}>
                                 <button className={styles.dropdownButton}>
                                     마이 페이지
@@ -122,14 +109,14 @@ const Header = () => {
                                         //console.log(item); //디버그용
                                         //console.log(item.name); //디버그용
                                         if(item.name){
-                                            return <a key={index}><button className={styles.navButton1} onClick={()=>navigate(item.path)}>{item.name}</button></a>
+                                            return <a key={index}><button className={styles.navButton1} onClick={()=>{setSearchKeyword(''); navigate(item.path)}}>{item.name}</button></a>
                                         }
                                     })}
                                 </div>
                             </div>
                             <button className={styles.navButton} onClick={handleOpen}>가이드 등록</button>
                         </div>
-                        <button className={styles.loginButton} onClick={() => navigate('/login')}>
+                        <button className={styles.loginButton} onClick={() => {setSearchKeyword(''); navigate('/login')}}>
                             로그인
                         </button>
                     </div>

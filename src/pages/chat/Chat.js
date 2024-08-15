@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faHeadset } from '@fortawesome/free-solid-svg-icons'; // 필요한 아이콘 임포트
 import axios from 'axios';
 
-      // 발급받은 OpenAI API 키를 변수로 저장
-      const apiKey = 'sk-3Psu9bGHtzwsaoZI15OyUanv23VvEQCa5xqxkSZrOGT3BlbkFJ85cTMIN2rNJkT6L6ysy0QWIGpWGvtUyGTa41GGoPYA';
+// 발급받은 OpenAI API 키를 변수로 저장
+const apiKey = 'sk-3Psu9bGHtzwsaoZI15OyUanv23VvEQCa5xqxkSZrOGT3BlbkFJ85cTMIN2rNJkT6L6ysy0QWIGpWGvtUyGTa41GGoPYA';
 
 const Chat = () => {
   const [isVisible, setIsVisible] = useState(false); // 챗봇 팝업의 표시 상태를 관리하는 상태 변수
@@ -19,7 +19,7 @@ const Chat = () => {
   };
 
   // 메시지를 전송하는 함수
-  const sendMessage =  async() => {
+  const sendMessage = async () => {
     const chatBody = document.getElementById('chatBody'); // 채팅 메시지를 표시할 요소
     const message = chatInputRef.current.value; // 입력 필드에서 메시지 값을 가져옴
 
@@ -34,48 +34,48 @@ const Chat = () => {
 
       try {
         const apiResponse = await axios.post(
-            'https://api.openai.com/v1/chat/completions',
-            {
-                model: 'gpt-4',
-                messages: [
-                    { role: 'user', content: message }  
-                ]
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json'
-                }
+          'https://api.openai.com/v1/chat/completions',
+          {
+            model: 'gpt-4',
+            messages: [
+              { role: 'user', content: message }
+            ]
+          },
+          {
+            headers: {
+              'Authorization': `Bearer ${apiKey}`,
+              'Content-Type': 'application/json'
             }
+          }
         );
-    
+
         const botAnswer = apiResponse.data.choices[0].message.content.trim();
-    
+
         const botMessageElement = document.createElement('div');
         botMessageElement.classList.add(styles.message, styles.received);
         botMessageElement.innerHTML = `<p>${botAnswer}</p>`;
         chatBody.appendChild(botMessageElement);
-  
+
         await axios.post('/chatbot', {
-            inquery: message,
-            answer: botAnswer,
+          inquery: message,
+          answer: botAnswer,
         });
-    
-    } catch (error) {
+
+      } catch (error) {
         if (error.response) {
-            console.error('Error response data:', error.response.data);
-            console.error('Error status:', error.response.status);
-            console.error('Error headers:', error.response.headers);
+          console.error('Error response data:', error.response.data);
+          console.error('Error status:', error.response.status);
+          console.error('Error headers:', error.response.headers);
         } else if (error.request) {
-            console.error('No response received:', error.request);
+          console.error('No response received:', error.request);
         } else {
-            console.error('Error setting up the request:', error.message);
+          console.error('Error setting up the request:', error.message);
         }
-    }
+      }
       chatBody.scrollTop = chatBody.scrollHeight;
     }
   };
- 
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       // Enter 키를 누르면 메시지 전송 함수 호출
@@ -116,7 +116,7 @@ const Chat = () => {
               <div className={`${styles.message} ${styles.received}`}>
                 <p>도와드릴게 있을까요?</p>
               </div>
-           
+
             </div>
             <footer className={styles.chatFooter}>
               <input type="text" placeholder="메세지를 입력하세요" ref={chatInputRef} className={styles.chatInput} />

@@ -10,8 +10,8 @@ import { fetchData } from '../../utils/memberData';
 const MemberList = () => {
   const [data, setData] = useState([]);
   const [hoveredRow, setHoveredRow] = useState(null);
-
   const navigate = useNavigate();
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -39,7 +39,6 @@ const MemberList = () => {
 
   return (
     <div className={styles.container}>
-
       <div className={styles.content}>
         <div className={styles.header}>
           <h1 className={styles.title}>회원 목록</h1>
@@ -88,9 +87,9 @@ const MemberList = () => {
                   <td>{user.email}</td>
                   <td>{user.telNumber}</td>
                   <td>{user.address}</td>
-                  <td>{user.createdAt.split('T')[0]}</td> {/* 시간까지나옴 스플릿으로 앞부분만뿌려주기 */}
+                  <td>{user.createdAt.split('T')[0]}</td> {/* 시간까지나옴 스플릿으로 앞부분만뿌려주기(해결) */}
                   <td>{user.guidelicense?'무':'유'}</td> {/* 자격증 디폴트값 무 false면 유 */} 
-                </Box>       
+                </Box>
             ))} 
           </tbody>
         </table>

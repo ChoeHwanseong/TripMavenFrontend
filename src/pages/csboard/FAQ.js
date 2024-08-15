@@ -185,12 +185,12 @@ export default function CustomizedAccordions() {
   ];
 
   return (
-    <Box sx={{ width: '100%', maxWidth: '900px', margin: 'auto' , marginTop: 25}}>
-      <Typography>
-      <div style={{ fontSize: '40px', color: 'black', marginBottom: 15, marginTop:20 ,paddingLeft: '20px'}}>FAQ</div>
+    <Box sx={{ width: '100%', maxWidth: '1000px', margin: 'auto', marginTop: 25 }}>
+      <Typography variant="h3">
+        <div style={{ color: 'black', marginBottom: 15, marginTop: '-30px', paddingLeft: '20px' }}>FAQ</div>
       </Typography>
       <Box sx={{ width: '100%' }}>
-        <AppBar position="static" color="default" elevation={1} sx={{ width: '100%' , maxWidth: '853px',margin: 'auto' ,border: 'solid' , borderWidth :'0.5px' , borderColor : 'lightgray' ,marginBottom : 0}}>
+        <AppBar position="static" color="default" elevation={1} sx={{ width: '100%', maxWidth: '950px', margin: 'auto', border: 'solid', borderWidth: '0.5px', borderColor: 'lightgray', marginBottom: 0 }}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -202,45 +202,45 @@ export default function CustomizedAccordions() {
                 backgroundColor: '#003CFF',
               },
               '& .Mui-selected': {
-                color: '#003CFF', 
+                color: '#0066FF',
               },
             }}
           >
-            
+
             {faqContent.map((tab, index) => (
-              <Tab key={index} label={tab.tabTitle} {...a11yProps(index)} sx={{ fontSize: '17px' }}/>
+              <Tab key={index} label={tab.tabTitle} {...a11yProps(index)} sx={{ fontSize: '17px' }} />
             ))}
           </Tabs>
         </AppBar>
         <SwipeableViews
-  axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-  index={value}
-  onChangeIndex={handleChangeIndex}
-  style={{ width: '100%' }}
-  animateTransitions={false} // 애니메이션 비활성화
->
-  {faqContent.map((tab, index) => (
-    <TabPanel value={value} index={index} dir={theme.direction} key={index}>
-      {tab.questions.map((question, qIndex) => (
-        <Accordion
-          expanded={expanded === `panel${qIndex}`}
-          onChange={handleAccordionChange(`panel${qIndex}`)}
-          key={qIndex}
+          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          index={value}
+          onChangeIndex={handleChangeIndex}
+          style={{ width: '100%' }}
+          animateTransitions={false} // 애니메이션 비활성화
         >
-          <AccordionSummary
-            aria-controls={`panel${qIndex}d-content`}
-            id={`panel${qIndex}d-header`}
-          >
-            <Typography>{question}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{tab.answers[qIndex]}</Typography>
-          </AccordionDetails>
-        </Accordion>
-      ))}
-    </TabPanel>
-  ))}
-</SwipeableViews>
+          {faqContent.map((tab, index) => (
+            <TabPanel value={value} index={index} dir={theme.direction} key={index}>
+              {tab.questions.map((question, qIndex) => (
+                <Accordion
+                  expanded={expanded === `panel${qIndex}`}
+                  onChange={handleAccordionChange(`panel${qIndex}`)}
+                  key={qIndex}
+                >
+                  <AccordionSummary
+                    aria-controls={`panel${qIndex}d-content`}
+                    id={`panel${qIndex}d-header`}
+                  >
+                    <Typography>{question}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>{tab.answers[qIndex]}</Typography>
+                  </AccordionDetails>
+                </Accordion>
+              ))}
+            </TabPanel>
+          ))}
+        </SwipeableViews>
       </Box>
     </Box>
   );
