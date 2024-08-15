@@ -68,7 +68,6 @@ const AdminAskDetailsView = () => {
             </table>
             <div className={styles.actions}>
                 <button className={styles.actionButton} onClick={() => navigate(`/adminAnswer/${inquiry.id}`)}>답변 등록하기</button>
-                <button className={styles.actionButton} onClick={() => navigate(`/guideaskupdate/${inquiry.id}`)}>답변 수정하기</button>
                 <button className={styles.actionButton} onClick={() => navigate('/adminask')}>목록</button>
             </div>
         </div>
