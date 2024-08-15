@@ -2,8 +2,15 @@ import React from 'react';
 import styles from '../../../styles/guidemypage/guidemypageaiservice/AIService.module.css';
 import RadarChart from './RandarChart';
 import ScoreCircle from './ScoreCircle';
+import { useNavigate } from 'react-router-dom';
 
 const AIService = () => {
+
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate('/aiservice'); // AIService 페이지로 이동
+    };
     const scores = [
         { period: '가장 마지막', score: 60 },
         { period: '최근 3개월', score: 70 },
@@ -27,7 +34,7 @@ const AIService = () => {
             </div>
             <div className={styles.scoreContainer}>
                 <ScoreCircle score={60} />
-                <button className={styles.button}>AI 교육 들으러가기</button>
+                <button className={styles.button} onClick={handleClick}>AI 교육 들으러가기</button>
             </div>
             <div className={styles.tableContainer}>
                 <table className={styles.table}>
