@@ -87,7 +87,7 @@ const GuideMyPageMyPostDetails = () => {
 
         <div className={styles.description}>
           <h2>{state.title}</h2>
-          <p className={styles.tags}>#제주 #유도 #돌레길 #가족여행</p>
+          <p className={styles.tags}>{state.hashtag}</p>
         </div>
 
         <div className={styles.reviewSection}>
@@ -169,29 +169,17 @@ const GuideMyPageMyPostDetails = () => {
           <div className={styles.details}>
             <div className={styles.row}>
               <span className={styles.label}>호텔</span>
-              <span className={styles.value}>제주 신라 호텔</span>
+              <span className={styles.value}>{state.hotel}</span>
             </div>
             <div className={styles.row}>
               <span className={styles.label}>주소</span>
-              <span className={styles.value}>서귀포 중문관광로 72번길 75</span>
-            </div>
-            <div className={styles.row}>
-              <span className={styles.label}>연락처</span>
-              <span className={styles.value}>064-735-5114</span>
-            </div>
-            <div className={styles.row}>
-              <span className={styles.label}>홈페이지</span>
-              <span className={styles.value}>
-                <a href="https://www.shillahotels.com" target="_blank" rel="noopener noreferrer">
-                  The Shilla Hotels & Resorts
-                </a>
-              </span>
+              <span className={styles.value}>{state.hotelAd}</span>
             </div>
           </div>
         </div>
 
         <div className={styles.actions}>
-          <button className={styles.actionButton}>수정 하기</button>
+          <button className={styles.actionButton} onClick={()=>{navigate(`/guideUpdatePost/${state.id}`)}} >수정 하기</button>
           <button className={styles.actionButton}>삭제 하기</button>
           <button className={styles.actionButton} onClick={() => navigate('/guidemypagemypost')}>목록</button>
         </div>
