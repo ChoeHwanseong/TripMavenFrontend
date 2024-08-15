@@ -2,9 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styles from '../styles/components/Header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
-
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import { productFetchTitleAndContent } from '../utils/productData';
 import { menuData } from '../config/MyPageEndPoint';
 import { RoleContext } from './context/roleContext';
