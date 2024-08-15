@@ -8,9 +8,6 @@ import Login from "./pages/login/LogIn";
 import CSBoard from './pages/csboard/CSBoard';
 import Signup from './pages/login/SignUp';
 
-
-
-
 import UserReview from './pages/usermypage/UserReview';
 
 import AdminAsk from './pages/adminmypage/AdminAsk';
@@ -33,7 +30,7 @@ import MyPageTemplate from './pages/mypage/MyPageTemplate';
 import MypageProfile from './pages/mypage/MyPageProfile';
 import UserLike from './pages/usermypage/UserLike';
 
-import GuideAskDetails from './pages/guidemypage/GuideAskDetails';
+
 
 
 import MemberList from './pages/adminmypage/MemberList';
@@ -45,14 +42,18 @@ import FAQ from './pages/csboard/FAQ';
 import ComplaintForm from './pages/report/ComplaintForm';
 import AdminAskDetailsView from './pages/adminmypage/AdminAskDetailsView';
 import AdminAnswer from './pages/adminmypage/AdminAnswer';
-import UserAskPage from './pages/usermypage/UserAskPage';
-<<<<<<< HEAD
+
+
 import AskAll from './pages/askpage/AskAll';
 import AskDetails from './pages/askpage/Askdetails';
 import AskDetailsView from './pages/askpage/AskDetailsView';
 import AskUpdate from './pages/askpage/AskUpdate';
-=======
->>>>>>> 857e02c40140226a201eb427397d74f2addece2b
+
+import GuideAskUpdates from './pages/guidemypage/GuideAskUpdates';
+
+import AskAll from './pages/askpage/AskAll';
+import AskDetailsView from './pages/askpage/AskDetailsView';
+
 
 function App() {
 
@@ -102,6 +103,10 @@ function App() {
 
           <Route path='/bigChat' element={<BigChat/>}/>
           {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
+
+
+          <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
+          <Route path='/askall' element={<AskAll/>}/>
           
           <Route path='/bigChat' element={<BigChat/>}/>
           <Route path="/mypageprofile/:id" element={<MypageProfile />} />
