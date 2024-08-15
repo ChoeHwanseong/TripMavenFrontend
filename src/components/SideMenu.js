@@ -1,32 +1,38 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from '../styles/components/SideMenu.module.css';
 import { menuData } from '../config/MyPageEndPoint';
+import { useContext } from 'react';
+import { RoleContext } from './context/roleContext';
 
 //메뉴 데이터 구조
 /*
     export const menuData = {
         admin: [
-            { name: "내 정보 관리", path: "/adminprofile" },
+            { name: "내 정보 관리", path: "/mypageprofile/2" },
             { name: "회원 목록", path: "/memberlist" },
             { name: "1:1문의 내역", path: "/adminask" },
             { name: "신고 내역", path: "/adminreport" }
         ],
         guide: [
-            { name: "내 정보 관리", path: "/guideprofile" },
-            { name: "내 게시물 관리", path: "/guidemypagemypostdetails" },
-            { name: "1:1문의 내역", path: "/guidemypageinquirydetails" },
-            { name: "채팅방", path: "/bigChat" },
-            { name: "AI 서비스", path: "/guidemypageaiservice" }
+            { name: "내 정보 관리", path: "/mypageprofile/2" },
+            { name: "내 게시물 관리", path: "/guidemypost" },
+            { name: "1:1문의 내역", path: "/guideaskdetails" },
+            { name: "채팅방", path: "/bigchat" },
+            { name: "AI 서비스", path: "/guidemypageaiservice" },
+            {path: "/guidemypagemypostdetails" }, //내 게시물 상세보기는 메뉴 내용엔 없음
+            {path: "/guideask" },
+            {path: "/guideaskdetailsview"}
         ],
         user: [
-            { name: "내 정보 관리", path: "/userprofile" },
+            { name: "내 정보 관리", path: "/mypageprofile/2" },
             { name: "이용후기", path: "/userreview" },
             { name: "1:1문의 내역", path: "/userask" },
-            { name: "찜 목록", path: "/" },
-            { name: "채팅방", path: "/bigChat" }
+            { name: "찜 목록", path: "/userlike" },
+            { name: "채팅방", path: "/bigchat" }
         ]
     };
 */
+//이제 안써도 되는데 일단은 지우진 않음
 const DecideSideMenu = (nowPageEndPoint) => {
     for (let key in menuData) {
         let endPoints = menuData[key]
@@ -48,14 +54,17 @@ const DecideSideMenu = (nowPageEndPoint) => {
     }
 }
 
-const SideMenu = ({ role }) => {
+const SideMenu = () => {
+
+    const {role} = useContext(RoleContext);
+
 
     //endpoint 받아오기(location.pathname)
     const location = useLocation();
     const navigate = useNavigate();
 
     // 나중에 로그인 구현되면 DecideSideMenu함수 쓰지 않아도 토큰에서 role을 받아와서 뿌려주면 됨(role: admin, guide, user)
-    let menuItems = DecideSideMenu(location.pathname);
+    let menuItems = menuData[role]
 
     return <>
         <div className={styles.sidebar}>

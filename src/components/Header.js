@@ -1,17 +1,32 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from '../styles/components/Header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { menuData } from '../config/MyPageEndPoint';
+import { RoleContext } from './context/roleContext';
+
 
 const Header = () => {
     const navigate = useNavigate();
+    const {role, setRole} = useContext(RoleContext);
+    
+    let menuList = menuData[role]
+    
+    //role에 따라서 마이페이지에 있는 메뉴 변경하기
+    //로그인한 사용자 role 가져오기
 
+    console.log(role); //디버그용
+    console.log(menuList); //디버그용
     return (
         <header className={styles.header}>
             <div className={styles.headerFrame}>
                 <button className={styles.logoButton} onClick={() => navigate('/home')}>TripMaven</button>
+                <button style={{width:20+'px'}} onClick={()=>{setRole('user')}}>고객</button>
+                <button style={{width:20+'px'}} onClick={()=>{setRole('guide')}}>가이드</button>
+                <button style={{width:20+'px'}} onClick={()=>{setRole('admin')}}>관리자</button>
                 <div className={styles.nav}>
+                    
                     <div className={styles.inputstyle}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.icon}/>
                         <input
@@ -44,9 +59,14 @@ const Header = () => {
                                     </svg>
                                 </button>
                                 <div className={styles.dropdownContent}>
-                                    <a><button className={styles.navButton1} onClick={() => navigate('/mypageprofile')}>프로필</button></a>
-                                    <a><button className={styles.navButton1} onClick={() => navigate('/guideaskdetails')}>문의내역</button></a>
-                                    <a><button className={styles.navButton1} onClick={() => navigate('/logout')}>로그아웃</button></a>
+                                    {/* 마이페이지 메뉴 넣기 */}
+                                    {menuList && menuList.map((item, index) => {
+                                        //console.log(item); //디버그용
+                                        //console.log(item.name); //디버그용
+                                        if(item.name){
+                                            return <a key={index}><button className={styles.navButton1} onClick={()=>navigate(item.path)}>{item.name}</button></a>
+                                        }
+                                    })}
                                 </div>
                             </div>
                             <button className={styles.navButton} onClick={() => navigate('/registerguide')}>가이드 등록</button>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../../styles/login/Login.module.css';
 import { NavLink } from 'react-router-dom';
+import { FormLogin } from '../../utils/memberData';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -11,19 +12,45 @@ const Login = () => {
     const handlePasswordChange = (e) => setPassword(e.target.value);
     const handleAutoLoginChange = () => setAutoLogin(!autoLogin);
 
-    const handleLogin = () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
         const loginData = {
             email: email,
             password: password,
         };
+        try {
+            const response = await FormLogin(loginData);
+            console.log(response);
 
-        fetch('http://localhost:9099/loginProcess', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(loginData),
-        })
+            // 로그인 성공 시 처리
+            if (response.ok) {
+                window.location.href = '/home'; // 예시: 홈으로 리다이렉트
+            } else {
+                alert('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
+            }
+        } catch (error) {
+            console.error('로그인 요청 중 오류 발생:', error);
+        }
+
+        /*
+        const loginDataJson = JSON.stringify(loginData);
+
+        // FormData 생성
+        const formData = new FormData();
+
+        // JSON 데이터를 하나의 필드로 추가
+        formData.append('loginData', loginDataJson);*/
+        // const response = await FormLogin(formObject);
+
+        // console.log(response);
+        /*
+        fetch('http://localhost:9099/login', {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json',},
+            body: JSON.stringify(loginData)
+        },
+        console.log(loginData)
+        )
             .then(response => {
                 if (response.ok) {
                     window.location.href = '/home'; // 로그인 성공 시 홈으로 이동
@@ -31,7 +58,7 @@ const Login = () => {
                     alert('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
                 }
             })
-            .catch(error => console.error('로그인 요청 중 오류 발생:', error));
+            .catch(error => console.error('로그인 요청 중 오류 발생:', error));*/
     };
 
     const googleLogin = () => {

@@ -24,3 +24,14 @@ export const csfetchAllData = async () => {
     throw error; 
   }
 };
+
+export const csfetchUpdateData = async (id,updatedData) => {
+  try {
+    const res = await axios.put(`/cs/put/${id}`,updatedData);
+    return res.data;
+  }
+  catch (error) {
+    console.error('에러났당', error);
+    throw error; 
+  }
+};
