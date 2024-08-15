@@ -48,8 +48,6 @@ import ComplaintForm from './pages/report/ComplaintForm';
 import AdminAskDetailsView from './pages/adminmypage/AdminAskDetailsView';
 import AdminAnswer from './pages/adminmypage/AdminAnswer';
 import UserAskPage from './pages/usermypage/UserAskPage';
-import UserAskDetailsView from './pages/usermypage/UserAskDetailsView';
-import GuideAskUpdates from './pages/guidemypage/GuideAskUpdates';
 
 function App() {
 
@@ -93,14 +91,17 @@ function App() {
 
            {/* USER */}
           <Route path='/userreview' element={<UserReview/>}/>
-          <Route path='/userask' element={<UserAsk/>}/>
+          {/*<Route path='/userask' element={<UserAsk/>}/>*/}
           <Route path='/userlike' element={<UserLike/>}/>
           <Route path='/useraskpage' element={<UserAskPage/>}/>
           <Route path='/userAskDetailsView/:id' element={<UserAskDetailsView/>}/>
           
           <Route path='/bigChat' element={<BigChat/>}/>
           <Route path="/mypageprofile/:id" element={<MypageProfile />} />
-    
+
+          <Route path="/guideAsk" element={<GuideAsk />} />
+          <Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />
+          <Route path='/guidePost' element={<GuidePost/>}/>
         </Route>
         
         <Route path='/aiservice' element={<AIService/>}/>
@@ -109,6 +110,7 @@ function App() {
         <Route path="/faq" element={<FAQ/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
+        
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
