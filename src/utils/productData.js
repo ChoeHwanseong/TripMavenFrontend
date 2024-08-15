@@ -23,9 +23,10 @@ export const productFetchMyData = async (email) => {
   }
 };
 
-export const productFetchAllData = async () => {
+//상품목록 전체 얻어오기(20개씩 얻어오기)
+export const productFetchAllData = async (page) => {
   try {
-    const res = await axios.get('/product');
+    const res = await axios.get(`/product/all/${page}`);
     return res.data;
   } catch (error) {
     console.error('에러났당', error);
@@ -33,9 +34,21 @@ export const productFetchAllData = async () => {
   }
 };
 
-export const productFetchTitleAndContent = async (keyword) => {
+//제목 내용 검색(20개씩 얻어오기)
+export const productFetchTitleAndContent = async (keyword, page) => {
   try{
-    const res = await axios.get(`/product/titlencontent/${keyword}`);
+    const res = await axios.get(`/product/titlencontent/${keyword}?page=${page}`);
+    return res.data;
+  } catch(error) {
+    console.error('에러났땅',error)
+    throw error;
+  }
+}
+
+//도시로 검색(20개씩 얻어오기)
+export const productFetchCity = async (city, page) => {
+  try{
+    const res = await axios.get(`/product/city/${city}?page=${page}`);
     return res.data;
   } catch(error) {
     console.error('에러났땅',error)

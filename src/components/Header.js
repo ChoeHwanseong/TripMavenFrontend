@@ -33,7 +33,6 @@ const Header = () => {
     //로그인한 사용자 role 가져오기(로그인 구현하면 변경할 예정)
     // + 입력한 검색어 관리(전역 스테이트)
     const {role, setRole,searchKeyword, setSearchKeyword} = useContext(RoleContext);
-    // !location.pathname.includes('product') && setSearchKeyword('')
     
     //role에 따라서 마이페이지에 있는 메뉴 변경하기
     let menuList = menuData[role]
@@ -51,11 +50,11 @@ const Header = () => {
     // 엔터키로 이동
     const handleEnterPress = (event) => {
         //console.log(event.key); //디버그용
-        if (event.key === 'Enter') handleNavigatePage();
+        if (event.key === 'Enter') handleNavigatePage(event);
     }
-    const handleNavigatePage = ()=>{
+    const handleNavigatePage = (event)=>{
         console.log('검색 실행:', searchKeyword);
-        navigate('/product');
+        navigate(`/product?keyword=${searchKeyword}`);
     }
     
     //console.log(role); //디버그용

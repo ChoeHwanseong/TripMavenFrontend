@@ -1,8 +1,8 @@
 .container {
   margin-left: 25px;
   padding-top: 50px;  /* 헤더의 높이에 맞춰 패딩 조절 */
-  padding-bottom: 60px;  /* 푸터의 높이에 맞춰 패딩 조절 */
-  min-height: 100vh;  /* 컨테이너가 최소한 전체 뷰포트 높이를 차지하도록 설정 */
+  padding-bottom: 30px;  /* 푸터의 높이에 맞춰 패딩 조절 */
+  min-height: 81vh;  /* 컨테이너가 최소한 전체 뷰포트 높이를 차지하도록 설정 */
 }
 
 .searchInput {
