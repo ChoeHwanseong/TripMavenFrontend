@@ -48,6 +48,7 @@ import AskAll from './pages/askpage/AskAll';
 import AskDetails from './pages/askpage/Askdetails';
 import AskDetailsView from './pages/askpage/AskDetailsView';
 import AskUpdate from './pages/askpage/AskUpdate';
+import ReviewDetails from './pages/usermypage/UserReviewDetails';
 
 
 
@@ -91,6 +92,7 @@ function App() {
 
            {/* USER */}
           <Route path='/userreview' element={<UserReview/>}/>
+          <Route path='/reviewdetails' element={<ReviewDetails/>}/>
           {/*<Route path='/userask' element={<UserAsk/>}/>*/}
           <Route path='/userlike' element={<UserLike/>}/>
           {/*<Route path='/useraskpage' element={<UserAskPage/>}/>*/}

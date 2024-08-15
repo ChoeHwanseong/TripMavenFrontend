@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
-import styles from '../../styles/csboard/FAQ.module.css';
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import SwipeableViews from 'react-swipeable-views';
+import { useTheme } from '@mui/material/styles';
+import AppBar from '@mui/material/AppBar';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import MuiAccordion from '@mui/material/Accordion';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
@@ -42,16 +48,51 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
 
-export default function CustomizedAccordions() {
-  const [expanded, setExpanded] = useState(false);
-  const [activeTab, setActiveTab] = useState(0);
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
+  return (
+    <Typography
+      component="div"
+      role="tabpanel"
+      hidden={value !== index}
+      id={`action-tabpanel-${index}`}
+      aria-labelledby={`action-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </Typography>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `action-tab-${index}`,
+    'aria-controls': `action-tabpanel-${index}`,
+  };
+}
+
+export default function CustomizedAccordions() {
+  const theme = useTheme();
+  const [value, setValue] = React.useState(0);
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
-  const handleTabClick = (tabIndex) => {
-    setActiveTab(tabIndex);
+  const handleChangeIndex = (index) => {
+    setValue(index);
+  };
+
+  const handleAccordionChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
   };
 
   const faqContent = [
@@ -144,41 +185,63 @@ export default function CustomizedAccordions() {
   ];
 
   return (
-    <div className={styles.faq}>
-      <h1 className={styles.title}>FAQ</h1>
-      <div className={styles.tabs}>
-        {faqContent.map((tab, tabIndex) => (
-          <button
-            key={tabIndex}
-            className={`${styles.tab} ${
-              activeTab === tabIndex ? styles.active : ''
-            }`}
-            onClick={() => handleTabClick(tabIndex)}
+    <Box sx={{ width: '100%', maxWidth: '900px', margin: 'auto' , marginTop: 25}}>
+      <Typography>
+      <div style={{ fontSize: '40px', color: 'black', marginBottom: 15, marginTop:20 ,paddingLeft: '20px'}}>FAQ</div>
+      </Typography>
+      <Box sx={{ width: '100%' }}>
+        <AppBar position="static" color="default" elevation={1} sx={{ width: '100%' , maxWidth: '853px',margin: 'auto' ,border: 'solid' , borderWidth :'0.5px' , borderColor : 'lightgray' ,marginBottom : 0}}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            variant="scrollable"
+            scrollButtons="auto"
+            aria-label="scrollable auto tabs example"
+            sx={{
+              '& .MuiTabs-indicator': {
+                backgroundColor: '#003CFF',
+              },
+              '& .Mui-selected': {
+                color: '#003CFF', 
+              },
+            }}
           >
-            {tab.tabTitle}
-          </button>
-        ))}
-      </div>
-
-      <div className={styles.questions}>
-        {faqContent[activeTab].questions.map((question, index) => (
-          <Accordion
-            expanded={expanded === `panel${index}`}
-            onChange={handleChange(`panel${index}`)}
-            key={index}
+            
+            {faqContent.map((tab, index) => (
+              <Tab key={index} label={tab.tabTitle} {...a11yProps(index)} sx={{ fontSize: '17px' }}/>
+            ))}
+          </Tabs>
+        </AppBar>
+        <SwipeableViews
+  axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+  index={value}
+  onChangeIndex={handleChangeIndex}
+  style={{ width: '100%' }}
+  animateTransitions={false} // 애니메이션 비활성화
+>
+  {faqContent.map((tab, index) => (
+    <TabPanel value={value} index={index} dir={theme.direction} key={index}>
+      {tab.questions.map((question, qIndex) => (
+        <Accordion
+          expanded={expanded === `panel${qIndex}`}
+          onChange={handleAccordionChange(`panel${qIndex}`)}
+          key={qIndex}
+        >
+          <AccordionSummary
+            aria-controls={`panel${qIndex}d-content`}
+            id={`panel${qIndex}d-header`}
           >
-            <AccordionSummary
-              aria-controls={`panel${index}d-content`}
-              id={`panel${index}d-header`}
-            >
-              <Typography>{question}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>{faqContent[activeTab].answers[index]}</Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))}
-      </div>
-    </div>
+            <Typography>{question}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>{tab.answers[qIndex]}</Typography>
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </TabPanel>
+  ))}
+</SwipeableViews>
+      </Box>
+    </Box>
   );
 }

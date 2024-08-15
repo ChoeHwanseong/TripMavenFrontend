@@ -55,11 +55,7 @@ const Chat = () => {
         botMessageElement.classList.add(styles.message, styles.received);
         botMessageElement.innerHTML = `<p>${botAnswer}</p>`;
         chatBody.appendChild(botMessageElement);
-    
-        
-        setChatHistory([...chatHistory, { inquery: message, answer: botAnswer }]);
-    
-       
+  
         await axios.post('/chatbot', {
             inquery: message,
             answer: botAnswer,
@@ -120,12 +116,7 @@ const Chat = () => {
               <div className={`${styles.message} ${styles.received}`}>
                 <p>도와드릴게 있을까요?</p>
               </div>
-              {chatHistory.map((chat, index) => (
-                <div key={index} className={`${styles.message} ${styles.received}`}>
-                  <p><strong>Question:</strong> {chat.inquery}</p>
-                  <p><strong>Answer:</strong> {chat.answer}</p>
-                </div>
-              ))}
+           
             </div>
             <footer className={styles.chatFooter}>
               <input type="text" placeholder="메세지를 입력하세요" ref={chatInputRef} className={styles.chatInput} />

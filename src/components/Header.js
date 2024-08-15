@@ -1,20 +1,44 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from '../styles/components/Header.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { productFetchTitleAndContent } from '../utils/productData';
 import { menuData } from '../config/MyPageEndPoint';
 import { RoleContext } from './context/roleContext';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
 const Header = () => {
     const location = useLocation();
     
     const navigate = useNavigate();
-
     // 입력한 검색어 관리
     const {role, setRole,searchKeyword, setSearchKeyword} = useContext(RoleContext);
+    //로그인한 사용자 role 가져오기
+    let menuList = menuData[role]
+
+    // Modal 상태 관리
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+
+    
+   
 
     // 검색어에 따라 searchPost 상태 업데이트
     const handleInputPost = (event) => {
@@ -42,8 +66,8 @@ const Header = () => {
     };
     
     //role에 따라서 마이페이지에 있는 메뉴 변경하기
-    //로그인한 사용자 role 가져오기
-    let menuList = menuData[role]
+    
+   
     //console.log(role); //디버그용
     //console.log(menuList); //디버그용
 
@@ -100,7 +124,7 @@ const Header = () => {
                                     })}
                                 </div>
                             </div>
-                            <button className={styles.navButton} onClick={() => navigate('/registerguide')}>가이드 등록</button>
+                            <button className={styles.navButton} onClick={handleOpen}>가이드 등록</button>
                         </div>
                         <button className={styles.loginButton} onClick={() => navigate('/login')}>
                             로그인
@@ -108,6 +132,17 @@ const Header = () => {
                     </div>
                 </div>
             </div>
+         {/* 모달 컴포넌트 */}
+         <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <GuideRegistration /> 
+                </Box>
+            </Modal>
         </header>
     );
 }
