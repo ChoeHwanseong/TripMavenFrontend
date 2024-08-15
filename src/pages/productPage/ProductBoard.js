@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import styles from '../../styles/productPage/ProductBoard.module.css';
+import { useLocation } from 'react-router-dom';
 
 const ProductBoard = () => {
     const [products, setProducts] = useState([]); // 상품 목록을 관리하는 상태 변수
@@ -8,6 +9,10 @@ const ProductBoard = () => {
     const { ref, inView } = useInView({
         threshold: 0, // 요소가 100% 보일 때 트리거
     });
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const city = queryParams.get('city');
 
     // 데이터를 더 가져오는 함수
     const fetchMoreData = () => {
@@ -47,7 +52,7 @@ const ProductBoard = () => {
         <div className={styles.container}>
             <div>
                 <h1>상품 게시판</h1>
-                <h3>'XX'의 대한 검색 결과 입니다</h3>
+                <h3>'{city}'의 대한 검색 결과 입니다</h3>
             </div>
             <div className={styles.productList}>
                 {/* 제품 목록을 렌더링 */}

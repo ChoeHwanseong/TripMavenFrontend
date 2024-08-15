@@ -15,7 +15,7 @@ const InquiryHistory = () => {
       <div className={styles.content}>
         <div className={styles.header}>
           <h1>문의 내역</h1>
-          <button className={styles.button}>문의 하기</button>
+          <button className={styles.button} onClick={() => navigate('/useraskpage')}>문의 하기</button>
         </div>
 
         <table className={styles.table}>

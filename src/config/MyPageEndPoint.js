@@ -15,12 +15,14 @@ export const menuData = {
         {path: "/guidemypagemypostdetails" }, //내 게시물 상세보기는 메뉴 내용엔 없음
         {path: "/guideask" },
         {path: "/guideaskdetailsview"}
+        
     ],
     user: [
         { name: "내 정보 관리", path: "/mypageprofile/2" },
         { name: "이용후기", path: "/userreview" },
         { name: "1:1문의 내역", path: "/userask" },
         { name: "찜 목록", path: "/userlike" },
-        { name: "채팅방", path: "/bigchat" }
+        { name: "채팅방", path: "/bigchat" },
+        {path: "/useraskpage"}
     ]
 };

@@ -4,6 +4,11 @@
   min-height: 100vh;  /* 컨테이너가 최소한 전체 뷰포트 높이를 차지하도록 설정 */
 }
 
+.likeicon {
+  margin-left: 10px;
+  width: 25px;
+}
+
 .searchInput {
   width: 100%;  /* 입력 필드가 전체 너비를 차지하도록 설정 */
   padding: 10px;  /* 입력 필드 내부 여백 설정 */
@@ -32,6 +37,12 @@
   width: 150px;  /* 이미지의 너비를 고정 */
   height: auto;  /* 이미지의 높이를 자동으로 설정하여 비율 유지 */
   margin-right: 20px;  /* 이미지 오른쪽에 여백 설정 */
+}
+
+.productItem .likeicon1 {
+  width: 25px;
+  height: auto;
+  margin-left: 500px;
 }
 
 .productItem h3 {
@@ -70,3 +81,5 @@
   margin-right: 10px;  /* 별점과 리뷰 사이의 여백 설정 */
   font-size: 14px;  /* 별점 및 리뷰 글자 크기 설정 */
 }
+
+
