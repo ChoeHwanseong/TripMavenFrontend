@@ -19,3 +19,4 @@ npm install react-router-dom@6 이것두
 08/13 npm install lucide-react
 08/15 npm install @mui/material @mui/icons-material
       npm install react-swipeable-views --legacy-peer-deps
+      npm install @mui/x-charts --legacy-peer-deps

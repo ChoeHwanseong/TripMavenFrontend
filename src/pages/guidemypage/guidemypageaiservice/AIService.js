@@ -2,8 +2,15 @@ import React from 'react';
 import styles from '../../../styles/guidemypage/guidemypageaiservice/AIService.module.css';
 import RadarChart from './RandarChart';
 import ScoreCircle from './ScoreCircle';
+import { useNavigate } from 'react-router-dom';
 
 const AIService = () => {
+
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate('/aiservice'); // AIService 페이지로 이동
+    };
     const scores = [
         { period: '가장 마지막', score: 60 },
         { period: '최근 3개월', score: 70 },
@@ -13,7 +20,7 @@ const AIService = () => {
 
     const data = [
         { id: 9621, type: '모의테스트', description: '우도 히든 스팟 탐험: 함께 떠나는 특별한 여행 (중급)', date: '2024-08-01', score: 80 },
-        { id: 1212, type: '실전 테스트', description: '우도에서 즐기는 완벽한 하루: 가이드와 함께하는 숨은 명소 탐방 (실화)', date: '2023-12-31', score: 60 },
+        { id: 1212, type: '실전 테스트', description: '우도에서 즐기는 완벽한 하루: 가이드와 함께하는 숨은 명소 탐방 (심화)', date: '2023-12-31', score: 60 },
         { id: 9622, type: '모의테스트', description: '우도 여행 가이드: 섬 속의 작은 낙원 탐험 (기초)', date: '2024-03-19', score: 40 },
     ];
 
@@ -27,7 +34,7 @@ const AIService = () => {
             </div>
             <div className={styles.scoreContainer}>
                 <ScoreCircle score={60} />
-                <button className={styles.button}>AI 교육 들으러가기</button>
+                <button className={styles.button} onClick={handleClick}>AI 교육 들으러가기</button>
             </div>
             <div className={styles.tableContainer}>
                 <table className={styles.table}>
