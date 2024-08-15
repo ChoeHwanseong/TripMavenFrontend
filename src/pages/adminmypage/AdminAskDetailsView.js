@@ -15,6 +15,8 @@ const AdminAskDetailsView = () => {
         const getCSData = async () => {
             try {
                 const fetchedData = await csfetchData(id);
+                console.log('fetchedData: ',fetchedData) 
+                console.log('fetchedData.comments: ',fetchedData.comments)
                 setInquiry(fetchedData);
             } catch (error) {
                 console.error('에러났당', error);
