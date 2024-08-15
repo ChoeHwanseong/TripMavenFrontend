@@ -46,10 +46,13 @@ import ComplaintForm from './pages/report/ComplaintForm';
 import AdminAskDetailsView from './pages/adminmypage/AdminAskDetailsView';
 import AdminAnswer from './pages/adminmypage/AdminAnswer';
 import UserAskPage from './pages/usermypage/UserAskPage';
+<<<<<<< HEAD
 import AskAll from './pages/askpage/AskAll';
 import AskDetails from './pages/askpage/Askdetails';
 import AskDetailsView from './pages/askpage/AskDetailsView';
 import AskUpdate from './pages/askpage/AskUpdate';
+=======
+>>>>>>> 857e02c40140226a201eb427397d74f2addece2b
 
 function App() {
 
@@ -81,10 +84,17 @@ function App() {
   
           {/*<Route path='/guideask' element={<GuideAsk/>}/>*/}
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
+          <Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />
+          <Route path="/guideAsk" element={<GuideAsk />} />
+          <Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />
+          <Route path="/guideaskupdates/:id" element={<GuideAskUpdates/>} />
+          <Route path='/guidePost' element={<GuidePost/>}/>
+
           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
           <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
            */}
 
+           {/* USER */}
           <Route path='/userreview' element={<UserReview/>}/>
           {/*<Route path='/userask' element={<UserAsk/>}/>*/}
           <Route path='/userlike' element={<UserLike/>}/>
@@ -92,6 +102,8 @@ function App() {
 
           <Route path='/bigChat' element={<BigChat/>}/>
           {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
+          
+          <Route path='/bigChat' element={<BigChat/>}/>
           <Route path="/mypageprofile/:id" element={<MypageProfile />} />
 
           {/*<Route path="/guideAsk" element={<GuideAsk />} />*/}
@@ -102,6 +114,7 @@ function App() {
           <Route path='/askdetails' element={<AskDetails/>}/>
           <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
           <Route path='/askupdate/:id' element={<AskUpdate/>}/>
+
         </Route>
         
         <Route path='/aiservice' element={<AIService/>}/>

@@ -68,7 +68,7 @@ const GuideAskDetailsView = () => {
                 </tbody>
             </table>
             <div className={styles.actions}>
-                <button className={styles.actionButton} onClick={() => navigate(`/guideaskupdate/${inquiry.id}`)}>수정 하기</button>
+                <button className={styles.actionButton} onClick={() => navigate(`/guideaskupdates/${inquiry.id}`)}>수정 하기</button>
                 <button className={styles.actionButton}>삭제 하기</button>
                 <button className={styles.actionButton} onClick={() => navigate('/guideaskdetails')}>목록</button>
             </div>

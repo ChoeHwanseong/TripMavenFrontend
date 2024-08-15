@@ -1,18 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/guidemypage/GuideAskDetailsView.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { csAsnwerfetchUpdateData, csfetchData } from '../../utils/csfetchData';
+import { csfetchData } from '../../utils/csfetchData';
 import { Box } from '@mui/material';
-import { set } from 'mobx';
 
-const AdminAnswer = () => {
+const GuideAskUpdates = () => {
 
     const { id } = useParams();
     const [inquiry, setInquiry] = useState(null);
 
-    const answerRef = useRef(null);
-
-
+    const titleRef = useRef(null);
+    const contentrRef = useRef(null);
 
     const navigate = useNavigate();
 
@@ -21,13 +19,6 @@ const AdminAnswer = () => {
             try {
                 const fetchedData = await csfetchData(id);
                 setInquiry(fetchedData);
-                console.log(fetchedData)
-                console.log(fetchedData.comments)
-
-                if (answerRef.current) {
-                    answerRef.current.value = fetchedData.comments;
-                }
-
             } catch (error) {
                 console.error('에러났당', error);
             }
@@ -41,22 +32,18 @@ const AdminAnswer = () => {
     }
 
 
-    const newAnswer = async () =>{
-        setInquiry({...inquiry,comments:answerRef.current.value})
+    const handleAsk = () => {
+        setInquiry({...inquiry,title:titleRef.current.value,content:contentrRef.current.value});
+        console.log(inquiry.title);
+        console.log(inquiry.content);
+        navigate(`/guideaskupdate/${inquiry.id}`);
+
     };
-
-
-    const handelAnswer = async() => {
-        await csAsnwerfetchUpdateData(id, inquiry);
-        console.log('수정 완료')
-        navigate('/adminask')       
-    };
-
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h1 className={styles.title}>문의 내역<small className={styles.titleSmall}>답변등록</small></h1>
+                <h1 className={styles.title}>문의 내역<small className={styles.titleSmall}>수정보기</small></h1>
             </div>
 
             <table className={styles.table}>
@@ -75,38 +62,41 @@ const AdminAnswer = () => {
                     </tr>
                     <tr>
                         <td className={styles.label}>제목</td>
+
+                        <input type="text" className={styles.value}
+                            value={inquiry.title}
+                            onChange={()=>{                              
+                                setInquiry({...inquiry,title:titleRef.current.value});
+                                console.log('inquiry',inquiry);
+                                console.log('inquiry.comments',inquiry.title);
+                            }}
+                            ref={titleRef}/>   
+
+
                         <td className={styles.value} colSpan="3">{inquiry.title}</td>
                     </tr>
                     <tr>
                         <td className={styles.fullLabel} colSpan="4">내용</td>
                     </tr>
                     <tr>
-                        <td className={styles.fullValue} colSpan="4">{inquiry.content}</td>
+                        <td className={styles.fullValue} colSpan="4" ref={contentrRef}>{inquiry.content}</td>
                     </tr>
                     <tr>
                         <td className={styles.fullLabelDark} colSpan="4">답변</td>
                     </tr>
                     <tr>
-                        <td colSpan="4">
-                            <input type="text" className={styles.fullValue}
-                            value={inquiry.comments}
-                            onChange={()=>{                              
-                                setInquiry({...inquiry,comments:answerRef.current.value});
-                                console.log('inquiry',inquiry);
-                                console.log('inquiry.comments',inquiry.comments);
-                            }}
-                            ref={answerRef}/>                                                  
-                        </td> 
+                        <td className={styles.fullValue} colSpan="4">{inquiry.comments}</td>
                     </tr>
-
                 </tbody>
             </table>
             <div className={styles.actions}>
-                <button className={styles.actionButton} onClick={handelAnswer}>답변 등록하기</button>
+                <button className={styles.actionButton} onClick={handleAsk}>수정 하기</button>
+                <button className={styles.actionButton}>삭제 하기</button>
+                <button className={styles.actionButton} onClick={() => navigate('/guideaskdetails')}>목록</button>
             </div>
         </div>
 
     );
 };
 
-export default AdminAnswer;
+export default GuideAskUpdates;
