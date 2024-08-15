@@ -145,7 +145,7 @@ export default function CustomizedAccordions() {
 
   return (
     <div className={styles.faq}>
-      <h1 className={styles.title}>FAQ</h1>
+      <h1>FAQ</h1>
       <div className={styles.tabs}>
         {faqContent.map((tab, tabIndex) => (
           <button
