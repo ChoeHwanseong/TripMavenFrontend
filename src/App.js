@@ -47,6 +47,7 @@ import FAQ from './pages/csboard/FAQ';
 import ComplaintForm from './pages/report/ComplaintForm';
 import AdminAskDetailsView from './pages/adminmypage/AdminAskDetailsView';
 import AdminAnswer from './pages/adminmypage/AdminAnswer';
+import UserAskPage from './pages/usermypage/UserAskPage';
 
 function App() {
 
@@ -85,6 +86,7 @@ function App() {
           <Route path='/userreview' element={<UserReview/>}/>
           <Route path='/userask' element={<UserAsk/>}/>
           <Route path='/userlike' element={<UserLike/>}/>
+          <Route path='/useraskpage' element={<UserAskPage/>}/>
 
           <Route path='/bigChat' element={<BigChat/>}/>
           <Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />
@@ -94,7 +96,7 @@ function App() {
           <Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />
           <Route path='/guidePost' element={<GuidePost/>}/>
         </Route>
-
+        
         <Route path='/aiservice' element={<AIService/>}/>
         <Route path="/cs" element={<CSBoard/>}/>
         <Route path="/siteinfo" element={<SiteIntroduction/>}/>

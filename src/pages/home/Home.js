@@ -7,6 +7,10 @@ import RegionEventInfo from './RegionEvent';
 const Home = () => {
   const navigate = useNavigate();
 
+  const handleCityClick = (city) => {
+    navigate(`/product?city=${city}`);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.searchBar}>
@@ -32,9 +36,9 @@ const Home = () => {
         </div>
         <div className={styles.destinationList}>
           {['부산', '제주', '서울', '강릉', '가평'].map((city, index) => (
-            <div key={index} className={styles.destinationCard}>
+            <div key={index} className={styles.destinationCard} onClick={()=>handleCityClick(city)}>
               <img
-                src={`/images/mainpage/${index+1}.png`} // 시발 한글 못읽어
+                src={`/images/mainpage/${index + 1}.png`} // 시발 한글 못읽어
                 alt={city}
                 className={styles.destinationImage}
               />
@@ -47,11 +51,11 @@ const Home = () => {
       <div className={styles.infoSection}>
         <div className={styles.infoBox}>
           <h3 className={styles.infoTitle}>기상정보</h3>
-          <KoreaWeatherMap width="100%" height="400px"/> 
+          <KoreaWeatherMap width="100%" height="400px" />
         </div>
         <div className={styles.infoBox}>
           <h3 className={styles.infoTitle}>지역 행사</h3>
-          <RegionEventInfo width="100%" height="400px"/>
+          <RegionEventInfo width="100%" height="400px" />
         </div>
       </div>
     </div>

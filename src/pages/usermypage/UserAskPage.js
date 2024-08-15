@@ -1,27 +1,25 @@
 import React from 'react';
 import styles from '../../styles/usermypage/UserAskPage.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const UserAskPage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>문의 하기</h1>
-
-      <form className={styles.form}>
+      <h2 className={styles.title}>문의 하기</h2>
+      <div className={styles.form}>
         <div className={styles.formGroup}>
-          <label className={styles.label}>제목을 입력하세요</label>
-          <div className={styles.inputGroup}>
-            <input type="text" className={styles.input} />
-            <button type="button" className={styles.confirmButton}>확인</button>
-          </div>
+          <label htmlFor="title" className={styles.label}>제목을 입력하세요</label>
+          <input type="text" id="title" className={styles.input} />
+          <button className={styles.confirmButton}>확인</button>
         </div>
-
         <div className={styles.formGroup}>
-          <label className={styles.label}>내용을 입력하세요</label>
-          <textarea className={styles.textarea} />
+          <label htmlFor="content" className={styles.label}>내용을 입력하세요</label>
+          <textarea id="content" className={styles.textarea}></textarea>
         </div>
-
-        <button type="submit" className={styles.submitButton}>등록 하기</button>
-      </form>
+        <button className={styles.submitButton} onClick={() => navigate('/userask')}>등록 하기</button>
+      </div>
     </div>
   );
 };

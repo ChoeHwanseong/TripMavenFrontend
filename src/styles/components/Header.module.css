@@ -64,6 +64,13 @@
     display: flex;
     margin-right: 20px;
 }
+.navbutton2 {
+    font-size: 13px;
+    width: 60px;
+    margin-left: -20px;
+    border: 1.5px solid #0066ff;
+    background-color: #fff;
+}
 
 .navButton {
     margin: 0 10px;
