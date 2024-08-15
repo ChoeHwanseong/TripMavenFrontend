@@ -101,7 +101,13 @@ const AdminAnswer = () => {
                     <tr>
                         <td colSpan="4" >
                             <input type="text" className={styles.fullValue} style={{border:'solid', borderWidth:0.5,borderColor:'blue'}}          
-                            
+                            value={inquiry.comments}
+                            onChange={()=>{                              
+                                setInquiry({...inquiry,comments:answerRef.current.value});
+                                console.log('inquiry',inquiry);
+                                console.log('inquiry.comments',inquiry.comments);
+                            }}
+
                             ref={answerRef}/>                                                  
                         </td> 
                     </tr>

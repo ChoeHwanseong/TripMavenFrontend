@@ -12,7 +12,6 @@ const AskDetails = () => {
         <div className={styles.formGroup}>
           <label htmlFor="title" className={styles.label}>제목을 입력하세요</label>
           <input type="text" id="title" className={styles.input} />
-          <button className={styles.confirmButton}>확인</button>
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="content" className={styles.label}>내용을 입력하세요</label>
