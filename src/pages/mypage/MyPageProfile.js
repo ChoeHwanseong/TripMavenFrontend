@@ -14,7 +14,7 @@ const MypageProfile = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        console.log(id)
+        //console.log(id) //디버그용
         const fetchData = await fetchedData(id);
         
         setProfileData(fetchData);
@@ -44,46 +44,46 @@ const MypageProfile = () => {
             <div className={styles.infoSection}>
               <div className={styles.formGroup}>
                 <label htmlFor="name">닉네임</label>
-                <input type="text" id="name" value={profileData.name}/>
+                <input type="text" id="name" defaultValue={profileData.name}/>
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="email">이메일</label>
-                <input type="text" id="email" value={profileData.email}/>
+                <input type="text" id="email" defaultValue={profileData.email}/>
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="telNumber">전화번호</label>
-                <input type="text" id="telNumber" value={profileData.telNumber}/>
+                <input type="text" id="telNumber" defaultValue={profileData.telNumber}/>
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="region">관심 지역</label>
-                <select id="region" value="부산" disabled>
+                <select id="region" defaultValue="부산" disabled>
                   <option value="부산">부산</option>
                   {/* 다른 지역 옵션 추가 가능 */}
                 </select>
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="address">주소</label>
-                <input type="text" id="address" value={profileData.address}/>
+                <input type="text" id="address" defaultValue={profileData.address}/>
                 <button type="button" className={styles.searchButton}>검색</button>
               </div>
             </div>
             <div className={styles.extraSection}>
               <div className={styles.formGroup}>
                 <label htmlFor="gender">성별</label>
-                <input type="text" id="gender" value={profileData.gender}/>
+                <input type="text" id="gender" defaultValue={profileData.gender}/>
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="birthday">생년월일</label>
-                <input type="text" id="birthday" value={profileData.birthday} />
+                <input type="text" id="birthday" defaultValue={profileData.birthday} />
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="certificate">자격증</label>
-                <input type="text" id="certificate" value="K-POP지도사.png" readOnly />
+                <input type="text" id="certificate" defaultValue="K-POP지도사.png" readOnly />
                 <button type="button" className={styles.fileButton}>파일 찾기</button>
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="">자기소개</label>
-                <textarea id="about" rows="4" readOnly value="안녕하세요. 저는 낭만아삼 입니다. 저는 야무져요."></textarea>
+                <textarea id="about" rows="4"  defaultValue="안녕하세요. 저는 낭만아삼 입니다. 저는 야무져요." readOnly></textarea>
               </div>
             </div>
           </div>

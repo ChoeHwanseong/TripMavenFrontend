@@ -26,7 +26,9 @@ const Home = () => {
       <div className={styles.popularDestinations}>
         <div className={styles.destinationsTitleViewAllButton}>
           <h2 className={styles.destinationsTitle}>인기 여행지</h2>
-          <button className={styles.viewAllButton} onClick={() => navigate('/product')}>모두보기</button>
+          <div className={styles.buttonStyle}>
+            <button className={styles.viewAllButton} onClick={() => navigate('/product')}>모두보기</button>
+          </div>
         </div>
         <div className={styles.destinationList}>
           {['부산', '제주', '서울', '강릉', '가평'].map((city, index) => (

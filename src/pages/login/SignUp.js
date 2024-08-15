@@ -3,8 +3,10 @@ import styles from '../../styles/login/SignUp.module.css';
 import useValid from './useValid'; 
 import axios from 'axios';
 import {SignUp} from '../../utils/memberData'; 
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+    const navigate = useNavigate();
     const email = useValid('', (value) =>
         !value ? '이메일을 입력하세요' : !/\S+@\S+\.\S+/.test(value) ? '유효한 이메일 주소를 입력하세요' : ''
     );
@@ -39,11 +41,16 @@ const Signup = () => {
                 region: region.value,
                 gender: gender.value,
                 birthday: birthday.value,
-                address: address.value
+                address: address.value,
+                loginType: 'local'
+                
             };
             // 회원가입 로직 처리
             console.log(form);
-            SignUp(form)
+            SignUp(form);
+            alert('가입 완료! 가입한 계정으로 로그인해주세요.');
+            navigate('/login')
+            
         }
         else {
             alert('모든 필드를 올바르게 입력하세요.');
