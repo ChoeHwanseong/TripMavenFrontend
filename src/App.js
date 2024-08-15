@@ -8,7 +8,6 @@ import Login from "./pages/login/LogIn";
 import CSBoard from './pages/csboard/CSBoard';
 import Signup from './pages/login/SignUp';
 
-import UserAsk from './pages/usermypage/UserAsk';
 
 
 
@@ -38,7 +37,6 @@ import GuideAskDetails from './pages/guidemypage/GuideAskDetails';
 
 
 import MemberList from './pages/adminmypage/MemberList';
-import GuideAskDetailsView from './pages/guidemypage/GuideAskDetailsView';
 import GuideAskUpdate from './pages/guidemypage/GuideAskUpdate';
 import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuidePost from './pages/guidemypage/GuidePost';
@@ -51,6 +49,7 @@ import UserAskPage from './pages/usermypage/UserAskPage';
 import AskAll from './pages/askpage/AskAll';
 import AskDetails from './pages/askpage/Askdetails';
 import AskDetailsView from './pages/askpage/AskDetailsView';
+import AskUpdate from './pages/askpage/AskUpdate';
 
 function App() {
 
@@ -78,9 +77,9 @@ function App() {
           {/* GUIDE */}
           <Route path='/guidemypagemypostdetails/:id' element={<GuideMyPageMyPostDetails/>}/>
           <Route path='/guidemypost' element={<GuideMyPageMyPost/>}/>
-          <Route path='/guideaskdetails' element={<GuideAskDetails/>}/>
+          {/*<Route path='/guideaskdetails' element={<GuideAskDetails/>}/>*/}
   
-          <Route path='/guideask' element={<GuideAsk/>}/>
+          {/*<Route path='/guideask' element={<GuideAsk/>}/>*/}
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
           <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
@@ -89,19 +88,20 @@ function App() {
           <Route path='/userreview' element={<UserReview/>}/>
           {/*<Route path='/userask' element={<UserAsk/>}/>*/}
           <Route path='/userlike' element={<UserLike/>}/>
-          <Route path='/useraskpage' element={<UserAskPage/>}/>
+          {/*<Route path='/useraskpage' element={<UserAskPage/>}/>*/}
 
           <Route path='/bigChat' element={<BigChat/>}/>
-          <Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />
+          {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
           <Route path="/mypageprofile/:id" element={<MypageProfile />} />
 
-          <Route path="/guideAsk" element={<GuideAsk />} />
-          <Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />
+          {/*<Route path="/guideAsk" element={<GuideAsk />} />*/}
+          {/*<Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />*/}
           <Route path='/guidePost' element={<GuidePost/>}/>
 
           <Route path='/askall' element={<AskAll />}/>
           <Route path='/askdetails' element={<AskDetails/>}/>
           <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
+          <Route path='/askupdate/:id' element={<AskUpdate/>}/>
         </Route>
         
         <Route path='/aiservice' element={<AIService/>}/>
