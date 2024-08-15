@@ -24,7 +24,7 @@ const Home = () => {
           placeholder="일수를 선택해주세요"
           className={styles.searchInput}
         />
-        <button className={styles.searchButton}>검색</button>
+        <button className={styles.searchButton} onClick={()=>navigate('/product')}>검색</button>
       </div>
 
       <div className={styles.popularDestinations}>

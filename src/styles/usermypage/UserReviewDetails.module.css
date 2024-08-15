@@ -62,11 +62,11 @@
   }
   
   .submitButton {
-    width: 150px;
+    width: 130px;
     padding: 10px;
     font-size: 16px;
     color: #fff;
-    background-color: #007bff;
+    background-color: #0066ff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
