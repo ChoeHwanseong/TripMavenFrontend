@@ -16,6 +16,10 @@ const ProductBoard = () => {
         threshold: 0, // 요소가 100% 보일 때 트리거
     });
 
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const city = queryParams.get('city');
+
     //로딩 화면을 모달로 띄우기
     const [showModal, setShowModal] = useState(false);
 

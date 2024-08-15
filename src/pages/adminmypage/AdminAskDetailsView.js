@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { csfetchData } from '../../utils/csfetchData';
 import { Box } from '@mui/material';
 
-const GuideAskDetailsView = () => {
+const AdminAskDetailsView = () => {
 
     const { id } = useParams();
     const [inquiry, setInquiry] = useState(null);
@@ -15,6 +15,8 @@ const GuideAskDetailsView = () => {
         const getCSData = async () => {
             try {
                 const fetchedData = await csfetchData(id);
+                console.log('fetchedData: ',fetchedData) 
+                console.log('fetchedData.comments: ',fetchedData.comments)
                 setInquiry(fetchedData);
             } catch (error) {
                 console.error('에러났당', error);
@@ -32,7 +34,6 @@ const GuideAskDetailsView = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <h1 className={styles.title}>문의 내역<small className={styles.titleSmall}>상세보기</small></h1>
-                <button className={styles.inquiryButton} onClick={() => navigate('/guideAsk')}>문의 하기</button>
             </div>
 
             <table className={styles.table}>
@@ -68,13 +69,12 @@ const GuideAskDetailsView = () => {
                 </tbody>
             </table>
             <div className={styles.actions}>
-                <button className={styles.actionButton} onClick={() => navigate(`/guideaskupdates/${inquiry.id}`)}>수정 하기</button>
-                <button className={styles.actionButton}>삭제 하기</button>
-                <button className={styles.actionButton} onClick={() => navigate('/guideaskdetails')}>목록</button>
+                <button className={styles.actionButton} onClick={() => navigate(`/adminAnswer/${inquiry.id}`)}>답변 등록하기</button>
+                <button className={styles.actionButton} onClick={() => navigate('/adminask')}>목록</button>
             </div>
         </div>
 
     );
 };
 
-export default GuideAskDetailsView;
+export default AdminAskDetailsView;

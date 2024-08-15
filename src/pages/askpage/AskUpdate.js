@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { csfetchData, csfetchUpdateData } from '../../utils/csfetchData';
 import { useEffect, useState } from 'react';
 
-const GuideAskUpdate = () => {
+const AskUpdate = () => {
 
     const { id } = useParams();
     const [inquiry, setInquiry] = useState(null);
@@ -85,11 +85,11 @@ const GuideAskUpdate = () => {
 
                 <button
                   className={styles.submitButton}
-                  onClick={()=>{navigate('/guideaskdetails');}}>수정 하기
+                  onClick={()=>{navigate('/askall');}}>수정 하기
                 </button>
             </div>
         </div>
     </>
 };
 
-export default GuideAskUpdate;
+export default AskUpdate;

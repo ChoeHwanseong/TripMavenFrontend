@@ -49,9 +49,9 @@ const Header = () => {
         <header className={styles.header}>
             <div className={styles.headerFrame}>
                 <button className={styles.logoButton} onClick={() => navigate('/home')}>TripMaven</button>
-                <button style={{width:20+'px'}} onClick={()=>{setRole('user')}}>고객</button>
-                <button style={{width:20+'px'}} onClick={()=>{setRole('guide')}}>가이드</button>
-                <button style={{width:20+'px'}} onClick={()=>{setRole('admin')}}>관리자</button>
+                <button className={styles.navbutton2} onClick={()=>{setRole('user')}}>고객</button>
+                <button className={styles.navbutton2} onClick={()=>{setRole('guide')}}>가이드</button>
+                <button className={styles.navbutton2} onClick={()=>{setRole('admin')}}>관리자</button>
                 <div className={styles.nav}>
                     
                     <div className={styles.inputstyle}>

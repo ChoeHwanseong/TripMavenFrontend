@@ -40,6 +40,15 @@ export const productFetchTitleAndContent = async (keyword) => {
   } catch(error) {
     console.error('에러났땅',error)
     throw error;
+
+    
+export const createPost = async () => {
+  try {
+    const res = await axios.post('/product');
+    return res.data;
+  } catch (error) {
+    console.error('에러났당', error);
+    throw error; 
   }
 };
 

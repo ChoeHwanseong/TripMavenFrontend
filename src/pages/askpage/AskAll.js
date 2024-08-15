@@ -1,15 +1,13 @@
-// InquiryDetails.js
 import React, { useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/guidemypage/GuideAskDetails.module.css';
+import styles from '../../styles/askpage/AskAll.module.css';
 
 import { Box } from '@mui/material';
 import { csfetchAllData } from '../../utils/csfetchData';
 
-const GuideAskDetails = () => {
-
-  const [inquiry, setInquiries] = useState([]);
+const AskAll = () => {
+    const [inquiry, setInquiries] = useState([]);
   const [hoveredRow, setHoveredRow] = useState(null);
 
   const navigate = useNavigate();
@@ -37,7 +35,7 @@ const GuideAskDetails = () => {
   }
 
   const handleClick = (inquiry) => {
-    navigate(`/guideaskdetailsview/${inquiry.id}`);
+    navigate(`/askdetailsview/${inquiry.id}`);
   };
   
 
@@ -45,24 +43,23 @@ const GuideAskDetails = () => {
   return (
     <div className={styles.container}>
 
-      <main className={styles.mainContent}>
+      <div className={styles.content}>
         <div className={styles.header}>
-          <h1 className={styles.title}>문의 내역</h1>
-          <button className={styles.inquiryButton} onClick={()=>navigate('/guideAsk')}>문의 하기</button>
+          <h1>문의 내역</h1>
+          <button className={styles.button} onClick={() => navigate('/askdetails')}>문의 하기</button>
         </div>
+
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>작성번호</th>
-              <th>아이디</th>
-              <th>분류</th>
+              <th>번호</th>
               <th>제목</th>
               <th>작성일</th>
-              <th>처리 상태</th>
+              <th>처리상태</th>
             </tr>
           </thead>
           <tbody>
-          {inquiry.map((inquiry, index) => (
+            {inquiry.map((inquiry, index) => (
                 <Box
                 component="tr"
                 key={index}
@@ -79,15 +76,14 @@ const GuideAskDetails = () => {
                 }}
               >      
                   <td>{inquiry.id}</td>
-                  <td>{inquiry.member.name}</td>
-                  <td>{inquiry.member.role ? '사용자' : '가이드'}</td>
                   <td><div className={styles.postLinkPointer}>{inquiry.title}</div></td>
                   <td>{inquiry.createdAt.split('T')[0]}</td> {/* 날짜만 표시 */}
-                  <td>{inquiry.isactive?'유':'무'}</td> {/* 상태 표시 */}
+                  <td>{inquiry.isactive?'처리완료':'처리중'}</td> {/* 상태 표시 */}
                   </Box>
-              ))} 
+              ))}
 
           </tbody>
+          
         </table>
 
         <div className={styles.pagination}>
@@ -95,10 +91,12 @@ const GuideAskDetails = () => {
           <span className={styles.currentPage}>1</span>
           <span>&gt;</span>
         </div>
-      </main>
+      </div>
     </div>
   );
 
 };
 
-export default GuideAskDetails;
+
+
+export default AskAll;

@@ -1,8 +1,8 @@
 import React from 'react';
-import styles from '../../styles/usermypage/UserAskPage.module.css';
+import styles from '../../styles/askpage/AskDetails.module.css';
 import { useNavigate } from 'react-router-dom';
 
-const UserAskPage = () => {
+const AskDetails = () => {
   const navigate = useNavigate();
 
   return (
@@ -18,10 +18,10 @@ const UserAskPage = () => {
           <label htmlFor="content" className={styles.label}>내용을 입력하세요</label>
           <textarea id="content" className={styles.textarea}></textarea>
         </div>
-        <button className={styles.submitButton} onClick={() => navigate('/userask')}>등록 하기</button>
+        <button className={styles.submitButton} onClick={() => navigate('/askall')}>등록 하기</button>
       </div>
     </div>
   );
 };
 
-export default UserAskPage;
+export default AskDetails;
