@@ -1,21 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useInView } from 'react-intersection-observer';
 import styles from '../../styles/productPage/ProductBoard.module.css';
 import { useLocation } from 'react-router-dom';
+import { productFetchTitleAndContent } from '../../utils/productData';
+import { RoleContext } from '../../components/context/roleContext';
+import Modal from '../../components/loading/modal';
 
 const ProductBoard = () => {
+    const location = useLocation();
+    const {searchKeyword, setSearchKeyword} = useContext(RoleContext);
+
     const [products, setProducts] = useState([]); // 상품 목록을 관리하는 상태 변수
     const [hasMore, setHasMore] = useState(true); // 더 불러올 데이터가 있는지 여부를 관리하는 상태 변수
     const { ref, inView } = useInView({
         threshold: 0, // 요소가 100% 보일 때 트리거
     });
 
-    const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const city = queryParams.get('city');
 
+    //로딩 화면을 모달로 띄우기
+    const [showModal, setShowModal] = useState(false);
+
+
     // 데이터를 더 가져오는 함수
-    const fetchMoreData = () => {
+    const fetchMoreData = async () => {
         // 만약 현재 제품 수가 100개 이상이면 더 이상 데이터를 가져오지 않음
         if (products.length >= 100) { // 100은 총 제품 수라고 가정
             setHasMore(false);
@@ -32,8 +41,13 @@ const ProductBoard = () => {
             reviewCount: Math.floor(Math.random() * 100) // 0부터 100까지의 무작위 리뷰 수
         }));
 
+        const results = await productFetchTitleAndContent(searchKeyword);
+        console.log('검색 결과:', results);
+        const list = [];
+        list.push(...results);
+
         // 기존 제품 목록에 새로운 제품을 추가하여 상태를 업데이트
-        setProducts((prevProducts) => [...prevProducts, ...newProducts]);
+        setProducts((prevProducts) => [...prevProducts, ...list]);
     };
 
     // 컴포넌트가 처음 렌더링될 때 fetchMoreData 함수를 호출하여 초기 데이터를 가져옵니다.
@@ -52,11 +66,12 @@ const ProductBoard = () => {
         <div className={styles.container}>
             <div>
                 <h1>상품 게시판</h1>
-                <h3>'{city}'의 대한 검색 결과 입니다</h3>
+                <h3>'{searchKeyword}'의 대한 검색 결과 입니다</h3>
             </div>
+            {showModal && <Modal/>}
             <div className={styles.productList}>
                 {/* 제품 목록을 렌더링 */}
-                {products.map((product, index) => (
+                {products && products.map((product, index) => (
                     <div key={index} className={styles.productItem}>
                         {/* 제품 이미지 */}
                         <img src={product.image} alt={product.title} />
@@ -67,11 +82,12 @@ const ProductBoard = () => {
                             <p>{product.description}</p>
                             {/* 제품 태그 */}
                             <div className={styles.tags}>
-                                {product.tags.map((tag, index) => (
+
+                                {/*product.tags.map((tag, index) => (
                                     <span key={index} className={styles.tag}>
                                         #{tag}
                                     </span>
-                                ))}
+                                ))*/}
                             </div>
                             {/* 제품 평점 및 리뷰 수 */}
                             <div className={styles.rating}>

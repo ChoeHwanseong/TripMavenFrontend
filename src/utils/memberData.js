@@ -48,3 +48,13 @@ export const FormLogin = async (form) =>{
     'Content-Type': 'application/json'}})
   return reponse.data;
   }
+
+  export const updateProfile = async (id, updatedData) => {
+    try {
+      const res = await axios.put(`/members/${id}`, updatedData);
+      return res.data;
+    } catch (error) {
+      console.error('프로필 업데이트 중 에러났당', error);
+      throw error;
+    }
+  };

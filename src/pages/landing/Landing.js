@@ -4,10 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faMapMarkedAlt, faEnvelope, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../../components/Footer';
 import sightseeingImage from '../../images/sightseeing.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const Landing = () => {
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
   const [isNavbarShrunk, setIsNavbarShrunk] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,7 +41,7 @@ const Landing = () => {
     <div id="page-top">
       <nav className={`${styles.navbar} ${isNavbarShrunk ? styles.navbarShrink : ''}`}>
         <div className={styles.navbarContainer}>
-          <a className={styles.navbarBrand} href="#page-top">TripMaven</a>
+          <a className={styles.navbarBrand} href="#page-top" onClick={()=>navigate('/home')}>TripMaven</a>
           <button className={styles.navbarToggler} type="button" onClick={handleNavCollapse}>
             <FontAwesomeIcon icon={faBars} />
           </button>
