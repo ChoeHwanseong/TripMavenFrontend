@@ -1,18 +1,33 @@
-import React from 'react';
-import styles from '../../../styles/guidemypage/guidemypageaiservice/ScoreCircle.module.css';
+import * as React from 'react';
+import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 
-const ScoreCircle = ({ score }) => {
-    const degree = (score / 100) * 360;
-    const leftStyle = degree > 180 ? { transform: 'rotate(180deg)' } : { transform: `rotate(${degree}deg)` };
-    const rightStyle = degree > 180 ? { transform: `rotate(${degree - 180}deg)` } : {};
+export default function ScoreCircle({ score }) {
+  const settings = {
+    width: 200,
+    height: 200,
+    value: score,
+    min: 0,
+    max: 100,
+  };
 
-    return (
-        <div className={styles.scoreCircle}>
-            <div className={styles.score}>{score}</div>
-            <div className={styles.scoreOverlay} style={rightStyle}></div>
-            {degree > 180 && <div className={`${styles.scoreOverlay} ${styles.left}`} style={leftStyle}></div>}
-        </div>
-    );
-};
-
-export default ScoreCircle;
+  return (
+    <Gauge
+      {...settings}
+      cornerRadius="50%"
+      sx={(theme) => ({
+        [`& .${gaugeClasses.valueText}`]: {
+          fontSize: 40,
+        },
+        [`& .${gaugeClasses.valueArc}`]: {
+          fill: 'primary',
+        },
+        [`& .${gaugeClasses.referenceArc}`]: {
+          fill: theme.palette.text.disabled,
+        },
+        [`& .${gaugeClasses.root}`]: {
+          strokeLinecap: 'round',
+        },
+      })}
+    />
+  );
+}
