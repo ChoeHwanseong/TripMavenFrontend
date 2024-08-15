@@ -44,8 +44,8 @@ export const SignUp = async (form) => {
 
 //폼로그인!!@!@!@!@!@!@
 export const FormLogin = async (form) =>{
-  const reponse = await axios.post('/login', form ,{headers:{
-    'Content-Type': 'application/json'}})
+  const reponse = await axios.post('http://localhost:9099/login', form ,{headers:{
+    'Content-Type': 'multipart/form-data'}})
   return reponse.data;
   }
 

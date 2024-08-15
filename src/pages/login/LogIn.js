@@ -4,26 +4,28 @@ import { NavLink } from 'react-router-dom';
 import { FormLogin } from '../../utils/memberData';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [formData, setFormData] = useState({email: '', password: ''});
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+    
     const [autoLogin, setAutoLogin] = useState(false);
 
-    const handleEmailChange = (e) => setEmail(e.target.value);
-    const handlePasswordChange = (e) => setPassword(e.target.value);
     const handleAutoLoginChange = () => setAutoLogin(!autoLogin);
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const loginData = {
-            email: email,
-            password: password,
-        };
+        
         try {
-            const response = await FormLogin(loginData);
+            const response = await FormLogin(formData);
             console.log(response);
 
             // 로그인 성공 시 처리
-            if (response.ok) {
+            if (response) {
                 window.location.href = '/home'; // 예시: 홈으로 리다이렉트
             } else {
                 alert('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
@@ -89,11 +91,11 @@ const Login = () => {
                     <h1 className={styles.title}>로그인</h1>
                     <div className={styles.inputGroup}>
                         <label htmlFor="email">이메일</label>
-                        <input type="email" id="email" value={email} onChange={handleEmailChange} placeholder="이메일 입력" />
+                        <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="이메일 입력" />
                     </div>
                     <div className={styles.inputGroup}>
                         <label htmlFor="password">비밀번호</label>
-                        <input type="password" id="password" value={password} onChange={handlePasswordChange} placeholder="비밀번호 입력" />
+                        <input type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} placeholder="비밀번호 입력" />
                     </div>
                     <div className={styles.options}>
                         <div className={styles.autoLogin}>
