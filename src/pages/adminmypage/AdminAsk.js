@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from '../../styles/adminmypage/AdminAsk.module.css';
 import { useNavigate } from 'react-router-dom';
 import { csfetchAllData } from '../../utils/csfetchData';
-import { Box } from 'lucide-react';
+import { Box } from '@mui/material';
 
 const AdminAsk = () => {
 
@@ -63,16 +63,33 @@ const AdminAsk = () => {
           <tbody>
 
           {inquiry.map((inquiry, index) => (
-            
-            <tr onClick={()=>{navigate(`/adminAskDetailsView/${inquiry.id}`)}}>
+
+          <Box
+          component="tr"
+          key={index}
+          onMouseEnter={() => handleMouseEnter(index)}
+          onMouseLeave={handleMouseLeave}
+          onClick={()=>{navigate(`/adminAskDetailsView/${inquiry.id}`)}}
+          sx={{
+            cursor: 'pointer',
+            transition: 'background-color 0.3s',
+            '&:hover': {
+              color : 'black',
+              backgroundColor: '#D0F0FF',
+            }
+          }}>
+
                 <td>{inquiry.id}</td>
                 <td>{inquiry.member.name}</td>
                 <td>{inquiry.member.role ? '고객' : '가이드'}</td>
                 <td>{inquiry.title}</td>
                 <td>{inquiry.createdAt.split('T')[0]}</td>
                 <td>{inquiry.isActive ? '완료' : '미완료'}</td>
-            </tr>
+
+
+                </Box>
             ))} 
+
 
           </tbody>
         </table>
