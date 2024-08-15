@@ -8,8 +8,6 @@ import Login from "./pages/login/LogIn";
 import CSBoard from './pages/csboard/CSBoard';
 import Signup from './pages/login/SignUp';
 
-import UserAsk from './pages/usermypage/UserAsk';
-
 
 
 import UserReview from './pages/usermypage/UserReview';
@@ -48,6 +46,10 @@ import ComplaintForm from './pages/report/ComplaintForm';
 import AdminAskDetailsView from './pages/adminmypage/AdminAskDetailsView';
 import AdminAnswer from './pages/adminmypage/AdminAnswer';
 import UserAskPage from './pages/usermypage/UserAskPage';
+import GuideAskUpdates from './pages/guidemypage/GuideAskUpdates';
+import UserAskDetailsView from './pages/usermypage/UserAskDetailsView';
+import AskAll from './pages/askpage/AskAll';
+import AskDetailsView from './pages/askpage/AskDetailsView';
 
 function App() {
 
@@ -95,6 +97,9 @@ function App() {
           <Route path='/userlike' element={<UserLike/>}/>
           <Route path='/useraskpage' element={<UserAskPage/>}/>
           <Route path='/userAskDetailsView/:id' element={<UserAskDetailsView/>}/>
+
+          <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
+          <Route path='/askall' element={<AskAll/>}/>
           
           <Route path='/bigChat' element={<BigChat/>}/>
           <Route path="/mypageprofile/:id" element={<MypageProfile />} />

@@ -47,9 +47,21 @@ const AdminAnswer = () => {
 
 
     const handelAnswer = async() => {
-        await csAsnwerfetchUpdateData(id, inquiry);
-        console.log('수정 완료')
-        navigate('/adminask')       
+
+        try {
+            // Create updated data object directly from ref value
+            const updatedData = { comments: answerRef.current.value };
+            await csAsnwerfetchUpdateData(id, updatedData);
+            console.log('Answer updated:', updatedData.comments);
+            navigate('/adminask');
+        } catch (error) {
+            console.error('Error updating answer:', error);
+        }
+
+
+        // await csAsnwerfetchUpdateData(id, inquiry);
+        // console.log('수정 완료')
+        // navigate('/adminask')       
     };
 
 
@@ -88,13 +100,8 @@ const AdminAnswer = () => {
                     </tr>
                     <tr>
                         <td colSpan="4">
-                            <input type="text" className={styles.fullValue}
-                            value={inquiry.comments}
-                            onChange={()=>{                              
-                                setInquiry({...inquiry,comments:answerRef.current.value});
-                                console.log('inquiry',inquiry);
-                                console.log('inquiry.comments',inquiry.comments);
-                            }}
+                            <input type="text" className={styles.fullValue}                        
+                            
                             ref={answerRef}/>                                                  
                         </td> 
                     </tr>
