@@ -8,10 +8,6 @@ import Login from "./pages/login/LogIn";
 import CSBoard from './pages/csboard/CSBoard';
 import Signup from './pages/login/SignUp';
 
-import UserAsk from './pages/usermypage/UserAsk';
-
-
-
 import UserReview from './pages/usermypage/UserReview';
 
 import AdminAsk from './pages/adminmypage/AdminAsk';
@@ -34,11 +30,10 @@ import MyPageTemplate from './pages/mypage/MyPageTemplate';
 import MypageProfile from './pages/mypage/MyPageProfile';
 import UserLike from './pages/usermypage/UserLike';
 
-import GuideAskDetails from './pages/guidemypage/GuideAskDetails';
+
 
 
 import MemberList from './pages/adminmypage/MemberList';
-import GuideAskDetailsView from './pages/guidemypage/GuideAskDetailsView';
 import GuideAskUpdate from './pages/guidemypage/GuideAskUpdate';
 import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuidePost from './pages/guidemypage/GuidePost';
@@ -47,7 +42,14 @@ import FAQ from './pages/csboard/FAQ';
 import ComplaintForm from './pages/report/ComplaintForm';
 import AdminAskDetailsView from './pages/adminmypage/AdminAskDetailsView';
 import AdminAnswer from './pages/adminmypage/AdminAnswer';
-import UserAskPage from './pages/usermypage/UserAskPage';
+
+
+import AskAll from './pages/askpage/AskAll';
+import AskDetails from './pages/askpage/Askdetails';
+import AskDetailsView from './pages/askpage/AskDetailsView';
+import AskUpdate from './pages/askpage/AskUpdate';
+
+
 
 function App() {
 
@@ -75,26 +77,43 @@ function App() {
           {/* GUIDE */}
           <Route path='/guidemypagemypostdetails/:id' element={<GuideMyPageMyPostDetails/>}/>
           <Route path='/guidemypost' element={<GuideMyPageMyPost/>}/>
-          <Route path='/guideaskdetails' element={<GuideAskDetails/>}/>
+          {/*<Route path='/guideaskdetails' element={<GuideAskDetails/>}/>*/}
   
-          <Route path='/guideask' element={<GuideAsk/>}/>
+          {/*<Route path='/guideask' element={<GuideAsk/>}/>*/}
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
+          <Route path="/guideAsk" element={<GuideAsk />} />
+        
+          <Route path='/guidePost' element={<GuidePost/>}/>
+
           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
           <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
            */}
 
+           {/* USER */}
           <Route path='/userreview' element={<UserReview/>}/>
-          <Route path='/userask' element={<UserAsk/>}/>
+          {/*<Route path='/userask' element={<UserAsk/>}/>*/}
           <Route path='/userlike' element={<UserLike/>}/>
-          <Route path='/useraskpage' element={<UserAskPage/>}/>
+          {/*<Route path='/useraskpage' element={<UserAskPage/>}/>*/}
 
           <Route path='/bigChat' element={<BigChat/>}/>
-          <Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />
+          {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
+
+
+          <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
+          <Route path='/askall' element={<AskAll/>}/>
+          
+          <Route path='/bigChat' element={<BigChat/>}/>
           <Route path="/mypageprofile/:id" element={<MypageProfile />} />
 
-          <Route path="/guideAsk" element={<GuideAsk />} />
-          <Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />
+          {/*<Route path="/guideAsk" element={<GuideAsk />} />*/}
+          {/*<Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />*/}
           <Route path='/guidePost' element={<GuidePost/>}/>
+
+          <Route path='/askall' element={<AskAll />}/>
+          <Route path='/askdetails' element={<AskDetails/>}/>
+          <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
+          <Route path='/askupdate/:id' element={<AskUpdate/>}/>
+
         </Route>
         
         <Route path='/aiservice' element={<AIService/>}/>
@@ -103,6 +122,7 @@ function App() {
         <Route path="/faq" element={<FAQ/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
+        
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
