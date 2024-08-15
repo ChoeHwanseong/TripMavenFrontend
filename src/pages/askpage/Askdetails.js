@@ -12,21 +12,6 @@ const AskDetails = () => {
   const [inquiry, setInquiry] = useState(null);
   const {id} = useParams();
 
-  useEffect(() => {
-    const getCSData = async () => {
-        try {
-            const fetchedData = await fetchedData(id);
-            console.log('fetchedData',fetchedData)
-            setInquiry(fetchedData);
-        } catch (error) {
-            console.error('에러났당', error);
-        }
-    };
-
-    getCSData();
-}, []);
-
-
   const handelInquiry = async() => {
     try {
         const createData = { title: titleRef.current.value,

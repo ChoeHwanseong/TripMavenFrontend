@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import styles from '../styles/components/Header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { productFetchTitleAndContent } from '../utils/productData';
@@ -34,6 +33,7 @@ const Header = () => {
     //로그인한 사용자 role 가져오기(로그인 구현하면 변경할 예정)
     // + 입력한 검색어 관리(전역 스테이트)
     const {role, setRole,searchKeyword, setSearchKeyword} = useContext(RoleContext);
+    // !location.pathname.includes('product') && setSearchKeyword('')
     
     //role에 따라서 마이페이지에 있는 메뉴 변경하기
     let menuList = menuData[role]
@@ -64,7 +64,7 @@ const Header = () => {
     return (
         <header className={styles.header}>
             <div className={styles.headerFrame}>
-                <button className={styles.logoButton} onClick={() => {navigate('/home');}}>TripMaven</button>
+                <button className={styles.logoButton} onClick={() => {setSearchKeyword(''); navigate('/home');}}>TripMaven</button>
                 <button className={styles.navbutton2} onClick={()=>{setRole('user')}}>고객</button>
                 <button className={styles.navbutton2} onClick={()=>{setRole('guide')}}>가이드</button>
                 <button className={styles.navbutton2} onClick={()=>{setRole('admin')}}>관리자</button>
@@ -82,8 +82,8 @@ const Header = () => {
                     </div>
                     <div className={styles.navFrame}>
                         <div className={styles.navItems}>
-                            <button className={styles.navButton} onClick={() => navigate('/home')}>Home</button>
-                            <button className={styles.navButton} onClick={() => navigate('/aiservice')}>AI 서비스</button>
+                            <button className={styles.navButton} onClick={() => {setSearchKeyword(''); navigate('/home')}}>Home</button>
+                            <button className={styles.navButton} onClick={() => {setSearchKeyword(''); navigate('/aiservice')}}>AI 서비스</button>
                             <div className={styles.dropdown}>
                                 <button className={styles.dropdownButton}>
                                     마이 페이지
@@ -109,14 +109,14 @@ const Header = () => {
                                         //console.log(item); //디버그용
                                         //console.log(item.name); //디버그용
                                         if(item.name){
-                                            return <a key={index}><button className={styles.navButton1} onClick={()=>navigate(item.path)}>{item.name}</button></a>
+                                            return <a key={index}><button className={styles.navButton1} onClick={()=>{setSearchKeyword(''); navigate(item.path)}}>{item.name}</button></a>
                                         }
                                     })}
                                 </div>
                             </div>
                             <button className={styles.navButton} onClick={handleOpen}>가이드 등록</button>
                         </div>
-                        <button className={styles.loginButton} onClick={() => navigate('/login')}>
+                        <button className={styles.loginButton} onClick={() => {setSearchKeyword(''); navigate('/login')}}>
                             로그인
                         </button>
                     </div>

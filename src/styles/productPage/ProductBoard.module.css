@@ -71,3 +71,8 @@
   margin-right: 10px;  /* 별점과 리뷰 사이의 여백 설정 */
   font-size: 14px;  /* 별점 및 리뷰 글자 크기 설정 */
 }
+
+.loadingIndicator {
+  text-align: center;
+  margin-top: 50px;
+}

@@ -46,6 +46,7 @@
     margin-right: 7px;
     width: 20px;
     height: 20px;
+    cursor: pointer;
 }
 
 .searchInput {
@@ -63,6 +64,7 @@
 .navItems {
     display: flex;
     margin-right: 20px;
+    align-items: center;
 }
 .navbutton2 {
     font-size: 13px;
