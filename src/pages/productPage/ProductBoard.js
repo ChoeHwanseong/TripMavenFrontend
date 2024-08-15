@@ -68,7 +68,7 @@ const ProductBoard = () => {
         <div className={styles.container}>
             <div>
                 <h1>상품 게시판</h1>
-                <h3>'{city}'의 대한 검색 결과 입니다</h3>
+                <h3>'{searchKeyword}'의 대한 검색 결과 입니다</h3>
             </div>
             {showModal && <Modal/>}
             <div className={styles.productList}>
