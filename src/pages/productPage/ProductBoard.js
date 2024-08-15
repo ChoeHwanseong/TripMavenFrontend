@@ -8,6 +8,8 @@ import Modal from '../../components/loading/modal';
 
 const ProductBoard = () => {
     const location = useLocation();
+    //context로 template.js에서 관리하고 있음
+    //검색어
     const {searchKeyword, setSearchKeyword} = useContext(RoleContext);
 
     const [products, setProducts] = useState([]); // 상품 목록을 관리하는 상태 변수
@@ -31,7 +33,7 @@ const ProductBoard = () => {
             return;
         }
 
-        // 데이터를 가져오는 것을 시뮬레이션
+        // 데이터를 가져오는 것을 시뮬레이션(더미데이터 나중에 지울거임)
         const newProducts = Array.from({ length: 20 }, (_, index) => ({
             title: `Product ${products.length + index + 1}`, // 새로운 제품 제목
             description: 'This is a description.', // 제품 설명

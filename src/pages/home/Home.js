@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from '../../styles/home/Home.module.css';
 import { useNavigate } from 'react-router-dom';
 import KoreaWeatherMap from './KoreaWeather'; // KoreaWeather import
 import RegionEventInfo from './RegionEvent';
+import { RoleContext } from '../../components/context/roleContext';
 
 const Home = () => {
   const navigate = useNavigate();
+  const {setSearchKeyword} = useContext(RoleContext);
 
   const handleCityClick = (city) => {
-    navigate(`/product?city=${city}`);
+    setSearchKeyword(city);
+    navigate('/product');
   };
 
   return (

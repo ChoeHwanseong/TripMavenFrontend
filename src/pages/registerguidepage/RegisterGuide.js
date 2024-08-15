@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../../styles/registerguidepage/RegisterGuide.module.css';
 import { AiOutlinePaperClip } from 'react-icons/ai';
 
-const GuideRegistration = () => {
+const RegisterGuidePage = () => {
   return (
     <div className={styles.container}>
       <h1 className={styles.heading}>가이드 등록</h1>
@@ -30,4 +30,4 @@ const GuideRegistration = () => {
   );
 };
 
-export default GuideRegistration;
+export default RegisterGuidePage;
