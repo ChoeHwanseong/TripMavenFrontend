@@ -1,34 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/adminmypage/AdminAsk.module.css';
+import { useNavigate } from 'react-router-dom';
+import { csfetchAllData } from '../../utils/csfetchData';
+import { Box } from 'lucide-react';
 
 const AdminAsk = () => {
 
-  const inquiries = [
-    {
-      inquiryId: 9621,
-      username: 'kim',
-      role: '가이드',
-      title: '탈퇴 프로세스',
-      date: '2024-08-01',
-      status: '처리중',
-    },
-    {
-      inquiryId: 1212,
-      username: 'lee',
-      role: '일반 고객',
-      title: '게시글 작성 문의',
-      date: '2023-12-31',
-      status: '처리 완료',
-    },
-    {
-      inquiryId: 9622,
-      username: 'park',
-      role: '가이드',
-      title: '가이드 등록을 했는데 게시글이 올라가지 않아요',
-      date: '2024-03-19',
-      status: '처리 완료',
-    },
-  ];
+  const [inquiry, setInquiries] = useState([]);
+  const [hoveredRow, setHoveredRow] = useState(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getCSData = async () => {
+      try {
+        const fetchedData = await csfetchAllData();
+        setInquiries(fetchedData);
+      } catch (error) {
+        console.error('에러났당', error);
+      }
+    };
+
+
+    getCSData();
+  }, []);
+
+  const handleMouseEnter = (index) => {
+    setHoveredRow(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredRow(null);
+  }
+
+
 
   return (
     <div className={styles.container}>
@@ -56,16 +61,19 @@ const AdminAsk = () => {
             </tr>
           </thead>
           <tbody>
-            {inquiries.map((inquiry) => (
-              <tr key={inquiry.inquiryId}>
-                <td>{inquiry.inquiryId}</td>
-                <td>{inquiry.username}</td>
-                <td>{inquiry.role}</td>
+
+          {inquiry.map((inquiry, index) => (
+            
+            <tr onClick={()=>{navigate(`/adminAskDetailsView/${inquiry.id}`)}}>
+                <td>{inquiry.id}</td>
+                <td>{inquiry.member.name}</td>
+                <td>{inquiry.member.role ? '고객' : '가이드'}</td>
                 <td>{inquiry.title}</td>
-                <td>{inquiry.date}</td>
-                <td>{inquiry.status}</td>
-              </tr>
-            ))}
+                <td>{inquiry.createdAt.split('T')[0]}</td>
+                <td>{inquiry.isActive ? '완료' : '미완료'}</td>
+            </tr>
+            ))} 
+
           </tbody>
         </table>
       </div>

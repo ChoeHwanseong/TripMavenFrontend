@@ -45,6 +45,8 @@ import GuidePost from './pages/guidemypage/GuidePost';
 import SiteIntroduction from './pages/infopage/SiteInfo';
 import FAQ from './pages/csboard/FAQ';
 import ComplaintForm from './pages/report/ComplaintForm';
+import AdminAskDetailsView from './pages/adminmypage/AdminAskDetailsView';
+import AdminAnswer from './pages/adminmypage/AdminAnswer';
 
 function App() {
 
@@ -60,11 +62,16 @@ function App() {
         <Route path="/home" element={<Home/>}/>
         <Route element={<MyPageTemplate/>}>
 
+          {/* ADMIN */}
           <Route path='/adminreport' element={<AdminReport/>}/>
           <Route path='/adminprofile' element={<AdminProfile/>}/>
           <Route path='/adminask' element={<AdminAsk/>}/>
           <Route path='/memberlist' element={<MemberList/>}/>
+          <Route path='/adminAskDetailsView/:id' element={<AdminAskDetailsView/>}/>
+          <Route path='/adminAnswer/:id' element={<AdminAnswer/>}/>
+
           
+          {/* GUIDE */}
           <Route path='/guidemypagemypostdetails/:id' element={<GuideMyPageMyPostDetails/>}/>
           <Route path='/guidemypost' element={<GuideMyPageMyPost/>}/>
           <Route path='/guideaskdetails' element={<GuideAskDetails/>}/>
