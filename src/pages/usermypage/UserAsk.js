@@ -1,13 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/usermypage/UserAsk.module.css';
 import { useNavigate } from 'react-router-dom';
+import { csfetchAllData } from '../../utils/csfetchData';
 
 const InquiryHistory = () => {
+
+  const [inquiry, setInquiries] = useState([]);
+  const [hoveredRow, setHoveredRow] = useState(null);
+
   const navigate = useNavigate();
-  const inquiries = [
-    { id: 9621, title: '탈퇴 프로세스', date: '2024-08-01', status: '처리중' },
-    { id: 9622, title: '게시글 작성 문의', date: '2023-12-31', status: '처리 완료' },
-  ];
+
+  useEffect(() => {
+    const getCSData = async () => {
+      try {
+        const fetchedData = await csfetchAllData();
+        setInquiries(fetchedData);
+      } catch (error) {
+        console.error('에러났당', error);
+      }
+    };
+
+
+    getCSData();
+  }, []);
+
+  const handleMouseEnter = (index) => {
+    setHoveredRow(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredRow(null);
+  }
+
 
   return (
     <div className={styles.container}>
@@ -28,14 +52,15 @@ const InquiryHistory = () => {
             </tr>
           </thead>
           <tbody>
-            {inquiries.map((inquiry) => (
-              <tr key={inquiry.id}>
+
+          {inquiry.map((inquiry, index) => (
+              <tr onClick={()=>{navigate(`/userAskDetailsView/${inquiry.id}`)}}>
                 <td>{inquiry.id}</td>
                 <td>{inquiry.title}</td>
-                <td>{inquiry.date}</td>
-                <td>{inquiry.status}</td>
+                <td>{inquiry.createdAt.split('T')[0]}</td>
+                <td>{inquiry.isActive ? '처리중' : '처리완료'}</td>
               </tr>
-            ))}
+          ))} 
           </tbody>
         </table>
 
