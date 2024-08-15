@@ -10,8 +10,8 @@ const Home = () => {
   const {setSearchKeyword} = useContext(RoleContext);
 
   const handleCityClick = (city) => {
-    setSearchKeyword(city);
-    navigate('/product');
+    //setSearchKeyword(city);
+    navigate(`/product?city=${city}`);
   };
 
   return (
@@ -34,7 +34,7 @@ const Home = () => {
         <div className={styles.destinationsTitleViewAllButton}>
           <h2 className={styles.destinationsTitle}>인기 여행지</h2>
           <div className={styles.buttonStyle}>
-            <button className={styles.viewAllButton} onClick={() => navigate('/product')}>모두보기</button>
+            <button className={styles.viewAllButton} onClick={() => navigate('/product?keyword=')}>모두보기</button>
           </div>
         </div>
         <div className={styles.destinationList}>
