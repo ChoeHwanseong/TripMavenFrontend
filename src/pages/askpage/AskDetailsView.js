@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/guidemypage/GuideAskDetailsView.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { csfetchData } from '../../utils/csfetchData';
+import { csfetchData, csfetchDeleteData } from '../../utils/csfetchData';
 import { Box } from '@mui/material';
 
 const AskDetailsView = () => {
@@ -28,11 +28,23 @@ const AskDetailsView = () => {
         return <div>로딩중</div>; {/* 이코드 지우면 inquery.id 가져올때 오류발생할수도있음 */ }
     }
 
+    const deleteInquiry = async () => {
+        const confirmed = window.confirm("진짜 삭제?");
+        if (confirmed) {
+            try {
+                await csfetchDeleteData(id);
+                navigate('/askall'); 
+            } catch (error) {
+                console.error('삭제 중 오류 발생:', error);
+            }
+        }
+
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <h1 className={styles.title}>문의 내역<small className={styles.titleSmall}>상세보기</small></h1>
-                <button className={styles.inquiryButton} onClick={() => navigate('/askdetails')}>문의 하기</button>
             </div>
 
             <table className={styles.table}>
@@ -69,7 +81,7 @@ const AskDetailsView = () => {
             </table>
             <div className={styles.actions}>
                 <button className={styles.actionButton} onClick={() => navigate(`/askupdate/${inquiry.id}`)}>수정 하기</button>
-                <button className={styles.actionButton}>삭제 하기</button>
+                <button className={styles.actionButton} onClick={deleteInquiry}>삭제 하기</button>
                 <button className={styles.actionButton} onClick={() => navigate('/askall')}>목록</button>
             </div>
         </div>

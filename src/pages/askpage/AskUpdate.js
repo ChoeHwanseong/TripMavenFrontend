@@ -1,7 +1,7 @@
 import styles from '../../styles/guidemypage/GuideAsk.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { csfetchData, csfetchUpdateData } from '../../utils/csfetchData';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const AskUpdate = () => {
 
@@ -9,7 +9,8 @@ const AskUpdate = () => {
     const [inquiry, setInquiry] = useState(null);
     const navigate = useNavigate();
 
-    
+    const titleRef = useRef(null);
+    const contentRef = useRef(null);
 
     useEffect(() => {
       const getinquiryData = async () => {
@@ -30,35 +31,29 @@ const AskUpdate = () => {
         return <div>로딩중</div>;  {/* 이코드 지우면 inquery.id 가져올때 오류발생할수도있음 */}
     }
 
-    // 제목과 내용을 업데이트하는 핸들러 함수
-    const handleTitleChange = (e) => {
-      setInquiry({ ...inquiry, title: e.target.value });
+    const newTitle = async () =>{
+      setInquiry({...inquiry,title:titleRef.current.value})
+    };
+    const newContent = async () =>{
+      setInquiry({...inquiry,content:contentRef.current.value})
     };
 
-    const handleContentChange = (e) => {
-        setInquiry({ ...inquiry, content: e.target.value });
+
+
+    const handleData = async() => {
+        try {
+            const updatedData = { title:titleRef.current.value,
+                                  content:contentRef.current.value}
+            await csfetchUpdateData(id, updatedData);
+            navigate('/askall');
+
+        } catch (error) {
+            console.error('Error updating answer:', error);
+        }
+    
     };
 
-
-    // 수정 버튼 클릭 핸들러
-    /*
-     const handleUpdateClick = async () => {
-       try {
-          // 서버로 수정된 데이터를 보내는 요청
-           console.log('제목',inquiry.title);
-         console.log('내용',inquiry.content);
-          await csfetchUpdateData(id, inquiry);
-          
-          // 수정이 완료되면 상세보기 페이지로 이동
-           navigate('/guideaskdetails');
-     } catch (error) {
-           console.error('수정 중 에러났당', error);
-      }
-   };
-*/
-
-
-
+ 
     return <>
         <div className={styles.container}>
             <h2 className={styles.title}>문의 하기(수정)</h2>
@@ -70,8 +65,9 @@ const AskUpdate = () => {
                         type="text" 
                         id="title"
                         className={styles.input}
-                        onChange={handleTitleChange}
+                        onChange={newTitle}
                         value={inquiry.title}
+                        ref={titleRef}
                     />
                 </div>
                 <div className={styles.formGroup}>
@@ -79,13 +75,15 @@ const AskUpdate = () => {
                     <textarea 
                         id="content" 
                         className={styles.textarea}
-                        onChange={handleContentChange}
-                        value={inquiry.content}/>
+                        onChange={newContent}
+                        value={inquiry.content}
+                        ref={contentRef}
+                        />    
                 </div>
 
                 <button
                   className={styles.submitButton}
-                  onClick={()=>{navigate('/askall');}}>수정 하기
+                  onClick={handleData}>수정 하기
                 </button>
             </div>
         </div>
