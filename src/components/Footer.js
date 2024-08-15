@@ -21,15 +21,15 @@ const Footer = ({ className, ...props }) => {
       </div>
       <div className={styles.footerRight}>
         <div className={styles.footerLinks}>
-          <a href="#" className={styles.footerLink}><button className={styles.navButton} onClick={()=>navigate('/termsservice')}>이용약관</button></a>
+          <a className={styles.footerLink}><button className={styles.navButton} onClick={()=>navigate('/termsservice')}>이용약관</button></a>
           <span className={styles.bar}> | </span>
-          <a href="#" className={styles.footerLink}><button className={styles.navButton} onClick={()=>navigate('/siteinfo')}>사이트소개</button></a>
+          <a className={styles.footerLink}><button className={styles.navButton} onClick={()=>navigate('/siteinfo')}>사이트소개</button></a>
           <span className={styles.bar}> | </span>
-          <a href="#" className={styles.footerLink}><button className={styles.navButton} onClick={()=>navigate('/guideaskdetails')}>1:1문의</button></a>
+          <a className={styles.footerLink}><button className={styles.navButton} onClick={()=>navigate('/askall')}>1:1문의</button></a>
           <span className={styles.bar}> | </span>
-          <a href="#" className={styles.footerLink}><button className={styles.navButton} onClick={()=>navigate('/faq')}>고객센터</button></a>
+          <a className={styles.footerLink}><button className={styles.navButton} onClick={()=>navigate('/faq')}>고객센터</button></a>
           <span className={styles.bar}> | </span>
-          <a href="#" className={styles.footerLink}><button className={styles.navButton} onClick={()=>navigate('/')}>시작화면으로 돌아가기</button></a>
+          <a className={styles.footerLink}><button className={styles.navButton} onClick={()=>navigate('/')}>시작화면으로 돌아가기</button></a>
         </div>
       </div>
     </div>

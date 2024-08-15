@@ -112,7 +112,7 @@ function App() {
           <Route path='/guidePost' element={<GuidePost/>}/>
 
           <Route path='/askall' element={<AskAll />}/>
-          <Route path='/askdetails' element={<AskDetails/>}/>
+          <Route path='/askdetails/:id' element={<AskDetails/>}/>
           <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
           <Route path='/askupdate/:id' element={<AskUpdate/>}/>
 

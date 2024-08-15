@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/guidemypage/GuideAskDetailsView.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { csAsnwerfetchUpdateData, csfetchData } from '../../utils/csfetchData';
-import { Box } from '@mui/material';
-import { set } from 'mobx';
+
 
 const AdminAnswer = () => {
 
@@ -11,7 +10,6 @@ const AdminAnswer = () => {
     const [inquiry, setInquiry] = useState(null);
 
     const answerRef = useRef(null);
-
 
 
     const navigate = useNavigate();
@@ -46,22 +44,17 @@ const AdminAnswer = () => {
     };
 
 
-    const handelAnswer = async() => {
+    const handleAnswer = async() => {
 
         try {
-            // Create updated data object directly from ref value
             const updatedData = { comments: answerRef.current.value };
             await csAsnwerfetchUpdateData(id, updatedData);
-            console.log('Answer updated:', updatedData.comments);
             navigate('/adminask');
+
         } catch (error) {
             console.error('Error updating answer:', error);
         }
-
-
-        // await csAsnwerfetchUpdateData(id, inquiry);
-        // console.log('수정 완료')
-        // navigate('/adminask')       
+     
     };
 
 
@@ -102,12 +95,7 @@ const AdminAnswer = () => {
                         <td colSpan="4" >
                             <input type="text" className={styles.fullValue} style={{border:'solid', borderWidth:0.5,borderColor:'blue'}}          
                             value={inquiry.comments}
-                            onChange={()=>{                              
-                                setInquiry({...inquiry,comments:answerRef.current.value});
-                                console.log('inquiry',inquiry);
-                                console.log('inquiry.comments',inquiry.comments);
-                            }}
-
+                            onChange={newAnswer}
                             ref={answerRef}/>                                                  
                         </td> 
                     </tr>
@@ -115,7 +103,7 @@ const AdminAnswer = () => {
                 </tbody>
             </table>
             <div className={styles.actions}>
-                <button className={styles.actionButton} onClick={handelAnswer}>답변 등록하기</button>
+                <button className={styles.actionButton} onClick={handleAnswer}>답변 완료</button>
             </div>
         </div>
 
