@@ -50,13 +50,13 @@ const GuideMyPageMyPostDetails = () => {
               <th>작성번호</th>
               <td>{state.id}</td>
               <th>작성일</th>
-              <td>{state.createAt?state.createAt.split('T')[0]:null}</td>
+              <td>{state.createAt? state.createAt.split('T')[0]:null}</td>
             </tr>
             <tr>
               <th>지역</th>
               <td>{state.city}</td>
               <th>찜</th>
-              <td>받아와라.. </td>
+              <td>{state.likey} </td>
             </tr>
             <tr>
               <th>제목</th>

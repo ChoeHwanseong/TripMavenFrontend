@@ -39,38 +39,38 @@ const GuideAskDetailsView = () => {
                 <tbody>
                     <tr>
                         <td className={styles.label}>작성번호</td>
-                        <td className={styles.value}>9622</td>
+                        <td className={styles.value}>{inquiry.id}</td>
                         <td className={styles.label}>분류</td>
-                        <td className={styles.value}>가이드</td>
+                        <td className={styles.value}>{inquiry.member.role ? '사용자' : '가이드'}</td>
                     </tr>
                     <tr>
                         <td className={styles.label}>아이디</td>
-                        <td className={styles.value}>park</td>
+                        <td className={styles.value}>{inquiry.member.name}</td>
                         <td className={styles.label}>작성일</td>
-                        <td className={styles.value}>2024-03-19</td>
+                        <td className={styles.value}>{inquiry.createdAt.split('T')[0]}</td>
                     </tr>
                     <tr>
                         <td className={styles.label}>제목</td>
-                        <td className={styles.value} colSpan="3">가이드 등록을 했는데 게시글이 올라가지 않아요</td>
+                        <td className={styles.value} colSpan="3">{inquiry.title}</td>
                     </tr>
                     <tr>
                         <td className={styles.fullLabel} colSpan="4">내용</td>
                     </tr>
                     <tr>
-                        <td className={styles.fullValue} colSpan="4">가이드 등록을 했는데 게시글이 올라가지 않아요.....내용 주세요</td>
+                        <td className={styles.fullValue} colSpan="4">{inquiry.content}</td>
                     </tr>
                     <tr>
                         <td className={styles.fullLabelDark} colSpan="4">답변</td>
                     </tr>
                     <tr>
-                        <td className={styles.fullValue} colSpan="4">으이궁 잘 좀 하지</td>
+                        <td className={styles.fullValue} colSpan="4">{inquiry.comments}</td>
                     </tr>
                 </tbody>
             </table>
             <div className={styles.actions}>
-                <button className={styles.actionButton}>수정 하기</button>
+                <button className={styles.actionButton} onClick={() => navigate(`/guideaskupdate/${inquiry.id}`)}>수정 하기</button>
                 <button className={styles.actionButton}>삭제 하기</button>
-                <button className={styles.actionButton} onClick={() => navigate('/guidemypagemypost')}>목록</button>
+                <button className={styles.actionButton} onClick={() => navigate('/guideaskdetails')}>목록</button>
             </div>
         </div>
 

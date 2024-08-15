@@ -44,6 +44,7 @@ import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuidePost from './pages/guidemypage/GuidePost';
 import SiteIntroduction from './pages/infopage/SiteInfo';
 import FAQ from './pages/csboard/FAQ';
+import ComplaintForm from './pages/report/ComplaintForm';
 
 function App() {
 
@@ -97,11 +98,13 @@ function App() {
         <Route path='/registerguide' element={<RegisterGuide/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
         <Route path='/termsservice' element={<TermsService/>}/>
+        <Route path='/adminreport' element={<ComplaintForm/>}/>
 
         <Route path='/paymentproc' element={<OrderPopup/>}/>
         <Route path='/payment' element={<PaymentForm/>}/>
         <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
-       
+        
+        
       </Route>
     </Routes>
   </>

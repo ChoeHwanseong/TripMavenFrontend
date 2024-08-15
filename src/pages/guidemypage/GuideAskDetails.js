@@ -77,10 +77,10 @@ const GuideAskDetails = () => {
                     backgroundColor: '#D0F0FF',
                   },
                 }}
-              >       
+              >      
                   <td>{inquiry.id}</td>
                   <td>{inquiry.member.name}</td>
-                  <td>{inquiry.member.role}</td>
+                  <td>{inquiry.member.role ? '사용자' : '가이드'}</td>
                   <td><div className={styles.postLinkPointer}>{inquiry.title}</div></td>
                   <td>{inquiry.createdAt.split('T')[0]}</td> {/* 날짜만 표시 */}
                   <td>{inquiry.isactive?'유':'무'}</td> {/* 상태 표시 */}

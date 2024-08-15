@@ -49,7 +49,7 @@ const GuideMyPageMyPost = () => {
       <main className={styles.mainContent}>
         <div className={styles.header}>
           <h1 className={styles.title}>내 게시물 관리</h1>
-          <button className={styles.createButton}>게시물 등록 하기</button>
+          <button className={styles.createButton} onClick={()=>{navigate('/guidePost')}}>게시물 등록 하기</button>
         </div>
 
         <table className={styles.table}>

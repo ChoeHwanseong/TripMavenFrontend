@@ -1,6 +1,6 @@
 import styles from '../../styles/guidemypage/GuideAsk.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { csfetchData } from '../../utils/csfetchData';
+import { csfetchData, csfetchUpdateData } from '../../utils/csfetchData';
 import { useEffect, useState } from 'react';
 
 const GuideAskUpdate = () => {
@@ -9,11 +9,15 @@ const GuideAskUpdate = () => {
     const [inquiry, setInquiry] = useState(null);
     const navigate = useNavigate();
 
+    
+
     useEffect(() => {
       const getinquiryData = async () => {
          try {
            const fetchedData = await csfetchData(id); 
+           console.log(fetchedData);
           setInquiry(fetchedData);
+
         } catch (error) {
            console.error('에러났당', error);
         }
@@ -32,8 +36,28 @@ const GuideAskUpdate = () => {
     };
 
     const handleContentChange = (e) => {
-      setInquiry({ ...inquiry, content: e.target.value });
+        setInquiry({ ...inquiry, content: e.target.value });
     };
+
+
+    // 수정 버튼 클릭 핸들러
+    /*
+     const handleUpdateClick = async () => {
+       try {
+          // 서버로 수정된 데이터를 보내는 요청
+           console.log('제목',inquiry.title);
+         console.log('내용',inquiry.content);
+          await csfetchUpdateData(id, inquiry);
+          
+          // 수정이 완료되면 상세보기 페이지로 이동
+           navigate('/guideaskdetails');
+     } catch (error) {
+           console.error('수정 중 에러났당', error);
+      }
+   };
+*/
+
+
 
     return <>
         <div className={styles.container}>
@@ -56,10 +80,13 @@ const GuideAskUpdate = () => {
                         id="content" 
                         className={styles.textarea}
                         onChange={handleContentChange}
-                    >{inquiry.content}</textarea>
+                        value={inquiry.content}/>
                 </div>
 
-                <button className={styles.submitButton} onClick={()=>navigate('/guideaskdetails')}>등록 하기</button>
+                <button
+                  className={styles.submitButton}
+                  onClick={()=>{navigate('/guideaskdetails');}}>수정 하기
+                </button>
             </div>
         </div>
     </>

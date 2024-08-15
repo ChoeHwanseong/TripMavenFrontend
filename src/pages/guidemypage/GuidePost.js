@@ -1,7 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/guidemypage/GuidePost.module.css';
+import { useNavigate, useParams } from 'react-router-dom';
+import { createPost } from '../../utils/productData';
+import { fetchedData } from '../../utils/memberData';
 
 const GuidePost = () => {
+  const {id} = useParams();
+  const [posts, setPosts] = useState(null);
+  const navigate = useNavigate();
+
+  // 작성자 아이디 가져오기
+  // useEffect(() => {
+  //   const getPostData = async () => {
+  //     try {
+  //       const fetchData = await fetchedData(id);
+  //       console.log('fetchData: ',fetchData);
+  //       setPosts(fetchData);
+  //     } catch (error) {
+  //       console.error('에러났당', error);
+  //     }
+  //   };
+
+  //   getPostData();
+  // }, []);
+
+
+  // 게시글 등록
+  const handleCreateClick = () => {
+    try {
+      const fetchData = createPost();
+      console.log('fetchData: ',fetchData);
+      setPosts(fetchData);
+    } catch (error) {
+      console.error('에러났당', error);
+    }
+  };
+
+  
+
+
   return (
     <div className={styles.container}>
     <h2>게시물 등록하기</h2>
@@ -60,7 +97,7 @@ const GuidePost = () => {
       </div>
     </section>
 
-    <button className={styles.submitButton}>등록하기</button>
+    <button className={styles.submitButton} onClick={handleCreateClick}>등록하기</button>
   </div>
   );
 };
