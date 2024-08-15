@@ -11,9 +11,10 @@ import { menuData } from "../config/MyPageEndPoint";
 export default function Template(){
 
     const [role, setRole] = useState('admin');
+    const [searchKeyword, setSearchKeyword] = useState('');
 
     return <>
-        <RoleContext.Provider value={{role, setRole}}>
+        <RoleContext.Provider value={{role, setRole, searchKeyword, setSearchKeyword}}>
             <Header />
             <div className={style.layout}>
                 <div className={style.container}>
