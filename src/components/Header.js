@@ -1,11 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/components/Header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { productFetchTitleAndContent } from '../utils/productData';
+
 
 const Header = () => {
     const navigate = useNavigate();
+    // 입력한 검색어 관리
+    const [searchPost, setSearchPost] = useState('');
+    // 검색어에 따라 searchPost 상태 업데이트
+    const handleInputPost = (event) => {
+        setSearchPost(event.target.value);
+    };
+    // enter를 이용한 검색
+    const handleEnterPress = (event) => {
+        if (event.key === 'Enter') {
+        performSearch();
+        }
+    // 검색
+    const performSearch = async () => {
+        console.log('검색 실행:', searchPost);
+        try {
+            const results = await productFetchTitleAndContent(searchPost);
+            console.log('검색 결과:', results);
+            // 검색 결과를 활용하는 로직 추가
+        } catch (error) {
+            console.error('검색 중 에러 발생:', error);
+        }
+    };
+
 
     return (
         <header className={styles.header}>
@@ -13,7 +38,7 @@ const Header = () => {
                 <button className={styles.logoButton} onClick={() => navigate('/home')}>TripMaven</button>
                 <div className={styles.nav}>
                     <div className={styles.inputstyle}>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.icon}/>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.icon} onClick={'#'}/>
                         <input
                             type="text"
                             className={styles.searchInput}
@@ -59,6 +84,7 @@ const Header = () => {
             </div>
         </header>
     );
+}
 }
 
 export default Header;

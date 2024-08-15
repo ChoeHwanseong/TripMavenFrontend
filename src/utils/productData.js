@@ -32,3 +32,13 @@ export const productFetchAllData = async () => {
     throw error; 
   }
 };
+
+export const productFetchTitleAndContent = async() => {
+  try{
+    const res = await axios.get('/product/titlencontent/${keyword}');
+    return res.data;
+  } catch(error) {
+    console.error('에러났땅',error)
+    throw error;
+  }
+};
