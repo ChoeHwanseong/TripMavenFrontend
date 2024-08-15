@@ -89,6 +89,7 @@ export default function CustomizedAccordions() {
         '여기에 이용 방법 관련 질문 5에 대한 답변이 들어갑니다.',
       ],
     },
+
     {
       tabTitle: '결제',
       questions: [
