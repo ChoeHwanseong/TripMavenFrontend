@@ -42,7 +42,7 @@ const ReviewPage = () => {
               <div key={review.id} className={styles.reviewItem}>
                 <img src={review.image} alt="review" className={styles.reviewImage} />
                 <span className={styles.reviewText}>{review.description}</span>
-                <button className={styles.reviewButton}>리뷰 작성</button>
+                <button className={styles.reviewButton} onClick={()=>navigate('/reviewdetails')}>리뷰 작성</button>
               </div>
             ))}
           </div>
