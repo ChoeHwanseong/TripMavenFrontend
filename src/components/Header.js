@@ -84,7 +84,7 @@ const Header = () => {
                             type="text"
                             className={styles.searchInput}
                             placeholder="검색어를 입력하세요"
-                            value={location.pathname.contains('')  searchKeyword}
+                            value={searchKeyword}
                             onChange={handleInputPost}
                             onKeyDown={handleEnterPress}
                         />
