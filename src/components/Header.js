@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
+import { useLocation, useNavigate } from 'react-router-dom';
+import { productFetchTitleAndContent } from '../utils/productData';
 import { menuData } from '../config/MyPageEndPoint';
 import { RoleContext } from './context/roleContext';
 import Box from '@mui/material/Box';
@@ -25,6 +27,8 @@ const style = {
   };
 
 const Header = () => {
+    const location = useLocation();
+    
     const navigate = useNavigate();
     // 입력한 검색어 관리
     const {role, setRole,searchKeyword, setSearchKeyword} = useContext(RoleContext);
@@ -74,17 +78,17 @@ const Header = () => {
     return (
         <header className={styles.header}>
             <div className={styles.headerFrame}>
-                <button className={styles.logoButton} onClick={() => navigate('/home')}>TripMaven</button>
+                <button className={styles.logoButton} onClick={() => {setSearchKeyword(''); navigate('/home');}}>TripMaven</button>
                 <button className={styles.navbutton2} onClick={()=>{setRole('user')}}>고객</button>
                 <button className={styles.navbutton2} onClick={()=>{setRole('guide')}}>가이드</button>
                 <button className={styles.navbutton2} onClick={()=>{setRole('admin')}}>관리자</button>
                 <div className={styles.nav}>
-                    
                     <div className={styles.inputstyle}>
                         <input
                             type="text"
                             className={styles.searchInput}
                             placeholder="검색어를 입력하세요"
+                            value={ searchKeyword}
                             onChange={handleInputPost}
                             onKeyDown={handleEnterPress}
                         />
