@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/guidemypage/GuideAskDetailsView.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { csfetchData } from '../../utils/csfetchData';
+import { csAsnwerfetchUpdateData, csfetchData } from '../../utils/csfetchData';
 import { Box } from '@mui/material';
 import { set } from 'mobx';
 
@@ -40,14 +40,16 @@ const AdminAnswer = () => {
         return <div>로딩중</div>; {/* 이코드 지우면 inquery.id 가져올때 오류발생할수도있음 */ }
     }
 
-    const handleAnswerSubmit = () => {
-        const answer = answerRef.current.value;
-        console.log('Submitted Answer:', answer);
-        navigate(`/guideaskupdate/${inquiry.id}`);
+
+    const newAnswer = async () =>{
+        setInquiry({...inquiry,comments:answerRef.current.value})
     };
 
-    const newAnswer = () =>{
-        setInquiry({...inquiry,comments:answerRef.current.value})
+
+    const handelAnswer = async() => {
+        await csAsnwerfetchUpdateData(id, inquiry);
+        console.log('수정 완료')
+        navigate('/adminask')       
     };
 
 
@@ -86,14 +88,21 @@ const AdminAnswer = () => {
                     </tr>
                     <tr>
                         <td colSpan="4">
-                            <input type="text" className={styles.fullValue} value={inquiry.comments} onChange={newAnswer} ref={answerRef}/>                                                  
+                            <input type="text" className={styles.fullValue}
+                            value={inquiry.comments}
+                            onChange={()=>{                              
+                                setInquiry({...inquiry,comments:answerRef.current.value});
+                                console.log('inquiry',inquiry);
+                                console.log('inquiry.comments',inquiry.comments);
+                            }}
+                            ref={answerRef}/>                                                  
                         </td> 
                     </tr>
 
                 </tbody>
             </table>
             <div className={styles.actions}>
-                <button className={styles.actionButton} onClick={() => navigate('/adminAnswer')}>답변 등록하기</button>
+                <button className={styles.actionButton} onClick={handelAnswer}>답변 등록하기</button>
             </div>
         </div>
 

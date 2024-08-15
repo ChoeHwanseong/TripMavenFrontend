@@ -35,3 +35,16 @@ export const csfetchUpdateData = async (id,updatedData) => {
     throw error; 
   }
 };
+
+export const csAsnwerfetchUpdateData = async (id,updatedData) => {
+  try {
+    console.log('수정된 데이타: ',updatedData);
+    console.log('수정된 데이타 댓글: ',updatedData.comments);
+    const res = await axios.put(`/cs/answer/${id}`,updatedData);
+    return res.data;
+  }
+  catch (error) {
+    console.error('에러났당', error);
+    throw error; 
+  }
+};
