@@ -1,8 +1,11 @@
 import React from 'react';
 import styles from '../../../styles/guidemypage/guidemypageaiservice/AIService.module.css';
-import RadarChart from './RandarChart';
+
 import ScoreCircle from './ScoreCircle';
 import { useNavigate } from 'react-router-dom';
+
+import ScoreChart from './ScoreChart';
+import { AlignJustify } from 'lucide-react';
 
 const AIService = () => {
 
@@ -11,12 +14,7 @@ const AIService = () => {
     const handleClick = () => {
         navigate('/aiservice'); // AIService 페이지로 이동
     };
-    const scores = [
-        { period: '가장 마지막', score: 60 },
-        { period: '최근 3개월', score: 70 },
-        { period: '최근 6개월', score: 80 },
-        { period: '최근 1년', score: 90 },
-    ];
+ 
 
     const data = [
         { id: 9621, type: '모의테스트', description: '우도 히든 스팟 탐험: 함께 떠나는 특별한 여행 (중급)', date: '2024-08-01', score: 80 },
@@ -26,16 +24,14 @@ const AIService = () => {
 
     return (
         <div className={styles.aiServices}>
-            <h2>ai 서비스</h2>
-            <div className={styles.chartContainer}>
-                {scores.map((score, index) => (
-                    <RadarChart key={index} period={score.period} score={score.score} />
-                ))}
-            </div>
+            <h2 className={styles.aiai}>ai 서비스</h2>
             <div className={styles.scoreContainer}>
-                <ScoreCircle score={60} />
+                <ScoreChart/>
+                    
+                    <ScoreCircle score={60} />
+                </div>
+
                 <button className={styles.button} onClick={handleClick}>AI 교육 들으러가기</button>
-            </div>
             <div className={styles.tableContainer}>
                 <table className={styles.table}>
                     <thead>
