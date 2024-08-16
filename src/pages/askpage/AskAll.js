@@ -37,8 +37,8 @@ const AskAll = () => {
     setHoveredRow(null);
   }
 
-  const handleClick = () => {
-    navigate(`/askdetailsview/${membersId}`);
+  const handleClick = (inquiry) => {
+    navigate(`/askdetailsview/${inquiry.id}`);
   };
   
 
