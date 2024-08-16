@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/guidemypage/GuidePost.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import {  productFetchData, updatePost } from '../../utils/productData';
 import { postGetById, postPut } from '../../utils/postData';
 
 const GuideUpdatePost = () => {

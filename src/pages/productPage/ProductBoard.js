@@ -2,14 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useInView } from 'react-intersection-observer';
 import styles from '../../styles/productPage/ProductBoard.module.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { productFetchAllData, productFetchCity, productFetchTitleAndContent } from '../../utils/productData';
 import { RoleContext } from '../../components/context/roleContext';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import { postsAllGet, postsCityGet, postsKeywordGet } from '../../utils/postData';
 
 const ProductBoard = () => {
     const location = useLocation();
-    const navigate = useNavigate();
+    const navigate = navigator();
     const params = new URLSearchParams(location.search);
     const keyword = params.get('keyword');
     const city = params.get('city');
@@ -35,9 +35,9 @@ const ProductBoard = () => {
         // image        //대표 이미지 URL (placeholder 이미지)(없으면 기본 이미지)
         setLoading(true);
         let results;
-        if (city) results = await productFetchCity(city, page); //페이지도 넘기기
-        else if (keyword === '') results = await productFetchAllData(page); //페이지도 넘기기
-        else results = await productFetchTitleAndContent(keyword, page); //페이지도 넘기기
+        if (city) results = await postsCityGet(city, page); //페이지도 넘기기
+        else if (keyword === '') results = await postsAllGet(page); //페이지도 넘기기
+        else results = await postsKeywordGet(keyword, page); //페이지도 넘기기
         console.log('검색 결과:', results);
         setLoading(false);
         setProducts((prevProducts) => [...prevProducts, ...results]);
