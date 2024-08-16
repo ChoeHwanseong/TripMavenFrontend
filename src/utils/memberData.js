@@ -44,9 +44,20 @@ export const SignUp = async (form) => {
 
 //폼로그인!!@!@!@!@!@!@
 export const FormLogin = async (form) =>{
-  const reponse = await axios.post('http://localhost:9099/login', form ,{headers:{
+  const response = await axios.post('http://localhost:9099/login', form ,{headers:{
     'Content-Type': 'multipart/form-data'}})
-  return reponse.data;
+
+  const token = response.headers['authorization'] || response.headers['Authorization'];
+  if(token){
+    const pureToken = token.split(' ')[1];
+    window.localStorage.setItem("token", pureToken);
+    let role = response.data.isAdmin ? "admin" : "user";
+    role = response.data.isGuide ? "guide" : "user";
+    window.localStorage.setItem("role", role);
+    window.localStorage.setItem("refresh", response.data.refresh);
+  }
+
+  return response;
   }
 
   export const updateProfile = async (id, updatedData) => {
