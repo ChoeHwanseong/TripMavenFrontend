@@ -71,7 +71,9 @@ const Header = () => {
 
            
                 <button className={styles.logoButton} onClick={() => { setSearchKeyword(''); navigate('/home'); }}>TripMaven</button>
-                <ButtonGroup variant="contained" aria-label="Basic button group">
+                <ButtonGroup 
+                    sx={{'&:hover': { backgroundColor: '#0056b3' },}}
+                    variant="contained" aria-label="Basic button group">
                     <Button onClick={() => { setRole('user') }}>고객</Button>
                     <Button onClick={() => { setRole('guide') }}>가이드</Button>
                     <Button onClick={() => { setRole('admin') }}>관리자</Button>
