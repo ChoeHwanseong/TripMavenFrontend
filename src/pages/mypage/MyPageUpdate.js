@@ -4,13 +4,10 @@ import { Box, Button, TextField, Typography, Avatar, Grid } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { fetchedData, updateProfile } from '../../utils/memberData';
 
-const MypageProfile = () => {
+const MypageUpdate = () => {
   const [profileData, setProfileData] = useState(null);
   const [certificateFileName, setCertificateFileName] = useState('');
   const { id } = useParams();
-
-  const membersId= localStorage.getItem('membersId');
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,6 +22,24 @@ const MypageProfile = () => {
 
     getData();
   }, [id]);
+
+
+
+  // const emailRef = useRef(null);
+  // const namegRef = useRef(null);
+  // const gendergRef = useRef(null);
+  // const birthdayRef = useRef(null);
+  // const telNumberRef = useRef(null);
+  // const addressRef = useRef(null);
+  // const profileRef = useRef(null);
+  // const guidelicenseRef = useRef(null);
+
+
+
+
+
+
+
 
   const handleUpdate = (e) => {
     const { name, value } = e.target;
@@ -41,14 +56,27 @@ const MypageProfile = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const profileupdate = await updateProfile(id, profileData);
+      setProfileData(profileupdate);
+      alert('프로필이 성공적으로 수정되었습니다.');
+      navigate(`/mypageprofile/2`);
+    } catch (error) {
+      console.error('프로필 수정 중 오류 발생:', error);
+      alert('프로필 수정에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
   if (!profileData) {
     return <Typography variant="h6">로딩중</Typography>;
   }
 
   return (
     <Box sx={{ p: 7 }}>
-      <Typography style={{ fontSize: '35px', fontWeight: 'bold' }} gutterBottom>프로필</Typography>
-      <form>
+      <Typography style={{ fontSize: '35px', fontWeight: 'bold' }} gutterBottom>프로필 수정</Typography>
+      <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={2}>
             <Avatar
@@ -183,7 +211,7 @@ const MypageProfile = () => {
         </Grid>
         <Box display="flex" justifyContent="flex-end">
           <Button
-            onClick={()=>{navigate(`/mypageUpdate/${membersId}`)}}
+            type="submit"
             variant="contained"
             sx={{
               mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px',
@@ -198,4 +226,4 @@ const MypageProfile = () => {
   );
 };
 
-export default MypageProfile;
+export default MypageUpdate;
