@@ -2,10 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/guidemypage/GuidePost.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import {  productFetchData, updatePost } from '../../utils/productData';
+import { postGetById, postPut } from '../../utils/postData';
 
 const GuideUpdatePost = () => {
+  
   const {id} = useParams();
   const [posts, setPosts] = useState({});
+  const membersId= localStorage.getItem('membersId');
+
   const navigate = useNavigate();
 
   
@@ -22,7 +26,7 @@ const GuideUpdatePost = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const fetchedData = await productFetchData(id);
+        const fetchedData = await postGetById(id); //  상품id로 조회
         console.log('fetchedData',fetchedData)
         setPosts(fetchedData || {});
       } catch (error) {
@@ -32,6 +36,8 @@ const GuideUpdatePost = () => {
 
     getData();
   }, [id]);
+
+
 
   // 수정된 값 저장
   const newTitle = async () =>{
@@ -75,10 +81,12 @@ const GuideUpdatePost = () => {
                             hotel : hotelRef.current.value,
                             hotelAd : hotelAdRef.current.value,
                             content: contentRef.current.value,
-                            members_id: id
+                            member_id: membersId,
+                            id : posts.id
                           };
-        console.log('updateData: ',updateData)
-        await updatePost(updateData);
+        console.log('updateData: ',updateData);
+        console.log('updateData.id: ',updateData.id);
+        await postPut(updateData);
         navigate('/guidemypost');
 
     } catch (error) {

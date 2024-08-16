@@ -3,20 +3,21 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../styles/guidemypage/GuideMyPageMyPost.module.css';
 import { Box } from '@mui/material';
-import { productFetchAllData } from '../../utils/productData';
+import { postsAllGet } from '../../utils/postData';
 
 
 const GuideMyPageMyPost = () => {
   const [posts, setPosts] = useState(null);
   const [hoveredRow, setHoveredRow] = useState(null);
+  const membersId= localStorage.getItem('membersId');
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const getPostData = async () => {
       try {
-        const fetchData = await productFetchAllData();
-        console.log('id: ',fetchData[0].member.id);
+        const fetchData = await postsAllGet(0);
+        console.log('membersId: ',membersId);
         setPosts(fetchData);
       } catch (error) {
         console.error('에러났당', error);
@@ -49,7 +50,7 @@ const GuideMyPageMyPost = () => {
       <main className={styles.mainContent}>
         <div className={styles.header}>
           <h1 className={styles.title}>내 게시물 관리</h1>
-          <button className={styles.createButton} onClick={()=>{navigate(`/guidePost/${posts[0].member.id}`)}}>게시물 등록 하기</button>
+          <button className={styles.createButton} onClick={()=>{navigate(`/guidePost/${membersId}`)}}>게시물 등록 하기</button>
         </div>
 
         <table className={styles.table}>

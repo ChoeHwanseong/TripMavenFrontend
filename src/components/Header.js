@@ -3,13 +3,15 @@ import styles from '../styles/components/Header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { productFetchTitleAndContent } from '../utils/productData';
 import { menuData } from '../config/MyPageEndPoint';
 import { RoleContext } from './context/roleContext';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
+import { ButtonGroup } from '@mui/material';
+import { Button } from '@mui/material';
 
 
 const style = {
@@ -23,17 +25,21 @@ const style = {
     borderRadius: '16px',
     boxShadow: 24,
     p: 4,
-  };
+};
 
 const Header = () => {
     const location = useLocation();
-    
+
+
+
+
+
     const navigate = useNavigate();
-    
+
     //로그인한 사용자 role 가져오기(로그인 구현하면 변경할 예정)
     // + 입력한 검색어 관리(전역 스테이트)
-    const {role, setRole,searchKeyword, setSearchKeyword} = useContext(RoleContext);
-    
+    const { role, setRole, searchKeyword, setSearchKeyword } = useContext(RoleContext);
+
     //role에 따라서 마이페이지에 있는 메뉴 변경하기
     let menuList = menuData[role]
 
@@ -52,21 +58,26 @@ const Header = () => {
         //console.log(event.key); //디버그용
         if (event.key === 'Enter') handleNavigatePage(event);
     }
-    const handleNavigatePage = (event)=>{
+    const handleNavigatePage = (event) => {
         console.log('검색 실행:', searchKeyword);
         navigate(`/product?keyword=${searchKeyword}`);
     }
-    
+
     //console.log(role); //디버그용
     //console.log(menuList); //디버그용
 
     return (
         <header className={styles.header}>
             <div className={styles.headerFrame}>
-                <button className={styles.logoButton} onClick={() => {setSearchKeyword(''); navigate('/home');}}>TripMaven</button>
-                <button className={styles.navbutton2} onClick={()=>{setRole('user')}}>고객</button>
-                <button className={styles.navbutton2} onClick={()=>{setRole('guide')}}>가이드</button>
-                <button className={styles.navbutton2} onClick={()=>{setRole('admin')}}>관리자</button>
+
+           
+                <button className={styles.logoButton} onClick={() => { setSearchKeyword(''); navigate('/home'); }}>TripMaven</button>
+                <ButtonGroup variant="contained" aria-label="Basic button group">
+                    <Button onClick={() => { setRole('user') }}>고객</Button>
+                    <Button onClick={() => { setRole('guide') }}>가이드</Button>
+                    <Button onClick={() => { setRole('admin') }}>관리자</Button>
+                </ButtonGroup>
+
                 <div className={styles.nav}>
                     <div className={styles.inputstyle}>
                         <input
@@ -77,12 +88,12 @@ const Header = () => {
                             onChange={handleInputPost}
                             onKeyDown={handleEnterPress}
                         />
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.icon} onClick={handleNavigatePage}/>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.icon} onClick={handleNavigatePage} />
                     </div>
                     <div className={styles.navFrame}>
                         <div className={styles.navItems}>
-                            <button className={styles.navButton} onClick={() => {setSearchKeyword(''); navigate('/home')}}>Home</button>
-                            <button className={styles.navButton} onClick={() => {setSearchKeyword(''); navigate('/aiservice')}}>AI 서비스</button>
+                            <button className={styles.navButton} onClick={() => { setSearchKeyword(''); navigate('/home') }}>Home</button>
+                            <button className={styles.navButton} onClick={() => { setSearchKeyword(''); navigate('/aiservice') }}>AI 서비스</button>
                             <div className={styles.dropdown}>
                                 <button className={styles.dropdownButton}>
                                     마이 페이지
@@ -107,29 +118,33 @@ const Header = () => {
                                     {menuList && menuList.map((item, index) => {
                                         //console.log(item); //디버그용
                                         //console.log(item.name); //디버그용
-                                        if(item.name){
-                                            return <a key={index}><button className={styles.navButton1} onClick={()=>{setSearchKeyword(''); navigate(item.path)}}>{item.name}</button></a>
+                                        if (item.name) {
+                                            return <a key={index}><button className={styles.navButton1} onClick={() => { setSearchKeyword(''); navigate(item.path) }}>{item.name}</button></a>
                                         }
                                     })}
                                 </div>
                             </div>
                             <button className={styles.navButton} onClick={handleOpen}>가이드 등록</button>
                         </div>
-                        <button className={styles.loginButton} onClick={() => {setSearchKeyword(''); navigate('/login')}}>
-                            로그인
-                        </button>
+                        
+                        {/*<button className={styles.loginButton} onClick={() => { setSearchKeyword(''); navigate('/login') }}>로그인</button>*/}
+                        {!localStorage.getItem("token") ?
+                                <NavLink className={styles.loginButton} to="/login" >로그인</NavLink>
+                                :
+                                <NavLink onClick={()=>localStorage.clear()} className={styles.loginButton} to="/home" >로그아웃</NavLink>
+                        }
                     </div>
                 </div>
             </div>
-         {/* 모달 컴포넌트 */}
-         <Modal
+            {/* 모달 컴포넌트 */}
+            <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <GuideRegistration /> 
+                    <GuideRegistration />
                 </Box>
             </Modal>
         </header>

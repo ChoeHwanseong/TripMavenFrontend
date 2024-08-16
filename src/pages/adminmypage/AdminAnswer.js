@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/guidemypage/GuideAskDetailsView.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { csAsnwerfetchUpdateData, csfetchData } from '../../utils/csfetchData';
+import { csAnswerPut, csGet } from '../../utils/csData';
 
 
 const AdminAnswer = () => {
@@ -17,7 +17,7 @@ const AdminAnswer = () => {
     useEffect(() => {
         const getCSData = async () => {
             try {
-                const fetchedData = await csfetchData(id);
+                const fetchedData = await csGet(id);
                 setInquiry(fetchedData);
                 console.log(fetchedData)
                 console.log(fetchedData.comments)
@@ -48,7 +48,7 @@ const AdminAnswer = () => {
 
         try {
             const updatedData = { comments: answerRef.current.value };
-            await csAsnwerfetchUpdateData(id, updatedData);
+            await csAnswerPut(id, updatedData);
             navigate('/adminask');
 
         } catch (error) {
