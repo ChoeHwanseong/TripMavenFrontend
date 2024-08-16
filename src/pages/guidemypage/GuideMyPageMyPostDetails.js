@@ -5,6 +5,7 @@ import styles from '../../styles/guidemypage/GuideMyPageMyPostDetails.module.css
 import { postDelete } from '../../utils/postData';
 
 const GuideMyPageMyPostDetails = () => {
+
   const navigate = useNavigate();
   const {state} = useLocation();
   console.log(state);
@@ -37,8 +38,9 @@ const GuideMyPageMyPostDetails = () => {
     const confirmed = window.confirm("진짜 삭제?");
     if (confirmed) {
         try {
-            await postDelete(id);
-            navigate('/askall'); 
+          console.log('state.id: ',state.id);
+            await postDelete(state.id);
+            navigate('/guidemypost'); 
         } catch (error) {
             console.error('삭제 중 오류 발생:', error);
         }
@@ -194,7 +196,7 @@ const GuideMyPageMyPostDetails = () => {
         <div className={styles.actions}>
           <button className={styles.actionButton} onClick={()=>{navigate(`/guideUpdatePost/${state.id}`)}} >수정 하기</button>
           <button className={styles.actionButton} onClick={deletePost}>삭제 하기</button>
-          <button className={styles.actionButton} onClick={() => navigate('/guidemypagemypost')}>목록</button>
+          <button className={styles.actionButton} onClick={() => navigate('/guidemypost')}>목록</button>
         </div>
 
       </main>

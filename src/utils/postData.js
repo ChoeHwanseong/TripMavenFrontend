@@ -59,8 +59,9 @@ export const postPut = (updateData) => {
 
 
 // 상품 삭제
-export const postDelete = (deleteData) => {
-  return axios.delete(baseUrl + `/${deleteData.id}`).then(res =>{
+export const postDelete = (id) => {
+  console.log('id : ',id)
+  return axios.delete(baseUrl + `/${id}`).then(res =>{
       return res;
   })
 }
