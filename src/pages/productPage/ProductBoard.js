@@ -9,7 +9,7 @@ import { postsAllGet, postsCityGet, postsKeywordGet } from '../../utils/postData
 
 const ProductBoard = () => {
     const location = useLocation();
-    const navigate = navigator();
+    const navigate = useNavigate();
     const params = new URLSearchParams(location.search);
     const keyword = params.get('keyword');
     const city = params.get('city');

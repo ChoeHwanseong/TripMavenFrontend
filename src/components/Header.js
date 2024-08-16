@@ -29,10 +29,6 @@ const style = {
 const Header = () => {
     const location = useLocation();
 
-
-
-
-
     const navigate = useNavigate();
 
     //로그인한 사용자 role 가져오기(로그인 구현하면 변경할 예정)

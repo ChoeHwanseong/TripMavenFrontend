@@ -16,7 +16,7 @@ const GuideMyPageMyPost = () => {
   useEffect(() => {
     const getPostData = async () => {
       try {
-        const fetchData = await productFetchAllData(0);
+        const fetchData = await postsAllGet(0);
         console.log('id: ',fetchData[0].member.id);
         setPosts(fetchData);
       } catch (error) {
