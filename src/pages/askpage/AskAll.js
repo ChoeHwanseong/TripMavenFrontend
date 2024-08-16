@@ -4,28 +4,30 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/askpage/AskAll.module.css';
 
 import { Box } from '@mui/material';
-import { csfetchAllData } from '../../utils/csfetchData';
+import { csAllget } from '../../utils/csData';
+
 
 const AskAll = () => {
     const [inquiry, setInquiries] = useState([]);
-  const [hoveredRow, setHoveredRow] = useState(null);
+    const [hoveredRow, setHoveredRow] = useState(null);
+    const membersId= localStorage.getItem('membersId');
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    const getCSData = async () => {
-      try {
-        const fetchedData = await csfetchAllData();
-        console.log('member.id: ',fetchedData[0].member.id);
-        setInquiries(fetchedData);
-      } catch (error) {
-        console.error('에러났당', error);
-      }
-    };
+    useEffect(() => {
+      const getCSData = async () => {
+        try {
+          const fetchedData = await csAllget();
+          console.log('fetchedData ',fetchedData);
+          setInquiries(fetchedData);
+        } catch (error) {
+          console.error('에러났당', error);
+        }
+      };
 
 
-    getCSData();
-  }, []);
+      getCSData();
+    }, []);
 
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
@@ -35,8 +37,8 @@ const AskAll = () => {
     setHoveredRow(null);
   }
 
-  const handleClick = (inquiry) => {
-    navigate(`/askdetailsview/${inquiry.id}`);
+  const handleClick = () => {
+    navigate(`/askdetailsview/${membersId}`);
   };
   
 
@@ -47,7 +49,7 @@ const AskAll = () => {
       <div className={styles.content}>
         <div className={styles.header}>
           <h1>문의 내역</h1>
-          <button className={styles.button} onClick={() => navigate(`/askdetails/${inquiry[0].member.id}`)}>문의 하기</button>
+          <button className={styles.button} onClick={() => navigate(`/askdetails/${membersId}`)}>문의 하기</button>
         </div>
 
         <table className={styles.table}>
@@ -60,7 +62,7 @@ const AskAll = () => {
             </tr>
           </thead>
           <tbody>
-            {inquiry.map((inquiry, index) => (
+          {inquiry.map((inquiry, index) => (
                 <Box
                 component="tr"
                 key={index}
@@ -82,7 +84,6 @@ const AskAll = () => {
                   <td>{inquiry.isactive?'처리완료':'처리중'}</td> {/* 상태 표시 */}
                   </Box>
               ))}
-
           </tbody>
           
         </table>
