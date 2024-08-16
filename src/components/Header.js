@@ -124,7 +124,7 @@ const Header = () => {
                         {!localStorage.getItem("token") ?
                                 <NavLink className={styles.loginButton} to="/login" >로그인</NavLink>
                                 :
-                                <NavLink onClick={()=>localStorage.clear()} className="nav-link" to="/" >로그아웃</NavLink>
+                                <NavLink onClick={()=>localStorage.clear()} className={styles.loginButton} to="/home" >로그아웃</NavLink>
                         }
                     </div>
                 </div>

@@ -7,7 +7,7 @@ import { Box } from '@mui/material';
 import { csfetchAllData } from '../../utils/csfetchData';
 
 const AskAll = () => {
-    const [inquiry, setInquiries] = useState([]);
+  const [inquiry, setInquiries] = useState([]);
   const [hoveredRow, setHoveredRow] = useState(null);
 
   const navigate = useNavigate();
@@ -16,6 +16,7 @@ const AskAll = () => {
     const getCSData = async () => {
       try {
         const fetchedData = await csfetchAllData();
+        
         console.log('member.id: ',fetchedData[0].member.id);
         setInquiries(fetchedData);
       } catch (error) {
