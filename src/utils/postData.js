@@ -52,7 +52,7 @@ export const postsCityGet = (city, page) => {
 export const postPut = (updateData) => {
   console.log('postData의 updateData: ',updateData);
   console.log('상품번호: ',updateData.id);
-  return axios.put(baseUrl + `/${updateData.id}`).then(res =>{
+  return axios.put(baseUrl + `/${updateData.id}`,updateData).then(res =>{
       return res.data;
   })
 }

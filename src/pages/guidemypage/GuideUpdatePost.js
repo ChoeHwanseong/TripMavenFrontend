@@ -37,6 +37,8 @@ const GuideUpdatePost = () => {
     getData();
   }, [id]);
 
+
+
   // 수정된 값 저장
   const newTitle = async () =>{
     setPosts({...posts,title:titleRef.current.value})
@@ -82,7 +84,8 @@ const GuideUpdatePost = () => {
                             member_id: membersId,
                             id : posts.id
                           };
-        console.log('updateData: ',updateData)
+        console.log('updateData: ',updateData);
+        console.log('updateData.id: ',updateData.id);
         await postPut(updateData);
         navigate('/guidemypost');
 
