@@ -17,9 +17,6 @@ const GuidePost = () => {
   const hotelRef = useRef(null);
   const hotelAdRef = useRef(null);
   const contentRef = useRef(null);
-
-
-
   
 
   // 게시글 등록
@@ -43,8 +40,6 @@ const GuidePost = () => {
     }
 
   };
-
-
 
 
   return (

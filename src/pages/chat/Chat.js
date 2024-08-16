@@ -127,12 +127,13 @@ const Chat = () => {
               </div>
             </div>
 
-            <div className={styles.loadingStyle}>
+            
               {loading && (
-                <Box >
+                <Box className='loadingStyle'>
                   <CircularProgress />
                 </Box>
               )}
+            <div className={styles.loadingStyle}>
             <div/>
 
             <footer className={styles.chatFooter}>

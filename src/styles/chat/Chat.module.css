@@ -216,6 +216,8 @@
 }
 
 .loadingStyle{
+  background-color: #00000000;
+  
   text-align: center;
   z-index: 1;
   border: none;
