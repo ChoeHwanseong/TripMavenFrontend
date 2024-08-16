@@ -38,7 +38,7 @@ export default function ScoreCircle({ score }) {
           fontSize: 60,
         },
         [`& .${gaugeClasses.valueArc}`]: {
-          fill: 'primary',
+          fill: '#0066ff',
         },
         [`& .${gaugeClasses.referenceArc}`]: {
           fill: '#fffff',

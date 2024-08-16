@@ -228,7 +228,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
       <select 
         value={selectedRegion} 
         onChange={handleRegionChange}
-        style={{ marginBottom: '10px', padding: '5px', width: '100%' }}
+        style={{ marginBottom: '10px', padding: '5px', width: '100%',height:'38px' }}
       >
         <option value="">지역을 선택하세요</option>
         {regions.map((region) => (
