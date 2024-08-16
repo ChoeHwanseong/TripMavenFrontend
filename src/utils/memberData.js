@@ -54,6 +54,7 @@ export const FormLogin = async (form) =>{
     let role = response.data.isAdmin ? "admin" : "user";
     role = response.data.isGuide ? "guide" : "user";
     window.localStorage.setItem("role", role);
+    window.localStorage.setItem("membersId", response.data.membersId);
     window.localStorage.setItem("refresh", response.data.refresh);
   }
 
