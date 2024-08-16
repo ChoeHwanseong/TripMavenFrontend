@@ -29,9 +29,9 @@ const Modal = ({ isOpen, onClose, children }) => {
         padding: '20px',
         borderRadius: '8px',
         width: '90%',
-        maxWidth: '500px',
+        maxWidth: '600px',
         height: '90%',
-        maxHeight: '600px',
+        maxHeight: '650px',
         overflow: 'auto',
         position: 'relative',
         display: 'flex',
@@ -61,9 +61,8 @@ const extractUrl = (htmlString) => {
   return match ? match[1] : null;
 };
 
-const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
+const RegionEventInfo = ({ width = "100%", height = "400px", onRegionSelect, selectedRegion }) => {
   const [regions, setRegions] = useState([]);
-  const [selectedRegion, setSelectedRegion] = useState('');
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -78,7 +77,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
 
   useEffect(() => {
     if (selectedRegion) {
-      fetchEvents(selectedRegion);
+      fetchEvents(selectedRegion.code);
     } else {
       setEvents([]);
     }
@@ -200,7 +199,11 @@ const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
   };
 
   const handleRegionChange = (e) => {
-    setSelectedRegion(e.target.value);
+    const selectedCode = e.target.value;
+    const selectedRegionObject = regions.find(region => region.code === selectedCode);
+    if (selectedRegionObject && onRegionSelect) {
+      onRegionSelect(selectedRegionObject);
+    }
   };
 
   const handlePrevEvent = () => {
@@ -226,9 +229,9 @@ const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
   return (
     <div style={{ width, height, overflow: 'hidden' }}>
       <select 
-        value={selectedRegion} 
+        value={selectedRegion ? selectedRegion.code : ''} 
         onChange={handleRegionChange}
-        style={{ marginBottom: '10px', padding: '5px', width: '100%',height:'38px' }}
+        style={{ marginBottom: '10px', padding: '5px', width: '100%', height: '38px' }}
       >
         <option value="">지역을 선택하세요</option>
         {regions.map((region) => (
@@ -344,7 +347,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px" }) => {
                     href={extractUrl(eventDetails.homepage)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ textDecoration: "none", color: "#0066ff" }} // 밑줄 제거 및 색상 추가
+                    style={{ textDecoration: "none", color: "#0066ff" }}
                   >
                     {extractUrl(eventDetails.homepage)}
                   </a>
