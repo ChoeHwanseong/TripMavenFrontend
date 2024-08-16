@@ -61,39 +61,39 @@ const MypageProfile = () => {
             <div className={styles.infoSection}>
               <div className={styles.formGroup}>
                 <label htmlFor="name">닉네임</label>
-                <input type="text" id="name" name="name" value={profileData.name} onChange={handleUpdate} />
+                <input type="text" id="name" name="name" value={profileData.name?profileData.name:''} onChange={handleUpdate} readOnly/>
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="email">이메일</label>
-                <input type="text" id="email" name="email" value={profileData.email} onChange={handleUpdate} />
+                <input type="text" id="email" name="email" value={profileData.email?profileData.email:''} onChange={handleUpdate} readOnly />
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="telNumber">전화번호</label>
-                <input type="text" id="telNumber" name="telNumber" value={profileData.telNumber} onChange={handleUpdate} />
+                <input type="text" id="telNumber" name="telNumber" value={profileData.telNumber?profileData.telNumber:''} onChange={handleUpdate} readOnly/>
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="address">주소</label>
-                <input type="text" id="address" name="address" value={profileData.address} onChange={handleUpdate} />
+                <input type="text" id="address" name="address" value={profileData.address?profileData.address:''} onChange={handleUpdate} readOnly/>
                 <button type="button" className={styles.searchButton}>검색</button>
               </div>
             </div>
             <div className={styles.extraSection}>
               <div className={styles.formGroup}>
                 <label htmlFor="gender">성별</label>
-                <input type="text" id="gender" name="gender" value={profileData.gender} onChange={handleUpdate} />
+                <input type="text" id="gender" name="gender" value={profileData.gender?profileData.gender:''} onChange={handleUpdate} readOnly/>
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="birthday">생년월일</label>
-                <input type="text" id="birthday" name="birthday" value={profileData.birthday} onChange={handleUpdate} />
+                <input type="text" id="birthday" name="birthday" value={profileData.birthday?profileData.birthday:''} onChange={handleUpdate} readOnly/>
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="certificate">자격증</label>
-                <input type="text" id="certificate" name="certificate" value={profileData.certificate} readOnly />
+                <input type="text" id="certificate" name="certificate" value={profileData.certificate?profileData.certificate:''} readOnly/>
                 <button type="button" className={styles.fileButton}>파일 찾기</button>
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="about">자기소개</label>
-                <textarea id="about" name="about" rows="4" value={profileData.about} onChange={handleUpdate}></textarea>
+                <textarea id="about" name="about" rows="4" value={profileData.about?profileData.about:''} onChange={handleUpdate} readOnly></textarea>
               </div>
             </div>
           </div>

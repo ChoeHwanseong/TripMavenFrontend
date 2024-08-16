@@ -16,6 +16,7 @@ const AskAll = () => {
     const getCSData = async () => {
       try {
         const fetchedData = await csfetchAllData();
+        console.log('member.id: ',fetchedData[0].member.id);
         setInquiries(fetchedData);
       } catch (error) {
         console.error('에러났당', error);
@@ -46,7 +47,7 @@ const AskAll = () => {
       <div className={styles.content}>
         <div className={styles.header}>
           <h1>문의 내역</h1>
-          <button className={styles.button} onClick={() => navigate('/askdetails')}>문의 하기</button>
+          <button className={styles.button} onClick={() => navigate(`/askdetails/${inquiry[0].member.id}`)}>문의 하기</button>
         </div>
 
         <table className={styles.table}>

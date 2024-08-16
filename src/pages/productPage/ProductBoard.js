@@ -1,63 +1,64 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useInView } from 'react-intersection-observer';
 import styles from '../../styles/productPage/ProductBoard.module.css';
-import { useLocation } from 'react-router-dom';
-import { productFetchTitleAndContent } from '../../utils/productData';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { productFetchAllData, productFetchCity, productFetchTitleAndContent } from '../../utils/productData';
 import { RoleContext } from '../../components/context/roleContext';
-import Modal from '../../components/loading/modal';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const ProductBoard = () => {
     const location = useLocation();
-    //context로 template.js에서 관리하고 있음
-    //검색어
-    const {searchKeyword, setSearchKeyword} = useContext(RoleContext);
-
-    const [products, setProducts] = useState([]); // 상품 목록을 관리하는 상태 변수
-    const [hasMore, setHasMore] = useState(true); // 더 불러올 데이터가 있는지 여부를 관리하는 상태 변수
+    const navigate = useNavigate();
+    const params = new URLSearchParams(location.search);
+    const keyword = params.get('keyword');
+    const city = params.get('city');
+    const { searchKeyword, setSearchKeyword } = useContext(RoleContext);
+    
+    const [products, setProducts] = useState([]); //상품 목록 스테이트
+    const [page, setPage] = useState(0); //페이지(20개씩임)
+    const [hasMore, setHasMore] = useState(true); //더 불러올 데이터가 있는지 여부 
+    const [loading, setLoading] = useState(false);
     const { ref, inView } = useInView({
         threshold: 0, // 요소가 100% 보일 때 트리거
     });
 
-    const queryParams = new URLSearchParams(location.search);
-    const city = queryParams.get('city');
-
-    //로딩 화면을 모달로 띄우기
-    const [showModal, setShowModal] = useState(false);
-
+    //나중에 sort 방식 설정하는 드롭메뉴 만들어서 해도 ㄱㅊ을듯
+    //스프링 부트에서 처리
 
     // 데이터를 더 가져오는 함수
     const fetchMoreData = async () => {
-        // 만약 현재 제품 수가 100개 이상이면 더 이상 데이터를 가져오지 않음
-        if (products.length >= 100) { // 100은 총 제품 수라고 가정
-            setHasMore(false);
-            return;
-        }
-
-        // 데이터를 가져오는 것을 시뮬레이션(더미데이터 나중에 지울거임)
-        const newProducts = Array.from({ length: 20 }, (_, index) => ({
-            title: `Product ${products.length + index + 1}`, // 새로운 제품 제목
-            description: 'This is a description.', // 제품 설명
-            image: 'https://via.placeholder.com/150', // 이미지 URL (placeholder 이미지)
-            tags: ['경주', '기차', '연인', '친구', '황리단길'], // 태그(지금은 디폴트지만 내용에 맞게 가져와야 함)
-            rating: (Math.random() * 5).toFixed(1), // 0부터 5까지의 무작위 평점
-            reviewCount: Math.floor(Math.random() * 100) // 0부터 100까지의 무작위 리뷰 수
-        }));
-
-        const results = await productFetchTitleAndContent(searchKeyword);
+        //필요항목
+        // tags         //태그(product엔터티에 추가해야함)(#으로구분해서 적는걸로, 나중에 #으로 스플릿)
+        // rating       //점수(리뷰점수인가여? ai점수인가여?)
+        // reviewCount  //리뷰 수(고객 리뷰에서 카운트해야함)
+        // image        //대표 이미지 URL (placeholder 이미지)(없으면 기본 이미지)
+        setLoading(true);
+        let results;
+        if (city) results = await productFetchCity(city, page); //페이지도 넘기기
+        else if (keyword === '') results = await productFetchAllData(page); //페이지도 넘기기
+        else results = await productFetchTitleAndContent(keyword, page); //페이지도 넘기기
         console.log('검색 결과:', results);
-        const list = [];
-        list.push(...results);
+        setLoading(false);
+        setProducts((prevProducts) => [...prevProducts, ...results]);
+        setPage(prevPage => prevPage + 1); // 다음 페이지로 설정
 
-        // 기존 제품 목록에 새로운 제품을 추가하여 상태를 업데이트
-        setProducts((prevProducts) => [...prevProducts, ...list]);
+        if (results.length <= 20) {
+            setHasMore(false);
+            console.log('마지막 페이지');
+        }
     };
-
-    // 컴포넌트가 처음 렌더링될 때 fetchMoreData 함수를 호출하여 초기 데이터를 가져옵니다.
+    /*
+    // 검색어가 바뀔 때마다 데이터를 초기화하고, 새로 가져옴
     useEffect(() => {
+        setProducts([]);
+        setPage(0);
+        setHasMore(true);
         fetchMoreData();
-    }, []);
+    }, [searchKeyword]);
+    */
 
-    // inView 상태가 변경될 때마다 데이터를 더 가져옵니다.
+    // inView 상태가 변경될 때마다 데이터를 더 가져옴
     useEffect(() => {
         if (inView && hasMore) {
             fetchMoreData();
@@ -67,41 +68,42 @@ const ProductBoard = () => {
     return (
         <div className={styles.container}>
             <div>
-                <h1>상품 게시판</h1>
-                <h3>'{searchKeyword}'의 대한 검색 결과 입니다</h3>
+                <h1>{city} 상품 목록</h1>
+                {!city && (keyword !== '' && <h3>'{keyword}'에 대한 검색 결과입니다</h3>)}
+                
             </div>
-            {showModal && <Modal/>}
-            <div className={styles.productList}>
-                {/* 제품 목록을 렌더링 */}
-                {products && products.map((product, index) => (
-                    <div key={index} className={styles.productItem}>
-                        {/* 제품 이미지 */}
-                        <img src={product.image} alt={product.title} />
-                        <div>
-                            {/* 제품 제목 */}
-                            <h3>{product.title}</h3>
-                            {/* 제품 설명 */}
-                            <p>{product.description}</p>
-                            {/* 제품 태그 */}
-                            <div className={styles.tags}>
 
-                                {/*product.tags.map((tag, index) => (
-                                    <span key={index} className={styles.tag}>
-                                        #{tag}
-                                    </span>
-                                ))*/}
+            <div className={styles.productList}>
+                {products.map((product, index) => (
+                    <div key={index} className={styles.productItem}>
+                        {/* 상품 이미지 */}
+                        <img src={product.image || './images/travel.jpg'} alt={product.title} />
+                        <div>
+                            <h3>{product.title}</h3>
+                            <p>{product.content}</p>
+                            <div className={styles.tags}>
+                                {/* 상품 태그(#으로 스플릿해서 리스트로 넣어주기) */}
+                                {product.tags && product.tags.split('#').map((tag, index) => (
+                                    <span key={index} className={styles.tag}>#{tag}</span>
+                                ))}
                             </div>
-                            {/* 제품 평점 및 리뷰 수 */}
                             <div className={styles.rating}>
+                                {/* 상품 평점 및 리뷰 수 */}
                                 <span>⭐ {product.rating}</span>
-                                <span>{product.reviewCount}건의 리뷰</span>
+                                <span>{product.reviewCount || '0'}건의 리뷰</span>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
             <div ref={ref} className={styles.loadingIndicator}>
-                {hasMore && <p>Loading...</p>}
+                {loading && (
+                    <Box>
+                        <CircularProgress />
+                    </Box>
+                )}
+                {products.length === 0 &&
+                    <h3>검색 결과가 없습니다</h3>}
             </div>
         </div>
     );

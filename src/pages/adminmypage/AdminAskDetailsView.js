@@ -42,7 +42,7 @@ const AdminAskDetailsView = () => {
                         <td className={styles.label}>작성번호</td>
                         <td className={styles.value}>{inquiry.id}</td>
                         <td className={styles.label}>분류</td>
-                        <td className={styles.value}>{inquiry.member.role ? '사용자' : '가이드'}</td>
+                        <td className={styles.value}>{inquiry.member.role ? '고객' : '가이드'}</td>
                     </tr>
                     <tr>
                         <td className={styles.label}>아이디</td>
@@ -69,7 +69,7 @@ const AdminAskDetailsView = () => {
                 </tbody>
             </table>
             <div className={styles.actions}>
-                <button className={styles.actionButton} onClick={() => navigate(`/adminAnswer/${inquiry.id}`)}>답변 등록하기</button>
+                <button className={styles.actionButton} onClick={() => navigate(`/adminAnswer/${inquiry.id}`)}>답변 등록 및 수정하기</button>
                 <button className={styles.actionButton} onClick={() => navigate('/adminask')}>목록</button>
             </div>
         </div>
