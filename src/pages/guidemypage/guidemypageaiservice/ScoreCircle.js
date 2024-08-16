@@ -19,7 +19,7 @@ export default function ScoreCircle({ score }) {
           fontSize: 40,
         },
         [`& .${gaugeClasses.valueArc}`]: {
-          fill: 'primary',
+          fill: '#0066ff',
         },
         [`& .${gaugeClasses.referenceArc}`]: {
           fill: theme.palette.text.disabled,
