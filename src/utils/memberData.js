@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 
 //멤버 가져오기
 export const fetchData = async () => {
@@ -31,13 +32,14 @@ export const fetchedData = async (id) => {
 //await axios 꼭 붙이기
 export const SignUp = async (form) => {
   await axios.post('/signup', form)
-  .then(response => {
-    // 성공적으로 응답을 받았을 때의 처리
-    console.log('Response:', response.data);
+  .then(response => {    
+    alert('가입 완료! 가입한 계정으로 로그인해주세요.');
+    Navigate('/login')
   })
   .catch(error => {
     // 오류가 발생했을 때의 처리
-    console.error('에러났당', error);
+    if(error.code == 'ERR_BAD_REQUEST')alert('중복된 아이디입니다.');
+    
   });
   //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
 };
@@ -60,6 +62,21 @@ export const FormLogin = async (form) =>{
 
   return response;
   }
+
+  //가이드 등록.
+  export const toGuide = async (form) =>{
+    const response = await axios.post('http://localhost:9099/toGuide', form ,{headers:{
+      'Content-Type': 'multipart/form-data'}})
+      .then(res =>{
+        window.localStorage.setItem("role", res.data.role);
+        console.log(res.data.role);
+      })
+      .catch(error =>{
+        console.error('에러났당', error);
+    throw error; 
+      })
+      
+    }
 
   export const updateProfile = async (id, updatedData) => {
     try {
