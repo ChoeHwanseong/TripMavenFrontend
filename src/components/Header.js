@@ -10,6 +10,8 @@ import { RoleContext } from './context/roleContext';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
+import { ButtonGroup } from '@mui/material';
+import { Button } from '@mui/material';
 
 
 const style = {
@@ -67,10 +69,15 @@ const Header = () => {
     return (
         <header className={styles.header}>
             <div className={styles.headerFrame}>
+
+           
                 <button className={styles.logoButton} onClick={() => { setSearchKeyword(''); navigate('/home'); }}>TripMaven</button>
-                <button className={styles.navbutton2} onClick={() => { setRole('user') }}>고객</button>
-                <button className={styles.navbutton2} onClick={() => { setRole('guide') }}>가이드</button>
-                <button className={styles.navbutton2} onClick={() => { setRole('admin') }}>관리자</button>
+                <ButtonGroup variant="contained" aria-label="Basic button group">
+                    <Button onClick={() => { setRole('user') }}>고객</Button>
+                    <Button onClick={() => { setRole('guide') }}>가이드</Button>
+                    <Button onClick={() => { setRole('admin') }}>관리자</Button>
+                </ButtonGroup>
+
                 <div className={styles.nav}>
                     <div className={styles.inputstyle}>
                         <input
