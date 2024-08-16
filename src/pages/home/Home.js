@@ -1,16 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Box, Button, Grid, TextField, Typography, Card, CardMedia, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import KoreaWeatherMap from './KoreaWeather'; // KoreaWeather import
+import KoreaWeatherMap from './KoreaWeather';
 import RegionEventInfo from './RegionEvent';
 import { RoleContext } from '../../components/context/roleContext';
 
 const Home = () => {
   const navigate = useNavigate();
   const { setSearchKeyword } = useContext(RoleContext);
+  const [selectedRegion, setSelectedRegion] = useState(null);
 
   const handleCityClick = (city) => {
     navigate(`/product?city=${city}`);
+  };
+
+  const handleRegionSelect = (region) => {
+    setSelectedRegion(region);
   };
 
   return (
@@ -115,10 +120,14 @@ const Home = () => {
             background: '#f9f9f9',
             boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
             border: '1px solid #f1f1f1',
-            height: '100%' // 높이를 100%로 설정
+            height: '100%'
           }}>
             <Typography variant="h6" fontWeight="bold" gutterBottom>기상 정보</Typography>
-            <KoreaWeatherMap width="100%" height="400px" />
+            <KoreaWeatherMap
+              width="100%"
+              height="400px"
+              selectedRegion={selectedRegion}
+            />
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -127,10 +136,15 @@ const Home = () => {
             background: '#f9f9f9',
             boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
             border: '1px solid #f1f1f1',
-            height: '100%' // 높이를 100%로 설정
+            height: '100%'
           }}>
             <Typography variant="h6" fontWeight="bold" gutterBottom>지역 행사</Typography>
-            <RegionEventInfo width="100%" height="400px" />
+            <RegionEventInfo
+              width="100%"
+              height="400px"
+              onRegionSelect={handleRegionSelect}
+              selectedRegion={selectedRegion}
+            />
           </Box>
         </Grid>
       </Grid>
