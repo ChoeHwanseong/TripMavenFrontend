@@ -1,6 +1,5 @@
 import axios from './AxiosApi';
 
-
 const baseUrl = "/cs"
 
 // 문의 등록

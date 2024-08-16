@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from '../../styles/guidemypage/GuideMyPageMyPostDetails.module.css';
+import { postDelete } from '../../utils/postData';
 
 const GuideMyPageMyPostDetails = () => {
   const navigate = useNavigate();
@@ -32,6 +33,18 @@ const GuideMyPageMyPostDetails = () => {
     setAllOpen(!allOpen); // 상태 변경
   };
 
+  const deletePost =async () => {
+    const confirmed = window.confirm("진짜 삭제?");
+    if (confirmed) {
+        try {
+            await postDelete(id);
+            navigate('/askall'); 
+        } catch (error) {
+            console.error('삭제 중 오류 발생:', error);
+        }
+    }
+    
+  };
 
 
   
@@ -180,7 +193,7 @@ const GuideMyPageMyPostDetails = () => {
 
         <div className={styles.actions}>
           <button className={styles.actionButton} onClick={()=>{navigate(`/guideUpdatePost/${state.id}`)}} >수정 하기</button>
-          <button className={styles.actionButton}>삭제 하기</button>
+          <button className={styles.actionButton} onClick={deletePost}>삭제 하기</button>
           <button className={styles.actionButton} onClick={() => navigate('/guidemypagemypost')}>목록</button>
         </div>
 

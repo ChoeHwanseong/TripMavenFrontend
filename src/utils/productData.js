@@ -76,8 +76,8 @@ export const updatePost = async (data) => {
     console.log('수정된 데이타: ',data);
     console.log('수정된 데이타 제목: ',data.title);
     console.log('수정된 데이타 내용: ',data.content);
-    console.log('수정된 데이타 회원번호: ',data.members_id);
-    const res = await axios.put(`/product/${data.members_id}`,data);
+    console.log('수정된 데이타 회원번호: ',data.member_id);
+    const res = await axios.put(`/product/${data.member_id}`,data);
     return res.data;
   } catch (error) {
     console.error('에러났당', error);
