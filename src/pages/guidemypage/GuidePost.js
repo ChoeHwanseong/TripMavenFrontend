@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/guidemypage/GuidePost.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createPost } from '../../utils/productData';
+import { postPost } from '../../utils/postData';
 
 const GuidePost = () => {
   const {id} = useParams();
   const [posts, setPosts] = useState(null);
+  const membersId= localStorage.getItem('membersId');
   const navigate = useNavigate();
 
-  
   const titleRef = useRef(null);
   const hashtagRef = useRef(null);
   const filesgRef = useRef(null);
@@ -17,7 +17,6 @@ const GuidePost = () => {
   const hotelRef = useRef(null);
   const hotelAdRef = useRef(null);
   const contentRef = useRef(null);
-  
 
   // 게시글 등록
   const handlePost = async() => {
@@ -30,9 +29,9 @@ const GuidePost = () => {
                             hotel : hotelRef.current.value,
                             hotelAd : hotelAdRef.current.value,
                             content: contentRef.current.value,
-                            members_id: id
+                            member_id: membersId
                           };
-        await createPost(createData);
+        await postPost(createData);
         navigate('/guidemypost');
 
     } catch (error) {

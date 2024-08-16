@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/askpage/AskDetails.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { csfetchPostData } from '../../utils/csfetchData';
+import { csPost } from '../../utils/csData';
 
 const AskDetails = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const AskDetails = () => {
         const createData = { title: titleRef.current.value,
                             content: contentRef.current.value,
                             members_id: id};
-        await csfetchPostData(createData);
+        await csPost(createData);
         navigate('/askall');
 
     } catch (error) {

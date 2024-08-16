@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../../styles/guidemypage/GuideAskDetailsView.module.css';
+import styles from '../../styles/adminmypage/AdminAskDetailsView.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { csfetchData } from '../../utils/csfetchData';
-import { Box } from '@mui/material';
+import { csGet } from '../../utils/csData';
 
 const AdminAskDetailsView = () => {
 
@@ -14,7 +13,7 @@ const AdminAskDetailsView = () => {
     useEffect(() => {
         const getCSData = async () => {
             try {
-                const fetchedData = await csfetchData(id);
+                const fetchedData = await csGet(id);
                 console.log('fetchedData: ',fetchedData) 
                 console.log('fetchedData.comments: ',fetchedData.comments)
                 setInquiry(fetchedData);

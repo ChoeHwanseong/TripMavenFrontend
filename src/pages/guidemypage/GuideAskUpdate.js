@@ -1,7 +1,7 @@
 import styles from '../../styles/guidemypage/GuideAsk.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { csfetchData, csfetchUpdateData } from '../../utils/csfetchData';
 import { useEffect, useState } from 'react';
+import { csGet } from '../../utils/csData';
 
 const GuideAskUpdate = () => {
 
@@ -14,7 +14,7 @@ const GuideAskUpdate = () => {
     useEffect(() => {
       const getinquiryData = async () => {
          try {
-           const fetchedData = await csfetchData(id); 
+           const fetchedData = await csGet(id); 
            console.log(fetchedData);
           setInquiry(fetchedData);
 

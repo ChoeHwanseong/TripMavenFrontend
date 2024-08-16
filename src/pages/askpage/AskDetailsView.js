@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/guidemypage/GuideAskDetailsView.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { csfetchData, csfetchDeleteData } from '../../utils/csfetchData';
-import { Box } from '@mui/material';
+import { csDelte, csGet } from '../../utils/csData';
 
 const AskDetailsView = () => {
 
@@ -14,7 +13,7 @@ const AskDetailsView = () => {
     useEffect(() => {
         const getCSData = async () => {
             try {
-                const fetchedData = await csfetchData(id);
+                const fetchedData = await csGet(id);
                 setInquiry(fetchedData);
             } catch (error) {
                 console.error('에러났당', error);
@@ -32,7 +31,7 @@ const AskDetailsView = () => {
         const confirmed = window.confirm("진짜 삭제?");
         if (confirmed) {
             try {
-                await csfetchDeleteData(id);
+                await csDelte(id);
                 navigate('/askall'); 
             } catch (error) {
                 console.error('삭제 중 오류 발생:', error);

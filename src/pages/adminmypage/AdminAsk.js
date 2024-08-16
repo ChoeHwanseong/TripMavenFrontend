@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/adminmypage/AdminAsk.module.css';
 import { useNavigate } from 'react-router-dom';
-import { csfetchAllData } from '../../utils/csfetchData';
 import { Box } from '@mui/material';
+import { csAllget } from '../../utils/csData';
 
 const AdminAsk = () => {
 
@@ -13,7 +13,7 @@ const AdminAsk = () => {
   useEffect(() => {
     const getCSData = async () => {
       try {
-        const fetchedData = await csfetchAllData();
+        const fetchedData = await csAllget();
         setInquiries(fetchedData);
       } catch (error) {
         console.error('에러났당', error);

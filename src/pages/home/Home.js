@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import styles from '../../styles/home/Home.module.css';
+import { Box, Button, Grid, TextField, Typography, Card, CardMedia, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import KoreaWeatherMap from './KoreaWeather'; // KoreaWeather import
 import RegionEventInfo from './RegionEvent';
@@ -7,61 +7,134 @@ import { RoleContext } from '../../components/context/roleContext';
 
 const Home = () => {
   const navigate = useNavigate();
-  const {setSearchKeyword} = useContext(RoleContext);
+  const { setSearchKeyword } = useContext(RoleContext);
 
   const handleCityClick = (city) => {
-    //setSearchKeyword(city);
     navigate(`/product?city=${city}`);
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.searchBar}>
-        <input
-          type="text"
+    <Box sx={{ maxWidth: '1200px', mx: 'auto', mt: 10, p: 3 }}>
+      {/* 검색 바 */}
+      <Box sx={{
+        mb: 5, p: 3, borderRadius: 3,
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+        background: '#ffffff',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        border: '1px solid #0066ff'
+      }}>
+        <TextField
           placeholder="검색어를 입력하세요"
-          className={styles.searchInput}
+          variant="outlined"
+          sx={{
+            mr: 2, flex: 1,
+            backgroundColor: 'white',
+            borderRadius: 2,
+            boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.1)',
+          }}
         />
-        <input
-          type="text"
+        <TextField
           placeholder="일수를 선택해주세요"
-          className={styles.searchInput}
+          variant="outlined"
+          sx={{
+            mr: 2, flex: 1,
+            backgroundColor: 'white',
+            borderRadius: 2,
+            boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.1)',
+          }}
         />
-        <button className={styles.searchButton} onClick={()=>navigate('/product')}>검색</button>
-      </div>
+        <Button
+          variant="contained"
+          sx={{
+            py: 1.5, px: 3,
+            fontSize: '18px',
+            fontWeight: 'bold',
+            color: '#ffffff',
+            backgroundColor: '#0066ff',
+            borderRadius: 2,
+            '&:hover': { backgroundColor: '#0056b3' }
+          }}
+          onClick={() => navigate('/product')}
+        >
+          검색
+        </Button>
+      </Box>
 
-      <div className={styles.popularDestinations}>
-        <div className={styles.destinationsTitleViewAllButton}>
-          <h2 className={styles.destinationsTitle}>인기 여행지</h2>
-          <div className={styles.buttonStyle}>
-            <button className={styles.viewAllButton} onClick={() => navigate('/product?keyword=')}>모두보기</button>
-          </div>
-        </div>
-        <div className={styles.destinationList}>
+      {/* 인기 여행지 */}
+      <Box sx={{ mb: 7 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
+          <Typography variant="h4" fontWeight="bold">인기 여행지</Typography>
+          <Button
+            variant="contained"
+            sx={{
+              fontSize: '16px',
+              fontWeight: 'bold',
+              color: '#ffffff',
+              backgroundColor: '#0066ff',
+              borderRadius: 2,
+              '&:hover': { backgroundColor: '#0056b3' }
+            }}
+            onClick={() => navigate('/product?keyword=')}
+          >
+            모두보기
+          </Button>
+        </Box>
+        <Grid container spacing={3}>
           {['부산', '제주', '서울', '강릉', '가평'].map((city, index) => (
-            <div key={index} className={styles.destinationCard} onClick={()=>handleCityClick(city)}>
-              <img
-                src={`/images/mainpage/${index + 1}.png`} // 시발 한글 못읽어
-                alt={city}
-                className={styles.destinationImage}
-              />
-              <div className={styles.destinationName}>{city}</div>
-            </div>
+            <Grid item xs={12} sm={6} md={4} lg={2.4} key={index}>
+              <Card
+                onClick={() => handleCityClick(city)}
+                sx={{
+                  borderRadius: 3,
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s ease',
+                  '&:hover': { transform: 'scale(1.05)' }
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  height="160"
+                  image={`/images/mainpage/${index + 1}.png`}
+                  alt={city}
+                />
+                <CardContent>
+                  <Typography variant="h6" align="center" fontWeight="bold">{city}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-        </div>
-      </div>
+        </Grid>
+      </Box>
 
-      <div className={styles.infoSection}>
-        <div className={styles.infoBox}>
-          <h3 className={styles.infoTitle}>기상정보</h3>
-          <KoreaWeatherMap width="100%" height="400px" />
-        </div>
-        <div className={styles.infoBox}>
-          <h3 className={styles.infoTitle}>지역 행사</h3>
-          <RegionEventInfo width="100%" height="400px" />
-        </div>
-      </div>
-    </div>
+      {/* 정보 섹션 */}
+      <Grid container spacing={5}>
+        <Grid item xs={12} md={6}>
+          <Box sx={{
+            p: 3, borderRadius: 3,
+            background: '#f9f9f9',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+            border: '1px solid #f1f1f1',
+            height: '100%' // 높이를 100%로 설정
+          }}>
+            <Typography variant="h6" fontWeight="bold" gutterBottom>기상 정보</Typography>
+            <KoreaWeatherMap width="100%" height="400px" />
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Box sx={{
+            p: 3, borderRadius: 3,
+            background: '#f9f9f9',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+            border: '1px solid #f1f1f1',
+            height: '100%' // 높이를 100%로 설정
+          }}>
+            <Typography variant="h6" fontWeight="bold" gutterBottom>지역 행사</Typography>
+            <RegionEventInfo width="100%" height="400px" />
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
