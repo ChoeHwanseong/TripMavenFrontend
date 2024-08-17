@@ -203,7 +203,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
     const selectedCode = e.target.value;
     const selectedRegionObject = regions.find(region => region.code === selectedCode);
     if (selectedRegionObject && setSelectedRegion) {
-      setSelectedRegion(selectedRegionObject.name);
+      setSelectedRegion(selectedRegionObject);
     }
   };
 

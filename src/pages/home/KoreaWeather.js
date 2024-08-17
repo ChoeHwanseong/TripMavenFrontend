@@ -50,7 +50,6 @@ const KoreaWeatherMap = ({ selectedRegion, setSelectedRegion }) => {
   const [hoveredRegion, setHoveredRegion] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  console.log(hoveredRegion);
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -85,7 +84,7 @@ const KoreaWeatherMap = ({ selectedRegion, setSelectedRegion }) => {
   }, []);
 
   useEffect(()=>{
-    setHoveredRegion(weatherData[changeRegionName[selectedRegion]]);
+    selectedRegion && setHoveredRegion(weatherData[changeRegionName[selectedRegion.name]]);
   },[selectedRegion])
 
   const getRegionWeather = (geo) => {
@@ -147,7 +146,7 @@ const KoreaWeatherMap = ({ selectedRegion, setSelectedRegion }) => {
 
       <div style={{ width: '20%', padding: '5px', overflowY: 'auto' }}>
         <h3 style={{ margin: '0 0 10px 0' }}>날씨</h3>
-        {(hoveredRegion || (selectedRegion && weatherData[changeRegionName[selectedRegion]])) ? (
+        {(hoveredRegion || (selectedRegion && weatherData[changeRegionName[selectedRegion.name]])) ? (
           <div>
             <h4 style={{ margin: '0 0 5px 0' }}>
               {hoveredRegion && hoveredRegion.city }
@@ -158,16 +157,16 @@ const KoreaWeatherMap = ({ selectedRegion, setSelectedRegion }) => {
               <>
               <br/>
                 <p style={{ margin: '0 0 5px 0' }}>
-                  온도<br/> {(hoveredRegion || weatherData[changeRegionName[selectedRegion]])?.temperature ?? '정보 없음'}°C
+                  온도<br/> {(hoveredRegion || (selectedRegion && weatherData[changeRegionName[selectedRegion.name]]))?.temperature ?? '정보 없음'}°C
                 </p>
                 <br/>
                 <p style={{ margin: '0 0 5px 0' }}>
-                  날씨<br/>{(hoveredRegion || weatherData[changeRegionName[selectedRegion]])?.summary ?? '정보 없음'}
+                  날씨<br/>{(hoveredRegion || (selectedRegion && weatherData[changeRegionName[selectedRegion.name]]))?.summary ?? '정보 없음'}
                 </p>
                 
-                {(hoveredRegion || weatherData[changeRegionName[selectedRegion]])?.icon && (
+                {(hoveredRegion || (selectedRegion && weatherData[changeRegionName[selectedRegion.name]]))?.icon && (
                   <img 
-                    src={`http://openweathermap.org/img/wn/${(hoveredRegion || weatherData[changeRegionName[selectedRegion]]).icon}@2x.png`} 
+                    src={`http://openweathermap.org/img/wn/${(hoveredRegion || (selectedRegion && weatherData[changeRegionName[selectedRegion.name]])).icon}@2x.png`} 
                     alt="weather icon"
                     style={{ width: '70px', height: '70px', backgroundColor:'lightgray'}}
                   />
