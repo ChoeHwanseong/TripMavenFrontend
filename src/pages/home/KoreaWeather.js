@@ -20,16 +20,37 @@ const regionNameMap = {
   '전라남도': 'Muan,KR',
   '경상북도': 'Andong,KR',
   '경상남도': 'Changwon,KR',
-  '제주특별자치도': 'Jeju City,KR',
+  '제주특별자치도': 'Jeju City,KR'
 };
 
 const API_KEY = '48c33cc2626bc56bc2e94df1221b05b1';
 
-const KoreaWeatherMap = ({ selectedRegion }) => {
+const changeRegionName = {
+  '서울':'서울특별시',
+  '인천':'인천광역시',
+  '대전':'대전광역시',
+  '대구':'대구광역시',
+  '광주':'광주광역시',
+  '부산':'부산광역시',
+  '울산':'울산광역시',
+  '세종특별자치시':'세종특별자치시',
+  '경기도':'경기도',
+  '강원특별자치도':'강원도',
+  '충청북도':'충청북도',
+  '충청남도':'충청남도',
+  '경상북도':'경상북도',
+  '경상남도':'경상남도',
+  '전북특별자치도':'전라북도',
+  '전라남도':'전라남도',
+  '제주도':'제주특별자치도'
+}
+
+const KoreaWeatherMap = ({ selectedRegion, setSelectedRegion }) => {
   const [weatherData, setWeatherData] = useState({});
   const [hoveredRegion, setHoveredRegion] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  console.log(hoveredRegion);
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -63,6 +84,10 @@ const KoreaWeatherMap = ({ selectedRegion }) => {
     fetchWeather();
   }, []);
 
+  useEffect(()=>{
+    setHoveredRegion(weatherData[changeRegionName[selectedRegion]]);
+  },[selectedRegion])
+
   const getRegionWeather = (geo) => {
     const mapRegionName = geo.properties.name;
     const weather = weatherData[mapRegionName];
@@ -74,12 +99,12 @@ const KoreaWeatherMap = ({ selectedRegion }) => {
 
   return (
     <div style={{ width: '100%', height: '350px', display: 'flex' }}>
-      <div style={{ width: '80%', height: '100%' }}>
+      <div style={{ width: '80%', height: '110%' }}>
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{
-            scale: 5500,
-            center: [129, 35.5]
+            scale: 6500,
+            center: [128, 35.8]
           }}
           style={{ width: '100%', height: '100%' }}
         >
@@ -87,7 +112,7 @@ const KoreaWeatherMap = ({ selectedRegion }) => {
             {({ geographies }) =>
               geographies.map(geo => {
                 const weather = getRegionWeather(geo);
-                const isSelected = selectedRegion && selectedRegion.name === geo.properties.name;
+                const isSelected = hoveredRegion && geo.properties.name === hoveredRegion.city;
                 return (
                   <Geography
                     key={geo.rsmKey}
@@ -100,11 +125,17 @@ const KoreaWeatherMap = ({ selectedRegion }) => {
                       hover: { outline: 'none', fill: '#FFA500' },
                       pressed: { outline: 'none' },
                     }}
+                    /*
                     onMouseEnter={() => {
                       setHoveredRegion(weather);
                     }}
                     onMouseLeave={() => {
                       setHoveredRegion(null);
+                    }}
+                    */
+                    onClick={(e)=>{
+                      setHoveredRegion(weather);
+                      //e.target.classList.toggle();
                     }}
                   />
                 );
@@ -113,28 +144,32 @@ const KoreaWeatherMap = ({ selectedRegion }) => {
           </Geographies>
         </ComposableMap>
       </div>
+
       <div style={{ width: '20%', padding: '5px', overflowY: 'auto' }}>
         <h3 style={{ margin: '0 0 10px 0' }}>날씨</h3>
-        {(hoveredRegion || (selectedRegion && weatherData[selectedRegion.name])) ? (
+        {(hoveredRegion || (selectedRegion && weatherData[changeRegionName[selectedRegion]])) ? (
           <div>
-            <h5 style={{ margin: '0 0 5px 0' }}>
-              {hoveredRegion ? hoveredRegion.city : selectedRegion.name}
-            </h5>
+            <h4 style={{ margin: '0 0 5px 0' }}>
+              {hoveredRegion && hoveredRegion.city }
+            </h4>
             {hoveredRegion?.error ? (
               <p>{hoveredRegion.error}</p>
             ) : (
               <>
+              <br/>
                 <p style={{ margin: '0 0 5px 0' }}>
-                  온도: {(hoveredRegion || weatherData[selectedRegion.name])?.temperature ?? '정보 없음'}°C
+                  온도<br/> {(hoveredRegion || weatherData[changeRegionName[selectedRegion]])?.temperature ?? '정보 없음'}°C
                 </p>
+                <br/>
                 <p style={{ margin: '0 0 5px 0' }}>
-                  날씨: <br/>{(hoveredRegion || weatherData[selectedRegion.name])?.summary ?? '정보 없음'}
+                  날씨<br/>{(hoveredRegion || weatherData[changeRegionName[selectedRegion]])?.summary ?? '정보 없음'}
                 </p>
-                {(hoveredRegion || weatherData[selectedRegion.name])?.icon && (
+                
+                {(hoveredRegion || weatherData[changeRegionName[selectedRegion]])?.icon && (
                   <img 
-                    src={`http://openweathermap.org/img/wn/${(hoveredRegion || weatherData[selectedRegion.name]).icon}@2x.png`} 
+                    src={`http://openweathermap.org/img/wn/${(hoveredRegion || weatherData[changeRegionName[selectedRegion]]).icon}@2x.png`} 
                     alt="weather icon"
-                    style={{ width: '50px', height: '50px' }}
+                    style={{ width: '70px', height: '70px', backgroundColor:'lightgray'}}
                   />
                 )}
               </>

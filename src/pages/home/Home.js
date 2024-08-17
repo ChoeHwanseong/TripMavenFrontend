@@ -13,10 +13,7 @@ const Home = () => {
   const handleCityClick = (city) => {
     navigate(`/product?city=${city}`);
   };
-
-  const handleRegionSelect = (region) => {
-    setSelectedRegion(region);
-  };
+  console.log(selectedRegion)
 
   return (
     <Box sx={{ maxWidth: '1200px', mx: 'auto', mt: 10, p: 3 }}>
@@ -127,6 +124,7 @@ const Home = () => {
               width="100%"
               height="400px"
               selectedRegion={selectedRegion}
+              setSelectedRegion={setSelectedRegion}
             />
           </Box>
         </Grid>
@@ -142,7 +140,7 @@ const Home = () => {
             <RegionEventInfo
               width="100%"
               height="400px"
-              onRegionSelect={handleRegionSelect}
+              setSelectedRegion={setSelectedRegion}
               selectedRegion={selectedRegion}
             />
           </Box>

@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import dummyImg from '../../images/dummyImg.png';
+import styles from '../../styles/home/RegionEvent.module.css';
 
 const API_KEY = 'fxK0NInA37%2B5%2FUmqb3ZtIqKfeJDzlDS9iU9A25kDySbSG2wyyzESFN8pUjf1G3sBAqnKnI0ZkDOCaNC8PDJTxg%3D%3D';
 const BASE_URL = 'https://apis.data.go.kr/B551011/KorService1';
@@ -61,7 +62,7 @@ const extractUrl = (htmlString) => {
   return match ? match[1] : null;
 };
 
-const RegionEventInfo = ({ width = "100%", height = "400px", onRegionSelect, selectedRegion }) => {
+const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, selectedRegion }) => {
   const [regions, setRegions] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -201,8 +202,8 @@ const RegionEventInfo = ({ width = "100%", height = "400px", onRegionSelect, sel
   const handleRegionChange = (e) => {
     const selectedCode = e.target.value;
     const selectedRegionObject = regions.find(region => region.code === selectedCode);
-    if (selectedRegionObject && onRegionSelect) {
-      onRegionSelect(selectedRegionObject);
+    if (selectedRegionObject && setSelectedRegion) {
+      setSelectedRegion(selectedRegionObject.name);
     }
   };
 
@@ -226,12 +227,25 @@ const RegionEventInfo = ({ width = "100%", height = "400px", onRegionSelect, sel
     }
   };
 
+  
+
   return (
     <div style={{ width, height, overflow: 'hidden' }}>
+      {/*
+      .searchInput {
+        flex: 1;
+        padding-left: 20px;
+        border: 1px solid #ccc;
+        width: 100%;
+        height: 35px;
+        border-radius: 8px;
+      }
+      */}
+
       <select 
         value={selectedRegion ? selectedRegion.code : ''} 
         onChange={handleRegionChange}
-        style={{ marginBottom: '10px', padding: '5px', width: '100%', height: '38px' }}
+        className={styles.selectBox}
       >
         <option value="">지역을 선택하세요</option>
         {regions.map((region) => (
@@ -287,23 +301,32 @@ const RegionEventInfo = ({ width = "100%", height = "400px", onRegionSelect, sel
                   opacity: index === currentEventIndex ? 1 : 0,
                 }}
               >
-                <img 
-                  src={event.firstimage2 || dummyImg}
-                  alt={event.title}
+                <div
                   style={{ 
-                    maxWidth: '100%', 
-                    maxHeight: '60%', 
-                    objectFit: 'cover',
-                    marginBottom: '10px',
-                    cursor: 'pointer'
-                  }}
-                  onClick={handleEventClick}
-                />
-                <h3 style={{ margin: '0 0 5px 0', fontSize: '16px' }}>{event.title}</h3>
-                <p style={{ margin: '0 0 3px 0', fontSize: '14px' }}>
+                    width: '100%', 
+                    height: '250px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}>
+                  <img 
+                    src={event.firstimage || dummyImg}
+                    alt={event.title}
+                    style={{ 
+                      maxWidth: '90%', 
+                      maxHeight: '90%', 
+                      objectFit: 'contain',
+                      marginBottom: '10px',
+                      cursor: 'pointer'
+                    }}
+                    onClick={handleEventClick}
+                  />
+                </div>
+                <h3 style={{ margin: '0 0 5px 0', fontSize: '18px' }}>{event.title}</h3>
+                <p style={{ margin: '0 0 3px 0', fontSize: '16px' }}>
                   기간: {formatDate(event.eventstartdate)} ~ {formatDate(event.eventenddate)}
                 </p>
-                <p style={{ margin: '0', fontSize: '14px' }}>장소: {event.addr1}</p>
+                <p style={{ margin: '0', fontSize: '16px' }}>장소: {event.addr1}</p>
               </div>
             ))}
           </div>
