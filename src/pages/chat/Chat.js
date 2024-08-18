@@ -129,7 +129,7 @@ const Chat = () => {
 
             
               {loading && (
-                <Box className='loadingStyle'>
+                <Box >
                   <CircularProgress />
                 </Box>
               )}
