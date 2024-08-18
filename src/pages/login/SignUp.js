@@ -119,6 +119,21 @@ const Signup = () => {
                     </div>
                     {passwordConfirm.error && <p className={styles.error}>{passwordConfirm.error}</p>}
                 </div>
+                {/* 
+                <div className={styles.inputGroup}>
+                    <label htmlFor="name">전화번호</label>
+                    <div className={styles.inputWithButton}>
+                        <input
+                            type="text"
+                            id="phone"
+                            name="phone"
+                            value={name.value}
+                            onChange={name.onChange}
+                            placeholder="번호를 입력하세요"
+                        />
+                    </div>
+                    {name.error && <p className={styles.error}>{name.error}</p>}
+                </div>*/}
 
                 <div className={styles.inputGroup}>
                     <label htmlFor="region">관심 지역</label>
@@ -197,7 +212,7 @@ const Signup = () => {
                     {address.error && <p className={styles.error}>{address.error}</p>}
                 </div>
 
-                <button type="submit" className={styles.signupButton}>회원 가입</button>
+                <button type="submit" className={styles.signupButton} onChange={handleSubmit}>회원 가입</button>
             </form>
         </div>
     );
