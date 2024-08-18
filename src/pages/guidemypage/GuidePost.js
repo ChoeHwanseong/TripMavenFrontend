@@ -1,108 +1,58 @@
-import React, { useEffect, useRef, useState } from 'react';
-import styles from '../../styles/guidemypage/GuidePost.module.css';
-import { useNavigate, useParams } from 'react-router-dom';
-import { postPost } from '../../utils/postData';
+import React from 'react';
+import { Box, Button, TextField, Typography, Divider } from '@mui/material';
 
-const GuidePost = () => {
-  const {id} = useParams();
-  const [posts, setPosts] = useState(null);
-  const membersId= localStorage.getItem('membersId');
-  const navigate = useNavigate();
 
-  const titleRef = useRef(null);
-  const hashtagRef = useRef(null);
-  const filesgRef = useRef(null);
-  const dayRef = useRef(null);
-  const cityRef = useRef(null);
-  const hotelRef = useRef(null);
-  const hotelAdRef = useRef(null);
-  const contentRef = useRef(null);
-
-  // 게시글 등록
-  const handlePost = async() => {
-    try {
-        const createData = { title: titleRef.current.value,
-                            hashtag : hashtagRef.current.value,
-                            files : filesgRef.current.value,
-                            day : dayRef.current.value,
-                            city  : cityRef.current.value,
-                            hotel : hotelRef.current.value,
-                            hotelAd : hotelAdRef.current.value,
-                            content: contentRef.current.value,
-                            member_id: membersId
-                          };
-        await postPost(createData);
-        navigate('/guidemypost');
-
-    } catch (error) {
-        console.error('Error updating answer:', error);
-    }
-
-  };
-
+const RegisterPost = () => {
 
   return (
-    <div className={styles.container}>
-    <h2>게시물 등록하기</h2>
+    <Box sx={{ maxWidth: 800, mx: 'auto', mt: 5 }}>
+      <Typography variant="h4" gutterBottom>
+        게시물 등록하기 <span role="img" aria-label="edit">✍️</span>
+      </Typography>
+      <Divider />
 
-    {/* 대표 내용 섹션 */}
-    <section className={styles.section}>
-      <h3 className={styles.sectionTitle}>대표 내용</h3>
-      <div className={styles.field}>
-        <label>제목</label>
-        <input type="text" placeholder="제목을 입력하세요" ref={titleRef}/>
-      </div>
-      <div className={styles.field}>
-        <label>해시태그</label>
-        <input type="text" placeholder="해시태그를 입력하세요" ref={hashtagRef}/>
-      </div>
-      <div className={styles.field}>
-        <label>대표 이미지</label>
-        <input type="file" ref={filesgRef}/>
+      {/* 대표 내용 */}
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h6" gutterBottom>대표 내용</Typography>
+        <TextField fullWidth label="제목" margin="normal" />
+        <TextField fullWidth label="해시태그" margin="normal" />
+        <TextField fullWidth label="대표 이미지 (최대 3개)" margin="normal" />
+        <Button 
+          variant="outlined"
+          sx={{ mt: 1,'&:hover': { backgroundColor: '#0056b3' }, }}>
+          파일 찾기
+        <input type="file" hidden/>
+        </Button>
+      </Box>
 
-      </div>
-    </section>
+      {/* 여행 주요 일정 */}
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h6" gutterBottom>여행 주요 일정</Typography>
+        <TextField fullWidth label="일정(기간)" margin="normal" />
+        <TextField fullWidth label="여행도시" margin="normal" />
+      </Box>
 
-    {/* 여행 주요일정 섹션 */}
-    <section className={styles.section}>
-      <h3 className={styles.sectionTitle}>여행 주요일정</h3>
-      <div className={styles.field}>
-        <label>일정(기간)</label>
-        <input type="text" placeholder="일정을 입력하세요" ref={dayRef}/>
-      </div>
-      <div className={styles.field}>
-        <label>여행도시</label>
-        <input type="text" placeholder="여행 도시를 입력하세요" ref={cityRef}/>
-      </div>
-    </section>
+      {/* 테마 소개 */}
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h6" gutterBottom>테마 소개</Typography>
+        <TextField fullWidth label="1일차" margin="normal" multiline rows={4} />
+        <TextField fullWidth label="2일차" margin="normal" multiline rows={4} />
+        <TextField fullWidth label="3일차" margin="normal" multiline rows={4} />
+      </Box>
 
-    {/* 테마 소개 섹션 */}
-    <section className={styles.section}>
-      <h3 className={styles.sectionTitle}>테마 소개</h3>
-      {[1, 2, 3].map((day) => (
-        <div className={styles.field} key={day}>
-          <label>{day}일차</label>
-          <textarea placeholder={`${day}일차 일정을 입력하세요`} ref={contentRef}/>
-        </div>
-      ))}
-    </section>
+      {/* 호텔 정보 */}
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h6" gutterBottom>호텔 정보</Typography>
+        <TextField fullWidth label="호텔" margin="normal" />
+        <TextField fullWidth label="주소" margin="normal" />
+      </Box>
 
-    {/* 호텔 정보 섹션 */}
-    <section className={styles.section}>
-      <h3 className={styles.sectionTitle}>호텔 정보</h3>
-      <div className={styles.field}>
-        <label>호텔</label>
-        <input type="text" placeholder="호텔 이름을 입력하세요" ref={hotelRef}/>
-      </div>
-      <div className={styles.field}>
-        <label>주소</label>
-        <input type="text" placeholder="호텔 주소를 입력하세요" ref={hotelAdRef}/>
-      </div>
-    </section>
-
-    <button className={styles.submitButton} onClick={handlePost}>등록하기</button>
-  </div>
+      {/* 등록 버튼 */}
+      <Box sx={{ display:'flex', justifyContent:'fixed-end', mt: 4 }}>
+        <Button variant="contained" color="primary">등록 하기</Button>
+      </Box>
+    </Box>
   );
 };
 
-export default GuidePost;
+export default RegisterPost;

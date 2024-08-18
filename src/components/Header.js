@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+
 import { menuData } from '../config/MyPageEndPoint';
 import { RoleContext } from './context/roleContext';
 import Box from '@mui/material/Box';
@@ -71,9 +72,7 @@ const Header = () => {
 
            
                 <button className={styles.logoButton} onClick={() => { setSearchKeyword(''); navigate('/home'); }}>TripMaven</button>
-                <ButtonGroup 
-                    sx={{'&:hover': { backgroundColor: '#0056b3' },}}
-                    variant="contained" aria-label="Basic button group">
+                <ButtonGroup variant="contained" aria-label="Basic button group">
                     <Button onClick={() => { setRole('user') }}>고객</Button>
                     <Button onClick={() => { setRole('guide') }}>가이드</Button>
                     <Button onClick={() => { setRole('admin') }}>관리자</Button>
