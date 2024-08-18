@@ -32,8 +32,6 @@ const Header = () => {
 
 
 
-
-
     const navigate = useNavigate();
 
     //로그인한 사용자 role 가져오기(로그인 구현하면 변경할 예정)
@@ -127,7 +125,7 @@ const Header = () => {
                             <button className={styles.navButton} onClick={handleOpen}>가이드 등록</button>
                         </div>
                         
-                        {/*<button className={styles.loginButton} onClick={() => { setSearchKeyword(''); navigate('/login') }}>로그인</button>*/}
+                        
                         {!localStorage.getItem("token") ?
                                 <NavLink className={styles.loginButton} to="/login" >로그인</NavLink>
                                 :

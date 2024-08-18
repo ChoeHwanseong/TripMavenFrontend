@@ -50,6 +50,7 @@ import AskDetailsView from './pages/askpage/AskDetailsView';
 import AskUpdate from './pages/askpage/AskUpdate';
 import ReviewDetails from './pages/usermypage/UserReviewDetails';
 import GuideUpdatePost from './pages/guidemypage/GuideUpdatePost';
+import MypageUpdate from './pages/mypage/MyPageUpdate';
 
 
 
@@ -107,7 +108,10 @@ function App() {
           <Route path='/askall' element={<AskAll/>}/>
           
           <Route path='/bigChat' element={<BigChat/>}/>
+
+          {/* MYPAGE */}
           <Route path="/mypageprofile/:id" element={<MypageProfile />} />
+          <Route path="/mypageUpdate/:id" element={<MypageUpdate />} />
 
           {/*<Route path="/guideAsk" element={<GuideAsk />} />*/}
           {/*<Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />*/}

@@ -1,6 +1,10 @@
+const membersId= localStorage.getItem('membersId');
+
 export const menuData = {
+
+
     admin: [
-        { name: "내 정보 관리", path: "/mypageprofile/2" },
+        { name: "내 정보 관리", path: `/mypageprofile/${membersId}`},
         { name: "회원 목록", path: "/memberlist" },
         { name: "1:1문의 내역", path: "/adminask" },
         { name: "신고 내역", path: "/adminreport" }

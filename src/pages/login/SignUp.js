@@ -48,8 +48,8 @@ const Signup = () => {
             // 회원가입 로직 처리
             console.log(form);
             SignUp(form);
-            alert('가입 완료! 가입한 계정으로 로그인해주세요.');
-            navigate('/login')
+
+            
             
         }
         else {
