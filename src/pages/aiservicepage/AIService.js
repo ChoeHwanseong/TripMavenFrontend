@@ -12,7 +12,7 @@ const AIService = () => {
         </div>
         <h2 className={styles.cardTitle}>모의 테스트</h2>
         <p className={styles.cardDescription}>
-          여행지 가이드 실력을 연습하고 싶다면? 모의 테스트로 준비하세요!
+          여행지 가이드 실력을 연습하고 싶다면?<br/>모의 테스트로 준비하세요!
         </p>
         <button className={styles.button}>시작하기</button>
       </div>
@@ -22,7 +22,7 @@ const AIService = () => {
         </div>
         <h2 className={styles.cardTitle}>실전 테스트</h2>
         <p className={styles.cardDescription}>
-          내 여행지 소개 실력을 평가받고 싶다면? 실전 테스트로 도전하세요!
+          내 여행지 소개 실력을 평가받고 싶다면?<br/>실전 테스트로 도전하세요!
         </p>
         <button className={styles.button}>시작하기</button>
       </div>

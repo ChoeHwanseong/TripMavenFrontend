@@ -2,20 +2,21 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 20px;
+  padding: 40px;
   background-color: #f0f8ff;
   /* Light blue background */
-  height: 100vh;
+  height: 780px;
 }
 
 .card {
   background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  width: 330px;
   text-align: center;
   padding: 20px;
   font-family: 'Arial', sans-serif;
+  height: 400px;
 }
 
 .cardImage {
@@ -50,6 +51,7 @@
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 10px;
 }
 
 .button:hover {

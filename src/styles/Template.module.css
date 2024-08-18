@@ -1,11 +1,10 @@
 .layout {
     max-width: 1440px;
-    width: 100%;
-    
+    width: 106%;
+    margin-top: -21px;    
 }
 
 .container {
-    margin-top: 70px;
     width: 100%;
-    min-height: 71vh;
+    min-height: 87vh;
 }
