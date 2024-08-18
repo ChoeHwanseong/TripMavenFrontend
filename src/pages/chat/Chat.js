@@ -23,20 +23,21 @@ const Chat = () => {
 
   // 메시지를 전송하는 함수
   const sendMessage = async () => {
-    const chatBody = document.getElementById('chatBody'); // 채팅 메시지를 표시할 요소
+    const chatBody = document.getElementById('chatBody'); //채팅 스크롤
+    const chattingArea = document.getElementById('chattingArea'); // 채팅 메시지를 표시할 요소
     const message = chatInputRef.current.value; // 입력 필드에서 메시지 값을 가져옴
 
     // 메시지가 비어 있지 않은 경우
     if (message.trim() !== '') {
+      setLoading(true);
       const messageElement = document.createElement('div'); // 새 메시지 요소 생성
       messageElement.classList.add(styles.message, styles.sent); // 스타일 적용
       messageElement.innerHTML = `<p>${message}</p>`; // 메시지 내용 설정
-      chatBody.appendChild(messageElement); // 메시지 요소를 채팅 본문에 추가
+      chattingArea.appendChild(messageElement); // 메시지 요소를 채팅 본문에 추가
       chatInputRef.current.value = ''; // 입력 필드를 비움
       chatBody.scrollTop = chatBody.scrollHeight; // 스크롤을 맨 아래로 이동
-
+      
       try {
-        setLoading(true);
         const apiResponse = await axios.post(
           'https://api.openai.com/v1/chat/completions',
           {
@@ -54,12 +55,10 @@ const Chat = () => {
         );
 
         const botAnswer = apiResponse.data.choices[0].message.content.trim();
-
         const botMessageElement = document.createElement('div');
         botMessageElement.classList.add(styles.message, styles.received);
         botMessageElement.innerHTML = `<p>${botAnswer}</p>`;
-        chatBody.appendChild(botMessageElement);
-        setLoading(false); //로딩 끝
+        chattingArea.appendChild(botMessageElement);
 
         /*
         await axios.post('/chatbot', {
@@ -68,17 +67,17 @@ const Chat = () => {
         });
         */
 
-      } catch (error) {
+      }
+      catch (error) {
         if (error.response) {
           console.error('Error response data:', error.response.data);
           console.error('Error status:', error.response.status);
           console.error('Error headers:', error.response.headers);
-        } else if (error.request) {
-          console.error('No response received:', error.request);
-        } else {
-          console.error('Error setting up the request:', error.message);
         }
+        else if (error.request) console.error('No response received:', error.request);
+        else console.error('Error setting up the request:', error.message);
       }
+      setLoading(false);
       chatBody.scrollTop = chatBody.scrollHeight;
     }
   };
@@ -102,6 +101,14 @@ const Chat = () => {
     };
   }, [isVisible]);
 
+  // 로딩 상태가 변경될 때 스크롤 조정
+  useEffect(() => {
+    const chatBody = document.getElementById('chatBody');
+    if (loading) {
+      chatBody.scrollTop = chatBody.scrollHeight; // 로딩 중 스크롤을 맨 아래로 이동
+    }
+  }, [loading]);
+
   return <>
     <div className={styles.container}>
       <a href="#" onClick={toggleChat}>
@@ -120,32 +127,33 @@ const Chat = () => {
                 <FontAwesomeIcon icon={faTimes} />
               </button>
             </header>
-
+            
             <div className={styles.chatBody} id="chatBody">
-              <div className={`${styles.message} ${styles.received}`}>
-                <p>도와드릴게 있을까요?</p>
+              <div className={styles.chattingArea} id="chattingArea">
+                <div className={`${styles.message} ${styles.received}`}>
+                  <p>도와드릴게 있을까요?</p>
+                </div>
+              </div>
+
+              <div className={styles.loadingStyle} id='loading'>
+                {loading && (
+                  <Box >
+                    <CircularProgress />
+                  </Box>
+                )}
               </div>
             </div>
-
             
-              {loading && (
-                <Box >
-                  <CircularProgress />
-                </Box>
-              )}
-            <div className={styles.loadingStyle}>
-            <div/>
-
             <footer className={styles.chatFooter}>
               <input type="text" placeholder="메세지를 입력하세요" ref={chatInputRef} className={styles.chatInput} />
               <button type="button" onClick={sendMessage} className={styles.sendButton}>전송</button>
-            </footer>
-
-          </div>
+            </footer>            
           </div>
         </div>
       )}
     </div>
+
+    
   </>
 }
 

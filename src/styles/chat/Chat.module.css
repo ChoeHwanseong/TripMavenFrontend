@@ -129,6 +129,11 @@
   padding: 16px; /* 내부 여백 설정 */
   overflow-y: auto; /* 세로 방향 스크롤 자동 설정 */
   flex-grow: 1; /* 남는 공간을 채우도록 설정 */
+}
+
+.chattingArea {
+  padding: 0px; /* 내부 여백 설정 */
+  flex-grow: 1; /* 남는 공간을 채우도록 설정 */
   
 }
 
@@ -219,6 +224,6 @@
   background-color: #00000000;
   
   text-align: center;
-  z-index: 1;
   border: none;
 }
+
