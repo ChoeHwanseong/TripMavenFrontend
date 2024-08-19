@@ -1,7 +1,11 @@
 import React from 'react';
 import styles from '../../styles/login/FindPassword2.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const FindPassword2 = () => {
+
+  const navigate = useNavigate();
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>비밀번호 찾기</h1>
@@ -42,7 +46,7 @@ const FindPassword2 = () => {
         </p>
       </div>
 
-      <button type="button" className={styles.submitButton}>다음</button>
+      <button type="button" className={styles.submitButton} onClick={()=>navigate('/findpassword3')}>다음</button>
     </div>
   );
 };

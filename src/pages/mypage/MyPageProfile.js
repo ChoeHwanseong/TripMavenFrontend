@@ -67,6 +67,9 @@ const MypageProfile = () => {
             </Button>
           </Grid>
           <Grid item xs={12} md={10}>
+            <Button sx={{textDecoration:'underline',mb:'5px'}} onClick={()=>{navigate('/passwordchange')}}>
+              비밀번호 수정
+            </Button>
             <TextField
               fullWidth
               label="닉네임"
