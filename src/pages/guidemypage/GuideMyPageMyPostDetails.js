@@ -34,20 +34,20 @@ const GuideMyPageMyPostDetails = () => {
     setAllOpen(!allOpen); // 상태 변경
   };
 
+
   const deletePost =async () => {
     const confirmed = window.confirm("진짜 삭제?");
     if (confirmed) {
-        try {
-          console.log('state.id: ',state.id);
-            await postDelete(state.id);
-            navigate('/guidemypost'); 
-        } catch (error) {
-            console.error('삭제 중 오류 발생:', error);
-        }
+      try {
+        console.log('state.id: ',state.id);
+        await postDelete(state.id);
+        navigate('/guidemypost'); 
+      } catch (error) {
+        console.error('삭제 중 오류 발생:', error);
+      }
     }
     
   };
-
 
   
   return (
