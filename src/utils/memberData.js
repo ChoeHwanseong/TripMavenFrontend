@@ -53,8 +53,9 @@ export const FormLogin = async (form) =>{
   if(token){
     const pureToken = token.split(' ')[1];
     window.localStorage.setItem("token", pureToken);
-    let role = response.data.isAdmin ? "admin" : "user";
-    role = response.data.isGuide ? "guide" : "user";
+    let role = "USER"
+    if(response.data.isAdmin) role = "ADMIN"
+    else if(response.data.isGuide) role = "GUIDE"
     window.localStorage.setItem("role", role);
     window.localStorage.setItem("membersId", response.data.membersId);
     window.localStorage.setItem("refresh", response.data.refresh);
