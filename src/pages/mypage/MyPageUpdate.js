@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Avatar, Grid } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { fetchedData, updateProfile } from '../../utils/memberData';
+import { postPut } from '../../utils/postData';
 
 const MypageUpdate = () => {
   const [profileData, setProfileData] = useState(null);
   const [certificateFileName, setCertificateFileName] = useState('');
-  const { id } = useParams();
+  const membersId= localStorage.getItem('membersId');
   const navigate = useNavigate();
 
+  // 기존 데이타 뿌려주기.
   useEffect(() => {
     const getData = async () => {
       try {
-        const fetchData = await fetchedData(id);
+        const fetchData = await fetchedData(membersId);
         setProfileData(fetchData);
       } catch (error) {
         console.error('에러났당', error);
@@ -21,33 +23,72 @@ const MypageUpdate = () => {
     };
 
     getData();
-  }, [id]);
+  }, [membersId]);
 
 
+  
 
-  // const emailRef = useRef(null);
-  // const namegRef = useRef(null);
-  // const gendergRef = useRef(null);
-  // const birthdayRef = useRef(null);
-  // const telNumberRef = useRef(null);
-  // const addressRef = useRef(null);
-  // const profileRef = useRef(null);
-  // const guidelicenseRef = useRef(null);
+//const profileRef = useRef(null);
+  const nameRef = useRef(null);
 
+  const telNumberRef = useRef(null);
+  const addressRef = useRef(null);
 
-
-
-
-
+  const genderRef = useRef(null);
+  const birthdayRef = useRef(null);
+//const guidelicenseRef = useRef(null);
+  
+  const introduceRef = useRef(null);
 
 
-  const handleUpdate = (e) => {
-    const { name, value } = e.target;
-    setProfileData({
-      ...profileData,
-      [name]: value,
-    });
+    // 수정된 값 저장
+    const newName = async () =>{
+      setProfileData({...profileData,name:nameRef.current.value})
+    };
+    const newTelNumber = async () =>{
+      setProfileData({...profileData,telNumber:telNumberRef.current.value})
+    };
+    const newAddress = async () =>{
+      setProfileData({...profileData,address:addressRef.current.value})
+    };
+    const newGender = async () =>{
+      setProfileData({...profileData,gender:genderRef.current.value})
+    };
+    const newBirthday = async () =>{
+      setProfileData({...profileData,birthday:birthdayRef.current.value})
+    }; 
+    const newIntroduce = async () =>{
+      setProfileData({...profileData,introduce:introduceRef.current.value})
+    };
+  
+  
+  
+  // 프로필 수정
+  const handleProfile = async() => {
+    try {
+        const updateData = { name: nameRef.current.value,
+                            telNumber : telNumberRef.current.value,
+                            address : addressRef.current.value,
+                            gender : genderRef.current.value,
+                            birthday  : birthdayRef.current.value,
+                            introduce : introduceRef.current.value,
+                            id : membersId
+                          };
+        console.log('updateData: ',updateData);
+        console.log('updateData.membersId: ',updateData.id);
+        await updateProfile(updateData.id,updateData);
+        //alert('프로필이 성공적으로 수정되었습니다.');
+        navigate(`/mypageprofile/${membersId}`);
+
+    }  catch (error) {
+        console.error('프로필 수정 중 오류 발생:', error);
+        alert('프로필 수정에 실패했습니다. 다시 시도해주세요.');
+        }
+
   };
+
+
+
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -56,18 +97,18 @@ const MypageUpdate = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const profileupdate = await updateProfile(id, profileData);
-      setProfileData(profileupdate);
-      alert('프로필이 성공적으로 수정되었습니다.');
-      navigate(`/mypageprofile/2`);
-    } catch (error) {
-      console.error('프로필 수정 중 오류 발생:', error);
-      alert('프로필 수정에 실패했습니다. 다시 시도해주세요.');
-    }
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const profileupdate = await updateProfile(id, profileData);
+  //     setProfileData(profileupdate);
+  //     alert('프로필이 성공적으로 수정되었습니다.');
+  //     navigate(`/mypageprofile/2`);
+  //   } catch (error) {
+  //     console.error('프로필 수정 중 오류 발생:', error);
+  //     alert('프로필 수정에 실패했습니다. 다시 시도해주세요.');
+  //   }
+  // };
 
   if (!profileData) {
     return <Typography variant="h6">로딩중</Typography>;
@@ -76,7 +117,7 @@ const MypageUpdate = () => {
   return (
     <Box sx={{ p: 7 }}>
       <Typography style={{ fontSize: '35px', fontWeight: 'bold' }} gutterBottom>프로필 수정</Typography>
-      <form onSubmit={handleSubmit}>
+      <form>
         <Grid container spacing={2}>
           <Grid item xs={12} md={2}>
             <Avatar
@@ -101,8 +142,10 @@ const MypageUpdate = () => {
               id="name"
               name="name"
               value={profileData.name || ''}
-              onChange={handleUpdate}
+              onChange={newName}
               margin="normal"
+              inputRef={nameRef}
+    
             />
             <TextField
               fullWidth
@@ -110,7 +153,6 @@ const MypageUpdate = () => {
               id="email"
               name="email"
               value={profileData.email || ''}
-              onChange={handleUpdate}
               margin="normal"
               InputProps={{
                 readOnly: true,
@@ -122,8 +164,9 @@ const MypageUpdate = () => {
               id="telNumber"
               name="telNumber"
               value={profileData.telNumber || ''}
-              onChange={handleUpdate}
+              onChange={newTelNumber}
               margin="normal"
+              inputRef={telNumberRef}
             />
             <TextField
               sx={{ width: 0.85 }}
@@ -131,11 +174,12 @@ const MypageUpdate = () => {
               id="address"
               name="address"
               value={profileData.address || ''}
-              onChange={handleUpdate}
+              onChange={newAddress}
               margin="normal"
               InputProps={{
                 readOnly: true,
               }}
+              inputRef={addressRef}
             />
             <Button
               sx={{
@@ -159,8 +203,9 @@ const MypageUpdate = () => {
               id="gender"
               name="gender"
               value={profileData.gender || ''}
-              onChange={handleUpdate}
+              onChange={newGender}
               margin="normal"
+              inputRef={genderRef}
             />
             <TextField
               fullWidth
@@ -168,11 +213,12 @@ const MypageUpdate = () => {
               id="birthday"
               name="birthday"
               value={profileData.birthday || ''}
-              onChange={handleUpdate}
+              onChange={newBirthday}
               margin="normal"
               InputProps={{
                 readOnly: true,
               }}
+              inputRef={birthdayRef}
             />
             <TextField
               sx={{ width: 0.72 }}
@@ -202,10 +248,11 @@ const MypageUpdate = () => {
               id="about"
               name="about"
               value={profileData.about || ''}
-              onChange={handleUpdate}
+              onChange={newIntroduce}
               margin="normal"
               multiline
               rows={8}
+              inputRef={introduceRef}
             />
           </Grid>
         </Grid>
@@ -217,9 +264,11 @@ const MypageUpdate = () => {
               mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px',
               '&:hover': { backgroundColor: '#0056b3' },
             }}
+            onClick={handleProfile}
           >
             수정 하기
           </Button>
+       
         </Box>
       </form>
     </Box>

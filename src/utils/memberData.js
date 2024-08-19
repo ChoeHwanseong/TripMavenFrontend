@@ -53,8 +53,9 @@ export const FormLogin = async (form) =>{
   if(token){
     const pureToken = token.split(' ')[1];
     window.localStorage.setItem("token", pureToken);
-    let role = response.data.isAdmin ? "admin" : "user";
-    role = response.data.isGuide ? "guide" : "user";
+    let role = "USER"
+    if(response.data.isAdmin) role = "ADMIN"
+    else if(response.data.isGuide) role = "GUIDE"
     window.localStorage.setItem("role", role);
     window.localStorage.setItem("membersId", response.data.membersId);
     window.localStorage.setItem("refresh", response.data.refresh);
@@ -80,10 +81,24 @@ export const FormLogin = async (form) =>{
 
   export const updateProfile = async (id, updatedData) => {
     try {
-      const res = await axios.put(`/members/${id}`, updatedData);
+      console.log('id',id);
+      console.log('updatedData',updatedData);
+      const res = await axios.put(`http://localhost:9099/members/${id}`, updatedData);
       return res.data;
     } catch (error) {
       console.error('프로필 업데이트 중 에러났당', error);
+      throw error;
+    }
+  };
+
+  // 회원 탈퇴
+  export const deleteProfile = async (id) => {
+    try {
+      console.log('id',id);
+      const res = await axios.delete(`http://localhost:9099/members/${id}`);
+      return res.data;
+    } catch (error) {
+      console.error('회원 탈퇴 중 에러났당', error);
       throw error;
     }
   };
