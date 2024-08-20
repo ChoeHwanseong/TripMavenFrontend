@@ -9,7 +9,6 @@ const AskDetails = () => {
   const titleRef = useRef(null);
   const contentRef = useRef(null);
 
-  const [inquiry, setInquiry] = useState(null);
   const {id} = useParams();
 
   const handelInquiry = async() => {
