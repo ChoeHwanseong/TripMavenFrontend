@@ -86,7 +86,7 @@ const GuidePost = () => {
 
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', mt: 5 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography sx={{fontWeight:'bold'}} variant="h4" mb={4}>
         게시물 등록하기 <span role="img" aria-label="edit">✍️</span>
       </Typography>
       <Divider />

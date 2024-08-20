@@ -19,8 +19,8 @@ const AdminReport = () => {
   }, []);
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto', p: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+    <Box sx={{ maxWidth: 1200, p: 3, mt: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Typography variant="h4" fontWeight="bold">
           신고 내역
         </Typography>
@@ -30,9 +30,9 @@ const AdminReport = () => {
         </Box>
       </Box>
 
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} >
         <Table>
-          <TableHead>
+          <TableHead sx={{ backgroundColor: '#f9f9f9' }}>
             <TableRow>
               <TableCell>작성번호</TableCell>
               <TableCell>신고자</TableCell>

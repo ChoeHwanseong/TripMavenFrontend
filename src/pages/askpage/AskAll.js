@@ -41,7 +41,7 @@ const AskAll = () => {
 
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
+          <TableHead sx={{backgroundColor:'#f9f9f9'}}>
             <TableRow>
               <TableCell>번호</TableCell>
               <TableCell>제목</TableCell>
