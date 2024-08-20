@@ -11,6 +11,7 @@ const apiKey = 'sk-3Psu9bGHtzwsaoZI15OyUanv23VvEQCa5xqxkSZrOGT3BlbkFJ85cTMIN2rNJ
 
 const Chat = () => {
   const [isVisible, setIsVisible] = useState(false); // 챗봇 팝업의 표시 상태를 관리하는 상태 변수
+  const [isClosing, setIsClosing] = useState(false);
   const [chatHistory, setChatHistory] = useState([]); //대화기록 저장
   const chatInputRef = useRef(null); // 입력 필드에 대한 참조를 생성
   const [loading, setLoading] = useState(false); //로딩 스테이트
@@ -18,7 +19,15 @@ const Chat = () => {
   // 챗봇 팝업의 표시/숨기기 토글 함수
   const toggleChat = (event) => {
     event.preventDefault(); // 기본 동작 방지 (링크 클릭 시 페이지 이동 방지)
-    setIsVisible(!isVisible); // 현재 상태를 반전시켜 표시/숨기기 상태를 변경
+    if (isVisible) {
+      setIsClosing(true);
+      setTimeout(() => {
+        setIsVisible(false);
+        setIsClosing(false);
+      }, 500); // css의 애니메이션 동작시간
+    } else {
+      setIsVisible(true);
+    }
   };
 
   // 메시지를 전송하는 함수
@@ -117,8 +126,8 @@ const Chat = () => {
         </div>
       </a>
 
-      {isVisible && (
-        <div id="chatPopup" className={`${styles.chatPopup} ${isVisible ? styles.show : styles.hide}`}>
+      {(isVisible || isClosing) && (
+        <div id="chatPopup" className={`${styles.chatPopup} ${isVisible ? styles.show : ''} ${isClosing ? styles.hide : ''}`}>
           <div className={styles.chatContainer}>
 
             <header className={styles.chatHeader}>

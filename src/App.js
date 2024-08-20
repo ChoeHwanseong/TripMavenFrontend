@@ -51,6 +51,12 @@ import AskUpdate from './pages/askpage/AskUpdate';
 import ReviewDetails from './pages/usermypage/UserReviewDetails';
 import GuideUpdatePost from './pages/guidemypage/GuideUpdatePost';
 import MypageUpdate from './pages/mypage/MyPageUpdate';
+import FindID1 from './pages/login/FindId1';
+import FindPassword1 from './pages/login/FindPassword1';
+import FindPassword2 from './pages/login/FindPassword2';
+import FindPassword3 from './pages/login/FindPassword3';
+import FindID2 from './pages/login/FindId2';
+import PasswordChangeForm from './pages/login/PasswordChangeForm';
 
 
 
@@ -130,6 +136,13 @@ function App() {
         <Route path="/faq" element={<FAQ/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
+        <Route path='/findId1' element={<FindID1/>}/>
+        <Route path='/findId2' element={<FindID2/>}/>
+        <Route path='/findpassword1' element={<FindPassword1/>}/>
+        <Route path='/findpassword2' element={<FindPassword2/>}/>
+        <Route path='/findpassword3' element={<FindPassword3/>}/>
+        <Route path='/passwordchange' element={<PasswordChangeForm/>}/>
+        
         
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>

@@ -93,7 +93,15 @@ const AdminAnswer = () => {
                     </tr>
                     <tr>
                         <td colSpan="4" >
-                            <input type="text" className={styles.fullValue} style={{border:'solid', borderWidth:0.5,borderColor:'blue'}}          
+                            <input type="text"
+                            className={styles.fullValue}
+                            style={{
+                                width: '100%', // 너비를 100%로 설정
+                                boxSizing: 'border-box', // 패딩과 보더를 포함한 너비 계산
+                                border: 'solid', 
+                                borderWidth: 0.5,
+                                borderColor: 'blue'
+                            }}          
                             value={inquiry.comments}
                             onChange={newAnswer}
                             ref={answerRef}/>                                                  

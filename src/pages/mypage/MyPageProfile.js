@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Avatar, Grid } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { fetchedData, updateProfile } from '../../utils/memberData';
+import { deleteProfile, fetchedData, updateProfile } from '../../utils/memberData';
 
 const MypageProfile = () => {
   const [profileData, setProfileData] = useState(null);
@@ -41,6 +41,34 @@ const MypageProfile = () => {
     }
   };
 
+  // 회원 탈퇴
+  const deleteMember = async () => {
+    const confirmed = window.confirm("진짜 탈퇴?");
+    if (confirmed) {
+      // 2) 회원 테이블 컬럼 디폴트값 변경 >> 백 단의 새로운 메소드 필요.
+      // const updateData = { isactive: 0,
+      //               isdelete : 1,
+      //               id :membersId 
+      //             };
+      // console.log('updateData: ',updateData);
+      // await updateProfile(updateData.id,updateData);
+      // navigate('/');
+   
+   // 1) delete 메소드 활용 - 캐스케이드 오류발생 (양방향 참조관계 필요.)
+    //   try {
+    //     console.log('membersId: ',membersId);
+    //       await deleteProfile(membersId);
+    //       navigate('/'); 
+    //   } catch (error) {
+    //       console.error('삭제 중 오류 발생:', error);
+    //   }
+
+    }
+  };
+
+
+
+
   if (!profileData) {
     return <Typography variant="h6">로딩중</Typography>;
   }
@@ -67,6 +95,9 @@ const MypageProfile = () => {
             </Button>
           </Grid>
           <Grid item xs={12} md={10}>
+            <Button sx={{textDecoration:'underline',mb:'5px'}} onClick={()=>{navigate('/passwordchange')}}>
+              비밀번호 수정
+            </Button>
             <TextField
               fullWidth
               label="닉네임"
@@ -181,17 +212,32 @@ const MypageProfile = () => {
             />
           </Grid>
         </Grid>
-        <Box display="flex" justifyContent="flex-end">
-          <Button
-            onClick={()=>{navigate(`/mypageUpdate/${membersId}`)}}
-            variant="contained"
-            sx={{
-              mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px',
-              '&:hover': { backgroundColor: '#0056b3' },
-            }}
-          >
-            수정 하기
-          </Button>
+        <Box display="flex" justifyContent="space-between">
+          <Box display="flex" justifyContent="flex-start">
+            <Button
+              onClick={deleteMember}
+              variant="contained"
+              sx={{
+                mt: 2, backgroundColor: '#ff6666', height: '55px', width: '115px',
+                '&:hover': { backgroundColor: '#e60000' },
+              }}
+            >
+              탈퇴 하기
+            </Button>
+          </Box>
+
+          <Box display="flex" justifyContent="flex-end">
+            <Button
+              onClick={()=>{navigate(`/mypageUpdate/${membersId}`)}}
+              variant="contained"
+              sx={{
+                mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px',
+                '&:hover': { backgroundColor: '#0056b3' },
+              }}
+            >
+              수정 하기
+            </Button>
+          </Box>
         </Box>
       </form>
     </Box>

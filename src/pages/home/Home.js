@@ -5,6 +5,7 @@ import KoreaWeatherMap from './KoreaWeather';
 import RegionEventInfo from './RegionEvent';
 import { RoleContext } from '../../components/context/roleContext';
 import styles from '../../styles/home/Home.module.css';
+import { WidthFull } from '@mui/icons-material';
 
 const Home = () => {
   const navigate = useNavigate();

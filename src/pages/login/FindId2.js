@@ -1,7 +1,10 @@
 import React from 'react';
 import styles from '../../styles/login/FindId2.module.css';
+import { useNavigate } from 'react-router-dom';
 
-const FindId2 = () => {
+const FindID2 = () => {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>아이디 찾기</h1>
@@ -19,11 +22,11 @@ const FindId2 = () => {
       </div>
 
       <div className={styles.buttonGroup}>
-        <button type="button" className={styles.loginButton}>로그인하기</button>
-        <button type="button" className={styles.findPasswordButton}>비밀번호 찾기</button>
+        <button type="button" className={styles.loginButton}  onClick={()=>navigate('/login')}>로그인하기</button>
+        <button type="button" className={styles.findPasswordButton}  onClick={()=>navigate('/findpassword1')}>비밀번호 찾기</button>
       </div>
     </div>
   );
 };
 
-export default FindId2;
+export default FindID2;
