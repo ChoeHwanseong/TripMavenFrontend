@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../../styles/adminmypage/AdminAsk.module.css';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Box } from '@mui/material';
 import { csAllget } from '../../utils/csData';
 
 const AdminAsk = () => {
@@ -29,62 +28,62 @@ const AdminAsk = () => {
 
   const handleMouseLeave = () => {
     setHoveredRow(null);
-  }
+  };
+
+  const handleClick = (inquiry) => {
+    navigate(`/adminAskDetailsView/${inquiry.id}`);
+  };
 
   return (
-    <div className={styles.container}>
+    <Box sx={{ maxWidth: 1200, p: 3, mt: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="h4" fontWeight="bold">
+          1:1 문의 내역
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar src="../../../images/defaultimage.png" sx={{ width: 32, height: 32, mr: 2 }} />
+          <Typography>관리자</Typography>
+        </Box>
+      </Box>
 
-      <div className={styles.content}>
-        <div className={styles.header}>
-          <h1>1:1 문의 내역</h1>
-          <div className={styles.admin}>
-            <div className={styles.adminImage}>
-              <img src="../../../images/defaultimage.png"/>
-            </div>
-            <span>관리자</span>
-          </div>
-        </div>
-
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>작성번호</th>
-              <th>아이디</th>
-              <th>분류</th>
-              <th>제목</th>
-              <th>작성일</th>
-              <th>처리상태</th>
-            </tr>
-          </thead>
-          <tbody>
-
-          {inquiry.map((inquiry, index) => (
-            <Box
-            component="tr"
-            key={index}
-            onMouseEnter={() => handleMouseEnter(index)}
-            onMouseLeave={handleMouseLeave}
-            onClick={()=>{navigate(`/adminAskDetailsView/${inquiry.id}`)}}
-            sx={{
-              cursor: 'pointer',
-              transition: 'background-color 0.3s',
-              '&:hover': {
-                color : 'black',
-                backgroundColor: '#D0F0FF',
-              }
-            }}>
-              <td>{inquiry.id}</td>
-              <td>{inquiry.member.name}</td>
-              <td>{inquiry.member.role ? '고객' : '가이드'}</td>
-              <td>{inquiry.title}</td>
-              <td>{inquiry.createdAt.split('T')[0]}</td>
-              <td>{inquiry.isActive ? '완료' : '미완료'}</td>
-            </Box>
-          ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead sx={{backgroundColor:'#f9f9f9'}}>
+            <TableRow>
+              <TableCell>작성번호</TableCell>
+              <TableCell>아이디</TableCell>
+              <TableCell>분류</TableCell>
+              <TableCell>제목</TableCell>
+              <TableCell>작성일</TableCell>
+              <TableCell>처리상태</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {inquiry.map((inquiry, index) => (
+              <TableRow
+                key={index}
+                hover
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => handleClick(inquiry)}
+                sx={{
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s',
+                  backgroundColor: hoveredRow === index ? '#D0F0FF' : 'inherit',
+                }}
+              >
+                <TableCell>{inquiry.id}</TableCell>
+                <TableCell>{inquiry.member.name}</TableCell>
+                <TableCell>{inquiry.member.role ? '고객' : '가이드'}</TableCell>
+                <TableCell>{inquiry.title}</TableCell>
+                <TableCell>{inquiry.createdAt.split('T')[0]}</TableCell>
+                <TableCell>{inquiry.isActive ? '완료' : '미완료'}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 

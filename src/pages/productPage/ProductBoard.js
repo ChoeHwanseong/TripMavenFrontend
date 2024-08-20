@@ -68,8 +68,8 @@ const ProductBoard = () => {
     return (
         <div className={styles.container}>
             <div>
-                <h1>{city} 상품 목록</h1>
-                {!city && (keyword !== '' && <h3>'{keyword}'에 대한 검색 결과입니다</h3>)}
+                <h1 style={{marginLeft:'40px'}}>{city} 상품 목록</h1>
+                {!city && (keyword !== '' && <h3 style={{marginLeft:'40px'}}>'{keyword}'에 대한 검색 결과입니다</h3>)}
                 
             </div>
 

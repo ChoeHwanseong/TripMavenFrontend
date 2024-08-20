@@ -212,7 +212,7 @@ const Signup = () => {
                     {address.error && <p className={styles.error}>{address.error}</p>}
                 </div>
 
-                <button type="submit" className={styles.signupButton} onChange={handleSubmit}>회원 가입</button>
+                <button type="submit" className={styles.signupButton} onChange={handleSubmit} >회원 가입</button>
             </form>
         </div>
     );
