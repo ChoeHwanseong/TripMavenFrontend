@@ -57,6 +57,8 @@ import FindPassword2 from './pages/login/FindPassword2';
 import FindPassword3 from './pages/login/FindPassword3';
 import FindID2 from './pages/login/FindId2';
 import PasswordChangeForm from './pages/login/PasswordChangeForm';
+import VideoRecorder from './pages/test/test2';
+import DeviceCheckComponent from './pages/test/test1';
 
 
 
@@ -153,6 +155,8 @@ function App() {
         <Route path='/paymentproc' element={<OrderPopup/>}/>
         <Route path='/payment' element={<PaymentForm/>}/>
         <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
+        <Route path='/record' element={<VideoRecorder/>}/>
+        <Route path='/recordcheck' element={<DeviceCheckComponent/>}/>
         
         
       </Route>

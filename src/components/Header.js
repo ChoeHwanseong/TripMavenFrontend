@@ -35,9 +35,7 @@ const Header = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
 
     //로그인한 사용자 role 가져오기(로그인 구현하면 변경할 예정)
-    // + 입력한 검색어 관리(전역 스테이트)
     const { role, setRole } = useContext(RoleContext);
-
     //role에 따라서 마이페이지에 있는 메뉴 변경하기
     let menuList = menuData[role]
 
