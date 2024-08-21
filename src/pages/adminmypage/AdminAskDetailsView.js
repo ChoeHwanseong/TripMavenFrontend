@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../../styles/adminmypage/AdminAskDetailsView.module.css';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Button } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { csGet } from '../../utils/csData';
 
@@ -7,15 +7,12 @@ const AdminAskDetailsView = () => {
 
     const { id } = useParams();
     const [inquiry, setInquiry] = useState(null);
-
     const navigate = useNavigate();
 
     useEffect(() => {
         const getCSData = async () => {
             try {
                 const fetchedData = await csGet(id);
-                console.log('fetchedData: ',fetchedData) 
-                console.log('fetchedData.comments: ',fetchedData.comments)
                 setInquiry(fetchedData);
             } catch (error) {
                 console.error('에러났당', error);
@@ -26,53 +23,78 @@ const AdminAskDetailsView = () => {
     }, [id]);
 
     if (!inquiry) {
-        return <div>로딩중</div>; {/* 이코드 지우면 inquery.id 가져올때 오류발생할수도있음 */ }
+        return <div>로딩중</div>; // 로딩 중 처리
     }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.header}>
-                <h1 className={styles.title}>문의 내역<small className={styles.titleSmall}>상세보기</small></h1>
-            </div>
+        <Box sx={{ maxWidth: 1000, p: 3, mt: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                <Typography variant="h4" fontWeight="bold">
+                    문의 내역
+                    <Typography variant="subtitle1" component="span" sx={{ ml: 2 }}>
+                        상세보기
+                    </Typography>
+                </Typography>
+            </Box>
 
-            <table className={styles.table}>
-                <tbody>
-                    <tr>
-                        <td className={styles.label}>작성번호</td>
-                        <td className={styles.value}>{inquiry.id}</td>
-                        <td className={styles.label}>분류</td>
-                        <td className={styles.value}>{inquiry.member.role ? '고객' : '가이드'}</td>
-                    </tr>
-                    <tr>
-                        <td className={styles.label}>아이디</td>
-                        <td className={styles.value}>{inquiry.member.name}</td>
-                        <td className={styles.label}>작성일</td>
-                        <td className={styles.value}>{inquiry.createdAt.split('T')[0]}</td>
-                    </tr>
-                    <tr>
-                        <td className={styles.label}>제목</td>
-                        <td className={styles.value} colSpan="3">{inquiry.title}</td>
-                    </tr>
-                    <tr>
-                        <td className={styles.fullLabel} colSpan="4">내용</td>
-                    </tr>
-                    <tr>
-                        <td className={styles.fullValue} colSpan="4">{inquiry.content}</td>
-                    </tr>
-                    <tr>
-                        <td className={styles.fullLabelDark} colSpan="4">답변</td>
-                    </tr>
-                    <tr>
-                        <td className={styles.fullValue} colSpan="4">{inquiry.comments}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div className={styles.actions}>
-                <button className={styles.actionButton} onClick={() => navigate(`/adminAnswer/${inquiry.id}`)}>답변 등록 및 수정하기</button>
-                <button className={styles.actionButton} onClick={() => navigate('/adminask')}>목록</button>
-            </div>
-        </div>
+            <TableContainer component={Paper} sx={{ mb: 3 }}>
+                <Table>
+                    <TableBody>
+                        <TableRow>
+                            <TableCell sx={{ width: '20%', fontWeight: 'bold', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
+                                작성번호
+                            </TableCell>
+                            <TableCell sx={{ width: '30%', textAlign: 'center' }}>{inquiry.id}</TableCell>
+                            <TableCell sx={{width: '20%', fontWeight: 'bold', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
+                                분류
+                            </TableCell>
+                            <TableCell sx={{ width: '30%', textAlign: 'center' }}>{inquiry.member.role ? '고객' : '가이드'}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
+                                아이디
+                            </TableCell>
+                            <TableCell sx={{ textAlign: 'center' }}>{inquiry.member.name}</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
+                                작성일
+                            </TableCell>
+                            <TableCell sx={{ textAlign: 'center' }}>{inquiry.createdAt.split('T')[0]}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
+                                제목
+                            </TableCell>
+                            <TableCell colSpan={3} sx={{ textAlign: 'center' }}>{inquiry.title}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell colSpan={4} sx={{ fontWeight: 'bold', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
+                                내용
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell colSpan={4} sx={{textAlign: 'center' }}>{inquiry.content}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell colSpan={4} sx={{ fontWeight: 'bold', textAlign: 'center', backgroundColor: '#f9f9f9', color: '#000' }}>
+                                답변
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell colSpan={4} sx={{ textAlign: 'center' }}>{inquiry.comments}</TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </TableContainer>
 
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+                <Button variant="contained" sx={{backgroundColor:'#0066ff','&:hover' : {backgroundColor:'#0056b3'}}}  onClick={() => navigate(`/adminAnswer/${inquiry.id}`)}>
+                    답변 등록 및 수정하기
+                </Button>
+                <Button variant="contained" sx={{backgroundColor:'#0066ff','&:hover' : {backgroundColor:'#0056b3'}}} onClick={() => navigate('/adminask')}>
+                    목록
+                </Button>
+            </Box>
+        </Box>
     );
 };
 

@@ -34,7 +34,7 @@ const MemberList = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto', p: 3 }}>
+    <Box sx={{ maxWidth: 1200, p: 3,mt: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" fontWeight="bold">
           회원 목록
@@ -45,7 +45,7 @@ const MemberList = () => {
         </Box>
       </Box>
 
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{}}>
         <Table>
           <TableHead>
             <TableRow>
