@@ -10,11 +10,12 @@ import { postsAllGet, postsCityGet, postsKeywordGet } from '../../utils/postData
 const ProductBoard = () => {
     const location = useLocation();
     const navigate = useNavigate();
+
+    //검색어 받기
     const params = new URLSearchParams(location.search);
     const keyword = params.get('keyword');
     const city = params.get('city');
-    const { searchKeyword, setSearchKeyword } = useContext(RoleContext);
-    
+
     const [products, setProducts] = useState([]); //상품 목록 스테이트
     const [page, setPage] = useState(0); //페이지(20개씩임)
     const [hasMore, setHasMore] = useState(true); //더 불러올 데이터가 있는지 여부 
@@ -33,30 +34,35 @@ const ProductBoard = () => {
         // rating       //점수(리뷰점수인가여? ai점수인가여?)
         // reviewCount  //리뷰 수(고객 리뷰에서 카운트해야함)
         // image        //대표 이미지 URL (placeholder 이미지)(없으면 기본 이미지)
+
+        if (!hasMore || loading) return; //이미 초기화된 상태에서만 데이터 불러오기
+
         setLoading(true);
         let results;
         if (city) results = await postsCityGet(city, page); //페이지도 넘기기
-        else if (keyword === '') results = await postsAllGet(page); //페이지도 넘기기
+        else if (keyword === '') results = await postsAllGet(page); //페이지도 넘기기(keyword 없을땐 전체 검색)
         else results = await postsKeywordGet(keyword, page); //페이지도 넘기기
         console.log('검색 결과:', results);
         setLoading(false);
         setProducts((prevProducts) => [...prevProducts, ...results]);
         setPage(prevPage => prevPage + 1); // 다음 페이지로 설정
 
-        if (results.length <= 20) {
+        if (results.length < 20) {
             setHasMore(false);
             console.log('마지막 페이지');
         }
     };
-    /*
+
     // 검색어가 바뀔 때마다 데이터를 초기화하고, 새로 가져옴
     useEffect(() => {
-        setProducts([]);
-        setPage(0);
-        setHasMore(true);
-        fetchMoreData();
-    }, [searchKeyword]);
-    */
+        const resetAndFetch = async () => {
+            setProducts([]);
+            setPage(0);
+            setHasMore(true);
+            await fetchMoreData();
+        };
+        resetAndFetch();
+    }, [location.search]);
 
     // inView 상태가 변경될 때마다 데이터를 더 가져옴
     useEffect(() => {
@@ -75,7 +81,7 @@ const ProductBoard = () => {
 
             <div className={styles.productList}>
                 {products.map((product, index) => (
-                    <div key={index} className={styles.productItem}>
+                    <div key={index} className={styles.productItem} onClick={()=>navigate(`/product?keyword=${keyword}`)}>
                         {/* 상품 이미지 */}
                         <img src={product.image || './images/travel.jpg'} alt={product.title} />
                         <div>

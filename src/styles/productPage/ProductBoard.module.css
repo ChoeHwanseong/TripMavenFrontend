@@ -27,6 +27,7 @@
   padding: 10px;  /* 항목 내부 여백 설정 */
   border-radius: 5px;  /* 항목의 테두리를 둥글게 설정 */
   background-color: #fff;  /* 배경 색상을 흰색으로 설정 */
+  cursor: pointer;
 }
 
 .productItem img {

@@ -9,7 +9,6 @@ import { WidthFull } from '@mui/icons-material';
 
 const Home = () => {
   const navigate = useNavigate();
-  const { setSearchKeyword } = useContext(RoleContext);
   const [selectedRegion, setSelectedRegion] = useState(null);
 
   const handleCityClick = (city) => {
