@@ -23,3 +23,4 @@ npm install react-router-dom@6 이것두
 08/20 npm install @mui/joy @mui/material @mui/icons-material @emotion/react @emotion/styled --legacy-peer-deps
       npm install --save react-daum-postcode --legacy-peer-deps
 08/21 npm install react-icons --legacy-peer-deps
+08/22 npm install formik --save --legacy-peer-deps
