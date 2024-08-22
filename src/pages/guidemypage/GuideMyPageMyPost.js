@@ -30,7 +30,7 @@ const GuideMyPageMyPost = () => {
   }
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto', p: 3 }}>
+    <Box sx={{ maxWidth: 1200, p: 3, mt: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" fontWeight="bold">
           내 게시물 관리
@@ -46,7 +46,7 @@ const GuideMyPageMyPost = () => {
 
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
+          <TableHead sx={{backgroundColor:'#f9f9f9'}}>
             <TableRow>
               <TableCell>작성번호</TableCell>
               <TableCell>지역</TableCell>

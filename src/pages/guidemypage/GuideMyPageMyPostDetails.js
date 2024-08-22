@@ -14,7 +14,9 @@ const GuideMyPageMyPostDetails = () => {
   const [allOpen, setAllOpen] = useState(false); // 모두 열기/닫기 상태 관리
 
   const { id } = useParams(); //사용하지 않지만 키값이라 냅둔다. 
-  
+
+  // 파일 경로 생성
+  const fileImages = state.files ? state.files.split(',') : [];
 
 
   const toggleDay = (day) => {
@@ -65,13 +67,13 @@ const GuideMyPageMyPostDetails = () => {
               <th>작성번호</th>
               <td>{state.id}</td>
               <th>작성일</th>
-              <td>{state.createAt? state.createAt.split('T')[0]:null}</td>
+              <td>{state.createdAt.split('T')[0]}</td>
             </tr>
             <tr>
               <th>지역</th>
               <td>{state.city}</td>
               <th>찜</th>
-              <td>{state.likey} </td>
+              <td>{state.likey =='null' ? state.likey : 0} </td>
             </tr>
             <tr>
               <th>제목</th>
@@ -94,11 +96,21 @@ const GuideMyPageMyPostDetails = () => {
         <div className={styles.buttonControl}>
           <button className={styles.aiButton}>AI 교육 들어보기</button>
         </div>
-        <div className={styles.imageGallery}>
-          <img src="../images/jeju2.png" alt="이미지1" className={styles.image} />
-          <img src="../images/jeju3.png" alt="이미지2" className={styles.image} />
-          <img src="../images/jeju1.png" alt="이미지3" className={styles.image} />
+
+
+         <div className={styles.imageGallery}>
+          {/* 업로드된 파일 이미지를 표시 */}
+          {fileImages.map((fileName, index) => (
+            <img
+              key={index}
+              src={`/uploads/${fileName}`} // Make sure to adjust this path to where your files are stored
+              alt={`업로드된 파일 ${index + 1}`}
+              className={styles.image}
+            />
+          ))}
         </div>
+
+
 
         <div className={styles.description}>
           <h2>{state.title}</h2>
