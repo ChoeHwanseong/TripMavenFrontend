@@ -29,6 +29,9 @@ const style = {
 
 const Header = () => {
     const location = useLocation();
+
+
+
     const navigate = useNavigate();
 
     //검색어 스테이트

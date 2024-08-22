@@ -1,6 +1,7 @@
-import axios from './AxiosApi';
+import axios from "axios";
 
-const baseUrl = "/cs"
+
+const baseUrl = "/spring/cs"
 
 // 문의 등록
 export const csPost = (createData) => {
