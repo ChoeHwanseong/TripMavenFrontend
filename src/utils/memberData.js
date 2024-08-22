@@ -33,8 +33,6 @@ export const fetchedData = async (id) => {
 export const SignUp = async (form) => {
   await axios.post('/signup', form)
   .then(response => {    
-    alert('가입 완료! 가입한 계정으로 로그인해주세요.');
-    Navigate('/login')
   })
   .catch(error => {
     // 오류가 발생했을 때의 처리
