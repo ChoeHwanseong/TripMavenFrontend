@@ -28,6 +28,10 @@ const RegisterGuidePage = () => {
     }
   };
 
+  const handleChange = (event) => {
+    setFormData({...formData, introduce: event.target.value})
+  };
+
   const submitToGuide = () =>{
     const form = new FormData()
     form.append('id',window.localStorage.getItem("membersId"));
@@ -60,6 +64,7 @@ const RegisterGuidePage = () => {
         <textarea
           className={styles.textarea} name="introduce" value={formData.introduce}
           placeholder="자기소개를 입력해주세요 30자 이상 500자 이하"
+          onChange={handleChange}
         />
       </div>
       <div className={styles.buttonblock}>

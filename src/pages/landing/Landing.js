@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/landing/Landing.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faMapMarkedAlt, faEnvelope, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faMapMarkedAlt, faEnvelope, faMobileAlt, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../../components/Footer';
 import sightseeingImage from '../../images/sightseeing.jpg';
 import { useNavigate } from 'react-router-dom';
@@ -9,12 +9,16 @@ import { useNavigate } from 'react-router-dom';
 const Landing = () => {
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
   const [isNavbarShrunk, setIsNavbarShrunk] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const images = ['trip1.jpg', 'trip2.jpg', 'trip3.jpg']; // Add your image filenames here
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
-      // 스크롤 위치가 100px를 넘으면 내비게이션 바 스타일 변경
       setIsNavbarShrunk(window.scrollY > 100);
+      setShowScrollTop(window.scrollY > 300);
     };
 
     const handleResize = () => {
@@ -23,19 +27,34 @@ const Landing = () => {
       }
     };
 
+    const imageInterval = setInterval(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+        setIsTransitioning(false);
+      }, 1000); // 페이드 아웃 시간
+    }, 5000);
+
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
 
-    // 초기 스크롤 위치 확인
     handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
+      clearInterval(imageInterval);
     };
-  }, []);
+  }, [images.length]);
 
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   return (
     <div id="page-top">
@@ -54,6 +73,14 @@ const Landing = () => {
       </nav>
 
       <header className={styles.masthead}>
+        <div 
+          className={`${styles.backgroundLayer} ${styles[`background${currentImageIndex + 1}`]}`}
+          style={{
+            opacity: isTransitioning ? 0 : 1,
+            transform: isTransitioning ? 'scale(1.05) translateY(-100px)' : 'scale(1) translateY(0)',
+            transition: 'opacity 1s ease-in-out, transform 5s ease-in-out'
+          }}
+        ></div>
         <div className="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
           <div className="d-flex justify-content-center">
             <div className={styles.mastheadContent}>
@@ -136,7 +163,14 @@ const Landing = () => {
           </div>
         </div>
       </section>
+      
       <Footer />
+      
+      {showScrollTop && (
+        <button className={styles.scrollTopButton} onClick={scrollToTop}>
+          <FontAwesomeIcon icon={faArrowUp} />
+        </button>
+      )}
     </div>
   );
 };

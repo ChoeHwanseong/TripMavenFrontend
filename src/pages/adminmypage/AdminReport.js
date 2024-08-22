@@ -1,78 +1,68 @@
-import React, { useEffect } from 'react';
-import styles from '../../styles/adminmypage/AdminReport.module.css';
-
-
+import React, { useEffect, useState } from 'react';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar } from '@mui/material';
 import { reportfetchAllData } from '../../utils/reportfetchData';
-import { useState } from 'react';
-import { Box } from '@mui/material';
 
 const AdminReport = () => {
-
   const [inquiry, setInquiries] = useState([]);
-  
+
   useEffect(() => {
     const getReportData = async () => {
-      try{
+      try {
         const fetchedData = await reportfetchAllData();
         setInquiries(fetchedData);
-      } catch (error){
-        console.error('에러났당',error);
+      } catch (error) {
+        console.error('에러났당', error);
       }
-    }
-  
+    };
+
     getReportData();
-    }, []);
-
-
+  }, []);
 
   return (
-    <div className={styles.container}>
+    <Box sx={{ maxWidth: 1200, p: 3, mt: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Typography variant="h4" fontWeight="bold">
+          신고 내역
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar src="../../../images/defaultimage.png" sx={{ width: 32, height: 32, mr: 2 }} />
+          <Typography>관리자</Typography>
+        </Box>
+      </Box>
 
-      <div className={styles.content}>
-        <div className={styles.header}>
-          <h1>신고 내역</h1>
-          <div className={styles.admin}>
-            <div className={styles.adminImage}>
-              <img src="../../../images/defaultimage.png"/>
-            </div>
-            <span>관리자</span>
-          </div>
-        </div>
-
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>작성번호</th>
-              <th>신고자</th>
-              <th>신고 대상자</th>
-              <th>신고 내용</th>
-              <th>작성일</th>
-              <th>처리상태</th>
-            </tr>
-          </thead>
-          <tbody>
+      <TableContainer component={Paper} >
+        <Table>
+          <TableHead sx={{ backgroundColor: '#f9f9f9' }}>
+            <TableRow>
+              <TableCell>작성번호</TableCell>
+              <TableCell>신고자</TableCell>
+              <TableCell>신고 대상자</TableCell>
+              <TableCell>신고 내용</TableCell>
+              <TableCell>작성일</TableCell>
+              <TableCell>처리상태</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {inquiry.map((inquiry, index) => (
-               <Box
-               component="tr"
-               key={index}
-               >
-                <td>{inquiry.member.id}</td>
-                <td>{inquiry.member.name}</td>
-                <td>{inquiry.productBoard.title}</td>
-                <td>{inquiry.attitude && '불친절한 태도, '}
-                    {inquiry.information && '부정확한 정보, '}
-                    {inquiry.disgust && '혐오발언, '}
-                    {inquiry.offensive && '공격적인 언어, '}
-                    {inquiry.noShow && '예약 불이행'}
-                </td>
-                <td>{inquiry.createdAt.split('T')[0]}</td>
-                <td>{inquiry.isactive?'처리중':'처리 완료'}</td>
-              </Box>
+              <TableRow key={index}>
+                <TableCell>{inquiry.member.id}</TableCell>
+                <TableCell>{inquiry.member.name}</TableCell>
+                <TableCell>{inquiry.productBoard.title}</TableCell>
+                <TableCell>
+                  {inquiry.attitude && '불친절한 태도, '}
+                  {inquiry.information && '부정확한 정보, '}
+                  {inquiry.disgust && '혐오발언, '}
+                  {inquiry.offensive && '공격적인 언어, '}
+                  {inquiry.noShow && '예약 불이행'}
+                </TableCell>
+                <TableCell>{inquiry.createdAt.split('T')[0]}</TableCell>
+                <TableCell>{inquiry.isactive ? '처리중' : '처리 완료'}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 

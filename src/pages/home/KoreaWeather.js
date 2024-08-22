@@ -98,7 +98,7 @@ const KoreaWeatherMap = ({ selectedRegion, setSelectedRegion }) => {
 
   return (
     <div style={{ width: '100%', height: '350px', display: 'flex' }}>
-      <div style={{ width: '80%', height: '110%' }}>
+      <div style={{ width: '75%', height: '110%' }}>
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{
@@ -144,13 +144,13 @@ const KoreaWeatherMap = ({ selectedRegion, setSelectedRegion }) => {
         </ComposableMap>
       </div>
 
-      <div style={{ width: '20%', padding: '5px', overflowY: 'auto' }}>
+      <div style={{ width: '25%', padding: '5px', overflowY: 'auto' }}>
         <h3 style={{ margin: '0 0 10px 0' }}>날씨</h3>
         {(hoveredRegion || (selectedRegion && weatherData[changeRegionName[selectedRegion.name]])) ? (
           <div>
-            <h4 style={{ margin: '0 0 5px 0' }}>
+            <h5 style={{ margin: '0 0 5px 0' }}>
               {hoveredRegion && hoveredRegion.city }
-            </h4>
+            </h5>
             {hoveredRegion?.error ? (
               <p>{hoveredRegion.error}</p>
             ) : (
