@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 //멤버 가져오기
 export const fetchData = async () => {
   try {
-    const res = await axios.get('/members');
+    const res = await axios.get('/spring/members');
     //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
     return res.data;
   }
@@ -18,7 +18,7 @@ export const fetchData = async () => {
 export const fetchedData = async (id) => {
   try {
     //console.log(id) //디버그용
-    const res = await axios.get(`/members/id/${id}`);
+    const res = await axios.get(`/spring/members/id/${id}`);
     //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
     return res.data;
   }
@@ -31,7 +31,7 @@ export const fetchedData = async (id) => {
 
 //await axios 꼭 붙이기
 export const SignUp = async (form) => {
-  await axios.post('/signup', form)
+  await axios.post('/spring/signup', form)
   .then(response => {    
   })
   .catch(error => {
@@ -64,7 +64,7 @@ export const FormLogin = async (form) =>{
 
   //가이드 등록.
   export const toGuide = async (form) =>{
-    const response = await axios.post('http://localhost:9099/toGuide', form ,{headers:{
+    const response = await axios.post('http://localhost:9099/spring/toGuide', form ,{headers:{
       'Content-Type': 'multipart/form-data'}})
       .then(res =>{
         window.localStorage.setItem("role", res.data.role);
@@ -81,7 +81,7 @@ export const FormLogin = async (form) =>{
     try {
       console.log('id',id);
       console.log('updatedData',updatedData);
-      const res = await axios.put(`http://localhost:9099/members/${id}`, updatedData);
+      const res = await axios.put(`http://localhost:9099/spring/members/${id}`, updatedData);
       return res.data;
     } catch (error) {
       console.error('프로필 업데이트 중 에러났당', error);
@@ -93,7 +93,7 @@ export const FormLogin = async (form) =>{
   export const deleteProfile = async (id) => {
     try {
       console.log('id',id);
-      const res = await axios.delete(`http://localhost:9099/members/${id}`);
+      const res = await axios.delete(`http://localhost:9099/spring/members/${id}`);
       return res.data;
     } catch (error) {
       console.error('회원 탈퇴 중 에러났당', error);
