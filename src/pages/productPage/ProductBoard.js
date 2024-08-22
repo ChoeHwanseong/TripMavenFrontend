@@ -52,7 +52,7 @@ const ProductBoard = () => {
             console.log('마지막 페이지');
         }
     };
-    
+
     // 검색어가 바뀔 때마다 데이터를 초기화하고, 새로 가져옴
     useEffect(() => {
         const resetAndFetch = async () => {

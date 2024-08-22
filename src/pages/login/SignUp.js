@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../../styles/login/SignUp.module.css';
 import { SignUp } from '../../utils/memberData';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useValid from './useValid';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { styled } from '@mui/material/styles';
@@ -128,8 +128,6 @@ const Signup = () => {
             };
             console.log(form);
             SignUp(form);
-            alert('가입 완료! 가입한 계정으로 로그인해주세요.');
-            navigate('/login')
         } else {
             alert('모든 필드를 올바르게 입력하세요.');
         }
@@ -304,7 +302,7 @@ const Signup = () => {
                         <p>이메일: {email.value}</p>
                         <p>이름: {name.value}</p>
                         <p>관심 지역: {region.value}</p>
-                        <p>성별: {gender.value == 'male'?'남성':'여성'}</p>
+                        <p>성별: {gender.value}</p>
                         <p>생년월일: {birthday.value}</p>
                         <p>주소: {`${addressObj.areaAddress} ${addressObj.townAddress}`}</p>
                     </div>

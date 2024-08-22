@@ -1,6 +1,7 @@
-import axios from './AxiosApi';
+import axios from "axios";
 
-const baseUrl = "/product"
+
+const baseUrl = "spring/product"
 
 // 파일만 전송
 export const filesPost = async (files) => {

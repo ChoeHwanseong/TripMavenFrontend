@@ -25,3 +25,5 @@ npm install react-router-dom@6 이것두
 08/21 npm install react-icons --legacy-peer-deps
 08/22 npm install formik --save --legacy-peer-deps
       npm install react-webcam --legacy-peer-deps
+      npm install mqtt --legacy-peer-deps
+      npm install http-proxy-middleware --save --legacy-peer-deps

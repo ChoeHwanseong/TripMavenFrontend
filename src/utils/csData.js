@@ -1,6 +1,4 @@
-import axios from "axios";
-
-
+import axios from 'axios';
 const baseUrl = "/spring/cs"
 
 // 문의 등록

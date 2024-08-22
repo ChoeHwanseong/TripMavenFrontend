@@ -33,6 +33,8 @@ export const fetchedData = async (id) => {
 export const SignUp = async (form) => {
   await axios.post('/spring/signup', form)
   .then(response => {    
+    alert('가입 완료! 가입한 계정으로 로그인해주세요.');
+    Navigate('/login')
   })
   .catch(error => {
     // 오류가 발생했을 때의 처리
@@ -64,7 +66,7 @@ export const FormLogin = async (form) =>{
 
   //가이드 등록.
   export const toGuide = async (form) =>{
-    const response = await axios.post('http://localhost:9099/spring/toGuide', form ,{headers:{
+    const response = await axios.post('http://localhost:9099/toGuide', form ,{headers:{
       'Content-Type': 'multipart/form-data'}})
       .then(res =>{
         window.localStorage.setItem("role", res.data.role);
@@ -79,9 +81,7 @@ export const FormLogin = async (form) =>{
 
   export const updateProfile = async (id, updatedData) => {
     try {
-      console.log('id',id);
-      console.log('updatedData',updatedData);
-      const res = await axios.put(`http://localhost:9099/spring/members/${id}`, updatedData);
+      const res = await axios.put(`/spring/members/${id}`, updatedData);
       return res.data;
     } catch (error) {
       console.error('프로필 업데이트 중 에러났당', error);
@@ -93,7 +93,7 @@ export const FormLogin = async (form) =>{
   export const deleteProfile = async (id) => {
     try {
       console.log('id',id);
-      const res = await axios.delete(`http://localhost:9099/spring/members/${id}`);
+      const res = await axios.delete(`http://localhost:9099/members/${id}`);
       return res.data;
     } catch (error) {
       console.error('회원 탈퇴 중 에러났당', error);

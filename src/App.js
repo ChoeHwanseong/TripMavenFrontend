@@ -59,6 +59,7 @@ import FindID2 from './pages/login/FindId2';
 import PasswordChangeForm from './pages/login/PasswordChangeForm';
 import VideoRecorder from './pages/test/test2';
 import DeviceCheckComponent from './pages/test/test1';
+import ChattingRoom from './pages/chat/ChattingRoom';
 
 
 
@@ -115,7 +116,9 @@ function App() {
           <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
           <Route path='/askall' element={<AskAll/>}/>
           
-          <Route path='/bigChat' element={<BigChat/>}/>
+          <Route path='/bigChat/:id' element={<BigChat/>}/>
+          <Route path='/chattingRoom' element={<ChattingRoom/>}/>
+          
 
           {/* MYPAGE */}
           <Route path="/mypageprofile/:id" element={<MypageProfile />} />

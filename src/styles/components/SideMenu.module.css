@@ -1,45 +1,44 @@
-/* 전체 레이아웃을 위한 컨테이너 */
-.layout-container {
-    display: flex;
-    min-height: 100vh;
-  }
-  
-  /* 사이드바 스타일 */
-  .sidebar {
-    width: 200px;
+.sidebar {
+    width: 15%;
     background: white;
     color: rgb(0, 0, 0);
     padding: 20px;
-    height: 100%;
-  }
-  
-  /* 메인 컨텐츠 영역 스타일 */
-  .main-content {
-    flex: 1;
-    padding: 20px;
+    height: 40%;
     overflow-y: auto;
-  }
-  
-  .mypageLogo {
+    position: fixed;
+    top: 60px; /* 헤더의 높이만큼 조정 */
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+}
+
+.mypageLogo {
     width: 100%;
     margin-bottom: 20px;
     cursor: pointer;
-  }
-  
-  .sidebar ul {
+}
+
+.sidebar ul {
     list-style: none;
     padding: 0;
     margin: 0;
-  }
-  
-  .sidebarItem {
+}
+
+.sidebarItem {
     cursor: pointer;
     margin-bottom: 10px;
     transition: all 0.3s ease;
     position: relative;
-  }
-  
-  .navButton {
+    animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+.navButton {
     display: flex;
     align-items: center;
     width: 100%;
@@ -49,63 +48,59 @@
     font-size: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
-  }
-  
-  .sidebarItem:hover .navButton {
+}
+
+.sidebarItem:hover .navButton {
     margin-left: 10px;
     box-shadow: 5px 0px 15px rgba(0, 0, 0, 0.3);
     background: linear-gradient(to right, #93d5ea, #4fa1ee);
     border-radius: 10px;
     color: #225af3;
-  }
-  
-  .icon {
+}
+
+.icon {
     margin-right: 10px;
     transition: transform 0.3s ease;
-  }
-  
-  .label {
+}
+
+.label {
     transition: transform 0.3s ease, text-shadow 0.3s ease;
-  }
-  
-  .sidebarItem:hover .icon,
-  .sidebarItem:hover .label {
+}
+
+.sidebarItem:hover .icon,
+.sidebarItem:hover .label {
     transform: translateX(5px);
-  }
-  
-  .sidebarItem:hover .label {
+}
+
+.sidebarItem:hover .label {
     text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5);
-  }
-  
-  .sidebarItem:after {
+}
+
+.sidebarItem:after {
     content: '';
     display: block;
     height: 2px;
     width: 0;
     background: rgb(7, 64, 251);
     transition: width 0.3s ease;
-  }
-  
-  .sidebarItem:hover:after {
+}
+
+.sidebarItem:hover:after {
     width: 100%;
-  }
-  
-  .active .navButton {
+}
+
+.active .navButton {
     font-weight: bold;
     color: #0066ff;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .layout-container {
-      flex-direction: column;
-    }
-    
+}
+
+@media screen and (max-width: 768px) {
     .sidebar {
-      width: 100%;
-      height: auto;
+        width: 100%;
+        height: auto;
     }
-    
+
     .sidebarItem {
-      margin-left: 0;
+        margin-left: 0;
     }
-  }
+}
