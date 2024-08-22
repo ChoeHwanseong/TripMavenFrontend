@@ -64,6 +64,24 @@ export const FormLogin = async (form) =>{
   return response;
   }
 
+  export const OauthLogin = async (url) =>{
+    const response = await axios.get(url)
+    const token = response.headers['authorization'] || response.headers['Authorization'];
+    if(token){
+      const pureToken = token.split(' ')[1];
+      window.localStorage.setItem("token", pureToken);
+      let role = "USER"
+      if(response.data.isAdmin) role = "ADMIN"
+      else if(response.data.isGuide) role = "GUIDE"
+      window.localStorage.setItem("role", role);
+      window.localStorage.setItem("membersId", response.data.membersId);
+      window.localStorage.setItem("refresh", response.data.refresh);
+    }
+  
+    return response;
+    }  
+
+
   //가이드 등록.
   export const toGuide = async (form) =>{
     const response = await axios.post('http://localhost:9099/toGuide', form ,{headers:{
