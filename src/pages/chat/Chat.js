@@ -104,8 +104,7 @@ const Chat = () => {
   // 로딩 상태가 변경될 때 스크롤 조정
   useEffect(() => {
     const chatBody = document.getElementById('chatBody');
-    if (loading) {
-      chatBody.scrollTop = chatBody.scrollHeight; // 로딩 중 스크롤을 맨 아래로 이동
+    if (loading) {a
     }
   }, [loading]);
 
