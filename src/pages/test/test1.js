@@ -100,11 +100,14 @@ const DeviceCheckComponent = () => {
                     <select className='form-select mt-2' value={selectedVideoDevice?.deviceId}
                         onChange={(e) => setSelectedVideoDevice(videoDevices.find((d) => d.deviceId === e.target.value))}
                     >
-                        {videoDevices.map((device) => (
-                            <option key={device.deviceId} value={device.deviceId}>
-                                {device.label}
-                            </option>
-                        ))}
+                      <option key='default' value='default'>
+                          {'웹캠을 선택하세요'}
+                      </option>
+                      {videoDevices.map((device) => (
+                          <option key={device.deviceId} value={device.deviceId}>
+                              {device.label}
+                          </option>
+                      ))}
                     </select>
                 </div>
             </div>
@@ -119,11 +122,14 @@ const DeviceCheckComponent = () => {
                     <select className='form-select mt-2' value={selectedAudioDevice?.deviceId}
                         onChange={(e) => setSelectedAudioDevice(audioDevices.find((d) => d.deviceId === e.target.value))}
                     >
-                        {audioDevices.map((device) => (
-                            <option key={device.deviceId} value={device.deviceId}>
-                                {device.label}
-                            </option>
-                        ))}
+                      <option key='default' value='default'>
+                          {'마이크를 선택하세요'}
+                      </option>
+                      {audioDevices.map((device) => (
+                          <option key={device.deviceId} value={device.deviceId}>
+                              {device.label}
+                          </option>
+                      ))}
                     </select>
                 </div>
             </div>
