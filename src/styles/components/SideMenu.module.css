@@ -53,9 +53,8 @@
 .sidebarItem:hover .navButton {
     margin-left: 10px;
     box-shadow: 5px 0px 15px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(to right, #93d5ea, #4fa1ee);
     border-radius: 10px;
-    color: #225af3;
+    color: #0066ff;
 }
 
 .icon {
@@ -81,7 +80,7 @@
     display: block;
     height: 2px;
     width: 0;
-    background: rgb(7, 64, 251);
+    background: #0066ff;
     transition: width 0.3s ease;
 }
 

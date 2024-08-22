@@ -97,7 +97,7 @@ const GuidePost = () => {
         <TextField fullWidth label="제목" margin="normal" inputRef={titleRef}/>
         <TextField fullWidth label="해시태그" margin="normal" inputRef={hashtagRef}/>
         <TextField fullWidth label="대표 이미지 (최대 3개)" margin="normal" />
-        <Box sx={{ mt: 2 }}>
+        <Box sx={{ mt: 1 }}>
           <input
             type="file"
             id="file-input"
@@ -166,8 +166,8 @@ const GuidePost = () => {
       </Box>
 
       {/* 등록 버튼 */}
-      <Box sx={{ display:'flex', justifyContent:'fixed-end', mt: 4 }}>
-        <Button variant="contained" color="primary" onClick={createPost}>등록 하기</Button>
+      <Box sx={{ display:'flex',justifyContent:'end', mt: 4 }}>
+        <Button variant="contained" sx={{backgroundColor:'#0066ff'}} onClick={createPost}>등록 하기</Button>
       </Box>
     </Box>
   );
