@@ -30,6 +30,19 @@ const style = {
 const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    console.log(location.pathname);
+
+    //product 페이지 벗어나면 검색어 없애는 함수
+    const handleSearchKeyword = () => {
+        if(!location.pathname.includes('/product')){
+            setSearchKeyword('');
+        }
+    };
+
+    //엔드포인트 변할때마다 검색어 없애는 함수 호출
+    useEffect(()=>{
+        handleSearchKeyword();
+    },[location.pathname])
 
     //검색어 스테이트
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -66,7 +79,7 @@ const Header = () => {
         <header className={styles.header}>
             <div className={styles.headerFrame}>
 
-                <button className={styles.logoButton} onClick={() => { setSearchKeyword(''); navigate('/home'); }}>TripMaven</button>
+                <button className={styles.logoButton} onClick={() => { navigate('/home'); }}>TripMaven</button>
                 <ButtonGroup variant="contained" aria-label="Basic button group">
                     <Button onClick={() => { setRole('user') }}>고객</Button>
                     <Button onClick={() => { setRole('guide') }}>가이드</Button>
@@ -87,8 +100,8 @@ const Header = () => {
                     </div>
                     <div className={styles.navFrame}>
                         <div className={styles.navItems}>
-                            <button className={styles.navButton} onClick={() => { setSearchKeyword(''); navigate('/home') }}>Home</button>
-                            <button className={styles.navButton} onClick={() => { setSearchKeyword(''); navigate('/aiservice') }}>AI 서비스</button>
+                            <button className={styles.navButton} onClick={() => {  navigate('/home') }}>Home</button>
+                            <button className={styles.navButton} onClick={() => {  navigate('/aiservice') }}>AI 서비스</button>
                             <div className={styles.dropdown}>
                                 <button className={styles.dropdownButton}>
                                     마이 페이지
@@ -114,7 +127,7 @@ const Header = () => {
                                         //console.log(item); //디버그용
                                         //console.log(item.name); //디버그용
                                         if (item.name) {
-                                            return <a key={index}><button className={styles.navButton1} onClick={() => { setSearchKeyword(''); navigate(item.path) }}>{item.name}</button></a>
+                                            return <a key={index}><button className={styles.navButton1} onClick={() => { navigate(item.path) }}>{item.name}</button></a>
                                         }
                                     })}
                                 </div>
