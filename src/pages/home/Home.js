@@ -5,64 +5,87 @@ import KoreaWeatherMap from './KoreaWeather';
 import RegionEventInfo from './RegionEvent';
 import { RoleContext } from '../../components/context/roleContext';
 import styles from '../../styles/home/Home.module.css';
+import { WidthFull } from '@mui/icons-material';
+import { useFormik } from 'formik';
 
 const Home = () => {
   const navigate = useNavigate();
-  const { setSearchKeyword } = useContext(RoleContext);
   const [selectedRegion, setSelectedRegion] = useState(null);
 
   const handleCityClick = (city) => {
     navigate(`/product?city=${city}`);
   };
-  console.log(selectedRegion)
+
+  //form 요소 상태관리 훅함수
+  const formik = useFormik({ 
+    initialValues: { //초기값 설정
+      keyword: '', //form 형식의 name 속성명이랑 일치시켜야 함
+      days: '', 
+    },
+    //유효성 검사도 쉽게 추가할 수 있음
+    //https://formik.org/docs/examples/with-material-ui
+    onSubmit: (values) => {
+      navigate(`/product?keyword=${values.keyword}&days=${values.days}`);
+    },
+  });
 
   return (
     <div className={styles.headerimg}>
       <Box sx={{ maxWidth: '1200px', mx: 'auto', mt: 10, p: 3 }}>
         {/* 검색 바 */}
-        <Box sx={{
-          mb: 5, p: 3, borderRadius: 3,
-          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-          background: '#ffffff',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          border: '1px solid #0066ff'
-        }}>
-          <TextField
-            placeholder="검색어를 입력하세요"
-            variant="outlined"
-            sx={{
-              mr: 2, flex: 1,
-              backgroundColor: 'white',
-              borderRadius: 2,
-              boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.1)',
-            }}
-          />
-          <TextField
-            placeholder="일수를 선택해주세요"
-            variant="outlined"
-            sx={{
-              mr: 2, flex: 1,
-              backgroundColor: 'white',
-              borderRadius: 2,
-              boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.1)',
-            }}
-          />
-          <Button
-            variant="contained"
-            sx={{
-              py: 1.5, px: 3,
-              fontSize: '18px',
-              fontWeight: 'bold',
-              color: '#ffffff',
-              backgroundColor: '#0066ff',
-              borderRadius: 2,
-              '&:hover': { backgroundColor: '#0056b3' }
-            }}
-            onClick={() => navigate('/product')}
-          >
-            검색
-          </Button>
-        </Box>
+        <form onSubmit={formik.handleSubmit}>
+          <Box sx={{
+            mb: 5, p: 3, borderRadius: 3,
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+            background: '#ffffff',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            border: '1px solid #0066ff'
+          }}>
+            <TextField
+              placeholder="검색어를 입력하세요"
+              variant="outlined"
+              name="keyword"
+              value={formik.values.keyword}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              sx={{
+                mr: 2, flex: 1,
+                backgroundColor: 'white',
+                borderRadius: 2,
+                boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.1)',
+              }}
+            />
+            <TextField
+              placeholder="일수를 선택해주세요"
+              variant="outlined"
+              name="days"
+              value={formik.values.days}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              sx={{
+                mr: 2, flex: 1,
+                backgroundColor: 'white',
+                borderRadius: 2,
+                boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.1)',
+              }}
+            />
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                py: 1.5, px: 3,
+                fontSize: '18px',
+                fontWeight: 'bold',
+                color: '#ffffff',
+                backgroundColor: '#0066ff',
+                borderRadius: 2,
+                '&:hover': { backgroundColor: '#0056b3' }
+              }}
+            >
+              검색
+            </Button>
+          </Box>
+        </form>
 
         {/* 인기 여행지 */}
         <Box sx={{

@@ -1,7 +1,12 @@
 import React from 'react';
 import styles from '../../styles/login/FindId1.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const FindID1 = () => {
+
+  const navigate = useNavigate();
+
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>아이디 찾기</h1>
@@ -70,7 +75,7 @@ const FindID1 = () => {
         </p>
       </div>
       
-      <button type="button" className={styles.submitButton}>다음</button>
+      <button type="button" className={styles.submitButton}  onClick={()=>navigate('/findId2')}>다음</button>
      
     </div>
   );

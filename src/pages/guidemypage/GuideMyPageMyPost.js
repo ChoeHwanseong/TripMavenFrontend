@@ -1,23 +1,17 @@
-// PostManagementPage.js
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import styles from '../../styles/guidemypage/GuideMyPageMyPost.module.css';
-import { Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper } from '@mui/material';
 import { postsAllGet } from '../../utils/postData';
-
 
 const GuideMyPageMyPost = () => {
   const [posts, setPosts] = useState(null);
-  const [hoveredRow, setHoveredRow] = useState(null);
-  const membersId= localStorage.getItem('membersId');
-
+  const membersId = localStorage.getItem('membersId');
   const navigate = useNavigate();
 
   useEffect(() => {
     const getPostData = async () => {
       try {
         const fetchData = await postsAllGet(0);
-        console.log('membersId: ',membersId);
         setPosts(fetchData);
       } catch (error) {
         console.error('에러났당', error);
@@ -27,82 +21,73 @@ const GuideMyPageMyPost = () => {
     getPostData();
   }, []);
 
-  const handleClick = (posts) => {
-    navigate(`/guidemypagemypostdetails/${posts.id}`,{state:posts});
+  const handleClick = (post) => {
+    navigate(`/guidemypagemypostdetails/${post.id}`, { state: post });
   };
-
-  const handleMouseEnter = (index) => {
-    setHoveredRow(index);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredRow(null);
-  }
 
   if (!posts) {
     return <div>로딩중</div>; 
   }
 
-
   return (
-    <div className={styles.container}>
+    <Box sx={{ maxWidth: 1200, p: 3, mt: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="h4" fontWeight="bold">
+          내 게시물 관리
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}
+          onClick={() => navigate(`/guidePost/${membersId}`)}
+        >
+          게시물 등록 하기
+        </Button>
+      </Box>
 
-      <main className={styles.mainContent}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>내 게시물 관리</h1>
-          <button className={styles.createButton} onClick={()=>{navigate(`/guidePost/${membersId}`)}}>게시물 등록 하기</button>
-        </div>
-
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>작성번호</th>
-              <th>지역</th>
-              <th>제목</th>
-              <th>작성일</th>
-              <th>평가 여부</th>
-              <th>등록 여부</th>
-              <th>찜</th>
-            </tr>
-          </thead>
-          <tbody>
-
-          {posts.map((post, index) => (
-            <Box
-              component="tr"
-              key={index}
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={handleMouseLeave}
-              onClick={() => handleClick(post)}
-              sx={{
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead sx={{backgroundColor:'#f9f9f9'}}>
+            <TableRow>
+              <TableCell>작성번호</TableCell>
+              <TableCell>지역</TableCell>
+              <TableCell>제목</TableCell>
+              <TableCell>작성일</TableCell>
+              <TableCell>평가 여부</TableCell>
+              <TableCell>등록 여부</TableCell>
+              <TableCell>찜</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {posts.map((post, index) => (
+              <TableRow
+                key={index}
+                hover
+                onClick={() => handleClick(post)}
+                sx={{
                   cursor: 'pointer',
                   transition: 'background-color 0.3s',
-                  '&:hover': {
-                    color : 'black',
-                    backgroundColor: '#D0F0FF',
-                  },
+                  '&:hover': { backgroundColor: '#D0F0FF' },
                 }}
               >
-                <td>{post.id}</td>
-                <td>{post.city}</td>
-                <td>{post.title}</td>
-                <td>{post.createdAt.split('T')[0]}</td>
-                <td>{post.isEvaluation}</td>
-                <td>{post.isActive?'유':'무'}</td>
-                <td>0</td>
-              </Box>
-              ))}
-            
-          </tbody>
-        </table>
+                <TableCell>{post.id}</TableCell>
+                <TableCell>{post.city}</TableCell>
+                <TableCell>{post.title}</TableCell>
+                <TableCell>{post.createdAt.split('T')[0]}</TableCell>
+                <TableCell>{post.isEvaluation}</TableCell>
+                <TableCell>{post.isActive ? '유' : '무'}</TableCell>
+                <TableCell>0</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-        <div className={styles.pagination}>
-          <span>&lt;</span>
-          <span className={styles.currentPage}>1</span>
-          <span>&gt;</span>
-        </div>
-      </main>
-    </div>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+        <Button disabled>{'<'}</Button>
+        <Typography sx={{ mx: 2 }}>1</Typography>
+        <Button>{'>'}</Button>
+      </Box>
+    </Box>
   );
 };
 

@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Avatar, Grid } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { fetchedData, updateProfile } from '../../utils/memberData';
+import { deleteProfile, fetchedData, updateProfile } from '../../utils/memberData';
 
 const MypageProfile = () => {
   const [profileData, setProfileData] = useState(null);
   const [certificateFileName, setCertificateFileName] = useState('');
   const { id } = useParams();
 
-  const membersId= localStorage.getItem('membersId');
+  const membersId = localStorage.getItem('membersId');
 
   const navigate = useNavigate();
 
@@ -41,12 +41,40 @@ const MypageProfile = () => {
     }
   };
 
+  // 회원 탈퇴
+  const deleteMember = async () => {
+    const confirmed = window.confirm("진짜 탈퇴?");
+    if (confirmed) {
+      // 2) 회원 테이블 컬럼 디폴트값 변경 >> 백 단의 새로운 메소드 필요.
+      // const updateData = { isactive: 0,
+      //               isdelete : 1,
+      //               id :membersId 
+      //             };
+      // console.log('updateData: ',updateData);
+      // await updateProfile(updateData.id,updateData);
+      // navigate('/');
+
+      // 1) delete 메소드 활용 - 캐스케이드 오류발생 (양방향 참조관계 필요.)
+      //   try {
+      //     console.log('membersId: ',membersId);
+      //       await deleteProfile(membersId);
+      //       navigate('/'); 
+      //   } catch (error) {
+      //       console.error('삭제 중 오류 발생:', error);
+      //   }
+
+    }
+  };
+
+
+
+
   if (!profileData) {
     return <Typography variant="h6">로딩중</Typography>;
   }
 
   return (
-    <Box sx={{ p: 7 }}>
+    <Box sx={{ p: 7 ,mt: 2}}>
       <Typography style={{ fontSize: '35px', fontWeight: 'bold' }} gutterBottom>프로필</Typography>
       <form>
         <Grid container spacing={2}>
@@ -67,6 +95,14 @@ const MypageProfile = () => {
             </Button>
           </Grid>
           <Grid item xs={12} md={10}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Button sx={{ textDecoration: 'underline', mr: '660px' }} onClick={() => { navigate('/passwordchange') }}>
+                비밀번호 수정
+              </Button>
+              <Button style={{ textDecoration: 'underline', color: '#000000' }} onClick={deleteMember}>
+                탈퇴하기
+              </Button>
+            </Box>
             <TextField
               fullWidth
               label="닉네임"
@@ -181,9 +217,10 @@ const MypageProfile = () => {
             />
           </Grid>
         </Grid>
+
         <Box display="flex" justifyContent="flex-end">
           <Button
-            onClick={()=>{navigate(`/mypageUpdate/${membersId}`)}}
+            onClick={() => { navigate(`/mypageUpdate/${membersId}`) }}
             variant="contained"
             sx={{
               mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px',

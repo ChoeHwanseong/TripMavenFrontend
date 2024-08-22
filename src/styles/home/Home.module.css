@@ -7,11 +7,28 @@
 }
 
 .headerimg {
-  background-image: url("../../../public/images/HomeHeader.jpg");
+  /*background-image: url("../../../public/images/HomeHeader.jpg");*/
   background-repeat: no-repeat;
-  background-size: contain;
-  background-position: 50% -500px;
+  background-size: cover;
+  background-position: 50% -600px;
   margin-top: -21px;
+  animation: slideShow 15s infinite;
+}
+
+@keyframes slideShow {
+  0% {
+    background-image: url("../../../public/images/HomeHeader.jpg");
+  }
+  33% {
+    background-image: url("../../../public/images/HomeHeader3.jpg");
+  }
+  66% {
+    background-image: url("../../../public/images/HomeHeader2.jpg");
+  }
+  100% {
+    background-image: url("../../../public/images/HomeHeader.jpg");
+  }
+
 }
 
 

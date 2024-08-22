@@ -88,3 +88,15 @@ export const FormLogin = async (form) =>{
       throw error;
     }
   };
+
+  // 회원 탈퇴
+  export const deleteProfile = async (id) => {
+    try {
+      console.log('id',id);
+      const res = await axios.delete(`http://localhost:9099/members/${id}`);
+      return res.data;
+    } catch (error) {
+      console.error('회원 탈퇴 중 에러났당', error);
+      throw error;
+    }
+  };
