@@ -9,9 +9,11 @@ const GuideMyPageMyPostDetails = () => {
   const navigate = useNavigate();
   const {state} = useLocation();
   console.log(state);
+  console.log(state.files);
 
   const [activeDays, setActiveDays] = useState([1,2,3]); //다중 스테이트 관리를 위한 배열
   const [allOpen, setAllOpen] = useState(false); // 모두 열기/닫기 상태 관리
+  
 
   const { id } = useParams(); //사용하지 않지만 키값이라 냅둔다. 
 
@@ -87,7 +89,7 @@ const GuideMyPageMyPostDetails = () => {
               <th>등록 여부</th>
               <td>{state.isActive==1?'게시글 등록':state.isActive==2?'미등록':'널~'}</td>
               <th>AI 점수</th>
-              <td>{state.isEvaluation==1?'점수가서와서 뿌려라!':'널~'}</td>
+              <td>{state.productEvaluation?'점수가서와서 뿌려라!':'널~'}</td>
             </tr>
 
 

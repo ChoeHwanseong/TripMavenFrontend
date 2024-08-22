@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const baseUrl = "/product"
+const baseUrl = "/spring"
 
 // 파일만 전송
 export const filesPost = async (files) => {
