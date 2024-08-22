@@ -1,9 +1,9 @@
 .sidebar {
-    width: 220px;
+    width: 15%;
     background: white;
     color: rgb(0, 0, 0);
     padding: 20px;
-    height: 35%;
+    height: 40%;
     overflow-y: auto;
     position: fixed;
     top: 60px; /* 헤더의 높이만큼 조정 */
