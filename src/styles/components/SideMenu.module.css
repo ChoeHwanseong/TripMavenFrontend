@@ -1,49 +1,111 @@
-.sidebar {
-    width: 20%;
-    padding-right: 5px;
-    color: #333;
+/* 전체 레이아웃을 위한 컨테이너 */
+.layout-container {
     display: flex;
-    margin-left: 30px;
-    margin-top: 50px;
-    position: fixed;
-}
-
-.sidebar h2 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    font-weight: bold;
-}
-
-.sidebar ul {
+    min-height: 100vh;
+  }
+  
+  /* 사이드바 스타일 */
+  .sidebar {
+    width: 200px;
+    background: white;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    height: 100%;
+  }
+  
+  /* 메인 컨텐츠 영역 스타일 */
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
+  .mypageLogo {
+    width: 100%;
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+  
+  .sidebar ul {
     list-style: none;
     padding: 0;
     margin: 0;
-}
-
-.mypageLogo {
-    margin-bottom: 15px;
-}
-
-.sidebar ul li {
-    margin-bottom: 10px;
-    font-size: 16px;
+  }
+  
+  .sidebarItem {
     cursor: pointer;
-}
-
-.active {
-    font-weight: bold;
-    color: #0066ff;
-}
-
-.navButton {
-    padding: 0;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .navButton {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
     background: none;
     border: none;
     font-size: 16px;
     cursor: pointer;
-}
-
-.navButton:hover,
-.dropdownButton:hover {
+    transition: all 0.3s ease;
+  }
+  
+  .sidebarItem:hover .navButton {
+    margin-left: 10px;
+    box-shadow: 5px 0px 15px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(to right, #93d5ea, #4fa1ee);
+    border-radius: 10px;
+    color: #225af3;
+  }
+  
+  .icon {
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .label {
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+  }
+  
+  .sidebarItem:hover .icon,
+  .sidebarItem:hover .label {
+    transform: translateX(5px);
+  }
+  
+  .sidebarItem:hover .label {
+    text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5);
+  }
+  
+  .sidebarItem:after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 0;
+    background: rgb(7, 64, 251);
+    transition: width 0.3s ease;
+  }
+  
+  .sidebarItem:hover:after {
+    width: 100%;
+  }
+  
+  .active .navButton {
+    font-weight: bold;
     color: #0066ff;
-}
+  }
+  
+  @media screen and (max-width: 768px) {
+    .layout-container {
+      flex-direction: column;
+    }
+    
+    .sidebar {
+      width: 100%;
+      height: auto;
+    }
+    
+    .sidebarItem {
+      margin-left: 0;
+    }
+  }

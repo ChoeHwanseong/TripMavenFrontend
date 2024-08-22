@@ -1,11 +1,14 @@
 .page {
     display: flex;
-    flex-direction: row;
     font-family: Arial, sans-serif;
+    min-height: calc(100vh - 60px); /* 헤더의 높이를 뺀 높이 */
+    margin-top: 60px; /* 헤더의 높이만큼 여백 */
 }
 
 .content {
-    margin-left: 280px;
-    width: 80%;
-    padding: 30px 0 0 20px;
+    flex-grow: 1;
+    padding: 20px;
+    margin-left: 20px; /* SideMenu의 너비(200px) + 여백(20px) */
+    width: calc(100% - 220px);
+    overflow-y: auto;
 }

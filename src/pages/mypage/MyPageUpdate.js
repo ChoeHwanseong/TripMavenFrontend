@@ -169,7 +169,7 @@ const MypageUpdate = () => {
               inputRef={telNumberRef}
             />
             <TextField
-              sx={{ width: 0.85 }}
+              sx={{ width: 0.88 }}
               label="주소"
               id="address"
               name="address"
@@ -183,8 +183,9 @@ const MypageUpdate = () => {
             />
             <Button
               sx={{
-                mt: 2, ml: 3, color: '#000000',
+                mt: 1.9, ml: 1, color: '#000000',
                 border: 1, backgroundColor: '#f1f1f1',
+                justifyContent:'flex-end',
                 height: .17, '&:hover': { backgroundColor: '#DEDEDE' },
               }}
               variant="contained"
@@ -276,3 +277,5 @@ const MypageUpdate = () => {
 };
 
 export default MypageUpdate;
+
+

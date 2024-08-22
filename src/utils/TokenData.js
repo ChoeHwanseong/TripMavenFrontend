@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Axios 인스턴스 생성
 const instance = axios.create({
-    baseURL: "http://localhost:9099"
+    baseURL: "http://localhost:9099/spring"
 });
 
 // 요청 인터셉터 추가

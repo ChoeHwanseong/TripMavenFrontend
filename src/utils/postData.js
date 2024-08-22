@@ -1,6 +1,6 @@
-import axios from './AxiosApi';
+import axios from 'axios';
 
-const baseUrl = "/product"
+const baseUrl = "/spring/product"
 
 // 상품 등록
 export const postPost = (createData) => {
