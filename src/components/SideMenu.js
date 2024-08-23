@@ -61,6 +61,20 @@ const SideMenu = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    // 페이지 맨 위로 스크롤하는 함수
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
+
+    // 버튼 클릭 시 페이지 이동 및 스크롤 처리
+    const handleClick = (path) => {
+        navigate(path);
+        scrollToTop();
+    };
+
     const getIcon = (name) => {
         const iconMap = {
             "내 정보 관리": <FaUser />,
@@ -85,7 +99,7 @@ const SideMenu = () => {
                     src="../../images/mypageLogo.png"
                     alt="mypagelogo"
                     className={styles.mypageLogo}
-                    onClick={() => navigate('/mypageprofile')}
+                    onClick={() => handleClick('/mypageprofile')}
                 />
                 <ul>
                     {menuItems && menuItems.map((item, index) => {
@@ -93,9 +107,9 @@ const SideMenu = () => {
                             const isActive = location.pathname.toLowerCase().includes(item.path.toLowerCase());
                             return (
                                 <li key={index} className={`${styles.sidebarItem} ${isActive ? styles.active : ''}`}>
-                                    <button 
-                                        className={styles.navButton} 
-                                        onClick={() => navigate(item.path)}
+                                    <button
+                                        className={styles.navButton}
+                                        onClick={() => handleClick(item.path)}
                                     >
                                         <span className={styles.icon}>{getIcon(item.name)}</span>
                                         <span className={styles.label}>{item.name}</span>
