@@ -24,7 +24,7 @@ const Footer = ({ className, ...props }) => {
   };
   return (
     <div className={`${styles.footer} ${className}`}>
-      <div className={styles.footerLeft}>
+      <div className={styles.footerLeft} onClick={()=>{handleClick('/home')}}>
         <div className={styles.tripMaven}>TripMaven</div>
         <div className={styles.happyFindReporter}>
           <span>
