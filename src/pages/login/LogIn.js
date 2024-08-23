@@ -67,6 +67,7 @@ const Login = () => {
     const googleLogin = () => {
         // Google OAuth2 인증 URL로 리다이렉트
         window.location.href = process.env.REACT_APP_GOOGLE_URL;
+        
     };
 
     const kakaoLogin = () => {
@@ -74,7 +75,7 @@ const Login = () => {
         const redirectUri = process.env.REACT_APP_KAKAO_URL; // 리다이렉트 URI
         const encodedRedirectUri = encodeURIComponent(redirectUri); // 리다이렉트 URI를 인코딩합니다.
 
-        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}`;
+        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}&`;
     };
 
     const naverLogin = () => {
