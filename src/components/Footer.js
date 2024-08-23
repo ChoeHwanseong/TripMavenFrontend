@@ -5,9 +5,23 @@ import { RoleContext } from './context/roleContext';
 
 
 const Footer = ({ className, ...props }) => {
-  const {setSearchKeyword} = useContext(RoleContext);
+  const { setSearchKeyword } = useContext(RoleContext);
 
   const navigate = useNavigate();
+
+  // 페이지 맨 위로 스크롤하는 함수
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  // 버튼 클릭 시 페이지 이동 및 스크롤 처리
+  const handleClick = (path) => {
+    navigate(path);
+    scrollToTop();
+  };
   return (
     <div className={`${styles.footer} ${className}`}>
       <div className={styles.footerLeft}>
@@ -24,15 +38,15 @@ const Footer = ({ className, ...props }) => {
       </div>
       <div className={styles.footerRight}>
         <div className={styles.footerLinks}>
-          <a className={styles.footerLink}><button className={styles.navButton} onClick={()=>{ navigate('/termsservice')}}>이용약관</button></a>
+          <a className={styles.footerLink}><button className={styles.navButton} onClick={() => { handleClick('/termsservice') }}>이용약관</button></a>
           <span className={styles.bar}> | </span>
-          <a className={styles.footerLink}><button className={styles.navButton} onClick={()=>{ navigate('/siteinfo')}}>사이트소개</button></a>
+          <a className={styles.footerLink}><button className={styles.navButton} onClick={() => { handleClick('/siteinfo') }}>사이트소개</button></a>
           <span className={styles.bar}> | </span>
-          <a className={styles.footerLink}><button className={styles.navButton} onClick={()=>{ navigate('/askall')}}>1:1문의</button></a>
+          <a className={styles.footerLink}><button className={styles.navButton} onClick={() => { handleClick('/askall') }}>1:1문의</button></a>
           <span className={styles.bar}> | </span>
-          <a className={styles.footerLink}><button className={styles.navButton} onClick={()=>{ navigate('/faq')}}>고객센터</button></a>
+          <a className={styles.footerLink}><button className={styles.navButton} onClick={() => { handleClick('/faq') }}>고객센터</button></a>
           <span className={styles.bar}> | </span>
-          <a className={styles.footerLink}><button className={styles.navButton} onClick={()=>{ navigate('/')}}>시작화면으로 돌아가기</button></a>
+          <a className={styles.footerLink}><button className={styles.navButton} onClick={() => { handleClick('/') }}>시작화면으로 돌아가기</button></a>
         </div>
       </div>
     </div>
