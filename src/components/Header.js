@@ -30,7 +30,6 @@ const style = {
 const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    console.log(location.pathname);
 
     //product 페이지 벗어나면 검색어 없애는 함수
     const handleSearchKeyword = () => {

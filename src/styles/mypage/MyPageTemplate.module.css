@@ -8,20 +8,7 @@
 .content {
     flex-grow: 1;
     padding: 20px;
-    margin-left: 220px; /* SideMenu의 너비(200px) + 여백(20px) */
+    margin-left: 20px; /* SideMenu의 너비(200px) + 여백(20px) */
     width: calc(100% - 220px);
     overflow-y: auto;
-}
-
-@media screen and (max-width: 768px) {
-    .page {
-        flex-direction: column;
-        margin-top: 0;
-    }
-
-    .content {
-        margin-left: 0;
-        width: 100%;
-        padding: 20px;
-    }
 }

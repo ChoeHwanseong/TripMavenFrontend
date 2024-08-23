@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/login/Login.module.css';
 import { NavLink } from 'react-router-dom';
 import { FormLogin } from '../../utils/memberData';
+import { v4 as uuidv4 } from 'uuid';
 
 const Login = () => {
     const [formData, setFormData] = useState({email: '', password: ''});
@@ -13,6 +14,11 @@ const Login = () => {
         });
     };
     
+    useEffect(()=>{
+
+    },[]);
+
+
     const [autoLogin, setAutoLogin] = useState(false);
 
     const handleAutoLoginChange = () => setAutoLogin(!autoLogin);
@@ -35,55 +41,46 @@ const Login = () => {
             console.error('로그인 요청 중 오류 발생:', error);
         }
 
-        /*
-        const loginDataJson = JSON.stringify(loginData);
-
-        // FormData 생성
-        const formData = new FormData();
-
-        // JSON 데이터를 하나의 필드로 추가
-        formData.append('loginData', loginDataJson);*/
-        // const response = await FormLogin(formObject);
-
-        // console.log(response);
-        /*
-        fetch('http://localhost:9099/login', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json',},
-            body: JSON.stringify(loginData)
-        },
-        console.log(loginData)
-        )
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = '/home'; // 로그인 성공 시 홈으로 이동
-                } else {
-                    alert('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
-                }
-            })
-            .catch(error => console.error('로그인 요청 중 오류 발생:', error));*/
     };
 
+<<<<<<< HEAD
     const googleLogin = () => {
         // Google OAuth2 인증 URL로 리다이렉트
         window.location.href = process.env.REACT_APP_GOOGLE_URL;
         
+=======
+    const googleLogin = async() => {
+        const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID; // 환경 변수에서 클라이언트 ID를 가져옵니다.
+        const redirectUri = process.env.REACT_APP_GOOGLE_URL; // 리다이렉트 URI
+        const encodedRedirectUri = encodeURIComponent(redirectUri); // 리다이렉트 URI를 인코딩합니다.
+        //window.location.href = redirectUri;
+        window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}&scope=email profile`;
+>>>>>>> 23131cb788e4b3b32185c0156eea532f8c5ec607
     };
 
-    const kakaoLogin = () => {
+    const kakaoLogin = () => { ///////////////석세스 요청으로 가면 그 최초마운트에서 (쿼리든 머리든)쿠키~에 있는거 읽고 저장하고 중 저장이 되면. 네비게이트... 
+        // 씨발 그럼. . 폼도 같이 쓸수 있네요. 
+
         const clientId = process.env.REACT_APP_KAKAO_CLIENT_ID; // 환경 변수에서 클라이언트 ID를 가져옵니다.
         const redirectUri = process.env.REACT_APP_KAKAO_URL; // 리다이렉트 URI
         const encodedRedirectUri = encodeURIComponent(redirectUri); // 리다이렉트 URI를 인코딩합니다.
+<<<<<<< HEAD
 
         window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}&`;
+=======
+        //window.location.href = redirectUri;
+        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}&through_account=true`;
+>>>>>>> 23131cb788e4b3b32185c0156eea532f8c5ec607
     };
 
     const naverLogin = () => {
         const clientId = process.env.REACT_APP_NAVER_CLIENT_ID; // 환경 변수에서 클라이언트 ID를 가져옵니다.
         const redirectUri = process.env.REACT_APP_NAVER_URL; // 리다이렉트 URI
         const encodedRedirectUri = encodeURIComponent(redirectUri); // 리다이렉트 URI를 인코딩합니다.
+        const state = uuidv4();
+        localStorage.setItem('naver_login_state', state);
 
-        window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}`;
+        window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}&state=${encodeURIComponent(state)}`;
     };
 
     return (
