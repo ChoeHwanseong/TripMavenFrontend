@@ -1,0 +1,55 @@
+.container {
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    padding: 40px;
+  }
+  
+  .title {
+    font-size: 28px;
+    color: #0066ff;
+    margin-bottom: 20px;
+  }
+  
+  .description {
+    font-size: 20px;
+    color: #333;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+  
+  .features {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+  
+  .feature {
+    margin: 0 20px;
+    text-align: center;
+  }
+  
+  .featureImage {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 10px;
+  }
+  
+  .featureTitle {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .actionButton {
+    background-color: #0066ff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .actionButton:hover {
+    background-color: #0056b3;
+  }
+  
