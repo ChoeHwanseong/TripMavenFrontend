@@ -1,52 +1,37 @@
 import axios from "axios";
 
 
-const baseUrl = "spring/product"
+const baseUrl = "http://localhost:9099"
 
 // 파일만 전송
-export const filesPost = async (files) => {
-  try {
-    const formData = new FormData();
+export const filesPost = async (formData) => {
+    try {
+        const response = await axios.post(`${baseUrl}/upload`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log('서버 응답:', response.data);
+        return { success: true, data: response.data };
+      } catch (error) {
+        console.error('업로드 중 오류 발생:', error);
+        return { success: false, error: error.message };
+      }
 
-    // files 배열을 순회하며 각각의 파일을 FormData에 추가
-    files.forEach((file) => {
-      formData.append('files', file); // 'files' 키에 모든 파일 추가
-    });
-
-    console.log('FormData content:', Array.from(formData.entries())); // 확인용
-
-    // FormData 전송
-    const response = await axios.post(baseUrl + `/upload`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data', // multipart/form-data로 전송
-      },
-    });
-
-    console.log(response);
-
-    console.log('filesPost의 res.data:', response.data);
-    return response.data; // 서버에서 반환된 데이터 반환
-  } catch (error) {
-    console.error('Error uploading files:', error);
-    throw error; // 오류 발생 시 에러를 던져서 호출자에게 전달
-  }
 };
 
 
-// // 파일 정보 넘기기
-// export const filesPost = (filesData) => {
-//   console.log('filesData: ',filesData);
-//   console.log('filesData.id: ',filesData.id);
-//    return axios.post(baseUrl+'/upload', filesData, {
-//     headers: {
-//       'Content-Type': 'multipart/form-data' // 파일 업로드 시 Content-Type 설정
-//     }
-//   }).then(res => {
-//     console.log('filesPost의 res.data: ',res.data);
-//     return res.data; // 서버에서 반환된 데이터 반환
-//   }).catch(error => {
-//     console.error('Error uploading files:', error);
-//     throw error; // 오류 발생 시 에러를 던져서 호출자에게 전달
-//   });
-
-// }
+// 파일 가져오기
+export const fetchFiles = async (productboardId) => {
+    try {
+        const response = await axios.get(`${baseUrl}/upload/${productboardId}`, {
+          responseType: 'blob' // 서버에서 Blob으로 파일 데이터를 받아옴
+        });
+        
+        const fileUrl = URL.createObjectURL(response.data);
+        return fileUrl;
+      } catch (error) {
+        console.error('Error fetching files:', error);
+        throw error;
+      }
+};

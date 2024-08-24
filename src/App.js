@@ -60,6 +60,7 @@ import PasswordChangeForm from './pages/login/PasswordChangeForm';
 import VideoRecorder from './pages/test/test2';
 import DeviceCheckComponent from './pages/test/test1';
 import ChattingRoom from './pages/chat/ChattingRoom';
+import AiServiceInfo from './pages/aiservicepage/AIServiceInfo';
 
 
 
@@ -147,6 +148,7 @@ function App() {
         <Route path='/findpassword2' element={<FindPassword2/>}/>
         <Route path='/findpassword3' element={<FindPassword3/>}/>
         <Route path='/passwordchange' element={<PasswordChangeForm/>}/>
+        <Route path='/aiserviceinfo' element={<AiServiceInfo/>}/>
         
         
 
