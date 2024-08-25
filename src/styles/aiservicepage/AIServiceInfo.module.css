@@ -1,41 +1,46 @@
 .container {
     text-align: center;
     font-family: 'Arial', sans-serif;
-    padding: 40px;
+    padding: 70px;
+    
   }
   
   .title {
-    font-size: 28px;
+    font-size: 30px;
     color: #0066ff;
     margin-bottom: 20px;
   }
   
   .description {
     font-size: 20px;
-    color: #333;
-    line-height: 1.5;
-    margin-bottom: 40px;
+    color: #000000;
+    font-weight: bold;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    margin-top: 20px;
   }
   
   .features {
     display: flex;
     justify-content: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
   
   .feature {
     margin: 0 20px;
     text-align: center;
+    margin-right: 40px;
   }
   
   .featureImage {
-    width: 150px;
-    height: 150px;
+    width: 300px;
+    height: 350px;
     margin-bottom: 10px;
   }
   
   .featureTitle {
-    font-size: 16px;
+    font-size: 30px;
+    font-weight: bold;
     color: #333;
   }
   
