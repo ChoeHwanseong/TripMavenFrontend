@@ -139,7 +139,7 @@ const DeviceCheckComponent = () => {
             <div className='d-flex my-3'>
             {isRecording ? (
                 <button className='btn btn-danger' onClick={handleStopRecording}>녹화 중지</button>
-            ) : (
+            ) : ( 
                 <button className='btn btn-success' onClick={handleStartRecording}>녹화 시작</button>
             )}
             <p className='mx-3 align-bottom'>남은 시간: {timer} 초</p>

@@ -1,7 +1,12 @@
+.body{
+    display: grid;
+    place-items: center;
+}
+
 .layout {
     max-width: 1440px;
     width: 106%;
-    
+
 }
 
 .container {
