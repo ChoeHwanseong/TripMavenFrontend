@@ -2,11 +2,10 @@
     /*border: 1px black solid;*/
     top:0;
     position: fixed;
-    align-items: center;
     padding: 10px 40px;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    min-width: 1440px;
+    min-width: 1450px;
     width: 100%;
     z-index: 10;
     
