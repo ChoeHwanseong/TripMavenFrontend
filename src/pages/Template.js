@@ -14,15 +14,16 @@ export default function Template() {
 
     return <>
         <RoleContext.Provider value={{ role, setRole}}>
-            <Header />
-            <div className={styles.layout}>
-                <div className={styles.container}>
-                    <Outlet />
+            <div className={styles.body}>
+                <Header />  
+                <div className={styles.layout}>
+                    <div className={styles.container}>
+                        <Outlet />
+                    </div>
+                    <Chat />
                 </div>
-                <Chat />
                 <Footer />
             </div>
         </RoleContext.Provider>
-
     </>
 }

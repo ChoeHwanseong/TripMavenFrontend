@@ -335,7 +335,7 @@ const Signup = () => {
                         이전
                     </button>
                     {activeStep === steps.length - 1 ? (
-                        <button type="submit" className={styles.signupButton} onChange={handleSubmit}>
+                        <button type="submit" className={styles.signupButton} onClick={handleSubmit}>
                             가입
                         </button>
                     ) : (
