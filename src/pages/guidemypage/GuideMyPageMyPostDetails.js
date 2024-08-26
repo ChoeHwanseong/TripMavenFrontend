@@ -1,23 +1,31 @@
-// MyPostDetails.js
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from '../../styles/guidemypage/GuideMyPageMyPostDetails.module.css';
 import { postDelete } from '../../utils/postData';
+import { fetchFiles } from '../../utils/fileData';
 
 const GuideMyPageMyPostDetails = () => {
-
   const navigate = useNavigate();
-  const {state} = useLocation();
-  console.log(state);
+  const { state } = useLocation();
 
-  const [activeDays, setActiveDays] = useState([1,2,3]); //다중 스테이트 관리를 위한 배열
-  const [allOpen, setAllOpen] = useState(false); // 모두 열기/닫기 상태 관리
+  const [activeDays, setActiveDays] = useState([1, 2, 3]);
+  const [allOpen, setAllOpen] = useState(false);
+  const [fileUrls, setFileUrls] = useState([]);
 
-  const { id } = useParams(); //사용하지 않지만 키값이라 냅둔다. 
+  const { id } = useParams();
 
-  // 파일 경로 생성
-  const fileImages = state.files ? state.files.split(',') : [];
-
+  useEffect(() => {
+    const getFiles = async () => {
+      try {
+        const fileUrl = await fetchFiles(state.id);
+        setFileUrls([fileUrl]); // 받아온 파일 URL을 배열로 저장
+      } catch (error) {
+        console.error('Error fetching files:', error);
+      }
+    };
+  
+    getFiles();
+  }, [state.id]);
 
   const toggleDay = (day) => {
     if (activeDays.includes(day)) {
@@ -29,40 +37,34 @@ const GuideMyPageMyPostDetails = () => {
 
   const toggleAllDays = () => {
     if (allOpen) {
-      setActiveDays([]); // 모두 닫기
+      setActiveDays([]);
     } else {
-      setActiveDays([1, 2, 3]); // 모두 열기(하드코딩인데 바꿔야함)
+      setActiveDays([1, 2, 3]);
     }
-    setAllOpen(!allOpen); // 상태 변경
+    setAllOpen(!allOpen);
   };
 
-
-  const deletePost =async () => {
+  const deletePost = async () => {
     const confirmed = window.confirm("진짜 삭제?");
     if (confirmed) {
       try {
-        console.log('state.id: ',state.id);
         await postDelete(state.id);
-        navigate('/guidemypost'); 
+        navigate('/guidemypost');
       } catch (error) {
         console.error('삭제 중 오류 발생:', error);
       }
     }
-    
   };
 
-  
   return (
     <div className={styles.container}>
-
       <main className={styles.mainContent}>
         <div className={styles.header}>
           <h1 className={styles.title}>내 게시물 상세보기<img src="../../images/pen.svg" className={styles.editIcon} /></h1>
         </div>
 
-        <table className={styles.infoTable }>
+        <table className={styles.infoTable}>
           <tbody>
-
             <tr>
               <th>작성번호</th>
               <td>{state.id}</td>
@@ -73,7 +75,7 @@ const GuideMyPageMyPostDetails = () => {
               <th>지역</th>
               <td>{state.city}</td>
               <th>찜</th>
-              <td>{state.likey =='null' ? state.likey : 0} </td>
+              <td>{state.likey === 'null' ? state.likey : 0}</td>
             </tr>
             <tr>
               <th>제목</th>
@@ -85,32 +87,30 @@ const GuideMyPageMyPostDetails = () => {
             </tr>
             <tr>
               <th>등록 여부</th>
-              <td>{state.isActive==1?'게시글 등록':state.isActive==2?'미등록':'널~'}</td>
+              <td>{state.isActive === 1 ? '게시글 등록' : state.isActive === 2 ? '미등록' : '널~'}</td>
               <th>AI 점수</th>
-              <td>{state.isEvaluation==1?'점수가서와서 뿌려라!':'널~'}</td>
+              <td>{state.productEvaluation ? '점수가서와서 뿌려라!' : '널~'}</td>
             </tr>
-
-
           </tbody>
         </table>
         <div className={styles.buttonControl}>
           <button className={styles.aiButton}>AI 교육 들어보기</button>
         </div>
 
-
-         <div className={styles.imageGallery}>
-          {/* 업로드된 파일 이미지를 표시 */}
-          {fileImages.map((fileName, index) => (
-            <img
-              key={index}
-              src={`/uploads/${fileName}`} // Make sure to adjust this path to where your files are stored
-              alt={`업로드된 파일 ${index + 1}`}
-              className={styles.image}
-            />
-          ))}
+        <div className={styles.imageGallery}>
+          {fileUrls.length > 0 ? (
+            fileUrls.map((fileUrl, index) => (
+              <img
+                key={index}
+                src={fileUrl} // Blob URL을 이미지 src로 사용
+                alt={`업로드된 파일 ${index + 1}`}
+                className={styles.image}
+              />
+            ))
+          ) : (
+            <p>이미지가 없습니다.</p>
+          )}
         </div>
-
-
 
         <div className={styles.description}>
           <h2>{state.title}</h2>
@@ -151,7 +151,6 @@ const GuideMyPageMyPostDetails = () => {
                 </div>
                 {activeDays.includes(day) && (
                   <div className={styles.accordionContent}>
-                    {/* 각 일정의 활동 내용 */}
                     <div className={styles.timeline}>
                       <div className={styles.timelineItem}>
                         <div className={styles.timelinePoint}></div>
@@ -206,11 +205,10 @@ const GuideMyPageMyPostDetails = () => {
         </div>
 
         <div className={styles.actions}>
-          <button className={styles.actionButton} onClick={()=>{navigate(`/guideUpdatePost/${state.id}`)}} >수정 하기</button>
+          <button className={styles.actionButton} onClick={() => { navigate(`/guideUpdatePost/${state.id}`) }}>수정 하기</button>
           <button className={styles.actionButton} onClick={deletePost}>삭제 하기</button>
           <button className={styles.actionButton} onClick={() => navigate('/guidemypost')}>목록</button>
         </div>
-
       </main>
     </div>
   );

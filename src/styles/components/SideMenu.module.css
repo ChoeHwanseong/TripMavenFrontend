@@ -11,6 +11,7 @@
     color: rgb(0, 0, 0);
     padding: 20px;
     height: 100%;
+    margin-left: 30px;
   }
   
   /* 메인 컨텐츠 영역 스타일 */
@@ -52,11 +53,9 @@
   }
   
   .sidebarItem:hover .navButton {
-    margin-left: 10px;
-    box-shadow: 5px 0px 15px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(to right, #93d5ea, #4fa1ee);
+    margin-left: 4px;
     border-radius: 10px;
-    color: #225af3;
+    color: #0066ff;
   }
   
   .icon {
@@ -82,7 +81,7 @@
     display: block;
     height: 2px;
     width: 0;
-    background: rgb(7, 64, 251);
+    background: #0066ff;
     transition: width 0.3s ease;
   }
   

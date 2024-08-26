@@ -1,11 +1,18 @@
+.body{
+    display: grid;
+    place-items: center;
+}
+
 .layout {
     max-width: 1440px;
+    min-width: 1440px;
     width: 106%;
-    
+
 }
 
 .container {
     margin-top: 70px;
+    min-width: 1440px;
     width: 100%;
     min-height: 71vh;
 }
