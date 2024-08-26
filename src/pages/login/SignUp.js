@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../../styles/login/SignUp.module.css';
 import { SignUp } from '../../utils/memberData';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useValid from './useValid';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { styled } from '@mui/material/styles';
@@ -75,8 +75,10 @@ function ColorlibStepIcon(props) {
 
 const Signup = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
     const [activeStep, setActiveStep] = useState(0);
-    const [addressObj, setAddressObj] = useState({ areaAddress: '', townAddress: '' });
+    const [addressObj, setAddressObj] = useState({ areaAddress: '', townAddress: '', detailAddress: '' });
 
     // Form validations
     const email = useValid('', (value) =>
@@ -92,6 +94,7 @@ const Signup = () => {
     const region = useValid('', (value) => !value ? '관심 지역을 선택하세요' : '');
     const gender = useValid('', (value) => !value ? '성별을 선택하세요' : '');
     const birthday = useValid('', (value) => !value ? '생년월일을 입력하세요' : '');
+    console.log(birthday.value)
     const address = useValid(addressObj, (value) => 
         !value.areaAddress || !value.townAddress ? '주소를 입력하세요' : ''
     );
@@ -123,7 +126,7 @@ const Signup = () => {
                 region: region.value,
                 gender: gender.value,
                 birthday: birthday.value,
-                address: `${addressObj.areaAddress} ${addressObj.townAddress}`,
+                address: `${addressObj.areaAddress} ${addressObj.townAddress} ${addressObj.detailAddress}`,
                 loginType: 'local'
             };
             console.log(form);
@@ -150,7 +153,8 @@ const Signup = () => {
                 fullAddress = fullAddress.replace(localAddress, '');
                 setAddressObj({
                     areaAddress: localAddress,
-                    townAddress: fullAddress += (extraAddress !== '' ? `(${extraAddress})` : '')
+                    townAddress: fullAddress += (extraAddress !== '' ? `(${extraAddress})` : ''),
+                    detailAddress: ''
                 });
             }
         }
@@ -158,8 +162,35 @@ const Signup = () => {
         const handleClick = () => {
             open({onComplete: handleComplete});
         }
+
+        const handleDetailAddressChange = (e) => {
+            setAddressObj(prev => ({ ...prev, detailAddress: e.target.value }));
+        }
     
-        return <button type="button" onClick={handleClick} className={styles.searchButton2}>주소찾기</button>
+        return (
+            <>
+                <div className={styles.inputWithButton}>
+                    <input
+                        type="text"
+                        id="address"
+                        name="address"
+                        value={`${addressObj.areaAddress} ${addressObj.townAddress}`}
+                        readOnly
+                        placeholder="주소를 입력하세요"
+                    />
+                    <button type="button" onClick={handleClick} className={styles.searchButton2}>주소찾기</button>
+                </div>
+                <input
+                    type="text"
+                    id="detailAddress"
+                    name="detailAddress"
+                    value={addressObj.detailAddress}
+                    onChange={handleDetailAddressChange}
+                    placeholder="상세주소를 입력하세요"
+                    className={styles.detailAddressInput}
+                />
+            </>
+        );
     }
 
     const renderStepContent = (step) => {
@@ -247,7 +278,6 @@ const Signup = () => {
                                 <option value="gyeongbuk">경상북도</option>
                                 <option value="gyeongnam">경상남도</option>
                                 <option value="jeju">제주특별자치도</option>
-                                {/* Add other options */}
                             </select>
                             {region.error && <p className={styles.error}>{region.error}</p>}
                         </div>
@@ -280,17 +310,7 @@ const Signup = () => {
                         </div>
                         <div className={styles.inputGroup}>
                             <label htmlFor="address">주소</label>
-                            <div className={styles.inputWithButton}>
-                                <input
-                                    type="text"
-                                    id="address"
-                                    name="address"
-                                    value={`${addressObj.areaAddress} ${addressObj.townAddress}`}
-                                    readOnly
-                                    placeholder="주소를 입력하세요"
-                                />
-                                <DaumPost />
-                            </div>
+                            <DaumPost />
                             {address.error && <p className={styles.error}>{address.error}</p>}
                         </div>
                     </>
@@ -304,7 +324,7 @@ const Signup = () => {
                         <p>관심 지역: {region.value}</p>
                         <p>성별: {gender.value}</p>
                         <p>생년월일: {birthday.value}</p>
-                        <p>주소: {`${addressObj.areaAddress} ${addressObj.townAddress}`}</p>
+                        <p>주소: {`${addressObj.areaAddress} ${addressObj.townAddress} ${addressObj.detailAddress}`}</p>
                     </div>
                 );
             default:

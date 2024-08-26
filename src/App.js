@@ -61,8 +61,12 @@ import ChattingRoom from './pages/chat/ChattingRoom';
 import AiServiceInfo from './pages/aiservicepage/AIServiceInfo';
 import DeviceCheckComponent from './pages/webrecord/DeviceCheckComponent';
 import WebcamRecorder from './pages/webrecord/WebcamRecorder';
+<<<<<<< HEAD
 import GuidePostCopy from './pages/guidemypage/WebEditor';
 import PostHeader from './pages/guidemypage/PostHeader';
+=======
+import LoginSuccess from './pages/login/LogInSuccess';
+>>>>>>> 62118527312e5669aabad2708d750ea037b8dfb2
 
 
 
@@ -146,6 +150,7 @@ function App() {
         <Route path="/siteinfo" element={<SiteIntroduction/>}/>
         <Route path="/faq" element={<FAQ/>}/>
         <Route path="/login" element={<Login/>}/>
+        <Route path="/success" element={<LoginSuccess/>}/>
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/findId1' element={<FindID1/>}/>
         <Route path='/findId2' element={<FindID2/>}/>
