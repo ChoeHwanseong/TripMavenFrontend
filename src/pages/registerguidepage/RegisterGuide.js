@@ -99,7 +99,7 @@ const RegisterGuidePage = () => {
             <Button
               variant="outlined"
               component="span"
-              sx={{ mt: 1, '&:hover': { backgroundColor: '#0056b3' } }}
+              sx={{ mt: 1,border:'1px solid #0066ff', '&:hover': {color:'#ffffff', backgroundColor: '#0066ff' } }}
             >
               파일 찾기
             </Button>
@@ -124,7 +124,7 @@ const RegisterGuidePage = () => {
                   key={index}
                   src={file.url}  
                   alt={`파일 미리보기 ${index + 1}`}
-                  style={{ maxWidth: '100%', maxHeight: '550px', objectFit: 'cover', marginBottom: '10px' }}
+                  style={{ maxWidth: '100%', maxHeight: '550px', objectFit: 'cover', marginBottom: '10px',border:'3px solid #f1f1f1' }}
                 />
               ))}
             </Box>
@@ -152,8 +152,8 @@ const RegisterGuidePage = () => {
         */}
 
         <div className={styles.licenseInfoConfirm}>
-          <Box sx={{ mt: 4 }}>
-            <Typography variant="h7" gutterBottom>자격증 정보 확인</Typography>
+          <Box sx={{ mt: 8 }}>
+            <Typography variant="h7" gutterBottom sx={{fontWeight:'bold'}}>자격증 정보 확인</Typography>
             {loading ? (
             <Box sx={{ width: '100%' }}>
               <LinearProgress />

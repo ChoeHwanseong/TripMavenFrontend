@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
-import '../../styles/webrecord/DeviceCheckComponent.module.css'; // CSS 파일을 따로 만들어서 스타일을 관리
+import { Box, Button, Container, Grid, MenuItem, Select, Typography } from '@mui/material';
 
 const DeviceCheckComponent = () => {
   const webcamRef = useRef(null);
@@ -94,56 +94,94 @@ const DeviceCheckComponent = () => {
   };
 
   return (
-    <div className='device-check-component'>
-      <div className='d-flex justify-content-between'>
-        <div className='video-section'>
-          <Webcam ref={webcamRef} video={{ deviceId: selectedVideoDevice?.deviceId }} />
-          <select className='form-select mt-2' value={selectedVideoDevice?.deviceId || 'default'}
+    <Container sx={{ mt: '20px', width: '1100px' }}>
+      <Typography variant="h4" gutterBottom align="left" sx={{ mt: '120px', fontWeight: 'bold' }}>
+        모의 테스트
+      </Typography>
+      <img src="../../images/WebTestPageLine.png" />
+      <Typography variant="h5" gutterBottom align="center" sx={{ mt: '13px', mb: '13px' }}>
+        Q: 여행을 하는 중에 컴플레인이 들어 왔을 경우 어떻게 해결을 해야 할까요?
+      </Typography>
+      <Grid container>
+        <Grid item xs={5.4} sx={{ ml: '50px' }}>
+          <Webcam
+            ref={webcamRef}
+            videoConstraints={{ deviceId: selectedVideoDevice?.deviceId }}
+            style={{ width: '100%', height: 360, backgroundColor: '#F8F8F8', border: '1px solid #000000', borderRadius: 5 }}
+          />
+        </Grid>
+        <Grid item xs={5.4} sx={{ ml: '50px' }}>
+          <Box
+            sx={{
+              width: '100%',
+              height: 360,
+              bgcolor: '#F8F8F8',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1px solid #000000',
+              borderRadius: '5px'
+            }}
+          >
+            녹화 영상 미리보기
+          </Box>
+        </Grid>
+      </Grid>
+      <Grid container spacing={1} justifyContent="left" alignItems="center" sx={{ mt: 2, ml: '53px' }}>
+        <Grid item>
+          <Select
+            value={selectedVideoDevice?.deviceId || ''}
+            displayEmpty
             onChange={(e) => setSelectedVideoDevice(videoDevices.find((d) => d.deviceId === e.target.value))}
+            sx={{ width: '215px' }}
           >
-            <option key='default' value='default'>
-              {'웹캠을 선택하세요'}
-            </option>
+            <MenuItem value="">웹캠을 선택하세요</MenuItem>
             {videoDevices.map((device) => (
-              <option key={device.deviceId} value={device.deviceId}>
+              <MenuItem key={device.deviceId} value={device.deviceId}>
                 {device.label}
-              </option>
+              </MenuItem>
             ))}
-          </select>
-        </div>
-
-        <div className='audio-section'>
-          <audio ref={audioRef} style={{ display: 'none' }} />
-          {isAudioPlaying ? (
-            <p className='audio-status text-success'>마이크 작동 중</p>
-          ) : (
-            <p className='audio-status text-danger'>마이크 작동 안됨</p>
-          )}
-          <select className='form-select mt-2' value={selectedAudioDevice?.deviceId || 'default'}
+          </Select>
+        </Grid>
+        <Grid item>
+          <Select
+            value={selectedAudioDevice?.deviceId || ''}
+            displayEmpty
             onChange={(e) => setSelectedAudioDevice(audioDevices.find((d) => d.deviceId === e.target.value))}
+            sx={{ width: '215px', ml: '10px' }}
           >
-            <option key='default' value='default'>
-              {'마이크를 선택하세요'}
-            </option>
+            <MenuItem value="">마이크를 선택하세요</MenuItem>
             {audioDevices.map((device) => (
-              <option key={device.deviceId} value={device.deviceId}>
+              <MenuItem key={device.deviceId} value={device.deviceId}>
                 {device.label}
-              </option>
+              </MenuItem>
             ))}
-          </select>
-        </div>
-      </div>
-
-      <div className='controls mt-3'>
+          </Select>
+        </Grid>
+      </Grid>
+      <Typography variant="body2" color={isAudioPlaying ? 'success.main' : 'error'} align="left" sx={{ mt: 1, ml: '63px' }}>
+        {isAudioPlaying ? '마이크 작동 중' : '*얼굴 인식이 되지 않습니다.'}
+      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'left', mt: 2, ml: '70px' }}>
+        <Typography variant="body2" sx={{ mr:'240px' }}>
+          남은 시간: {timer} 초
+        </Typography>
         {isRecording ? (
-          <button className='btn btn-danger' onClick={handleStopRecording}>녹화 중지</button>
+          <Button variant="contained" color="error" onClick={handleStopRecording} sx={{ backgroundColor: "#0066ff", mt: '-10px' }}>
+            녹화 중지
+          </Button>
         ) : (
-          <button className='btn btn-success' onClick={handleStartRecording}>녹화 시작</button>
+          <Button variant="contained" onClick={handleStartRecording} sx={{ backgroundColor: "#0066ff", mt: '-10px' }}>
+            녹화 시작
+          </Button>
         )}
-        <p className='timer ms-3'>남은 시간: {timer} 초</p>
-        <button className='btn btn-secondary ms-3' onClick={downloadRecording}>영상 다운로드</button>
-      </div>
-    </div>
+
+
+      </Box>
+      <Typography variant="h7" align="center" display="block" sx={{ mt: 5,color:'#979797' }}>
+        ※정확한 측정을 위해 얼굴이 전체적으로 잘 보이도록 하고, 주변 소음을 최소화해 주시기 바랍니다.
+      </Typography>
+    </Container>
   );
 };
 
