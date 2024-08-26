@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FaUser, FaUsers, FaQuestionCircle, FaFlag, FaPencilAlt, FaComments, FaRobot, FaStar, FaHeart } from 'react-icons/fa';
 import styles from '../styles/components/SideMenu.module.css';
 import { menuData } from '../config/MyPageEndPoint';
@@ -61,6 +61,20 @@ const SideMenu = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    // 페이지 맨 위로 스크롤하는 함수
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
+
+    // 버튼 클릭 시 페이지 이동 및 스크롤 처리
+    const handleClick = (path) => {
+        navigate(path);
+        scrollToTop();
+    };
+
     const getIcon = (name) => {
         const iconMap = {
             "내 정보 관리": <FaUser />,
@@ -79,32 +93,37 @@ const SideMenu = () => {
     let menuItems = menuData[role];
 
     return (
-        <div className={styles.sidebar}>
-            <img
-                src="../../images/mypageLogo.png"
-                alt="mypagelogo"
-                className={styles.mypageLogo}
-                onClick={() => navigate('/mypageprofile')}
-            />
-            <ul>
-                {menuItems && menuItems.map((item, index) => {
-                    if (item.name) {
-                        const isActive = location.pathname.toLowerCase().includes(item.path.toLowerCase());
-                        return (
-                            <li key={index} className={`${styles.sidebarItem} ${isActive ? styles.active : ''}`}>
-                                <button 
-                                    className={styles.navButton} 
-                                    onClick={() => navigate(item.path)}
-                                >
-                                    <span className={styles.icon}>{getIcon(item.name)}</span>
-                                    <span className={styles.label}>{item.name}</span>
-                                </button>
-                            </li>
-                        );
-                    }
-                    return null;
-                })}
-            </ul>
+        <div className={styles.layoutContainer}>
+            <div className={styles.sidebar}>
+                <img
+                    src="../../images/mypageLogo.png"
+                    alt="mypagelogo"
+                    className={styles.mypageLogo}
+                    onClick={() => handleClick('/mypageprofile')}
+                />
+                <ul>
+                    {menuItems && menuItems.map((item, index) => {
+                        if (item.name) {
+                            const isActive = location.pathname.toLowerCase().includes(item.path.toLowerCase());
+                            return (
+                                <li key={index} className={`${styles.sidebarItem} ${isActive ? styles.active : ''}`}>
+                                    <button
+                                        className={styles.navButton}
+                                        onClick={() => handleClick(item.path)}
+                                    >
+                                        <span className={styles.icon}>{getIcon(item.name)}</span>
+                                        <span className={styles.label}>{item.name}</span>
+                                    </button>
+                                </li>
+                            );
+                        }
+                        return null;
+                    })}
+                </ul>
+            </div>
+            <div className={styles.mainContent}>
+                {/* Main content goes here */}
+            </div>
         </div>
     );
 };
