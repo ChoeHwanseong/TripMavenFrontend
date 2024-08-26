@@ -61,6 +61,8 @@ import ChattingRoom from './pages/chat/ChattingRoom';
 import AiServiceInfo from './pages/aiservicepage/AIServiceInfo';
 import DeviceCheckComponent from './pages/webrecord/DeviceCheckComponent';
 import WebcamRecorder from './pages/webrecord/WebcamRecorder';
+import GuidePostCopy from './pages/guidemypage/WebEditor';
+import PostHeader from './pages/guidemypage/PostHeader';
 
 
 
@@ -102,6 +104,9 @@ function App() {
           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
           <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
            */}
+
+{/* 아래 테스트용 */}
+<Route path='/postHeader' element={<PostHeader/>}/>
 
            {/* USER */}
           <Route path='/userreview' element={<UserReview/>}/>
