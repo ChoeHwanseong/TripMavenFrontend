@@ -34,13 +34,9 @@ const RegisterGuidePage = () => {
     formData.append('ocrValue','ocr');
     try {
       const respData = await ocr(formData);
-      // 응답 처리
-      
       if(respData.success == true){
-        setOcrResult((prev)=>({...prev, name:respData.data.name, number:respData.data.number}));
+        setOcrResult((prev)=>({...prev, name:respData.data.name, number:respData.data.number, subject:respData.data.subject}));
       }
-      
-      console.log(respData.data.name);
 
     } catch (error) {
         console.error('Error uploading file:', error);
@@ -110,27 +106,25 @@ const RegisterGuidePage = () => {
           </label>
 
           {/* 선택된 파일명 표시 */}
-          {/*
-          {selectedFiles.length > 0 && (
+          {selectedFile.length > 0 && (
             <Box sx={{ mt: 1 }}>
-              {selectedFiles.map((file, index) => (
+              {selectedFile.map((file, index) => (
                 <Typography key={index} sx={{ mb: 1 }}>
-                  선택된 파일: {file.name}
+                  미리보기: {file.name}
                 </Typography>
               ))}
             </Box>
           )}
-          */}
 
           {/* 이미지 미리보기 표시 */}
           {previewUrl.length > 0 && (
-            <Box sx={{ mt: 2 }}>
+            <Box sx={{ mt: 2 , paddingLeft:0}}>
               {previewUrl.map((file, index) => (
                 <img
                   key={index}
                   src={file.url}  
                   alt={`파일 미리보기 ${index + 1}`}
-                  style={{ maxWidth: '100%', maxHeight: '500px', objectFit: 'cover', marginBottom: '10px' }}
+                  style={{ maxWidth: '100%', maxHeight: '550px', objectFit: 'cover', marginBottom: '10px' }}
                 />
               ))}
             </Box>
@@ -159,23 +153,28 @@ const RegisterGuidePage = () => {
 
         <div className={styles.licenseInfoConfirm}>
           <Box sx={{ mt: 4 }}>
-            <Typography variant="h6" gutterBottom>자격증 정보 확인</Typography>
+            <Typography variant="h7" gutterBottom>자격증 정보 확인</Typography>
             {loading ? (
             <Box sx={{ width: '100%' }}>
               <LinearProgress />
             </Box>
             ) : 
             (<>
-              <TextField fullWidth label="성명" margin="normal" defaultValue="정주원"/>
-              <TextField fullWidth label="문서 확인 번호" margin="normal"  defaultValue="123456789-54"/>
+              <TextField fullWidth label="자격증명" margin="normal"  defaultValue={!ocrResult?'not detected':ocrResult.subject==='default'?'not detected':ocrResult.subject}
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+              <TextField fullWidth label="성명" margin="normal" defaultValue={!ocrResult?'not detected':ocrResult.name==='default'?'not detected':ocrResult.name}/>
+              <TextField fullWidth label="문서 확인 번호" margin="normal"  defaultValue={!ocrResult?'not detected':ocrResult.number==='default'?'not detected':ocrResult.number}/>
+              <Box sx={{ display: 'flex', justifyContent: 'end', marginTop:'10px' }}>
+                <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={submitToGuide}>등록 요청</Button>
+              </Box>
             </>)}
           </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'end', marginTop:'10px' }}>
-              <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={submitToGuide}>등록 하기</Button>
-          </Box>
+          
         </div>
       </div>
-
 
       {/*
       <div>
