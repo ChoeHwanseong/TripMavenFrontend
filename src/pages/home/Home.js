@@ -88,6 +88,7 @@ const Home = () => {
         </form>
 
         {/* 인기 여행지 */}
+        <div>
         <Box sx={{
           background: '#ffffff',
           pl: 3, pt: 3, pr: 3,
@@ -142,6 +143,7 @@ const Home = () => {
             </Grid>
           </Box>
         </Box>
+        </div>
 
         {/* 정보 섹션 */}
         <Grid container spacing={5}>

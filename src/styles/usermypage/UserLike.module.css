@@ -1,85 +1,106 @@
 .container {
   margin-left: 30px;
-  padding-bottom: 60px;  /* 푸터의 높이에 맞춰 패딩 조절 */
-  min-height: 100vh;  /* 컨테이너가 최소한 전체 뷰포트 높이를 차지하도록 설정 */
+  padding-bottom: 60px;
+  min-height: 100vh;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px; /* 기존의 h1 마진 대신 사용 */
+}
+
+.titleContainer h1 {
+  margin: 0;
+  margin-right: 10px; /* 제목과 아이콘 사이의 간격 */
 }
 
 .likeicon {
-  margin-left: 10px;
-  width: 25px;
+  width: 30px; /* 아이콘 크기 조절 (필요에 따라 조정) */
+  height: auto;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  margin-top: 30px;
+}
+
+.sortSelect {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 .searchInput {
-  width: 100%;  /* 입력 필드가 전체 너비를 차지하도록 설정 */
-  padding: 10px;  /* 입력 필드 내부 여백 설정 */
-  margin-bottom: 20px;  /* 입력 필드 아래 여백 설정 */
-  border: 1px solid #ccc;  /* 테두리 설정 */
-  border-radius: 5px;  /* 테두리 둥글게 설정 */
+  width: 70%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 .productList {
   display: flex;
-  flex-direction: column;  /* 항목을 수직으로 쌓도록 설정 */
-  gap: 20px;  /* 항목 사이의 간격 설정 */
+  flex-direction: column;
+  gap: 20px;
 }
 
 .productItem {
-  width: 100%;  /* 항목이 전체 너비를 차지하도록 설정 */
+  width: 100%;
   display: flex;
-  align-items: center;  /* 항목 내부의 내용물을 세로로 중앙 정렬 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* 상자 그림자 설정 */
-  padding: 10px;  /* 항목 내부 여백 설정 */
-  border-radius: 5px;  /* 항목의 테두리를 둥글게 설정 */
-  background-color: #fff;  /* 배경 색상을 흰색으로 설정 */
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #fff;
 }
 
 .productItem img {
-  width: 150px;  /* 이미지의 너비를 고정 */
-  height: auto;  /* 이미지의 높이를 자동으로 설정하여 비율 유지 */
-  margin-right: 20px;  /* 이미지 오른쪽에 여백 설정 */
+  width: 150px;
+  height: auto;
+  margin-right: 20px;
 }
 
 .productItem .likeicon1 {
   width: 25px;
   height: auto;
-  margin-left: 500px;
+  margin-left: auto;
 }
 
 .productItem h3 {
-  margin: 0;  /* 제목의 기본 여백 제거 */
-  font-size: 24px;  /* 제목의 폰트 크기 설정 */
+  margin: 0;
+  font-size: 24px;
 }
 
 .productItem p {
-  margin: 5px 0 0;  /* 문단의 위쪽 여백 설정, 아래쪽 여백 제거 */
+  margin: 5px 0 0;
 }
 
-/* 태그 스타일 */
 .tags {
-  display: flex;  /* 태그를 수평으로 나열 */
-  flex-wrap: wrap;  /* 필요 시 태그가 줄바꿈되도록 설정 */
-  margin-top: 10px;  /* 태그 상단 여백 설정 */
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
 
 .tag {
-  background-color: #e0e0e0;  /* 태그 배경 색상 설정 */
-  padding: 5px 10px;  /* 태그 내부 여백 설정 */
-  margin-right: 5px;  /* 태그 오른쪽 여백 설정 */
-  margin-bottom: 5px;  /* 태그 아래쪽 여백 설정 */
-  border-radius: 3px;  /* 태그 테두리 둥글게 설정 */
-  font-size: 14px;  /* 태그 글자 크기 설정 */
+  background-color: #e0e0e0;
+  padding: 5px 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  border-radius: 3px;
+  font-size: 14px;
 }
 
-/* 별점 및 리뷰 스타일 */
 .rating {
-  display: flex;  /* 별점 및 리뷰를 수평으로 나열 */
-  align-items: center;  /* 세로 중앙 정렬 */
-  margin-top: 10px;  /* 상단 여백 설정 */
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
 }
 
 .rating span {
-  margin-right: 10px;  /* 별점과 리뷰 사이의 여백 설정 */
-  font-size: 14px;  /* 별점 및 리뷰 글자 크기 설정 */
+  margin-right: 10px;
+  font-size: 14px;
 }
-
-
