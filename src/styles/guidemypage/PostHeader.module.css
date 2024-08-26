@@ -1,0 +1,81 @@
+.postHeaderContainer {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.topBar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.viewAllLink {
+    color: #666;
+    text-decoration: none;
+}
+
+.titleSection {
+    margin-bottom: 20px;
+}
+
+.category {
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 5px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.authorInfo {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.time {
+    margin-left: 10px;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.copyUrlButton,
+.addNeighborButton {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.copyUrlButton:hover,
+.addNeighborButton:hover {
+    background-color: #eaeaea;
+}
+
+.divider {
+    height: 1px;
+    background-color: #ddd;
+    margin-top: 10px;
+}
