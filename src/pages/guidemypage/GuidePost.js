@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Button, TextField, Typography, Divider } from '@mui/material';
+import { Box, Button, TextField, Typography, Divider, Fab } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { postPost } from '../../utils/postData';
 import { filesPost } from '../../utils/fileData';
-import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const GuidePost = () => {
     const membersId = localStorage.getItem('membersId');
@@ -156,12 +156,21 @@ const GuidePost = () => {
                 <TextField fullWidth label="3일차" margin="normal" multiline rows={4} />
             </Box>
 
+
+            <Fab color="primary" aria-label="add">
+            <FontAwesomeIcon icon="fa-solid fa-plus" />
+            </Fab>
+            
+
+
             {/* 호텔 정보 */}
             <Box sx={{ mt: 4 }}>
                 <Typography variant="h6" gutterBottom>호텔 정보</Typography>
                 <TextField fullWidth label="호텔" margin="normal" inputRef={hotelRef} />
                 <TextField fullWidth label="호텔 주소" margin="normal" inputRef={hotelAdRef} />
             </Box>
+
+            <FontAwesomeIcon icon="" />
 
             {/* 등록 버튼 */}
             <Box sx={{ display: 'flex', justifyContent: 'end', mt: 4 }}>

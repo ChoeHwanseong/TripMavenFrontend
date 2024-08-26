@@ -27,4 +27,4 @@ npm install react-router-dom@6 이것두
       npm install react-webcam --legacy-peer-deps
       npm install mqtt --legacy-peer-deps
       npm install http-proxy-middleware --save --legacy-peer-deps
-08/23 npm install uuid
+08/23 npm install uuid --legacy-peer-deps

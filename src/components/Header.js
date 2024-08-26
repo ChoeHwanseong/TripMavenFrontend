@@ -12,6 +12,7 @@ import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
 import { ButtonGroup } from '@mui/material';
 import { Button } from '@mui/material';
+import { Padding } from '@mui/icons-material';
 
 
 const style = {
@@ -19,12 +20,17 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 500,
+    padding: '0',
+    width: 1200,
+    height: '80vh',
     bgcolor: 'background.paper',
     border: '1px solid primary',
     borderRadius: '16px',
     boxShadow: 24,
-    p: 4,
+    pt: 4,
+    pb: 4,
+    pr: 0,
+    pl: 0,
 };
 
 const Header = () => {
@@ -87,6 +93,8 @@ const Header = () => {
 
     //console.log(role); //디버그용
     //console.log(menuList); //디버그용
+
+    
 
     return (
         <header className={styles.header}>
