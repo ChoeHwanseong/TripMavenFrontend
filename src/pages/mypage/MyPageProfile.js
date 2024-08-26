@@ -74,8 +74,8 @@ const MypageProfile = () => {
   }
 
   return (
-    <Box sx={{ p: 7 ,mt: 2}}>
-      <Typography style={{ fontSize: '35px', fontWeight: 'bold' }} gutterBottom>프로필</Typography>
+    <Box sx={{ p: 7 ,mt:-2,ml:-2}}>
+      <Typography variant="h4" fontWeight="bold" gutterBottom>프로필</Typography>
       <form>
         <Grid container spacing={2}>
           <Grid item xs={12} md={2}>
@@ -95,8 +95,8 @@ const MypageProfile = () => {
             </Button>
           </Grid>
           <Grid item xs={12} md={10}>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button sx={{ textDecoration: 'underline', mr: '660px' }} onClick={() => { navigate('/passwordchange') }}>
+            <Box sx={{ display: 'flex' }}>
+              <Button sx={{ textDecoration: 'underline', mr: '720px' }} onClick={() => { navigate('/passwordchange') }}>
                 비밀번호 수정
               </Button>
               <Button style={{ textDecoration: 'underline', color: '#000000' }} onClick={deleteMember}>
@@ -134,7 +134,7 @@ const MypageProfile = () => {
               margin="normal"
             />
             <TextField
-              sx={{ width: 0.85 }}
+              sx={{ width: 0.883 }}
               label="주소"
               id="address"
               name="address"
@@ -147,9 +147,10 @@ const MypageProfile = () => {
             />
             <Button
               sx={{
-                mt: 2, ml: 3, color: '#000000',
+                mt: 1.9, ml: 1, color: '#000000',
                 border: 1, backgroundColor: '#f1f1f1',
-                height: .17, '&:hover': { backgroundColor: '#DEDEDE' },
+                justifyContent:'flex-end',
+                height: .16, '&:hover': { backgroundColor: '#DEDEDE' },
               }}
               variant="contained"
               component="label"

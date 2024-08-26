@@ -30,19 +30,18 @@ const style = {
 const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    console.log(location.pathname);
 
     //product 페이지 벗어나면 검색어 없애는 함수
     const handleSearchKeyword = () => {
-        if(!location.pathname.includes('/product')){
+        if (!location.pathname.includes('/product')) {
             setSearchKeyword('');
         }
     };
 
     //엔드포인트 변할때마다 검색어 없애는 함수 호출
-    useEffect(()=>{
+    useEffect(() => {
         handleSearchKeyword();
-    },[location.pathname])
+    }, [location.pathname])
 
     //검색어 스테이트
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -72,6 +71,20 @@ const Header = () => {
         navigate(`/product?keyword=${searchKeyword}`);
     }
 
+    // 페이지 맨 위로 스크롤하는 함수
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
+
+    // 버튼 클릭 시 페이지 이동 및 스크롤 처리
+    const handleClick = (path) => {
+        navigate(path);
+        scrollToTop();
+    };
+
     //console.log(role); //디버그용
     //console.log(menuList); //디버그용
 
@@ -100,8 +113,8 @@ const Header = () => {
                     </div>
                     <div className={styles.navFrame}>
                         <div className={styles.navItems}>
-                            <button className={styles.navButton} onClick={() => {  navigate('/home') }}>Home</button>
-                            <button className={styles.navButton} onClick={() => {  navigate('/aiservice') }}>AI 서비스</button>
+                            <button className={styles.navButton} onClick={() => { handleClick('/home') }}>Home</button>
+                            <button className={styles.navButton} onClick={() => { handleClick('/aiservice') }}>AI 서비스</button>
                             <div className={styles.dropdown}>
                                 <button className={styles.dropdownButton}>
                                     마이 페이지
@@ -127,19 +140,19 @@ const Header = () => {
                                         //console.log(item); //디버그용
                                         //console.log(item.name); //디버그용
                                         if (item.name) {
-                                            return <a key={index}><button className={styles.navButton1} onClick={() => { navigate(item.path) }}>{item.name}</button></a>
+                                            return <a key={index}><button className={styles.navButton1} onClick={() => { handleClick(item.path) }}>{item.name}</button></a>
                                         }
                                     })}
                                 </div>
                             </div>
                             <button className={styles.navButton} onClick={handleOpen}>가이드 등록</button>
                         </div>
-                        
-                        
+
+
                         {!localStorage.getItem("token") ?
-                                <NavLink className={styles.loginButton} to="/login" >로그인</NavLink>
-                                :
-                                <NavLink onClick={()=>localStorage.clear()} className={styles.loginButton} to="/home" >로그아웃</NavLink>
+                            <NavLink className={styles.loginButton} to="/login" >로그인</NavLink>
+                            :
+                            <NavLink onClick={() => localStorage.clear()} className={styles.loginButton} to="/home" >로그아웃</NavLink>
                         }
                     </div>
                 </div>

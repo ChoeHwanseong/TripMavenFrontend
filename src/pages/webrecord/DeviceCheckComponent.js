@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
+import '../../styles/webrecord/DeviceCheckComponent.module.css'; // CSS 파일을 따로 만들어서 스타일을 관리
 
 const DeviceCheckComponent = () => {
   const webcamRef = useRef(null);
@@ -92,57 +93,58 @@ const DeviceCheckComponent = () => {
     }
   };
 
-    return <>
-        <div className='d-flex justify-content-between'>
-            <div className='d-flex'>
-                <div className='d-flex flex-column'>
-                    <Webcam ref={webcamRef} video={{ deviceId: selectedVideoDevice?.deviceId }} />
-                    <select className='form-select mt-2' value={selectedVideoDevice?.deviceId}
-                        onChange={(e) => setSelectedVideoDevice(videoDevices.find((d) => d.deviceId === e.target.value))}
-                    >
-                        {videoDevices.map((device) => (
-                            <option key={device.deviceId} value={device.deviceId}>
-                                {device.label}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-
-            <div className='d-flex'>
-                <div className='d-flex flex-column justify-content-end'>
-                    {isAudioPlaying ? (
-                    <p>마이크 작동</p>
-                    ) : (
-                    <p>마이크 작동 안됨</p>
-                    )}
-                    <select className='form-select mt-2' value={selectedAudioDevice?.deviceId}
-                        onChange={(e) => setSelectedAudioDevice(audioDevices.find((d) => d.deviceId === e.target.value))}
-                    >
-                        {audioDevices.map((device) => (
-                            <option key={device.deviceId} value={device.deviceId}>
-                                {device.label}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            </div>
+  return (
+    <div className='device-check-component'>
+      <div className='d-flex justify-content-between'>
+        <div className='video-section'>
+          <Webcam ref={webcamRef} video={{ deviceId: selectedVideoDevice?.deviceId }} />
+          <select className='form-select mt-2' value={selectedVideoDevice?.deviceId || 'default'}
+            onChange={(e) => setSelectedVideoDevice(videoDevices.find((d) => d.deviceId === e.target.value))}
+          >
+            <option key='default' value='default'>
+              {'웹캠을 선택하세요'}
+            </option>
+            {videoDevices.map((device) => (
+              <option key={device.deviceId} value={device.deviceId}>
+                {device.label}
+              </option>
+            ))}
+          </select>
         </div>
 
-        <div>
-            <div className='d-flex my-3'>
-            {isRecording ? (
-                <button className='btn btn-danger' onClick={handleStopRecording}>녹화 중지</button>
-            ) : (
-                <button className='btn btn-success' onClick={handleStartRecording}>녹화 시작</button>
-            )}
-            <p className='mx-3 align-bottom'>남은 시간: {timer} 초</p>
-            </div>
-
-            {/* 영상 다운 필요 없음 */}
-            <button className='btn btn-success' onClick={downloadRecording}>영상 다운로드</button>
+        <div className='audio-section'>
+          <audio ref={audioRef} style={{ display: 'none' }} />
+          {isAudioPlaying ? (
+            <p className='audio-status text-success'>마이크 작동 중</p>
+          ) : (
+            <p className='audio-status text-danger'>마이크 작동 안됨</p>
+          )}
+          <select className='form-select mt-2' value={selectedAudioDevice?.deviceId || 'default'}
+            onChange={(e) => setSelectedAudioDevice(audioDevices.find((d) => d.deviceId === e.target.value))}
+          >
+            <option key='default' value='default'>
+              {'마이크를 선택하세요'}
+            </option>
+            {audioDevices.map((device) => (
+              <option key={device.deviceId} value={device.deviceId}>
+                {device.label}
+              </option>
+            ))}
+          </select>
         </div>
-    </>
+      </div>
+
+      <div className='controls mt-3'>
+        {isRecording ? (
+          <button className='btn btn-danger' onClick={handleStopRecording}>녹화 중지</button>
+        ) : (
+          <button className='btn btn-success' onClick={handleStartRecording}>녹화 시작</button>
+        )}
+        <p className='timer ms-3'>남은 시간: {timer} 초</p>
+        <button className='btn btn-secondary ms-3' onClick={downloadRecording}>영상 다운로드</button>
+      </div>
+    </div>
+  );
 };
 
 export default DeviceCheckComponent;

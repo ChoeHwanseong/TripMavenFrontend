@@ -64,6 +64,9 @@ export const FormLogin = async (form) =>{
   return response;
   }
 
+  
+
+
   //가이드 등록.
   export const toGuide = async (form) =>{
     const response = await axios.post('http://localhost:9099/toGuide', form ,{headers:{

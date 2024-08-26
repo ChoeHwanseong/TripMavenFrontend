@@ -5,8 +5,11 @@ import { useInView } from 'react-intersection-observer';
 
 const UserLike = () => {
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]); // 상품 목록을 관리하는 상태 변수
-  const [hasMore, setHasMore] = useState(true); // 더 불러올 데이터가 있는지 여부를 관리하는 상태 변수
+  const [products, setProducts] = useState([]);// 상품 목록을 관리하는 상태 변수
+  const [displayedProducts, setDisplayedProducts] = useState([]);// 더 불러올 데이터가 있는지 여부를 관리하는 상태 변수
+  const [hasMore, setHasMore] = useState(true);
+  const [sortOption, setSortOption] = useState('latest');
+  const [searchTerm, setSearchTerm] = useState('');
   const { ref, inView } = useInView({
     threshold: 0, // 요소가 100% 보일 때 트리거
   });
@@ -19,6 +22,7 @@ const UserLike = () => {
     }
 
     const newProducts = Array.from({ length: 20 }, (_, index) => ({
+      id: products.length + index + 1, 
       title: `Product ${products.length + index + 1}`, // 새로운 제품 제목
       description: 'This is a description.', // 제품 설명
       image: 'https://via.placeholder.com/150', // 이미지 URL (placeholder 이미지)
@@ -26,6 +30,7 @@ const UserLike = () => {
       rating: (Math.random() * 5).toFixed(1), // 0부터 5까지의 무작위 평점
       reviewCount: Math.floor(Math.random() * 100), // 0부터 100까지의 무작위 리뷰 수
       isLiked: true, // 좋아요 상태를 나타내는 플래그
+      timestamp: Date.now() - Math.floor(Math.random() * 10000000000), // Random timestamp within last ~4 months
     }));
 
     setProducts((prevProducts) => [...prevProducts, ...newProducts]);
@@ -41,20 +46,66 @@ const UserLike = () => {
     }
   }, [inView, hasMore]);
 
-  const handleLikeToggle = (index) => {
+  useEffect(() => {
+    let sortedProducts = [...products];
+    
+    // Apply sorting
+    if (sortOption === 'oldest') {
+      sortedProducts.sort((a, b) => a.timestamp - b.timestamp);
+    } else if (sortOption === 'latest') {
+      sortedProducts.sort((a, b) => b.timestamp - a.timestamp);
+    }
+    
+    // Apply search filter
+    if (searchTerm) {
+      sortedProducts = sortedProducts.filter(product => 
+        product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+    }
+
+    setDisplayedProducts(sortedProducts);
+  }, [products, sortOption, searchTerm]);
+
+  const handleLikeToggle = (id) => {
     setProducts((prevProducts) =>
-      prevProducts.map((product, i) =>
-        i === index ? { ...product, isLiked: !product.isLiked } : product
+      prevProducts.map((product) =>
+        product.id === id ? { ...product, isLiked: !product.isLiked } : product
       )
     );
   };
 
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
     <div className={styles.container}>
-      <h1>찜 목록<img className={styles.likeicon} src="../../../images/likeicon.png" alt="Like Icon" /></h1>
+      <div className={styles.titleContainer}>
+        <h1>찜 목록</h1>
+        <img className={styles.likeicon} src="../../../images/likeicon.png" alt="Like Icon" />
+      </div>
+      <div className={styles.controls}>
+        <select className={styles.sortSelect} value={sortOption} onChange={handleSortChange}>
+          <option value="latest">최근 순</option>
+          <option value="oldest">오래된 순</option>
+        </select>
+        <input
+          type="text"
+          className={styles.searchInput}
+          placeholder="상품명 또는 태그로 검색"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </div>
+
       <div className={styles.productList}>
-        {products.map((product, index) => (
-          <div key={index} className={styles.productItem}>
+        {displayedProducts.map((product) => (
+          <div key={product.id} className={styles.productItem}>
             <img src={product.image} alt={product.title} />
             <div>
               <h3>{product.title}</h3>
@@ -72,10 +123,10 @@ const UserLike = () => {
               </div>
             </div>
             <img
-              className={`${styles.likeicon1} ${styles.likeicon}`} // 스타일 공유
-              src={product.isLiked ? "../../../images/likeicon.png" :  "../../../images/emptylikeicon.png"}
+              className={`${styles.likeicon1} ${styles.likeicon}`}
+              src={product.isLiked ? "../../../images/likeicon.png" : "../../../images/emptylikeicon.png"}
               alt="Toggle Like"
-              onClick={() => handleLikeToggle(index)}
+              onClick={() => handleLikeToggle(product.id)}
             />
           </div>
         ))}

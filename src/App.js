@@ -57,9 +57,10 @@ import FindPassword2 from './pages/login/FindPassword2';
 import FindPassword3 from './pages/login/FindPassword3';
 import FindID2 from './pages/login/FindId2';
 import PasswordChangeForm from './pages/login/PasswordChangeForm';
-import VideoRecorder from './pages/test/test2';
-import DeviceCheckComponent from './pages/test/test1';
 import ChattingRoom from './pages/chat/ChattingRoom';
+import AiServiceInfo from './pages/aiservicepage/AIServiceInfo';
+import DeviceCheckComponent from './pages/webrecord/DeviceCheckComponent';
+import WebcamRecorder from './pages/webrecord/WebcamRecorder';
 
 
 
@@ -147,6 +148,7 @@ function App() {
         <Route path='/findpassword2' element={<FindPassword2/>}/>
         <Route path='/findpassword3' element={<FindPassword3/>}/>
         <Route path='/passwordchange' element={<PasswordChangeForm/>}/>
+        <Route path='/aiserviceinfo' element={<AiServiceInfo/>}/>
         
         
 
@@ -158,7 +160,7 @@ function App() {
         <Route path='/paymentproc' element={<OrderPopup/>}/>
         <Route path='/payment' element={<PaymentForm/>}/>
         <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
-        <Route path='/record' element={<VideoRecorder/>}/>
+        <Route path='/record' element={<WebcamRecorder/>}/>
         <Route path='/recordcheck' element={<DeviceCheckComponent/>}/>
         
         
