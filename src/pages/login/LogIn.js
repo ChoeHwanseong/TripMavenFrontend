@@ -71,6 +71,26 @@ const Login = () => {
         window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}&state=${encodeURIComponent(state)}`;
     };
 
+    // 엔터키로 로그인
+    const handleEnterPress = async(event) => {
+        if (event.key === 'Enter') {
+            try {
+                const response = await FormLogin(formData);
+                console.log(response);
+    
+                // 로그인 성공 시 처리
+                if (response) {
+    
+                    window.location.href = '/home'; // 예시: 홈으로 리다이렉트
+                } else {
+                    alert('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
+                }
+            } catch (error) {
+                console.error('로그인 요청 중 오류 발생:', error);
+            }
+        }
+    }
+
     return (
         <>
             <div className={styles.container}>
@@ -82,7 +102,7 @@ const Login = () => {
                     </div>
                     <div className={styles.inputGroup}>
                         <label htmlFor="password">비밀번호</label>
-                        <input type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} placeholder="비밀번호 입력" />
+                        <input type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} placeholder="비밀번호 입력" onKeyDown={handleEnterPress}/>
                     </div>
                     <div className={styles.options}>
                         <div className={styles.autoLogin}>

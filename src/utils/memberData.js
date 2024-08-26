@@ -5,7 +5,19 @@ import { Navigate } from 'react-router-dom';
 export const fetchData = async () => {
   try {
     const res = await axios.get('/spring/members');
-    //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
+    return res.data;
+  }
+  catch (error) {
+    console.error('에러났당', error);
+    throw error; 
+  }
+};
+
+//아이디로 멤버 가져오기
+export const fetchedData = async (id) => {
+  try {
+    //console.log(id) //디버그용
+    const res = await axios.get(`/spring/members/id/${id}`);
     return res.data;
   }
   catch (error) {
@@ -15,20 +27,6 @@ export const fetchData = async () => {
 };
 
 //회원가입
-export const fetchedData = async (id) => {
-  try {
-    //console.log(id) //디버그용
-    const res = await axios.get(`/spring/members/id/${id}`);
-    //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
-    return res.data;
-  }
-  catch (error) {
-    console.error('에러났당', error);
-    throw error; 
-  }
-};
-
-
 //await axios 꼭 붙이기
 export const SignUp = async (form) => {
   await axios.post('/spring/signup', form)
@@ -82,6 +80,7 @@ export const FormLogin = async (form) =>{
       
     }
 
+
   export const updateProfile = async (id, updatedData) => {
     try {
       const res = await axios.put(`/spring/members/${id}`, updatedData);
@@ -91,6 +90,7 @@ export const FormLogin = async (form) =>{
       throw error;
     }
   };
+  
 
   // 회원 탈퇴
   export const deleteProfile = async (id) => {
