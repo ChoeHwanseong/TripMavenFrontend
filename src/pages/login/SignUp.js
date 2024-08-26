@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../../styles/login/SignUp.module.css';
 import { SignUp } from '../../utils/memberData';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useValid from './useValid';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { styled } from '@mui/material/styles';
@@ -75,6 +75,8 @@ function ColorlibStepIcon(props) {
 
 const Signup = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
     const [activeStep, setActiveStep] = useState(0);
     const [addressObj, setAddressObj] = useState({ areaAddress: '', townAddress: '' });
 
@@ -92,6 +94,7 @@ const Signup = () => {
     const region = useValid('', (value) => !value ? '관심 지역을 선택하세요' : '');
     const gender = useValid('', (value) => !value ? '성별을 선택하세요' : '');
     const birthday = useValid('', (value) => !value ? '생년월일을 입력하세요' : '');
+    console.log(birthday.value)
     const address = useValid(addressObj, (value) => 
         !value.areaAddress || !value.townAddress ? '주소를 입력하세요' : ''
     );
