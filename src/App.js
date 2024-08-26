@@ -61,12 +61,9 @@ import ChattingRoom from './pages/chat/ChattingRoom';
 import AiServiceInfo from './pages/aiservicepage/AIServiceInfo';
 import DeviceCheckComponent from './pages/webrecord/DeviceCheckComponent';
 import WebcamRecorder from './pages/webrecord/WebcamRecorder';
-<<<<<<< HEAD
 import GuidePostCopy from './pages/guidemypage/WebEditor';
 import PostHeader from './pages/guidemypage/PostHeader';
-=======
 import LoginSuccess from './pages/login/LogInSuccess';
->>>>>>> 62118527312e5669aabad2708d750ea037b8dfb2
 
 
 
