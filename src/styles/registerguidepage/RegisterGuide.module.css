@@ -5,19 +5,25 @@
   font-family: 'Arial', sans-serif;
 }
 
+.contentFrame {
+  display: flex;
+  justify-content: space-between;
+  height: 400px;
+}
+
 .heading {
   margin-bottom: 30px;
   text-align: center;
 }
 
 .fieldGroup {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .label {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .inputFile {
@@ -72,4 +78,10 @@
 
 .button:hover {
   background-color: #0056b3;
+}
+
+.licenseInfoConfirm {
+  margin-left: 20px;
+  max-width: 50%;
+  width: 500px;
 }

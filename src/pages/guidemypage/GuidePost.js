@@ -3,7 +3,6 @@ import { Box, Button, TextField, Typography, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { postPost } from '../../utils/postData';
 import { filesPost } from '../../utils/fileData';
-import axios from 'axios';
 
 const GuidePost = () => {
     const membersId = localStorage.getItem('membersId');
