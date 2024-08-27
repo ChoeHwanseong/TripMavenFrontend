@@ -124,6 +124,7 @@ const RegisterGuidePage = () => {
             id="file-input"
             accept="image/*"
             ref={fileInputRef}
+            multiple
             style={{ display: 'none' }}  // Hide the file input
             onChange={handleFileChange_}
             
