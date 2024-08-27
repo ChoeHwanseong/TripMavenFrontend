@@ -65,7 +65,7 @@ const TravelLandingPage = () => {
     <div className={styles.pageWrapper} id="page-top">
       <nav className={`${styles.navbar} ${isNavbarShrunk ? styles.navbarShrink : ''}`}>
         <div className={styles.navbarContainer}>
-          <a className={styles.navbarBrand} href="#page-top" onClick={()=>navigate('/home')}>TripMaven</a>
+          <a className={styles.navbarBrand} href="#page-top" onClick={() => navigate('/home')}>TripMaven</a>
           <button className={styles.navbarToggler} type="button" onClick={handleNavCollapse}>
             <FontAwesomeIcon icon={faBars} />
           </button>
