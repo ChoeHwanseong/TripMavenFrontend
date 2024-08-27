@@ -83,7 +83,7 @@ const extractUrl = (htmlString) => {
   return match ? match[1] : null;
 };
 
-const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, selectedRegion, memberInterCity }) => {
+const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, selectedRegion }) => {
   const [regions, setRegions] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -95,6 +95,28 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
   const { memberInfo } = useContext(RoleContext);
   const selectbox = useRef(null);
 
+  useEffect(() => {
+    const mountFunc = async () => {
+      await fetchRegions();
+      console.log(memberInfo);
+      console.log(memberInfo.interCity);
+      const changedRegionName = changeRegionKorName[memberInfo.interCity]
+      console.log(changedRegionName); //회원 관심지역 한글 이름
+      const select = selectbox.current;
+      if (select) {
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].innerText == changedRegionName) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
+      else{
+        select.selectedIndex = 5; //부산임
+      }
+    };
+    mountFunc();
+  }, [memberInfo]);
 
   useEffect(()=>{
     const changedRegionName = changeRegionKorName[memberInfo.interCity]
@@ -104,24 +126,6 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
 
     }
   }, [regions]);
-
-  useEffect(() => {
-    const mountFunc = async () => {
-      await fetchRegions();
-      const changedRegionName = changeRegionKorName[memberInfo.interCity]
-      console.log(changedRegionName); //회원 관심지역 한글 이름
-      const select = selectbox.current;
-      if (localStorage.getItem('token')) {
-        for (let i = 0; i < select.options.length; i++) {
-          if (select.options[i].innerText == changedRegionName) {select.selectedIndex = i; break;}
-        }
-      }
-      else{
-        select.selectedIndex = 5;
-      }
-    };
-    mountFunc();
-  }, [memberInfo]);
 
   useEffect(() => {
     if (selectedRegion) {
