@@ -17,16 +17,6 @@ const Home = () => {
     navigate(`/product?city=${city}`);
   };
 
-  useEffect(()=>{
-    const getInterCity = async ()=>{
-      const memberData = await fetchedData(localStorage.getItem('membersId'));
-      console.log(memberData.interCity);
-      
-    };
-    
-    getInterCity(); //나중에 행사랑 연동할거임
-  },[]);
-
   //form 요소 상태관리 훅함수
   const formik = useFormik({ 
     initialValues: { //초기값 설정

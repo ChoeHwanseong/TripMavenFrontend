@@ -1,13 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import dummyImg from '../../images/dummyImg.png';
 import styles from '../../styles/home/RegionEvent.module.css';
+import { RoleContext } from '../../components/context/roleContext';
 
 const API_KEY = 'fxK0NInA37%2B5%2FUmqb3ZtIqKfeJDzlDS9iU9A25kDySbSG2wyyzESFN8pUjf1G3sBAqnKnI0ZkDOCaNC8PDJTxg%3D%3D';
 const BASE_URL = 'https://apis.data.go.kr/B551011/KorService1';
+
+const changeRegionKorName = {
+      "seoul":'서울',
+      "incheon":'인천',
+      "daejeon":'대전',
+      "daegu":'대구',
+      "gwangju":'광주',
+      "busan":'부산',
+      "ulsan":'울산',
+      "sejong":'세종특별자치시',
+      "gyeonggi":'경기도',
+      "gangwon":'강원특별자치도',
+      "chungbuk":'충청북도',
+      "chungnam":'충청남도',
+      "gyeongbuk":'경상북도',
+      "gyeongnam":'경상남도',
+      "jeonbuk":'전북특별자치도',
+      "jeonnam":'전라남도',
+      "jeju":'제주도'
+}
 
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
@@ -62,7 +83,7 @@ const extractUrl = (htmlString) => {
   return match ? match[1] : null;
 };
 
-const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, selectedRegion }) => {
+const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, selectedRegion, memberInterCity }) => {
   const [regions, setRegions] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -71,14 +92,31 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
   const [eventDetails, setEventDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [direction, setDirection] = useState(0);
+  const { memberInfo } = useContext(RoleContext);
+  const selectbox = useRef(null);
 
   useEffect(() => {
-    fetchRegions();
-  }, []);
+    const mountFunc = async () => {
+      await fetchRegions();
+      const changedRegionName = changeRegionKorName[memberInfo.interCity]
+      console.log(changedRegionName); //회원 관심지역 한글 이름
+      const select = selectbox.current;
+      if (select) {
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].innerText == changedRegionName) {select.selectedIndex = i; break;}
+        }
+      }
+      console.log(regions);
+      const selectedRegionObject = regions.find(region => region.name === changedRegionName);
+      if (selectedRegionObject && setSelectedRegion) {setSelectedRegion(selectedRegionObject);}
+    };
+    mountFunc();
+  }, [memberInfo]);
 
   useEffect(() => {
     if (selectedRegion) {
       fetchEvents(selectedRegion.code);
+      console.log(selectedRegion);
     } else {
       setEvents([]);
     }
@@ -106,20 +144,16 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
         headers: {
           'Accept': 'application/json'
         }
-      });
-  
+      });  
       const { response: apiResponse } = response.data;
-  
       if (apiResponse && apiResponse.header.resultCode === "0000") {
-        const regions = apiResponse.body.items.item;
-        setRegions(regions);
-      } else {
-        throw new Error(apiResponse?.header?.resultMsg || '알 수 없는 API 오류');
+        const regions_ = apiResponse.body.items.item;
+        console.log(regions_);
+        setRegions(regions_);
       }
-    } catch (error) {
-      console.error('지역 정보 로딩 실패:', error);
-      setError('지역 정보를 불러오는데 실패했습니다: ' + error.message);
+      else {throw new Error(apiResponse?.header?.resultMsg || '알 수 없는 API 오류');}
     }
+    catch (error) {setError('지역 정보를 불러오는데 실패했습니다: ' + error.message);}
   };
 
   const fetchEvents = async (areaCode) => {
@@ -243,6 +277,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
       */}
 
       <select 
+        ref={selectbox}
         value={selectedRegion ? selectedRegion.code : ''} 
         onChange={handleRegionChange}
         className={styles.selectBox}

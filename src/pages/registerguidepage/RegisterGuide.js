@@ -15,7 +15,7 @@ const RegisterGuidePage = () => {
   const [ocrResult, setOcrResult] = useState({});
   const [pendingLicense, setPendingLicense] = useState(false);
   const fileInputRef = useRef(null);
-
+  
 
   const handleFileChange_ = async (event) => {
     const files = Array.from(event.target.files);
@@ -64,8 +64,10 @@ const RegisterGuidePage = () => {
       }
       catch (error) {console.error('에러났당', error);}
     };
-    getData(localStorage.getItem("membersId"));
-    setPreview(selectedFile);
+    if(localStorage.getItem("membersId")){
+      getData(localStorage.getItem("membersId"));
+      setPreview(selectedFile);
+    }
   }, []);
   
   /*
