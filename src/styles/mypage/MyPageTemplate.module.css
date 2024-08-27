@@ -8,7 +8,7 @@
 .content {
     flex-grow: 1;
     padding: 20px;
-    margin-left: 20px; /* SideMenu의 너비(200px) + 여백(20px) */
+    margin-left: 0; /* SideMenu의 너비(200px) + 여백(20px) */
     width: calc(100% - 220px);
     overflow-y: auto;
 }
