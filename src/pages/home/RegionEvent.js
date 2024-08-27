@@ -99,9 +99,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
     const mountFunc = async () => {
       await fetchRegions();
       console.log(memberInfo);
-      console.log(memberInfo.interCity);
-      const changedRegionName = changeRegionKorName[memberInfo.interCity]
-      console.log(changedRegionName); //회원 관심지역 한글 이름
+      const changedRegionName = changeRegionKorName[memberInfo.interCity] //회원 관심지역 한글 이름
       const select = selectbox.current;
       if (select) {
         for (let i = 0; i < select.options.length; i++) {
@@ -111,7 +109,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
           }
         }
       }
-      else{
+      else if(changedRegionName === undefined){ //관심지역 없거나, 로그인 안됐을때 부산으로 (나중에 인기 관광지 있으면 거기로)
         select.selectedIndex = 5; //부산임
       }
     };
@@ -120,11 +118,15 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
 
   useEffect(()=>{
     const changedRegionName = changeRegionKorName[memberInfo.interCity]
-    const selectedRegionObject = regions.find(region => region.name === changedRegionName);
-    if (selectedRegionObject && setSelectedRegion) {setSelectedRegion(selectedRegionObject);}
-    else if(!localStorage.getItem('token')){
-
+    if(changedRegionName===undefined){
+      const selectedRegionObject = regions.find(region => region.name === '부산');
+      if (selectedRegionObject && setSelectedRegion) {setSelectedRegion(selectedRegionObject);}
     }
+    else {
+      const selectedRegionObject = regions.find(region => region.name === changedRegionName);
+      if (selectedRegionObject && setSelectedRegion) {setSelectedRegion(selectedRegionObject);}
+    }
+    //console.log(selectedRegion);
   }, [regions]);
 
   useEffect(() => {
