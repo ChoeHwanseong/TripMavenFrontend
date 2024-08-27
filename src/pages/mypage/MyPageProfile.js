@@ -9,14 +9,14 @@ const MypageProfile = () => {
   const [certificateFileName, setCertificateFileName] = useState('');
   const { id } = useParams();
 
+  const navigate = useNavigate();
   const membersId = localStorage.getItem('membersId');
 
-  const navigate = useNavigate();
-
   useEffect(() => {
+    const membersId = localStorage.getItem('membersId');
     const getData = async () => {
       try {
-        const fetchData = await fetchedData(id);
+        const fetchData = await fetchedData(membersId);
         setProfileData(fetchData);
       } catch (error) {
         console.error('에러났당', error);

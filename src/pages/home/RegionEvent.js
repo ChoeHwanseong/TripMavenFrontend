@@ -95,20 +95,30 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
   const { memberInfo } = useContext(RoleContext);
   const selectbox = useRef(null);
 
+
+  useEffect(()=>{
+    const changedRegionName = changeRegionKorName[memberInfo.interCity]
+    const selectedRegionObject = regions.find(region => region.name === changedRegionName);
+    if (selectedRegionObject && setSelectedRegion) {setSelectedRegion(selectedRegionObject);}
+    else if(!localStorage.getItem('token')){
+
+    }
+  }, [regions]);
+
   useEffect(() => {
     const mountFunc = async () => {
       await fetchRegions();
       const changedRegionName = changeRegionKorName[memberInfo.interCity]
       console.log(changedRegionName); //회원 관심지역 한글 이름
       const select = selectbox.current;
-      if (select) {
+      if (localStorage.getItem('token')) {
         for (let i = 0; i < select.options.length; i++) {
           if (select.options[i].innerText == changedRegionName) {select.selectedIndex = i; break;}
         }
       }
-      console.log(regions);
-      const selectedRegionObject = regions.find(region => region.name === changedRegionName);
-      if (selectedRegionObject && setSelectedRegion) {setSelectedRegion(selectedRegionObject);}
+      else{
+        select.selectedIndex = 5;
+      }
     };
     mountFunc();
   }, [memberInfo]);
@@ -260,8 +270,6 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
       fetchEventDetails(events[currentEventIndex].contentid);
     }
   };
-
-  
 
   return (
     <div style={{ width, height, overflow: 'hidden' }}>
