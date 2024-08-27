@@ -296,12 +296,16 @@
 }
 
 .navbar {
-  transition: background-color 0.3s ease-in-out, padding 0.3s ease-in-out;
-  padding: 1rem 0;
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100vw;
+  min-width: 1440px;
+  padding: 1rem 0;
+  justify-content: space-between;
+  transition: background-color 0.3s ease-in-out, padding 0.3s ease-in-out;
   z-index: 1000;
-  background-color: transparent;
+  display: flex;
 }
 
 .navbarShrink {
@@ -313,6 +317,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  max-width: 1920px;
   padding: 0 2rem;
 }
 
@@ -351,9 +357,6 @@
 }
 
 .navbarToggler {
-  background: none;
-  border: none;
-  cursor: pointer;
   display: none;
 }
 
@@ -421,6 +424,10 @@
     height: auto;
   }
 
+  .navbar {
+    min-width: 100%;
+  }
+
   .navbarNav {
     display: none;
     flex-direction: column;
@@ -449,6 +456,9 @@
   
   .navbarToggler {
     display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
   }
 
   .featuresContainer {
