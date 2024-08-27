@@ -4,22 +4,29 @@ import { AiOutlinePaperClip } from 'react-icons/ai';
 import { postPost } from '../../utils/postData';
 import { filesPost } from '../../utils/fileData';
 import { Box, Button, TextField, Typography, Divider } from '@mui/material';
-import { ocr } from '../../utils/PythonServerAPI';
+import { ocr, verifyLicense } from '../../utils/PythonServerAPI';
 import LinearProgress from '@mui/material/LinearProgress';
+import { fetchedData, updateProfile } from '../../utils/memberData';
 
 const RegisterGuidePage = () => {
-  const [formData, setFormData] = useState({ fileName: '', introduce: '' });
   const [selectedFile, setSelectedFile] = useState([]);
   const [previewUrl, setPreviewUrl] = useState([]);
   const [loading, setLoading] = useState(false); //로딩 스테이트
   const [ocrResult, setOcrResult] = useState({});
-  
+  const [pendingLicense, setPendingLicense] = useState(false);
+  const fileInputRef = useRef(null);
+
 
   const handleFileChange_ = async (event) => {
     const files = Array.from(event.target.files);
     setSelectedFile(files);
+    setPreview(files)
+    fileOCR(files);
+  };
 
-    // 미리보기 URL 설정
+
+  // 미리보기 URL 설정
+  const setPreview =(files) =>{
     const filePreview = files.map((file) => {
       return {
         name: file.name,
@@ -27,30 +34,48 @@ const RegisterGuidePage = () => {
       };
     });
     setPreviewUrl(filePreview);
+  };
 
+
+  const fileOCR = async (fileList) => {
     setLoading(true);
     const formData = new FormData();
-    formData.append('image',files[0]);
+    formData.append('image',fileList[0]);
     formData.append('ocrValue','ocr');
     try {
       const respData = await ocr(formData);
       if(respData.success == true){
         setOcrResult((prev)=>({...prev, name:respData.data.name, number:respData.data.number, subject:respData.data.subject}));
       }
-
-    } catch (error) {
-        console.error('Error uploading file:', error);
     }
+    catch (error) {console.error('Error uploading file:', error);}
     setLoading(false);
   };
 
+
   useEffect(() => {
+    const getData = async (id) => {
+      try {
+        const fetchData = await fetchedData(id);
+        if(fetchData && fetchData.guidelicense){
+          //setSelectedFile(Array.from(fetchData.guidelicense));
+          if(fetchData.role==='USER') setPendingLicense(true);
+        }
+      }
+      catch (error) {console.error('에러났당', error);}
+    };
+    getData(localStorage.getItem("membersId"));
+    setPreview(selectedFile);
+  }, []);
+  
+  /*
+  useEffect(()=>{
     // 메모리 누수 방지: 컴포넌트 언마운트 시 URL 객체 해제
     return () => {
       previewUrl.forEach((file) => URL.revokeObjectURL(file.url));
     };
   }, [previewUrl]);
-
+  */
 
   /*
   const handleFileChange2 = (event) => {
@@ -69,18 +94,22 @@ const RegisterGuidePage = () => {
       }
     }
   };
-
-  const handleChange = (event) => {
-    setFormData({ ...formData, introduce: event.target.value })
-  };
   */
+  const submitToGuide = async () => {
+    //멤버 디비에 파일 이름 저장
+    const updateData = {
+      'guidelicense': previewUrl[0].name
+    };
+    const resp = await updateProfile(localStorage.getItem("membersId"),updateData);
+    console.log(resp);
 
-  const submitToGuide = () => {
-    const form = new FormData()
-    form.append('id', window.localStorage.getItem("membersId"));
-    form.append('guidelicense', formData.fileName) // 파일 업로드 어케 햇더라...; 
-    form.append('introduce',)
-
+    //디비에 실제 파일 업로드
+    const formData = new FormData();
+    console.log(selectedFile);
+    if (selectedFile && selectedFile.length > 0) formData.append('files',selectedFile[0]);
+    formData.append('type','guidelicense');
+    const resp2 = await filesPost(formData);
+    if(resp2.success) setPendingLicense(true);
   };
 
   return (
@@ -92,8 +121,10 @@ const RegisterGuidePage = () => {
             type="file"
             id="file-input"
             accept="image/*"
+            ref={fileInputRef}
             style={{ display: 'none' }}  // Hide the file input
             onChange={handleFileChange_}
+            
           />
           <label htmlFor="file-input">
             <Button
@@ -131,26 +162,6 @@ const RegisterGuidePage = () => {
           )}
         </Box>
 
-        {/*
-        <div className={styles.fieldGroup}>
-          <label className={styles.label}>자격증</label>
-          <div className={styles.inputFile} onClick={handleFileClick}>
-            <AiOutlinePaperClip style={{ marginRight: '10px' }} />
-            <span>{formData.fileName || '파일을 넣어주세요'}</span>
-            <input
-              type="file"
-              ref={fileInputRef}
-              style={{ display: 'none' }}
-              accept=".jpg,.jpeg,.png,.gif,.pdf"
-              onChange={handleFileChange}
-            />
-          </div>
-          <div>
-
-          </div>
-        </div>
-        */}
-
         <div className={styles.licenseInfoConfirm}>
           <Box sx={{ mt: 8 }}>
             <Typography variant="h7" gutterBottom sx={{fontWeight:'bold'}}>자격증 정보 확인</Typography>
@@ -167,9 +178,13 @@ const RegisterGuidePage = () => {
               />
               <TextField fullWidth label="성명" margin="normal" defaultValue={!ocrResult?'not detected':ocrResult.name==='default'?'not detected':ocrResult.name}/>
               <TextField fullWidth label="문서 확인 번호" margin="normal"  defaultValue={!ocrResult?'not detected':ocrResult.number==='default'?'not detected':ocrResult.number}/>
-              <Box sx={{ display: 'flex', justifyContent: 'end', marginTop:'10px' }}>
-                <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={submitToGuide}>등록 요청</Button>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop:'10px' }}>
+                <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={()=>{fileOCR(fileInputRef.current.files)}} disabled={pendingLicense}>재인식</Button>
+                <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={submitToGuide} >등록 요청</Button>
               </Box>
+              {pendingLicense && 
+                <Typography variant="h7" gutterBottom sx={{fontWeight:'bold'}}>자격증 확인 중</Typography>
+              }
             </>)}
           </Box>
           
