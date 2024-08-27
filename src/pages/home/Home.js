@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Button, Grid, TextField, Typography, Card, CardMedia, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import KoreaWeatherMap from './KoreaWeather';
@@ -7,6 +7,7 @@ import { RoleContext } from '../../components/context/roleContext';
 import styles from '../../styles/home/Home.module.css';
 import { WidthFull } from '@mui/icons-material';
 import { useFormik } from 'formik';
+import { fetchedData } from '../../utils/memberData';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -15,6 +16,16 @@ const Home = () => {
   const handleCityClick = (city) => {
     navigate(`/product?city=${city}`);
   };
+
+  useEffect(()=>{
+    const getInterCity = async ()=>{
+      const memberData = await fetchedData(localStorage.getItem('membersId'));
+      console.log(memberData.interCity);
+      
+    };
+    
+    getInterCity(); //나중에 행사랑 연동할거임
+  },[]);
 
   //form 요소 상태관리 훅함수
   const formik = useFormik({ 

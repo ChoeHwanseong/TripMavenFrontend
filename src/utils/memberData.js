@@ -83,6 +83,7 @@ export const FormLogin = async (form) =>{
 
   export const updateProfile = async (id, updatedData) => {
     try {
+      console.log(updatedData);
       const res = await axios.put(`/spring/members/${id}`, updatedData);
       return res.data;
     } catch (error) {

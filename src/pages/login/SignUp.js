@@ -123,7 +123,7 @@ const Signup = () => {
                 email: email.value,
                 name: name.value,
                 password: password.value,
-                region: region.value,
+                interCity: region.value,
                 gender: gender.value,
                 birthday: birthday.value,
                 address: `${addressObj.areaAddress} ${addressObj.townAddress} ${addressObj.detailAddress}`,
