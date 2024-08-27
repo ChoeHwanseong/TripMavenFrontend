@@ -64,7 +64,6 @@ import WebcamRecorder from './pages/webrecord/WebcamRecorder';
 import GuidePostCopy from './pages/guidemypage/WebEditor';
 import PostHeader from './pages/guidemypage/PostHeader';
 import LoginSuccess from './pages/login/LogInSuccess';
->>>>>>> 62118527312e5669aabad2708d750ea037b8dfb2
 
 
 
