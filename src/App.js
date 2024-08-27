@@ -64,6 +64,7 @@ import WebcamRecorder from './pages/webrecord/WebcamRecorder';
 import GuidePostCopy from './pages/guidemypage/WebEditor';
 import PostHeader from './pages/guidemypage/PostHeader';
 import LoginSuccess from './pages/login/LogInSuccess';
+import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
 
 
 
@@ -156,6 +157,7 @@ function App() {
         <Route path='/findpassword3' element={<FindPassword3/>}/>
         <Route path='/passwordchange' element={<PasswordChangeForm/>}/>
         <Route path='/aiserviceinfo' element={<AiServiceInfo/>}/>
+        <Route path='/precautionspage1' element={<PrecautionsPage1/>}/>
         
         
 
