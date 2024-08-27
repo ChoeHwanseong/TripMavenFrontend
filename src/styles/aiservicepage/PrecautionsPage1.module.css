@@ -1,0 +1,68 @@
+.container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+  
+  .subtitle {
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .textSection {
+    text-align: left;
+    margin-right: 20px;
+  }
+  
+  .stepNumber {
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .stepTitle {
+    font-size: 25px;
+    font-weight: bold;
+    color: #0066ff;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+  
+  .instruction {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .detail {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .imageSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .image {
+    max-width: 100%;
+    height: auto;
+  }
+  
