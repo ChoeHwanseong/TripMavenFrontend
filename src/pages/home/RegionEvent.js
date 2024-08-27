@@ -136,7 +136,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
           arrange: 'A',
           listYN: 'Y',
           areaCode: areaCode,
-          eventStartDate: '20240812',
+          eventStartDate: '20240827',
           _type: 'json'
         },
         headers: {
