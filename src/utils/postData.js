@@ -65,3 +65,18 @@ export const postDelete = (id) => {
       return res;
   })
 }
+
+
+
+// 호텔 이름으로 호텔 주소 검색 컨트롤러 가져오기
+export const getHotelAd = (hotel) => {
+  console.log('hotel: ',hotel)
+  return axios.get(baseUrl + '/address', {
+    params: {
+      hotel: hotel
+    }
+  }).then(res =>{
+    console.log('res',res.data.documents)
+      return res.data.documents;
+  })
+}
