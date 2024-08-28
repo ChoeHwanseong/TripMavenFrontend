@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
 // 발급받은 OpenAI API 키를 변수로 저장
-const apiKey = 'sk-3Psu9bGHtzwsaoZI15OyUanv23VvEQCa5xqxkSZrOGT3BlbkFJ85cTMIN2rNJkT6L6ysy0QWIGpWGvtUyGTa41GGoPYA';
+const apiKey = 'sk-eIjzFjsIap-GIoawbDJdGzE97pfLr4jRfbEelfxYQAT3BlbkFJvgJMUh3CYxxAQ32t6bUBIxOrwJgD35Nt4-M95LG3sA';
 
 const Chat = () => {
   const [isVisible, setIsVisible] = useState(false); // 챗봇 팝업의 표시 상태를 관리하는 상태 변수
@@ -50,7 +50,7 @@ const Chat = () => {
         const apiResponse = await axios.post(
           'https://api.openai.com/v1/chat/completions',
           {
-            model: 'gpt-4',
+            model: 'gpt-3.5-turbo',
             messages: [
               { role: 'user', content: message }
             ]
