@@ -32,7 +32,7 @@ const AIService = () => {
         <p className={styles.cardDescription}>
           여행지 가이드 실력을 연습하고 싶다면?<br/>모의 테스트로 준비하세요!
         </p>
-        <button className={styles.button} onClick={()=>{handleClick('')}}>시작하기</button>
+        <button className={styles.button} onClick={()=>{handleClick('/recordcheck')}}>시작하기</button>
       </div>
       <div className={styles.card}>
         <div className={styles.cardImage}>

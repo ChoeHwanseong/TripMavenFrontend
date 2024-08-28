@@ -9,13 +9,13 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { fetchedData, updateProfile } from '../../utils/memberData';
 
 const RegisterGuidePage = () => {
-  const [formData, setFormData] = useState({ fileName: '', introduce: '' });
   const [selectedFile, setSelectedFile] = useState([]);
   const [previewUrl, setPreviewUrl] = useState([]);
   const [loading, setLoading] = useState(false); //로딩 스테이트
   const [ocrResult, setOcrResult] = useState({});
+  const [pendingLicense, setPendingLicense] = useState(false);
   const fileInputRef = useRef(null);
-
+  
 
   const handleFileChange_ = async (event) => {
     const files = Array.from(event.target.files);
@@ -58,22 +58,26 @@ const RegisterGuidePage = () => {
       try {
         const fetchData = await fetchedData(id);
         if(fetchData && fetchData.guidelicense){
-          setSelectedFile(Array.from(fetchData.guidelicense));
+          //setSelectedFile(Array.from(fetchData.guidelicense));
+          if(fetchData.role==='USER') setPendingLicense(true);
         }
       }
       catch (error) {console.error('에러났당', error);}
     };
-    getData(localStorage.getItem("membersId"));
-    setPreview(selectedFile);  
+    if(localStorage.getItem("membersId")){
+      getData(localStorage.getItem("membersId"));
+      setPreview(selectedFile);
+    }
   }, []);
   
+  /*
   useEffect(()=>{
     // 메모리 누수 방지: 컴포넌트 언마운트 시 URL 객체 해제
     return () => {
       previewUrl.forEach((file) => URL.revokeObjectURL(file.url));
     };
   }, [previewUrl]);
-
+  */
 
   /*
   const handleFileChange2 = (event) => {
@@ -94,14 +98,20 @@ const RegisterGuidePage = () => {
   };
   */
   const submitToGuide = async () => {
-    //멤버 디비에 파일 저장
-    const updateData = { 
-      guidelicense: selectedFile[0]
+    //멤버 디비에 파일 이름 저장
+    const updateData = {
+      'guidelicense': previewUrl[0].name
     };
-    await updateProfile(localStorage.getItem("membersId"),updateData);
+    const resp = await updateProfile(localStorage.getItem("membersId"),updateData);
+    console.log(resp);
 
     //디비에 실제 파일 업로드
-    
+    const formData = new FormData();
+    console.log(selectedFile);
+    if (selectedFile && selectedFile.length > 0) formData.append('files',selectedFile[0]);
+    formData.append('type','guidelicense');
+    const resp2 = await filesPost(formData);
+    if(resp2.success) setPendingLicense(true);
   };
 
   return (
@@ -114,8 +124,10 @@ const RegisterGuidePage = () => {
             id="file-input"
             accept="image/*"
             ref={fileInputRef}
+            multiple
             style={{ display: 'none' }}  // Hide the file input
             onChange={handleFileChange_}
+            
           />
           <label htmlFor="file-input">
             <Button
@@ -170,9 +182,12 @@ const RegisterGuidePage = () => {
               <TextField fullWidth label="성명" margin="normal" defaultValue={!ocrResult?'not detected':ocrResult.name==='default'?'not detected':ocrResult.name}/>
               <TextField fullWidth label="문서 확인 번호" margin="normal"  defaultValue={!ocrResult?'not detected':ocrResult.number==='default'?'not detected':ocrResult.number}/>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop:'10px' }}>
-                <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={()=>{fileOCR(fileInputRef.current.files)}}>재인식</Button>
-                <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={submitToGuide}>등록 요청</Button>
+                <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={()=>{fileOCR(fileInputRef.current.files)}} disabled={pendingLicense}>재인식</Button>
+                <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={submitToGuide} >등록 요청</Button>
               </Box>
+              {pendingLicense && 
+                <Typography variant="h7" gutterBottom sx={{fontWeight:'bold'}}>자격증 확인 중</Typography>
+              }
             </>)}
           </Box>
           

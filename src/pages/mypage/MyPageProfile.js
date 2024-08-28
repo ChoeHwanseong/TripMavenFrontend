@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Avatar, Grid } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CircularProgress from '@mui/material/CircularProgress';
 import { deleteProfile, fetchedData, updateProfile } from '../../utils/memberData';
 
 const MypageProfile = () => {
@@ -70,7 +71,11 @@ const MypageProfile = () => {
 
 
   if (!profileData) {
-    return <Typography variant="h6">로딩중</Typography>;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (

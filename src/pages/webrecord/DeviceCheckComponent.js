@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
-import { Box, Button, Container, Grid, MenuItem, Select, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, IconButton, MenuItem, Select, Typography } from '@mui/material';
+import { VolumeDown, VolumeUp, PlayArrow, Pause, Replay } from '@mui/icons-material';
+import Slider from '@mui/material/Slider';
+import Stack from '@mui/material/Stack';
 
 const DeviceCheckComponent = () => {
   const webcamRef = useRef(null);
@@ -15,6 +18,9 @@ const DeviceCheckComponent = () => {
   const [selectedVideoDevice, setSelectedVideoDevice] = useState(null);
   const [selectedAudioDevice, setSelectedAudioDevice] = useState(null);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [value, setValue] = useState(30);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [activeButton, setActiveButton] = useState(null);
 
   useEffect(() => {
     // 카메라와 마이크 장치 정보 가져오기
@@ -93,22 +99,60 @@ const DeviceCheckComponent = () => {
     }
   };
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  }
+
+  const handlePlay = () => {
+    if (audioRef.current) {
+      audioRef.current.play();
+      setIsVideoPlaying(true);
+      setActiveButton('play'); // 활성화된 버튼 설정
+    }
+  };
+
+  const handlePause = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsVideoPlaying(false);
+      setActiveButton('pause'); // 활성화된 버튼 설정
+    }
+  };
+
+  const handleReplay = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+      setIsVideoPlaying(true);
+      setActiveButton('replay'); // 활성화된 버튼 설정
+    }
+  };
+
   return (
     <Container sx={{ mt: '20px', width: '1100px' }}>
       <Typography variant="h4" gutterBottom align="left" sx={{ mt: '120px', fontWeight: 'bold' }}>
-        모의 테스트
+        장비 테스트
       </Typography>
-      <img src="../../images/WebTestPageLine.png" />
+      <img src="../../images/WebTestPageLine.png" alt="Line Image" />
       <Typography variant="h5" gutterBottom align="center" sx={{ mt: '13px', mb: '13px' }}>
-        Q: 여행을 하는 중에 컴플레인이 들어 왔을 경우 어떻게 해결을 해야 할까요?
+        모의테스트에서는 웹캠과 마이크가 필요합니다. 장비를 확인해주세요
       </Typography>
       <Grid container>
         <Grid item xs={5.4} sx={{ ml: '50px' }}>
-          <Webcam
-            ref={webcamRef}
-            videoConstraints={{ deviceId: selectedVideoDevice?.deviceId }}
-            style={{ width: '100%', height: 360, backgroundColor: '#F8F8F8', border: '1px solid #000000', borderRadius: 5 }}
-          />
+          <Box
+            sx={{
+              width: '100%',
+              height: 360,
+              bgcolor: '#F8F8F8',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1px solid #000000',
+              borderRadius: '5px'
+            }}
+          >
+            웹캠이 정상적으로 설치/연결되었는지 확인해주세요.
+          </Box>
         </Grid>
         <Grid item xs={5.4} sx={{ ml: '50px' }}>
           <Box
@@ -123,7 +167,8 @@ const DeviceCheckComponent = () => {
               borderRadius: '5px'
             }}
           >
-            녹화 영상 미리보기
+            마이크 상태를 사전에 확인해주세요.<br />
+            (이어폰에 있는 마이크도 사용 가능합니다.)
           </Box>
         </Grid>
       </Grid>
@@ -133,7 +178,7 @@ const DeviceCheckComponent = () => {
             value={selectedVideoDevice?.deviceId || ''}
             displayEmpty
             onChange={(e) => setSelectedVideoDevice(videoDevices.find((d) => d.deviceId === e.target.value))}
-            sx={{ width: '215px' }}
+            sx={{ width: '430px', ml: '15px' }}
           >
             <MenuItem value="">웹캠을 선택하세요</MenuItem>
             {videoDevices.map((device) => (
@@ -143,12 +188,12 @@ const DeviceCheckComponent = () => {
             ))}
           </Select>
         </Grid>
-        <Grid item>
+        <Grid item sx={{ width: '490px', ml: '50px' }}>
           <Select
             value={selectedAudioDevice?.deviceId || ''}
             displayEmpty
             onChange={(e) => setSelectedAudioDevice(audioDevices.find((d) => d.deviceId === e.target.value))}
-            sx={{ width: '215px', ml: '10px' }}
+            sx={{ width: '430px', ml: '30px' }}
           >
             <MenuItem value="">마이크를 선택하세요</MenuItem>
             {audioDevices.map((device) => (
@@ -159,28 +204,20 @@ const DeviceCheckComponent = () => {
           </Select>
         </Grid>
       </Grid>
-      <Typography variant="body2" color={isAudioPlaying ? 'success.main' : 'error'} align="left" sx={{ mt: 1, ml: '63px' }}>
-        {isAudioPlaying ? '마이크 작동 중' : '*얼굴 인식이 되지 않습니다.'}
+      <Typography variant="body2" color={isAudioPlaying ? 'success.main' : 'error'} align="left" sx={{ mt: 2, ml: '75px' }}>
+        {isAudioPlaying ? '카메라 작동 중' : '*인식이 되지 않습니다.'}
       </Typography>
-      <Box sx={{ display: 'flex', justifyContent: 'left', mt: 2, ml: '70px' }}>
-        <Typography variant="body2" sx={{ mr:'240px' }}>
-          남은 시간: {timer} 초
-        </Typography>
-        {isRecording ? (
-          <Button variant="contained" color="error" onClick={handleStopRecording} sx={{ backgroundColor: "#0066ff", mt: '-10px' }}>
-            녹화 중지
-          </Button>
-        ) : (
-          <Button variant="contained" onClick={handleStartRecording} sx={{ backgroundColor: "#0066ff", mt: '-10px' }}>
-            녹화 시작
-          </Button>
-        )}
-
-
-      </Box>
-      <Typography variant="h7" align="center" display="block" sx={{ mt: 5,color:'#979797' }}>
+      <Typography variant="h7" align="center" display="block" sx={{ mt: 5, color: '#979797' }}>
         ※정확한 측정을 위해 얼굴이 전체적으로 잘 보이도록 하고, 주변 소음을 최소화해 주시기 바랍니다.
       </Typography>
+      <Stack  display="flex" justifyContent="center" direction="row" spacing={3} sx={{mt:'25px'}}>
+        <Button variant="contained" sx={{ backgroundColor:'#0066ff', '&:hover': { backgroundColor: '#0056b3' }}}>
+          모의 테스트 바로 가기
+        </Button>
+        <Button variant="outlined" >
+          유의사항 확인
+        </Button>
+      </Stack>
     </Container>
   );
 };
