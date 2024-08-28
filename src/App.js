@@ -69,10 +69,9 @@ import LoginSuccess from './pages/login/LogInSuccess';
 
 function App() {
 
-  /*
-
-  
-  */
+  const Logout=()=>{
+    const loginType = localStorage.getItem('');
+  }
 
   return <>
     <Routes>
