@@ -114,7 +114,8 @@ const Chat = () => {
   useEffect(() => {
     const chatBody = document.getElementById('chatBody');
     if (loading) {
-      chatBody.scrollTop = chatBody.scrollHeight; // 로딩 중 스크롤을 맨 아래로 이동
+      // 로딩이 시작될 때 스크롤을 맨 아래로 이동
+      chatBody.scrollTop = chatBody.scrollHeight;
     }
   }, [loading]);
 

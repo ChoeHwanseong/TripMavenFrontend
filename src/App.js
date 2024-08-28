@@ -73,10 +73,7 @@ import QuizForm2 from './pages/aiservicepage/QuizForm2';
 
 function App() {
 
-  /*
-
   
-  */
 
   return <>
     <Routes>
