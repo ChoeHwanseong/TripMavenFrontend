@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Avatar, Grid } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CircularProgress from '@mui/material/CircularProgress';
 import { deleteProfile, fetchedData, updateProfile } from '../../utils/memberData';
 
 const MypageProfile = () => {
@@ -9,14 +10,14 @@ const MypageProfile = () => {
   const [certificateFileName, setCertificateFileName] = useState('');
   const { id } = useParams();
 
-  const navigate = useNavigate();
   const membersId = localStorage.getItem('membersId');
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const membersId = localStorage.getItem('membersId');
     const getData = async () => {
       try {
-        const fetchData = await fetchedData(membersId);
+        const fetchData = await fetchedData(id);
         setProfileData(fetchData);
       } catch (error) {
         console.error('에러났당', error);
