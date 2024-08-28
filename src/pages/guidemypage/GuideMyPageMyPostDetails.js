@@ -82,10 +82,6 @@ const GuideMyPageMyPostDetails = () => {
               <td colSpan="3">{state.title}</td>
             </tr>
             <tr>
-              <th>내용</th>
-              <td colSpan="3">{state.content}</td>
-            </tr>
-            <tr>
               <th>등록 여부</th>
               <td>{state.isActive === 1 ? '게시글 등록' : state.isActive === 2 ? '미등록' : '널~'}</td>
               <th>AI 점수</th>

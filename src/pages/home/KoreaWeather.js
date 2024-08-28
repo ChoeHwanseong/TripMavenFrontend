@@ -84,8 +84,13 @@ const KoreaWeatherMap = ({ selectedRegion, setSelectedRegion }) => {
   }, []);
 
   useEffect(()=>{
-    selectedRegion && setHoveredRegion(weatherData[changeRegionName[selectedRegion.name]]);
+    console.log(selectedRegion);
+    selectedRegion && setHoveredRegion(weatherData[changeRegionName[selectedRegion.name]]); 
   },[selectedRegion])
+
+  useEffect(()=>{
+    //console.log(hoveredRegion);
+  },[hoveredRegion]);
 
   const getRegionWeather = (geo) => {
     const mapRegionName = geo.properties.name;
@@ -111,7 +116,9 @@ const KoreaWeatherMap = ({ selectedRegion, setSelectedRegion }) => {
             {({ geographies }) =>
               geographies.map(geo => {
                 const weather = getRegionWeather(geo);
-                const isSelected = hoveredRegion && geo.properties.name === hoveredRegion.city;
+                console.log(selectedRegion);
+                console.log(hoveredRegion);
+                const isSelected = geo.properties.name === (hoveredRegion ? hoveredRegion.city : selectedRegion && changeRegionName[selectedRegion.name]);
                 return (
                   <Geography
                     key={geo.rsmKey}
@@ -149,7 +156,7 @@ const KoreaWeatherMap = ({ selectedRegion, setSelectedRegion }) => {
         {(hoveredRegion || (selectedRegion && weatherData[changeRegionName[selectedRegion.name]])) ? (
           <div>
             <h5 style={{ margin: '0 0 5px 0' }}>
-              {hoveredRegion && hoveredRegion.city }
+              {hoveredRegion && hoveredRegion.city?hoveredRegion.city:changeRegionName[selectedRegion.name] }
             </h5>
             {hoveredRegion?.error ? (
               <p>{hoveredRegion.error}</p>
