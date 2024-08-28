@@ -5,6 +5,7 @@ const PrecautionsPage1 = () => {
     return (
         <div className={styles.container}>
             <h2 className={styles.title}>유의사항</h2>
+            <img src="/images/WebTestPageLine.png" style={{width:'1000px'}}/>
             <p className={styles.subtitle}>정확한 분석을 위해 화면이 녹화되는 동안 아래 사항들을 유의해주세요.</p>
             <div className={styles.content}>
                 <div className={styles.textSection}>
