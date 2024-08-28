@@ -1,85 +1,77 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from '../styles/components/Header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-
+import { faMagnifyingGlass, faBell } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-
 import { menuData } from '../config/MyPageEndPoint';
 import { RoleContext } from './context/roleContext';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
-import { ButtonGroup } from '@mui/material';
-import { Button } from '@mui/material';
-import { Padding } from '@mui/icons-material';
-
+import { ButtonGroup, Button } from '@mui/material';
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    padding: '0',
+    padding: 0,
     width: 1200,
-    height: '80vh',
+    height: '85vh',
     bgcolor: 'background.paper',
     border: '1px solid primary',
     borderRadius: '16px',
     boxShadow: 24,
-    pt: 4,
-    pb: 4,
-    pr: 0,
-    pl: 0,
 };
 
 const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const { role, setRole } = useContext(RoleContext);
+    const [open, setOpen] = useState(false);
+    const [notificationCount, setNotificationCount] = useState(0);
+    let menuList = menuData[role];
+    console.log(localStorage.getItem('loginType')=='kakao')
+    const Logout=()=>{
+        const loginType = localStorage.getItem('loginType');
+        
+        if(loginType=='kakao')
+        localStorage.clear()
+      }
 
-    //product 페이지 벗어나면 검색어 없애는 함수
+    //가이드 등록 모달 관련 함수
+    const handleOpen = () => {
+        if(localStorage.getItem("token")) setOpen(true);
+    };
+    const handleClose = () => setOpen(false);
+
+    //검색관련 함수
+    useEffect(() => {
+        handleSearchKeyword();
+    }, [location.pathname]);
+    
+
     const handleSearchKeyword = () => {
         if (!location.pathname.includes('/product')) {
             setSearchKeyword('');
         }
     };
 
-    //엔드포인트 변할때마다 검색어 없애는 함수 호출
-    useEffect(() => {
-        handleSearchKeyword();
-    }, [location.pathname])
-
-    //검색어 스테이트
-    const [searchKeyword, setSearchKeyword] = useState('');
-
-    //로그인한 사용자 role 가져오기(로그인 구현하면 변경할 예정)
-    const { role, setRole } = useContext(RoleContext);
-    //role에 따라서 마이페이지에 있는 메뉴 변경하기
-    let menuList = menuData[role]
-
-    // Modal 상태 관리
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => {
-        if(localStorage.getItem("token")) setOpen(true);
-    }
-    const handleClose = () => setOpen(false);
-
-    // 검색어에 따라 searchPost 상태 업데이트
     const handleChange = (event) => {
         setSearchKeyword(event.target.value);
     };
 
-    // 엔터키로 이동
     const handleEnterPress = (event) => {
         if (event.key === 'Enter') handleNavigatePage();
-    }
-    //검색 이동
+    };
+
     const handleNavigatePage = () => {
         console.log('검색 실행:', searchKeyword);
         navigate(`/product?keyword=${searchKeyword}`);
-    }
+    };
 
-    // 페이지 맨 위로 스크롤하는 함수
+    //스크롤 관련 함수
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
@@ -87,21 +79,33 @@ const Header = () => {
         });
     };
 
-    // 버튼 클릭 시 페이지 이동 및 스크롤 처리
     const handleClick = (path) => {
         navigate(path);
         scrollToTop();
     };
 
-    //console.log(role); //디버그용
-    //console.log(menuList); //디버그용
+    //알람 관련 함수
+    const handleNotificationClick = () => {
+        console.log('알림 아이콘 클릭됨');
+        setNotificationCount(prevCount => prevCount + 1);
+    };
 
-    
+    const renderNotificationIcon = () => {
+        return (
+            <div className={styles.notificationIconWrapper} onClick={handleNotificationClick}>
+                <div className={`${styles.notificationIcon} ${notificationCount > 0 ? styles.shake : ''}`}>
+                    <FontAwesomeIcon icon={faBell} className={styles.bellIcon} />
+                </div>
+                {notificationCount > 0 && (
+                    <span className={styles.notificationBadge}>{notificationCount}</span>
+                )}
+            </div>
+        );
+    };
 
     return (
         <header className={styles.header}>
             <div className={styles.headerFrame}>
-
                 <button className={styles.logoButton} onClick={() => { navigate('/home'); }}>TripMaven</button>
                 <ButtonGroup variant="contained" aria-label="Basic button group">
                     <Button onClick={() => { setRole('user') }}>고객</Button>
@@ -145,10 +149,7 @@ const Header = () => {
                                     </svg>
                                 </button>
                                 <div className={styles.dropdownContent}>
-                                    {/* 마이페이지 메뉴 넣기 */}
                                     {menuList && menuList.map((item, index) => {
-                                        //console.log(item); //디버그용
-                                        //console.log(item.name); //디버그용
                                         if (item.name) {
                                             return <a key={index}><button className={styles.navButton1} onClick={() => { handleClick(item.path) }}>{item.name}</button></a>
                                         }
@@ -158,6 +159,7 @@ const Header = () => {
                             <button className={styles.navButton} onClick={handleOpen}>가이드 등록</button>
                         </div>
 
+                        {renderNotificationIcon()}
 
                         {!localStorage.getItem("token") ?
                             <NavLink className={styles.loginButton} to="/login" >로그인</NavLink>
@@ -167,8 +169,6 @@ const Header = () => {
                     </div>
                 </div>
             </div>
-            {/* 모달 컴포넌트 */}
-            {/* keepMounted : 모달창 꺼져도 내용 안사라지게 해주는거 */}
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -184,8 +184,4 @@ const Header = () => {
     );
 }
 
-
 export default Header;
-
-
-

@@ -62,17 +62,21 @@ import AiServiceInfo from './pages/aiservicepage/AIServiceInfo';
 import DeviceCheckComponent from './pages/webrecord/DeviceCheckComponent';
 import WebcamRecorder from './pages/webrecord/WebcamRecorder';
 import LoginSuccess from './pages/login/LogInSuccess';
+<<<<<<< HEAD
 import GuidePostDetails from './pages/guidemypage/GuidePostDetails';
 import GuidePostUpdate from './pages/guidemypage/GuidePostUpdate';
+=======
+import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
+import QuizForm from './pages/aiservicepage/QuizForm1';
+import QuizForm1 from './pages/aiservicepage/QuizForm1';
+import QuizForm2 from './pages/aiservicepage/QuizForm2';
+>>>>>>> 45d542ebb3d26597021476459212ed29bc56f1ac
 
 
 
 function App() {
 
-  /*
-
   
-  */
 
   return <>
     <Routes>
@@ -92,7 +96,6 @@ function App() {
           
           {/* GUIDE */}
           <Route path='/guidemypost' element={<GuideMyPageMyPost/>}/>
-          {/*<Route path='/guideaskdetails' element={<GuideAskDetails/>}/>*/}
   
           {/*<Route path='/guideask' element={<GuideAsk/>}/>*/}
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
@@ -104,7 +107,7 @@ function App() {
           <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
            */}
 
-            {/* 아래 테스트용 */}
+            
             <Route path='/guidePostDetails/:id' element={<GuidePostDetails/>}/>
             <Route path='/guidePostUpdate/:id' element={<GuidePostUpdate/>}/>
 
@@ -156,6 +159,9 @@ function App() {
         <Route path='/passwordchange' element={<PasswordChangeForm/>}/>
         <Route path='/aiserviceinfo' element={<AiServiceInfo/>}/>
         {/* <Route path='/precautionspage1' element={<PrecautionsPage1/>}/> */}
+        <Route path='/precautionspage1' element={<PrecautionsPage1/>}/>
+        <Route path='/quizform1' element={<QuizForm1/>}/>
+        <Route path='/quizform2' element={<QuizForm2/>}/>
         
         
 

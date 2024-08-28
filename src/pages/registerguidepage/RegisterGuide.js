@@ -1,29 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from '../../styles/registerguidepage/RegisterGuide.module.css';
 import { AiOutlinePaperClip } from 'react-icons/ai';
-import { postPost } from '../../utils/postData';
-import { filesPost } from '../../utils/fileData';
+import { filesPost, fetchLicenseFile } from '../../utils/fileData';
 import { Box, Button, TextField, Typography, Divider } from '@mui/material';
 import { ocr, verifyLicense } from '../../utils/PythonServerAPI';
 import LinearProgress from '@mui/material/LinearProgress';
 import { fetchedData, updateProfile } from '../../utils/memberData';
+import { RoleContext } from '../../components/context/roleContext';
 
-const RegisterGuidePage = () => {
+const RegisterGuidePage = ({userId}) => {
   const [selectedFile, setSelectedFile] = useState([]);
   const [previewUrl, setPreviewUrl] = useState([]);
   const [loading, setLoading] = useState(false); //로딩 스테이트
   const [ocrResult, setOcrResult] = useState({});
   const [pendingLicense, setPendingLicense] = useState(false);
   const fileInputRef = useRef(null);
-
-
+  const { memberInfo, setMemberInfo } = useContext(RoleContext);
+  
+  //input 타입 파일 선택
   const handleFileChange_ = async (event) => {
     const files = Array.from(event.target.files);
     setSelectedFile(files);
     setPreview(files)
     fileOCR(files);
   };
-
 
   // 미리보기 URL 설정
   const setPreview =(files) =>{
@@ -36,7 +36,7 @@ const RegisterGuidePage = () => {
     setPreviewUrl(filePreview);
   };
 
-
+  //파일 OCR API 요청
   const fileOCR = async (fileList) => {
     setLoading(true);
     const formData = new FormData();
@@ -54,19 +54,37 @@ const RegisterGuidePage = () => {
 
 
   useEffect(() => {
-    const getData = async (id) => {
+    console.log(userId);
+    const getData = async () => {
       try {
-        const fetchData = await fetchedData(id);
-        if(fetchData && fetchData.guidelicense){
-          //setSelectedFile(Array.from(fetchData.guidelicense));
-          if(fetchData.role==='USER') setPendingLicense(true);
+        if(userId){
+          const userInfo = await fetchedData(userId);
+          if(userInfo.role==='USER') setPendingLicense(true); //라이센스 인증 중
+          const encodedFilename = encodeURIComponent(userInfo.guidelicense); //한글이름파일 인코딩
+          const fileUrl = await fetchLicenseFile(encodedFilename); //서버에서 파일 받아오기
+          console.log(fileUrl); //가이드 인증 파일 url
+          setPreviewUrl([{
+            name: userInfo.guidelicense,
+            url: fileUrl
+          }]);
+        }
+        else if(memberInfo && memberInfo.guidelicense){
+          if(memberInfo.role==='USER') setPendingLicense(true); //라이센스 인증 중
+          const encodedFilename = encodeURIComponent(memberInfo.guidelicense); //한글이름파일 인코딩
+          const fileUrl = await fetchLicenseFile(encodedFilename); //서버에서 파일 받아오기
+          console.log(fileUrl); //가이드 인증 파일 url
+          setPreviewUrl([{
+            name: memberInfo.guidelicense,
+            url: fileUrl
+          }]);
         }
       }
       catch (error) {console.error('에러났당', error);}
     };
-    getData(localStorage.getItem("membersId"));
+
+    getData();
     setPreview(selectedFile);
-  }, []);
+  }, [memberInfo]);
   
   /*
   useEffect(()=>{
@@ -101,7 +119,7 @@ const RegisterGuidePage = () => {
       'guidelicense': previewUrl[0].name
     };
     const resp = await updateProfile(localStorage.getItem("membersId"),updateData);
-    console.log(resp);
+    setMemberInfo(resp);
 
     //디비에 실제 파일 업로드
     const formData = new FormData();
@@ -122,6 +140,7 @@ const RegisterGuidePage = () => {
             id="file-input"
             accept="image/*"
             ref={fileInputRef}
+            multiple
             style={{ display: 'none' }}  // Hide the file input
             onChange={handleFileChange_}
             
@@ -171,20 +190,40 @@ const RegisterGuidePage = () => {
             </Box>
             ) : 
             (<>
-              <TextField fullWidth label="자격증명" margin="normal"  defaultValue={!ocrResult?'not detected':ocrResult.subject==='default'?'not detected':ocrResult.subject}
+              <TextField fullWidth label="자격증명" margin="normal"  defaultValue={!ocrResult?'not detected':ocrResult.subject==='default'?'not detected':ocrResult.subject }
                 InputProps={{
                   readOnly: true,
                 }}
+                disabled={pendingLicense}
               />
-              <TextField fullWidth label="성명" margin="normal" defaultValue={!ocrResult?'not detected':ocrResult.name==='default'?'not detected':ocrResult.name}/>
-              <TextField fullWidth label="문서 확인 번호" margin="normal"  defaultValue={!ocrResult?'not detected':ocrResult.number==='default'?'not detected':ocrResult.number}/>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop:'10px' }}>
-                <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={()=>{fileOCR(fileInputRef.current.files)}} disabled={pendingLicense}>재인식</Button>
-                <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={submitToGuide} >등록 요청</Button>
+              <TextField fullWidth label="성명" margin="normal" defaultValue={!ocrResult?'not detected':ocrResult.name==='default'?'not detected':ocrResult.name}
+                disabled={pendingLicense}
+              />
+              <TextField fullWidth label="문서 확인 번호" margin="normal"  defaultValue={!ocrResult?'not detected':ocrResult.number==='default'?'not detected':ocrResult.number}
+                disabled={pendingLicense}
+              />
+
+              {userId ? 
+              (<Box sx={{ marginTop:'10px' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop:'10px' }}>
+                  <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={()=>{fileOCR(fileInputRef.current.files)}}>확인서 진위확인</Button>
+                  
+                </Box>
+                <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={submitToGuide}>등록 요청</Button>
               </Box>
-              {pendingLicense && 
-                <Typography variant="h7" gutterBottom sx={{fontWeight:'bold'}}>자격증 확인 중</Typography>
-              }
+              )
+              :
+              (<>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop:'10px' }}>
+                  <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={()=>{fileOCR(fileInputRef.current.files)}} disabled={pendingLicense}>재인식</Button>
+                  <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={submitToGuide} disabled={pendingLicense}>등록 요청</Button>
+                </Box>
+                {pendingLicense && (
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop:'20px' }}>
+                  <Typography variant="h7" gutterBottom sx={{fontWeight:'bold'}}>관리자 승인 대기 중</Typography>
+                </Box>
+                )}
+              </>)}
             </>)}
           </Box>
           
