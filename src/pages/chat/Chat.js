@@ -113,7 +113,7 @@ const Chat = () => {
   // 로딩 상태가 변경될 때 스크롤 조정
   useEffect(() => {
     const chatBody = document.getElementById('chatBody');
-    if (loading) {a
+    if (loading) {
     }
   }, [loading]);
 
