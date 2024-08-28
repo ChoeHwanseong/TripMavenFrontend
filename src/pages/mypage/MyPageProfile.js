@@ -70,7 +70,11 @@ const MypageProfile = () => {
 
 
   if (!profileData) {
-    return <Typography variant="h6">로딩중</Typography>;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (
