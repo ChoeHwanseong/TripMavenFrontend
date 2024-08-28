@@ -62,15 +62,12 @@ import AiServiceInfo from './pages/aiservicepage/AIServiceInfo';
 import DeviceCheckComponent from './pages/webrecord/DeviceCheckComponent';
 import WebcamRecorder from './pages/webrecord/WebcamRecorder';
 import LoginSuccess from './pages/login/LogInSuccess';
-<<<<<<< HEAD
 import GuidePostDetails from './pages/guidemypage/GuidePostDetails';
 import GuidePostUpdate from './pages/guidemypage/GuidePostUpdate';
-=======
 import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
 import QuizForm from './pages/aiservicepage/QuizForm1';
 import QuizForm1 from './pages/aiservicepage/QuizForm1';
 import QuizForm2 from './pages/aiservicepage/QuizForm2';
->>>>>>> 45d542ebb3d26597021476459212ed29bc56f1ac
 
 
 
