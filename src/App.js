@@ -65,14 +65,15 @@ import GuidePostCopy from './pages/guidemypage/WebEditor';
 import PostHeader from './pages/guidemypage/PostHeader';
 import LoginSuccess from './pages/login/LogInSuccess';
 import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
+import QuizForm from './pages/aiservicepage/QuizForm1';
+import QuizForm1 from './pages/aiservicepage/QuizForm1';
+import QuizForm2 from './pages/aiservicepage/QuizForm2';
 
 
 
 function App() {
 
-  const Logout=()=>{
-    const loginType = localStorage.getItem('');
-  }
+  
 
   return <>
     <Routes>
@@ -157,6 +158,8 @@ function App() {
         <Route path='/passwordchange' element={<PasswordChangeForm/>}/>
         <Route path='/aiserviceinfo' element={<AiServiceInfo/>}/>
         <Route path='/precautionspage1' element={<PrecautionsPage1/>}/>
+        <Route path='/quizform1' element={<QuizForm1/>}/>
+        <Route path='/quizform2' element={<QuizForm2/>}/>
         
         
 

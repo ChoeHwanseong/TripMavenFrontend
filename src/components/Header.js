@@ -32,6 +32,13 @@ const Header = () => {
     const [open, setOpen] = useState(false);
     const [notificationCount, setNotificationCount] = useState(0);
     let menuList = menuData[role];
+    console.log(localStorage.getItem('loginType')=='kakao')
+    const Logout=()=>{
+        const loginType = localStorage.getItem('loginType');
+        
+        if(loginType=='kakao')
+        localStorage.clear()
+      }
 
     //가이드 등록 모달 관련 함수
     const handleOpen = () => {
