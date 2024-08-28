@@ -37,6 +37,13 @@ const Header = () => {
     const [notificationCount, setNotificationCount] = useState(0);
 
     let menuList = menuData[role];
+    console.log(localStorage.getItem('loginType')=='kakao')
+    const Logout=()=>{
+        const loginType = localStorage.getItem('loginType');
+        
+        if(loginType=='kakao')
+        localStorage.clear()
+      }
 
     const handleSearchKeyword = () => {
         if (!location.pathname.includes('/product')) {

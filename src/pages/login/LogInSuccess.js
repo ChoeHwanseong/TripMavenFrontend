@@ -11,13 +11,14 @@ const LoginSuccess = () => {
         const refresh = query.get('refresh');
         const role = query.get('role');
         const membersId = query.get('membersId');
-
+        const loginType = query.get('logintype');
         if (access && refresh) {
             // JWT 토큰과 사용자 정보를 로컬 스토리지에 저장합니다.
             window.localStorage.setItem("token", access);
             window.localStorage.setItem("role", role);
             window.localStorage.setItem("membersId", membersId);
             window.localStorage.setItem("refresh", refresh);
+            window.localStorage.setItem("loginType",loginType);
             //authStore.setIsAdmin(isAdmin === 'true');
             //authStore.checkLoggedIn();
 
