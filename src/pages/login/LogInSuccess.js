@@ -1,24 +1,30 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const LoginSuccess = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
 
     useEffect(() => {
-        const { access, refresh, role, memberId } = router.query;
+        const access = query.get('access');
+        const refresh = query.get('refresh');
+        const role = query.get('role');
+        const membersId = query.get('membersId');
 
         if (access && refresh) {
             // JWT 토큰과 사용자 정보를 로컬 스토리지에 저장합니다.
             window.localStorage.setItem("token", access);
             window.localStorage.setItem("role", role);
-            window.localStorage.setItem("memberId", memberId);
+            window.localStorage.setItem("membersId", membersId);
             window.localStorage.setItem("refresh", refresh);
             //authStore.setIsAdmin(isAdmin === 'true');
             //authStore.checkLoggedIn();
 
             // 원하는 페이지로 리다이렉트합니다.
-            navigate
+            navigate('/home');
         }
-    }, [router.query]);
+    }, [query]);
 
     return (
         <div>

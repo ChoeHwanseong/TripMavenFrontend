@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useInView } from 'react-intersection-observer';
 import styles from '../../styles/productPage/ProductBoard.module.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { RoleContext } from '../../components/context/roleContext';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { postsAllGet, postsCityGet, postsKeywordGet } from '../../utils/postData';

@@ -12,6 +12,7 @@ import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
 import { ButtonGroup } from '@mui/material';
 import { Button } from '@mui/material';
+import { Padding } from '@mui/icons-material';
 
 
 const style = {
@@ -19,12 +20,17 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 500,
+    padding: '0',
+    width: 1200,
+    height: '80vh',
     bgcolor: 'background.paper',
     border: '1px solid primary',
     borderRadius: '16px',
     boxShadow: 24,
-    p: 4,
+    pt: 4,
+    pb: 4,
+    pr: 0,
+    pl: 0,
 };
 
 const Header = () => {
@@ -53,7 +59,9 @@ const Header = () => {
 
     // Modal 상태 관리
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        if(localStorage.getItem("token")) setOpen(true);
+    }
     const handleClose = () => setOpen(false);
 
     // 검색어에 따라 searchPost 상태 업데이트
@@ -87,6 +95,8 @@ const Header = () => {
 
     //console.log(role); //디버그용
     //console.log(menuList); //디버그용
+
+    
 
     return (
         <header className={styles.header}>
@@ -158,11 +168,13 @@ const Header = () => {
                 </div>
             </div>
             {/* 모달 컴포넌트 */}
+            {/* keepMounted : 모달창 꺼져도 내용 안사라지게 해주는거 */}
             <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+                keepMounted
             >
                 <Box sx={style}>
                     <GuideRegistration />

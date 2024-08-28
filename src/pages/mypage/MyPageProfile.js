@@ -9,14 +9,14 @@ const MypageProfile = () => {
   const [certificateFileName, setCertificateFileName] = useState('');
   const { id } = useParams();
 
+  const navigate = useNavigate();
   const membersId = localStorage.getItem('membersId');
 
-  const navigate = useNavigate();
-
   useEffect(() => {
+    const membersId = localStorage.getItem('membersId');
     const getData = async () => {
       try {
-        const fetchData = await fetchedData(id);
+        const fetchData = await fetchedData(membersId);
         setProfileData(fetchData);
       } catch (error) {
         console.error('에러났당', error);
@@ -76,8 +76,7 @@ const MypageProfile = () => {
   return (
     <Box sx={{ p: 7 ,mt:-2,ml:-2}}>
       <Typography variant="h4" fontWeight="bold" gutterBottom>프로필</Typography>
-      <form>
-        <Grid container spacing={2}>
+      <form>        <Grid container spacing={2}>
           <Grid item xs={12} md={2}>
             <Avatar
               src="../../../images/defaultimage.png"
