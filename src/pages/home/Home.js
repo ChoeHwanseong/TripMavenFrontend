@@ -17,14 +17,11 @@ const Home = () => {
     navigate(`/product?city=${city}`);
   };
 
-  //form 요소 상태관리 훅함수
   const formik = useFormik({ 
-    initialValues: { //초기값 설정
-      keyword: '', //form 형식의 name 속성명이랑 일치시켜야 함
+    initialValues: {
+      keyword: '',
       days: '', 
     },
-    //유효성 검사도 쉽게 추가할 수 있음
-    //https://formik.org/docs/examples/with-material-ui
     onSubmit: (values) => {
       navigate(`/product?keyword=${values.keyword}&days=${values.days}`);
     },
@@ -123,7 +120,6 @@ const Home = () => {
                     onClick={() => handleCityClick(city)}
                     sx={{
                       borderRadius: 3,
-
                       cursor: 'pointer',
                       transition: 'transform 0.2s ease',
                       '&:hover': { transform: 'scale(1.05)' }
@@ -173,12 +169,30 @@ const Home = () => {
               border: '1px solid #f1f1f1',
               height: '100%'
             }}>
-              <Typography variant="h6" fontWeight="bold" gutterBottom>지역 행사</Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="h6" fontWeight="bold">지역 행사</Typography>
+                {selectedRegion && (
+                  <Button
+                    variant="contained"
+                    onClick={() => handleCityClick(selectedRegion.name)}
+                    sx={{
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      color: '#ffffff',
+                      backgroundColor: '#0066ff',
+                      borderRadius: 2,
+                      '&:hover': { backgroundColor: '#0056b3' }
+                    }}
+                  >
+                    {`${selectedRegion.name} - 추천 상품`}
+                  </Button>
+                )}
+              </Box>
               <RegionEventInfo
                 width="100%"
                 height="400px"
-                setSelectedRegion={setSelectedRegion}
                 selectedRegion={selectedRegion}
+                setSelectedRegion={setSelectedRegion}
               />
             </Box>
           </Grid>
