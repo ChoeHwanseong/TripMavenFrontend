@@ -26,7 +26,7 @@ export default function Template() {
     },[]);
 
     return <>
-        <RoleContext.Provider value={{ role, setRole, memberInfo}}>
+        <RoleContext.Provider value={{ role, setRole, memberInfo, setMemberInfo}}>
             <div className={styles.body}>
                 <Header />  
                 <div className={styles.layout}>
