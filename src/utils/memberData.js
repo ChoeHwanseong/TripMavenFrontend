@@ -26,6 +26,18 @@ export const fetchedData = async (id) => {
   }
 };
 
+//이메일로 멤버 가져오기
+export const findMemberbyEmail = async (email) => {
+  try {
+    const res = await axios.get(`/spring/members/email/${email}`);
+    return res.data;
+  }
+  catch (error) {
+    console.error('에러났당', error);
+    throw error; 
+  }
+};
+
 //회원가입
 //await axios 꼭 붙이기
 export const SignUp = async (form) => {
@@ -62,6 +74,19 @@ export const FormLogin = async (form) =>{
 
   return response;
   }
+
+//로그아웃
+export const logout = async() =>{
+  await axios.post('/spring/logout')
+  .then(res =>{
+    return res
+  })
+  .catch(error => {
+    // 오류가 발생했을 때의 처리
+    if(error.code === 'ERR_BAD_REQUEST') alert('중복된 아이디입니다.');
+    
+  });
+}
 
   
 

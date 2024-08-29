@@ -59,8 +59,8 @@ import FindID2 from './pages/login/FindId2';
 import PasswordChangeForm from './pages/login/PasswordChangeForm';
 import ChattingRoom from './pages/chat/ChattingRoom';
 import AiServiceInfo from './pages/aiservicepage/AIServiceInfo';
-import DeviceCheckComponent from './pages/webrecord/DeviceCheckComponent';
-import WebcamRecorder from './pages/webrecord/WebcamRecorder';
+import DeviceCheckComponent from './pages/aiservicepage/webrecord/DeviceCheckComponent';
+import WebcamRecorder from './pages/aiservicepage/webrecord/WebcamRecorder';
 import LoginSuccess from './pages/login/LogInSuccess';
 import GuidePostDetails from './pages/guidemypage/GuidePostDetails';
 import GuidePostUpdate from './pages/guidemypage/GuidePostUpdate';
@@ -68,8 +68,6 @@ import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
 import QuizForm from './pages/aiservicepage/QuizForm1';
 import QuizForm1 from './pages/aiservicepage/QuizForm1';
 import QuizForm2 from './pages/aiservicepage/QuizForm2';
-import ComplaintModal from './pages/report/ComplaintModal';
-import ProfileCardModal from './pages/guidemypage/GuideProfileModal';
 
 
 
@@ -109,7 +107,6 @@ function App() {
             
           <Route path='/guidePostDetails/:id' element={<GuidePostDetails/>}/>
           <Route path='/guidePostUpdate/:id' element={<GuidePostUpdate/>}/>
-          <Route path='/profileCardModal' element={<ProfileCardModal/>}/>
 
            {/* USER */}
           <Route path='/userreview' element={<UserReview/>}/>
@@ -162,6 +159,7 @@ function App() {
         <Route path='/precautionspage1' element={<PrecautionsPage1/>}/>
         <Route path='/quizform1' element={<QuizForm1/>}/>
         <Route path='/quizform2' element={<QuizForm2/>}/>
+        <Route path='/quiztutorial' element={<QuizTutorial/>}/>
         
         
 
