@@ -59,8 +59,6 @@ function BigChat() {
       }
     });
 
-
-
     mqttClient.on('error', (err) => {
       console.error('Connection error:', err);
     });
@@ -99,15 +97,21 @@ function BigChat() {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSendClick();
+    }
+  };
+
   const handleSendClick = () => {
-    const input = document.querySelector(`.${styles.chatInput}`);
+    const input = document.querySelector("#chatInput");
     const text = input.value.trim();
     if (text) {
       sendMessage(text);
       input.value = '';
     }
   };
-
+  
   return (
     <div className={styles.container}>
        <ChattingRoom onSelectUser={setSelectedUser} />
@@ -141,7 +145,9 @@ function BigChat() {
           <input
             type="text"
             className={styles.chatInput}
+            id="chatInput"
             placeholder="입력해주세요"
+            onKeyDown={handleKeyDown}
           />
              <button className={styles.sendButton} onClick={handleSendClick}>
             <img src="../images/sendbutton.png" alt="Send" />

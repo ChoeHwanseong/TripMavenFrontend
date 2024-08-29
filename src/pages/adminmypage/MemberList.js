@@ -21,7 +21,6 @@ const style = {
 const MemberList = () => {
   const [data, setData] = useState([]);
   const [hoveredRow, setHoveredRow] = useState(null);
-  
   const navigate = useNavigate();
 
   useEffect(() => {
