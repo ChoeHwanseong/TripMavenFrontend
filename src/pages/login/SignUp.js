@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/login/SignUp.module.css';
-import { SignUp } from '../../utils/memberData';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { findMemberbyEmail, SignUp } from '../../utils/memberData';
+import { useLocation } from 'react-router-dom';
 import useValid from './useValid';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { styled } from '@mui/material/styles';
@@ -16,67 +16,67 @@ const postcodeScriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/
 
 // Custom Stepper styles
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
-  [`&.${stepConnectorClasses.alternativeLabel}`]: {
-    top: 22,
-  },
-  [`&.${stepConnectorClasses.active}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage: 'linear-gradient( 95deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
+    [`&.${stepConnectorClasses.alternativeLabel}`]: {
+        top: 22,
     },
-  },
-  [`&.${stepConnectorClasses.completed}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage: 'linear-gradient( 95deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
+    [`&.${stepConnectorClasses.active}`]: {
+        [`& .${stepConnectorClasses.line}`]: {
+            backgroundImage: 'linear-gradient( 95deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
+        },
     },
-  },
-  [`& .${stepConnectorClasses.line}`]: {
-    height: 3,
-    border: 0,
-    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
-    borderRadius: 1,
-    width: '250px',
-  },
+    [`&.${stepConnectorClasses.completed}`]: {
+        [`& .${stepConnectorClasses.line}`]: {
+            backgroundImage: 'linear-gradient( 95deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
+        },
+    },
+    [`& .${stepConnectorClasses.line}`]: {
+        height: 3,
+        border: 0,
+        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
+        borderRadius: 1,
+        width: '250px',
+    },
 }));
 
 const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
-  zIndex: 1,
-  color: '#fff',
-  width: 50,
-  height: 50,
-  display: 'flex',
-  borderRadius: '50%',
-  justifyContent: 'center',
-  alignItems: 'center',
-  ...(ownerState.active && {
-    backgroundImage: 'linear-gradient( 136deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
-    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
-  }),
-  ...(ownerState.completed && {
-    backgroundImage: 'linear-gradient( 136deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
-  }),
+    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
+    zIndex: 1,
+    color: '#fff',
+    width: 50,
+    height: 50,
+    display: 'flex',
+    borderRadius: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...(ownerState.active && {
+        backgroundImage: 'linear-gradient( 136deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
+        boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+    }),
+    ...(ownerState.completed && {
+        backgroundImage: 'linear-gradient( 136deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
+    }),
 }));
 
 function ColorlibStepIcon(props) {
-  const { active, completed, className } = props;
+    const { active, completed, className } = props;
 
-  const icons = {
-    1: <Check />,
-    2: <Check />,
-    3: <Check />,
-  };
+    const icons = {
+        1: <Check />,
+        2: <Check />,
+        3: <Check />,
+    };
 
-  return (
-    <ColorlibStepIconRoot ownerState={{ completed, active }} className={className}>
-      {icons[String(props.icon)]}
-    </ColorlibStepIconRoot>
-  );
+    return (
+        <ColorlibStepIconRoot ownerState={{ completed, active }} className={className}>
+            {icons[String(props.icon)]}
+        </ColorlibStepIconRoot>
+    );
 }
 
 const Signup = () => {
-    const navigate = useNavigate();
     const location = useLocation();
     const query = new URLSearchParams(location.search);
+
     const [activeStep, setActiveStep] = useState(0);
     const [addressObj, setAddressObj] = useState({ areaAddress: '', townAddress: '', detailAddress: '' });
 
@@ -94,13 +94,46 @@ const Signup = () => {
     const region = useValid('', (value) => !value ? '관심 지역을 선택하세요' : '');
     const gender = useValid('', (value) => !value ? '성별을 선택하세요' : '');
     const birthday = useValid('', (value) => !value ? '생년월일을 입력하세요' : '');
-    console.log(birthday.value)
-    const address = useValid(addressObj, (value) => 
+    const address = useValid(addressObj, (value) =>
         !value.areaAddress || !value.townAddress ? '주소를 입력하세요' : ''
     );
-
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        let isValid = true;
+        if (activeStep == 0) {
+            if (email.value == '') {
+                email.setError('이메일을 입력하세요');
+                isValid = false;
+            }
+            if (name.value == '') {
+                name.setError('이름을 입력하세요');
+                isValid = false;
+            }
+            if (password.value == '') {
+                password.setError('비밀번호를 입력하세요');
+                isValid = false;
+            }
+            if (passwordConfirm.value == '') {
+                passwordConfirm.setError('비밀번호 확인을 입력하세요');
+                isValid = false;
+            }
+        }
+        if (activeStep == 1) {
+            if (region.value == "") {
+                region.setError('관심 지역을 선택하세요');
+                isValid = false;
+            }
+            if (gender.value == "") {
+                gender.setError('성별을 선택하세요');
+                isValid = false;
+            }
+            if (birthday.value == '') {
+                birthday.setError('생년월일을 입력하세요');
+                isValid = false;
+            }
+        }
+        if (isValid) setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        else alert('항목을 모두 입력해주세요.');
+
     };
 
     const handleBack = () => {
@@ -136,9 +169,37 @@ const Signup = () => {
         }
     };
 
+    useEffect(() => {
+        const getEmail = query.get("email");
+        const getData = async () => {
+            const newMember = await findMemberbyEmail(getEmail);
+            console.log('%o', newMember);
+            if (newMember) {
+                alert('회원가입을 진행해주세요.');
+                document.querySelector('#email').setAttribute('readonly', true);
+            }
+            switch (newMember.loginType) {
+                case 'google': //구글에서 회원가입했다면
+                    console.log(newMember.loginType);
+                    email.setValue(newMember.email);
+                    name.setValue(newMember.name);
+                    password.setValue(newMember.password);
+                    passwordConfirm.setValue(newMember.password);
+                    break;
+                case 'naver': //네이버에서 햇다면
+                    console.log(newMember);
+                    break;
+                default: //캌캌오
+
+
+            }
+        }
+        if (getEmail) getData();
+    }, []);
+
     const DaumPost = () => {
         const open = useDaumPostcodePopup(postcodeScriptUrl);
-    
+
         const handleComplete = (data) => {
             let fullAddress = data.address;
             let extraAddress = '';
@@ -158,15 +219,15 @@ const Signup = () => {
                 });
             }
         }
-    
+
         const handleClick = () => {
-            open({onComplete: handleComplete});
+            open({ onComplete: handleComplete });
         }
 
         const handleDetailAddressChange = (e) => {
             setAddressObj(prev => ({ ...prev, detailAddress: e.target.value }));
         }
-    
+
         return (
             <>
                 <div className={styles.inputWithButton}>
@@ -343,7 +404,7 @@ const Signup = () => {
                     </Step>
                 ))}
             </Stepper>
-            <form className={styles.signupForm} onSubmit={handleSubmit} style={{marginTop: '20px'}}>
+            <form className={styles.signupForm} onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
                 {renderStepContent(activeStep)}
                 <div className={styles.buttonGroup}>
                     <button
