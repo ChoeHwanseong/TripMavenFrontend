@@ -68,6 +68,8 @@ import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
 import QuizForm from './pages/aiservicepage/QuizForm1';
 import QuizForm1 from './pages/aiservicepage/QuizForm1';
 import QuizForm2 from './pages/aiservicepage/QuizForm2';
+import ComplaintModal from './pages/report/ComplaintModal';
+import ProfileCardModal from './pages/guidemypage/GuideProfileModal';
 
 
 
@@ -105,8 +107,9 @@ function App() {
            */}
 
             
-            <Route path='/guidePostDetails/:id' element={<GuidePostDetails/>}/>
-            <Route path='/guidePostUpdate/:id' element={<GuidePostUpdate/>}/>
+          <Route path='/guidePostDetails/:id' element={<GuidePostDetails/>}/>
+          <Route path='/guidePostUpdate/:id' element={<GuidePostUpdate/>}/>
+          <Route path='/profileCardModal' element={<ProfileCardModal/>}/>
 
            {/* USER */}
           <Route path='/userreview' element={<UserReview/>}/>
@@ -166,6 +169,7 @@ function App() {
         <Route path='/product' element={<ProductBoard/>}/>
         <Route path='/termsservice' element={<TermsService/>}/>
         <Route path='/adminreport' element={<ComplaintForm/>}/>
+        
 
         <Route path='/paymentproc' element={<OrderPopup/>}/>
         <Route path='/payment' element={<PaymentForm/>}/>

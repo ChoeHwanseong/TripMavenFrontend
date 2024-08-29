@@ -8,7 +8,7 @@ import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import HotelIcon from '@mui/icons-material/Hotel';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getHotelAd, postGetById, postPost, postPut } from '../../utils/postData';
+import { getHotelAd, postGetById, postPut } from '../../utils/postData';
 import { filesPost } from '../../utils/fileData';
 import KakaoMap from '../../utils/KakaoMap';
 
@@ -36,51 +36,49 @@ const GuidePostUpdate = () => {
     const hotelRef = useRef(null);
     const hotelAdRef = useRef(null);
 
-
     const { id } = useParams();
     const [posts, setPosts] = useState({});
 
+
+    // 이전 데이타 가져오기
     useEffect(() => {
-
-      const getData = async () => {
-        try {
-          const fetchedData = await postGetById(id);
-          console.log('fetchedData: ', fetchedData);
-          setEditorContent(fetchedData.content);
-          setSelectedAddress(fetchedData.hotelAd);
-          setPosts(fetchedData || {});
-        } catch (error) {
-          console.error('에러났당', error);
-        }
-      };
-
-        const dayPeriod = `${nights}박 ${days}일`;
-        if (dayRef.current) {
-            dayRef.current.value = dayPeriod;
-        }
-
+        const getData = async () => {
+            try {
+                const fetchedData = await postGetById(id);
+                console.log('fetchedData: ', fetchedData);
+                setEditorContent(fetchedData.content);
+                setSelectedAddress(fetchedData.hotelAd);
+                setNights(parseInt((fetchedData.day.match(/\d+/g))[0],10))
+                setDays(parseInt((fetchedData.day.match(/\d+/g))[1],10))
+                console.log(fetchedData.day);
+                setPosts(fetchedData || {});
+            } catch (error) {
+                console.error('Error fetching post data:', error);
+            }
+        };
+       
         getData();
-
-    }, [nights, days]);
+    }, [id]);
 
     const modules = {
         toolbar: [
-          [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-          [{ size: [] }],
-          ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-          [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-          ['link', 'image', 'video'],
-          ['clean'], 
+            [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+            [{ size: [] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+            ['link', 'image', 'video'],
+            ['clean'], 
         ],
-      };
+    };
     
-      const formats = [
+    const formats = [
         'header', 'font', 'size',
         'bold', 'italic', 'underline', 'strike', 'blockquote',
         'list', 'bullet', 'indent',
         'link', 'image', 'video',
-      ];
+    ];
 
+    // 파일 저장
     const handleFileChange = (event) => {
         const selectedFiles = Array.from(event.target.files);
     
@@ -95,16 +93,15 @@ const GuidePostUpdate = () => {
         setFileURLs(urls);   
     };
 
+    // 호텔명으로 호텔주소에 값 넣기
     const handleSearch = async () => {
         try {
-            console.log('버튼 클릭 시, hotel : ', hotel);
-            const response = await getHotelAd(hotel);
-            console.log('response', response);
-  
+            const response = await getHotelAd(posts.hotel);
+            console.log('response: ',response);
             setAddresses(response); 
             if (response.length > 0) {
-              setSelectedAddress(response[0].road_address_name || response[0].address_name); 
-              hotelAdRef.current.value = response[0].road_address_name || response[0].address_name; 
+                setSelectedAddress(response[0].road_address_name || response[0].address_name); 
+                hotelAdRef.current.value = response[0].road_address_name || response[0].address_name; 
             }
         } catch (error) {
             console.error('Error fetching hotel address:', error);
@@ -113,19 +110,21 @@ const GuidePostUpdate = () => {
         }
     };
 
+    // 수정된 호텔 주소 데이타 업데이트
     const handleAddressChange = (event) => {
         setSelectedAddress(event.target.value);
         hotelAdRef.current.value = event.target.value;
-        handleInputChange('hotelAd',hotelAdRef);
+        handleInputChange('hotelAd', hotelAdRef);
     };
 
 
+    // 수정된 데이타 업데이트
     const handleInputChange = (field, ref) => {
-      setPosts({ ...posts, [field]: ref.current.value });
+        setPosts({ ...posts, [field]: ref.current.value });
     };
-
 
     
+    // 유효성 검증
     const validateFields = () => {
         const newErrors = {};
         if (!titleRef.current?.value) newErrors.title = "제목을 입력해주세요.";
@@ -136,30 +135,34 @@ const GuidePostUpdate = () => {
         if (!editorContent || editorContent.trim() === '') newErrors.content = "내용을 입력해주세요."; 
         return newErrors;
     };
-
-
+    
+    // 게시글 수정
     const handlePost = async () => {
-      try {
-        const updateData = {
-          title: titleRef.current.value,
-          hashtag: hashtagRef.current.value,
-          files: posts.files,
-          day: dayRef.current.value,
-          city: cityRef.current.value,
-          hotel: hotelRef.current.value,
-          hotelAd: hotelAdRef.current.value,
-          content: editorContent,
-          member_id: membersId,
-          id: posts.id
-        };
-        console.log('수정할 데이타: ',updateData);
-        await postPut(updateData);
-        navigate('/guidemypost');
-      } catch (error) {
-        console.error('Error updating post:', error);
-      }
-    };
+        try {
 
+            const dayPeriod = `${nights}박 ${days}일`;           
+            if (dayRef.current) {
+                dayRef.current.value = dayPeriod;
+            }
+
+            const updateData = {
+                title: titleRef.current.value,
+                hashtag: hashtagRef.current.value,
+                files: posts.files,
+                day: dayRef.current.value,
+                city: cityRef.current.value,
+                hotel: hotelRef.current.value,
+                hotelAd: hotelAdRef.current.value,
+                content: editorContent,
+                member_id: membersId,
+                id: posts.id
+            };
+            await postPut(updateData);
+            navigate('/guidemypost');
+        } catch (error) {
+            console.error('Error updating post:', error);
+        }
+    };
 
     return (
         <Box sx={{ maxWidth: 1200, width: '90%', mx: 'auto', mt: 5 }}>
@@ -190,7 +193,6 @@ const GuidePostUpdate = () => {
                     helperText={errors.title}
                     value={posts.title || ''}
                     onChange={() => handleInputChange('title', titleRef)}
-                    
                 />
                 <TextField 
                     fullWidth 
@@ -211,6 +213,9 @@ const GuidePostUpdate = () => {
                     대표 이미지 업로드 (최대 3개)
                     <input type="file" hidden onChange={handleFileChange} multiple />
                 </Button>
+                <Typography variant="caption" sx={{ color: 'gray', mt: 1, display: 'block' }}>
+                    ※목록 페이지에 썸네일로 사용 예정
+                </Typography>
                 {errors.files && <Typography color="error">{errors.files}</Typography>}
 
                 {fileURLs.length > 0 && (

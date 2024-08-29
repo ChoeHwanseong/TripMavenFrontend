@@ -35,11 +35,14 @@ const GuidePost = () => {
     const hotelRef = useRef(null);
     const hotelAdRef = useRef(null);
 
+    // day 컬럼 통합
     useEffect(() => {
         const dayPeriod = `${nights}박 ${days}일`;
         if (dayRef.current) {
             dayRef.current.value = dayPeriod;
         }
+
+
     }, [nights, days]);
 
     const modules = {
@@ -60,6 +63,7 @@ const GuidePost = () => {
         'link', 'image', 'video',
       ];
 
+    // 파일
     const handleFileChange = (event) => {
         const selectedFiles = Array.from(event.target.files);
     
@@ -74,13 +78,14 @@ const GuidePost = () => {
         setFileURLs(urls);   
     };
 
+    // 호텔명으로 호텔주소에 값 넣기
     const handleSearch = async () => {
         try {
             console.log('버튼 클릭 시, hotel : ', hotel);
             const response = await getHotelAd(hotel);
             console.log('response', response);
   
-            setAddresses(response); 
+            setAddresses(response);
             if (response.length > 0) {
               setSelectedAddress(response[0].road_address_name || response[0].address_name); 
               hotelAdRef.current.value = response[0].road_address_name || response[0].address_name; 
@@ -92,11 +97,14 @@ const GuidePost = () => {
         }
     };
 
+
+    // 수정된 호텔 주소 데이타 업데이트
     const handleAddressChange = (event) => {
         setSelectedAddress(event.target.value);
         hotelAdRef.current.value = event.target.value;
     };
-    
+
+    // 유효성 검증    
     const validateFields = () => {
         const newErrors = {};
         if (!titleRef.current?.value) newErrors.title = "제목을 입력해주세요.";
@@ -108,6 +116,7 @@ const GuidePost = () => {
         return newErrors;
     };
 
+    // 게시글 등록
     const createPost = async () => {
         try {
             const validationErrors = validateFields();
@@ -150,6 +159,7 @@ const GuidePost = () => {
             console.error('Error creating post:', error);
         }
     };
+
 
     return (
         <Box sx={{ maxWidth: 1200, width: '90%', mx: 'auto', mt: 5 }}>
@@ -196,6 +206,9 @@ const GuidePost = () => {
                     대표 이미지 업로드 (최대 3개)
                     <input type="file" hidden onChange={handleFileChange} multiple />
                 </Button>
+                <Typography variant="caption" sx={{ color: 'gray', mt: 1, display: 'block' }}>
+                    ※목록 페이지에 썸네일로 사용 예정
+                </Typography>
                 {errors.files && <Typography color="error">{errors.files}</Typography>}
 
                 {fileURLs.length > 0 && (
@@ -340,7 +353,7 @@ const GuidePost = () => {
 
             <Box sx={{ p: 3 }}>
                 <Typography variant="subtitle2">호텔 위치</Typography>
-                <KakaoMap address={selectedAddress} />
+                <KakaoMap address={selectedAddress}/>
             </Box>
 
             <Divider />
