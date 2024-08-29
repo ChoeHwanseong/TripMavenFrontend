@@ -99,6 +99,12 @@ function BigChat() {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSendClick();
+    }
+  };
+
   const handleSendClick = () => {
     const input = document.querySelector(`.${styles.chatInput}`);
     const text = input.value.trim();
@@ -107,7 +113,7 @@ function BigChat() {
       input.value = '';
     }
   };
-
+  
   return (
     <div className={styles.container}>
        <ChattingRoom onSelectUser={setSelectedUser} />
@@ -142,6 +148,7 @@ function BigChat() {
             type="text"
             className={styles.chatInput}
             placeholder="입력해주세요"
+            onKeyDown={handleKeyDown}
           />
              <button className={styles.sendButton} onClick={handleSendClick}>
             <img src="../images/sendbutton.png" alt="Send" />
