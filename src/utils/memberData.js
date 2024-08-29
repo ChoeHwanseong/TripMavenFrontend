@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Navigate } from 'react-router-dom';
 
 //멤버 가져오기
 export const fetchData = async () => {
@@ -44,11 +43,12 @@ export const SignUp = async (form) => {
   await axios.post('/spring/signup', form)
   .then(response => {    
     alert('가입 완료! 가입한 계정으로 로그인해주세요.');
-    Navigate('/login')
+    window.location.href ="/login";
   })
   .catch(error => {
     // 오류가 발생했을 때의 처리
     if(error.code === 'ERR_BAD_REQUEST') alert('중복된 아이디입니다.');
+    
     
   });
   //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 

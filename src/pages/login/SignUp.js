@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/login/SignUp.module.css';
 import { findMemberbyEmail, SignUp } from '../../utils/memberData';
 import { useLocation } from 'react-router-dom';
@@ -135,7 +135,7 @@ const Signup = () => {
         else alert('항목을 모두 입력해주세요.');
 
     };
-
+    
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
@@ -162,8 +162,8 @@ const Signup = () => {
                 address: `${addressObj.areaAddress} ${addressObj.townAddress} ${addressObj.detailAddress}`,
                 loginType: 'local'
             };
-            console.log(form);
-            SignUp(form);
+            SignUp(form)
+
         } else {
             alert('모든 필드를 올바르게 입력하세요.');
         }
@@ -173,23 +173,32 @@ const Signup = () => {
         const getEmail = query.get("email");
         const getData = async () => {
             const newMember = await findMemberbyEmail(getEmail);
-            console.log('%o', newMember);
             if (newMember) {
                 alert('회원가입을 진행해주세요.');
                 document.querySelector('#email').setAttribute('readonly', true);
             }
             switch (newMember.loginType) {
                 case 'google': //구글에서 회원가입했다면
-                    console.log(newMember.loginType);
                     email.setValue(newMember.email);
                     name.setValue(newMember.name);
                     password.setValue(newMember.password);
                     passwordConfirm.setValue(newMember.password);
                     break;
                 case 'naver': //네이버에서 햇다면
-                    console.log(newMember);
+                    email.setValue(newMember.email);
+                    name.setValue(newMember.name);
+                    password.setValue(newMember.password);
+                    passwordConfirm.setValue(newMember.password);
+                    gender.setValue(newMember.gender);
+                    birthday.setValue(newMember.birthday);
                     break;
                 default: //캌캌오
+                    email.setValue(newMember.email);
+                    name.setValue(newMember.name);
+                    password.setValue(newMember.password);
+                    passwordConfirm.setValue(newMember.password);
+                    gender.setValue(newMember.gender);
+                    
 
 
             }
@@ -199,7 +208,8 @@ const Signup = () => {
 
     const DaumPost = () => {
         const open = useDaumPostcodePopup(postcodeScriptUrl);
-
+        const detailAddressRef = useRef(null); // 상세주소 입력 필드에 대한 참조 생성
+    
         const handleComplete = (data) => {
             let fullAddress = data.address;
             let extraAddress = '';
@@ -209,25 +219,30 @@ const Signup = () => {
                     extraAddress += data.bname;
                 }
                 if (data.buildingName !== '') {
-                    extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+                    extraAddress += (extraAddress !== '' ? `, ${extraAddress}` : extraAddress);
                 }
                 fullAddress = fullAddress.replace(localAddress, '');
-                setAddressObj({
+                setAddressObj((prev) => ({
+                    ...prev,
                     areaAddress: localAddress,
-                    townAddress: fullAddress += (extraAddress !== '' ? `(${extraAddress})` : ''),
-                    detailAddress: ''
-                });
+                    townAddress: fullAddress + (extraAddress !== '' ? ` (${extraAddress})` : '')
+                }));
             }
-        }
-
+        };
+    
         const handleClick = () => {
             open({ onComplete: handleComplete });
-        }
-
+        };
+    
         const handleDetailAddressChange = (e) => {
             setAddressObj(prev => ({ ...prev, detailAddress: e.target.value }));
-        }
-
+            detailAddressRef.current.focus(); // 상세주소 입력 필드에 포커스 유지
+        };
+        useEffect(() => {
+            if (addressObj.detailAddress !== '') {
+                detailAddressRef.current.focus(); // 상세주소가 변경될 때마다 포커스 유지
+            }
+        }, [addressObj.detailAddress]);
         return (
             <>
                 <div className={styles.inputWithButton}>
@@ -249,10 +264,11 @@ const Signup = () => {
                     onChange={handleDetailAddressChange}
                     placeholder="상세주소를 입력하세요"
                     className={styles.detailAddressInput}
+                    ref={detailAddressRef} // 참조 연결
                 />
             </>
         );
-    }
+    };
 
     const renderStepContent = (step) => {
         switch (step) {
@@ -416,7 +432,7 @@ const Signup = () => {
                         이전
                     </button>
                     {activeStep === steps.length - 1 ? (
-                        <button type="submit" className={styles.signupButton} onClick={handleSubmit}>
+                        <button type="button" className={styles.signupButton} onClick={handleSubmit}>
                             가입
                         </button>
                     ) : (
