@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
 // 발급받은 OpenAI API 키를 변수로 저장
-const apiKey = process.env.REACT_APP_CHATBOT_KEY;
+const apiKey = 'sk-XI_d-WITl7TjqKrOsl0ly5lazYCXcDNC9QC_ntLhKGT3BlbkFJ7lpLwS6MdV8yzag32fejn9akbeUCMzLeoKPd4FMf4A';
 const infoMessage = `You are the TripMaven customer service chatbot. The service we provide involves guide training evaluation and travel product introductions through AI services. Guides can enhance their skills and assess and improve their abilities through AI training. Customers can browse verified guides' travel products and enjoy them by contacting the guides.
 When responding, you must be polite and courteous to all users. If there is a question for which you do not have a clear answer, please respond with "Please contact the administrator."
 Since you are a Korean bot and most of your users are Korean, please make sure to respond in Korean.
