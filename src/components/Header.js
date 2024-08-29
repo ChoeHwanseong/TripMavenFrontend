@@ -15,17 +15,13 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    padding: '0',
+    padding: 0,
     width: 1200,
-    height: '80vh',
+    height: '85vh',
     bgcolor: 'background.paper',
     border: '1px solid primary',
     borderRadius: '16px',
     boxShadow: 24,
-    pt: 4,
-    pb: 4,
-    pr: 0,
-    pl: 0,
 };
 
 const Header = () => {
@@ -35,23 +31,32 @@ const Header = () => {
     const { role, setRole } = useContext(RoleContext);
     const [open, setOpen] = useState(false);
     const [notificationCount, setNotificationCount] = useState(0);
-
     let menuList = menuData[role];
+    console.log(localStorage.getItem('loginType')=='kakao')
+    const Logout=()=>{
+        const loginType = localStorage.getItem('loginType');
+        
+        if(loginType=='kakao')
+        localStorage.clear()
+      }
+
+    //가이드 등록 모달 관련 함수
+    const handleOpen = () => {
+        if(localStorage.getItem("token")) setOpen(true);
+    };
+    const handleClose = () => setOpen(false);
+
+    //검색관련 함수
+    useEffect(() => {
+        handleSearchKeyword();
+    }, [location.pathname]);
+    
 
     const handleSearchKeyword = () => {
         if (!location.pathname.includes('/product')) {
             setSearchKeyword('');
         }
     };
-
-    useEffect(() => {
-        handleSearchKeyword();
-    }, [location.pathname]);
-
-    const handleOpen = () => {
-        if(localStorage.getItem("token")) setOpen(true);
-    };
-    const handleClose = () => setOpen(false);
 
     const handleChange = (event) => {
         setSearchKeyword(event.target.value);
@@ -66,6 +71,7 @@ const Header = () => {
         navigate(`/product?keyword=${searchKeyword}`);
     };
 
+    //스크롤 관련 함수
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
@@ -78,6 +84,7 @@ const Header = () => {
         scrollToTop();
     };
 
+    //알람 관련 함수
     const handleNotificationClick = () => {
         console.log('알림 아이콘 클릭됨');
         setNotificationCount(prevCount => prevCount + 1);

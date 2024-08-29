@@ -7,12 +7,12 @@ import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import HotelIcon from '@mui/icons-material/Hotel';
 import PostAddIcon from '@mui/icons-material/PostAdd';
-import { useNavigate } from 'react-router-dom';
-import { getHotelAd, postPost } from '../../utils/postData';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getHotelAd, postGetById, postPost, postPut } from '../../utils/postData';
 import { filesPost } from '../../utils/fileData';
 import KakaoMap from '../../utils/KakaoMap';
 
-const GuidePost = () => {
+const GuidePostUpdate = () => {
     const navigate = useNavigate();
     const membersId = localStorage.getItem('membersId');
 
@@ -32,14 +32,35 @@ const GuidePost = () => {
     const hashtagRef = useRef(null);
     const dayRef = useRef({ value: '' }); 
     const cityRef = useRef(null);
+    const contentRef = useRef(null);
     const hotelRef = useRef(null);
     const hotelAdRef = useRef(null);
 
+
+    const { id } = useParams();
+    const [posts, setPosts] = useState({});
+
     useEffect(() => {
+
+      const getData = async () => {
+        try {
+          const fetchedData = await postGetById(id);
+          console.log('fetchedData: ', fetchedData);
+          setEditorContent(fetchedData.content);
+          setSelectedAddress(fetchedData.hotelAd);
+          setPosts(fetchedData || {});
+        } catch (error) {
+          console.error('에러났당', error);
+        }
+      };
+
         const dayPeriod = `${nights}박 ${days}일`;
         if (dayRef.current) {
             dayRef.current.value = dayPeriod;
         }
+
+        getData();
+
     }, [nights, days]);
 
     const modules = {
@@ -95,7 +116,15 @@ const GuidePost = () => {
     const handleAddressChange = (event) => {
         setSelectedAddress(event.target.value);
         hotelAdRef.current.value = event.target.value;
+        handleInputChange('hotelAd',hotelAdRef);
     };
+
+
+    const handleInputChange = (field, ref) => {
+      setPosts({ ...posts, [field]: ref.current.value });
+    };
+
+
     
     const validateFields = () => {
         const newErrors = {};
@@ -108,53 +137,34 @@ const GuidePost = () => {
         return newErrors;
     };
 
-    const createPost = async () => {
-        try {
-            const validationErrors = validateFields();
-            if (Object.keys(validationErrors).length > 0) {
-                setErrors(validationErrors);
-                return;
-            }
-    
-            const formData = new FormData();
-            files.forEach(file => {
-                formData.append('files', file); 
-            });
-    
-            const fileUploadResponse = await filesPost(formData);
-            console.log('fileUploadResponse:', fileUploadResponse);
-    
-            if (!fileUploadResponse.success) {
-                alert('파일 업로드에 실패했습니다.');
-                return;
-            }
 
-            const fileNamesString = files.map(file => file.name).join(',');
-
-            const createData = { 
-                title: titleRef.current?.value || '',
-                hashtag: hashtagRef.current?.value || '',
-                files: fileNamesString,
-                city: cityRef.current?.value || '',
-                content: editorContent || '',
-                day: dayRef.current.value,
-                hotel: hotelRef.current.value,
-                hotelAd: hotelAdRef.current.value,
-                member_id: membersId
-            };
-
-            console.log('createData', createData);
-            await postPost(createData);
-            navigate('/guidemypost');
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
+    const handlePost = async () => {
+      try {
+        const updateData = {
+          title: titleRef.current.value,
+          hashtag: hashtagRef.current.value,
+          files: posts.files,
+          day: dayRef.current.value,
+          city: cityRef.current.value,
+          hotel: hotelRef.current.value,
+          hotelAd: hotelAdRef.current.value,
+          content: editorContent,
+          member_id: membersId,
+          id: posts.id
+        };
+        console.log('수정할 데이타: ',updateData);
+        await postPut(updateData);
+        navigate('/guidemypost');
+      } catch (error) {
+        console.error('Error updating post:', error);
+      }
     };
+
 
     return (
         <Box sx={{ maxWidth: 1200, width: '90%', mx: 'auto', mt: 5 }}>
             <Typography variant="h4" fontWeight="bold" mb={4} sx={{ display: 'flex', alignItems: 'center' }}>
-                게시물 등록하기 <PostAddIcon sx={{ ml: 1 }} />
+                게시물 수정하기 <PostAddIcon sx={{ ml: 1 }} />
             </Typography>
             <Divider />
 
@@ -175,9 +185,12 @@ const GuidePost = () => {
                     fullWidth 
                     label="제목" 
                     margin="normal" 
-                    inputRef={titleRef} 
+                    inputRef={titleRef}
                     error={!!errors.title} 
                     helperText={errors.title}
+                    value={posts.title || ''}
+                    onChange={() => handleInputChange('title', titleRef)}
+                    
                 />
                 <TextField 
                     fullWidth 
@@ -186,6 +199,8 @@ const GuidePost = () => {
                     inputRef={hashtagRef} 
                     error={!!errors.hashtag} 
                     helperText={errors.hashtag}
+                    value={posts.hashtag || ''}                    
+                    onChange={() => handleInputChange('hashtag', hashtagRef)}
                 />
                 <Button 
                     variant="contained" 
@@ -233,7 +248,7 @@ const GuidePost = () => {
                         value={nights} 
                         onChange={(e) => setNights(e.target.value)} 
                         sx={{ width: '48%' }} 
-                        error={!!errors.dayPeriod} 
+                        error={!!errors.dayPeriod}
                     />
                     <TextField 
                         label="일" 
@@ -252,6 +267,8 @@ const GuidePost = () => {
                     inputRef={cityRef} 
                     error={!!errors.city} 
                     helperText={errors.city}
+                    value={posts.city || ''}
+                    onChange={() => handleInputChange('city', cityRef)}
                 />
             </Box>
             <Divider />
@@ -299,7 +316,8 @@ const GuidePost = () => {
                     label="호텔" 
                     margin="normal" 
                     inputRef={hotelRef} 
-                    onChange={(e) => setHotel(e.target.value)} 
+                    onChange={(e) => handleInputChange('hotel', hotelRef)}
+                    value={posts.hotel || ''}
                 />
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2}}>
                     <Button 
@@ -346,12 +364,12 @@ const GuidePost = () => {
             <Divider />
 
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4 }}>
-                <Button variant="contained" color="primary" onClick={createPost}>
-                    등록하기
+                <Button variant="contained" color="primary" onClick={handlePost}>
+                    수정하기
                 </Button>
             </Box>
         </Box>
     );
 };
 
-export default GuidePost;
+export default GuidePostUpdate;

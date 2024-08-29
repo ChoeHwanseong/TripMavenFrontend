@@ -8,16 +8,16 @@ import { deleteProfile, fetchedData, updateProfile } from '../../utils/memberDat
 const MypageProfile = () => {
   const [profileData, setProfileData] = useState(null);
   const [certificateFileName, setCertificateFileName] = useState('');
-  const { id } = useParams();
+  const { id } = useParams(); //관리자 페이지에서 유저 목록 클릭시 필요한 파라미터임
 
-  const membersId = localStorage.getItem('membersId');
-
+  //원래 프로필페이지에서는 이거 쓰다가 회원목록에서 넘어온 id값 있으면 id로 조회하기
+  const membersId = localStorage.getItem('membersId'); 
   const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const fetchData = await fetchedData(id);
+        const fetchData = await fetchedData(id?id:membersId);
         setProfileData(fetchData);
       } catch (error) {
         console.error('에러났당', error);

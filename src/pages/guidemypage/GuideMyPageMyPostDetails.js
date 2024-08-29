@@ -90,9 +90,9 @@ const GuideMyPageMyPostDetails = () => {
           </tbody>
         </table>
         <div className={styles.buttonControl}>
-          <button className={styles.aiButton}>AI 교육 들어보기</button>
+          <button className={styles.aiButton} onClick={()=>{navigate(`/postHeader/${state.id}`)}}>AI 교육 들어보기</button>
         </div>
-
+      
         <div className={styles.imageGallery}>
           {fileUrls.length > 0 ? (
             fileUrls.map((fileUrl, index) => (

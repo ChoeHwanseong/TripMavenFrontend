@@ -61,18 +61,19 @@ import ChattingRoom from './pages/chat/ChattingRoom';
 import AiServiceInfo from './pages/aiservicepage/AIServiceInfo';
 import DeviceCheckComponent from './pages/webrecord/DeviceCheckComponent';
 import WebcamRecorder from './pages/webrecord/WebcamRecorder';
-import GuidePostCopy from './pages/guidemypage/WebEditor';
-import PostHeader from './pages/guidemypage/PostHeader';
 import LoginSuccess from './pages/login/LogInSuccess';
+import GuidePostDetails from './pages/guidemypage/GuidePostDetails';
+import GuidePostUpdate from './pages/guidemypage/GuidePostUpdate';
 import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
+import QuizForm from './pages/aiservicepage/QuizForm1';
+import QuizForm1 from './pages/aiservicepage/QuizForm1';
+import QuizForm2 from './pages/aiservicepage/QuizForm2';
 
 
 
 function App() {
 
-  const Logout=()=>{
-    const loginType = localStorage.getItem('');
-  }
+  
 
   return <>
     <Routes>
@@ -91,23 +92,21 @@ function App() {
 
           
           {/* GUIDE */}
-          <Route path='/guidemypagemypostdetails/:id' element={<GuideMyPageMyPostDetails/>}/>
           <Route path='/guidemypost' element={<GuideMyPageMyPost/>}/>
-          {/*<Route path='/guideaskdetails' element={<GuideAskDetails/>}/>*/}
   
           {/*<Route path='/guideask' element={<GuideAsk/>}/>*/}
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
           <Route path="/guideAsk" element={<GuideAsk />} />
         
-          <Route path='/guidePost/:id' element={<GuidePost/>}/>
-          <Route path='/guideUpdatePost/:id' element={<GuideUpdatePost/>}/>
+           <Route path='/guidePost/:id' element={<GuidePost/>}/>
           
           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
           <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
            */}
 
-{/* 아래 테스트용 */}
-<Route path='/postHeader' element={<PostHeader/>}/>
+            
+            <Route path='/guidePostDetails/:id' element={<GuidePostDetails/>}/>
+            <Route path='/guidePostUpdate/:id' element={<GuidePostUpdate/>}/>
 
            {/* USER */}
           <Route path='/userreview' element={<UserReview/>}/>
@@ -156,7 +155,10 @@ function App() {
         <Route path='/findpassword3' element={<FindPassword3/>}/>
         <Route path='/passwordchange' element={<PasswordChangeForm/>}/>
         <Route path='/aiserviceinfo' element={<AiServiceInfo/>}/>
+        {/* <Route path='/precautionspage1' element={<PrecautionsPage1/>}/> */}
         <Route path='/precautionspage1' element={<PrecautionsPage1/>}/>
+        <Route path='/quizform1' element={<QuizForm1/>}/>
+        <Route path='/quizform2' element={<QuizForm2/>}/>
         
         
 

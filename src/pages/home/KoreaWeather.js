@@ -88,10 +88,6 @@ const KoreaWeatherMap = ({ selectedRegion, setSelectedRegion }) => {
     selectedRegion && setHoveredRegion(weatherData[changeRegionName[selectedRegion.name]]); 
   },[selectedRegion])
 
-  useEffect(()=>{
-    //console.log(hoveredRegion);
-  },[hoveredRegion]);
-
   const getRegionWeather = (geo) => {
     const mapRegionName = geo.properties.name;
     const weather = weatherData[mapRegionName];
@@ -116,8 +112,8 @@ const KoreaWeatherMap = ({ selectedRegion, setSelectedRegion }) => {
             {({ geographies }) =>
               geographies.map(geo => {
                 const weather = getRegionWeather(geo);
-                console.log(selectedRegion);
-                console.log(hoveredRegion);
+                //console.log(selectedRegion);
+                //console.log(hoveredRegion);
                 const isSelected = geo.properties.name === (hoveredRegion ? hoveredRegion.city : selectedRegion && changeRegionName[selectedRegion.name]);
                 return (
                   <Geography
