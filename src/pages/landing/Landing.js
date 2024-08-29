@@ -1,18 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import styles from '../../styles/landing/Landing.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faMapMarkedAlt, faEnvelope, faMobileAlt, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../../components/Footer';
-import sightseeingImage from '../../images/sightseeing.jpg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+// Import images
+import Logo from '../../images/jellyfish.gif';
+import locationGif from '../../images/Location.gif';
+import envelopeGif from '../../images/Envelope.gif';
+import telephoneGif from '../../images/Telephone.gif';
+import sttIcon from '../../images/STT.gif';
+import nlpIcon from '../../images/NLP.gif';
+import multimodalIcon from '../../images/MM.gif';
+import beachWithBoats from '../../images/trip.jpg';
+import koreamap from '../../images/Event.png';
+import santoriniView from '../../images/travel.jpg';
+import scrollTopGif from '../../images/scroll-top.gif';
+import bgVideo from '../../videos/BG-video.mp4';
 
-const Landing = () => {
+const TravelLandingPage = () => {
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
   const [isNavbarShrunk, setIsNavbarShrunk] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const images = ['trip1.jpg', 'trip2.jpg', 'trip3.jpg']; // Add your image filenames here
+  const [showPage, setShowPage] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,25 +38,14 @@ const Landing = () => {
       }
     };
 
-    const imageInterval = setInterval(() => {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-        setIsTransitioning(false);
-      }, 1000); // 페이드 아웃 시간
-    }, 5000);
-
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
-
-    handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
-      clearInterval(imageInterval);
     };
-  }, [images.length]);
+  }, []);
 
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
 
@@ -56,123 +56,157 @@ const Landing = () => {
     });
   };
 
+  const scrollToSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleStartClick = () => {
+    setShowPage(false);
+    setTimeout(() => navigate('/home'), 300); // 300ms is the transition time
+  };
+
   return (
-    <div id="page-top">
-      <nav className={`${styles.navbar} ${isNavbarShrunk ? styles.navbarShrink : ''}`}>
-        <div className={styles.navbarContainer}>
-          <a className={styles.navbarBrand} href="#page-top" onClick={()=>navigate('/home')}>TripMaven</a>
-          <button className={styles.navbarToggler} type="button" onClick={handleNavCollapse}>
-            <FontAwesomeIcon icon={faBars} />
+    <CSSTransition
+      in={showPage}
+      timeout={300}
+      classNames={{
+        enter: styles.fadeEnter,
+        enterActive: styles.fadeEnterActive,
+        exit: styles.fadeExit,
+        exitActive: styles.fadeExitActive,
+      }}
+      unmountOnExit
+    >
+      <div className={styles.pageWrapper} id="page-top">
+        <nav className={`${styles.navbar} ${isNavbarShrunk ? styles.navbarShrink : ''}`}>
+          <div className={styles.navbarContainer}>
+            <a className={styles.navbarBrand} href="#page-top" onClick={() => navigate('/home')}>TripMaven</a>
+            <button className={styles.navbarToggler} type="button" onClick={handleNavCollapse}>
+              <FontAwesomeIcon icon={faBars} />
+            </button>
+            <ul className={`${styles.navbarNav} ${!isNavCollapsed ? styles.show : ''}`}>
+              <li className={styles.navItem}><a className={styles.navLink} href="#about" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>About</a></li>
+              <li className={styles.navItem}><a className={styles.navLink} href="#features" onClick={(e) => { e.preventDefault(); scrollToSection('features'); }}>Features</a></li>
+              <li className={styles.navItem}><a className={styles.navLink} href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>Contact</a></li>
+              <li className={styles.navItem}><a className={styles.navLink} href="/login">Login</a></li>
+            </ul>
+          </div>
+        </nav>
+
+        <div className={styles.contentWrapper}>
+          <div className={styles.travelPage}>
+            {/* Hero Section */}
+            <div className={styles.heroSection}>
+              <div className={styles.videoOverlay}></div>
+              <video autoPlay loop muted className={styles.heroVideo}>
+                <source src={bgVideo} type="video/mp4" />
+              </video>
+              <div className={styles.heroContent}>
+                <img src={Logo} alt="Travel logo" className={styles.logo} />
+                <h1 className={styles.heroTitle}>TRIPMAVEN</h1>
+                <h2 className={styles.heroSubtitle}>프리랜서 여행 가이드의 완벽한 파트너,<br />
+                TripMaven을 경험하세요.</h2>
+                <button className={styles.btn} onClick={handleStartClick}>
+                  <span className={styles.btnText}>시작하기</span>
+                </button>
+              </div>
+            </div>
+
+            {/* About section */}
+            <div className={`${styles.section} ${styles.tealSection}`} id="about">
+              <div className={`${styles.container} ${styles.flexContainer}`}>
+                <div className={styles.flexHalf}>
+                  <h2 className={styles.sectionTitle}>소개를 하자면</h2>
+                  <p className={styles.sectionText}>"MAVEN"은 영어로 전문가라는 뜻입니다 </p>
+                  <p className={styles.sectionText}>우리는 여러분에게 AI를 이용하여 잊지 못할 최적의 여행을 선사합니다</p>
+                </div>
+                <div className={`${styles.flexHalf} ${styles.imageWrapper}`}>
+                  <img src={beachWithBoats} alt="Beach with boats" className={styles.sectionImage} />
+                </div>
+              </div>
+            </div>
+
+            {/* Features section */}
+            <div className={`${styles.section} ${styles.darkTealSection}`}>
+              <div className={`${styles.container} ${styles.flexContainer}`}>
+                <div className={styles.flexHalf}>
+                  <h2 className={styles.sectionTitle}>고객을 위하여</h2>
+                  <p className={styles.sectionText}>지역만 검색하면 날씨와 행사들을 한눈에 찾아볼 수 있습니다.<br/>
+                  고객들께서 여러분이 가고자 하는곳에 어디든 가이드가 있습니다 </p>
+                </div>
+                <div className={`${styles.flexHalf} ${styles.imageWrapper}`}>
+                  <img src={koreamap} alt="Tropical beach" className={styles.sectionImage} />
+                </div>
+              </div>
+            </div>
+
+            {/* News Features section */}
+            <div className={`${styles.section} ${styles.brightTealSection}`} id="features">
+              <div className={styles.container}>
+                <h2 className={`${styles.sectionTitle} ${styles.center}`}>
+                  TripMaven의 주기능
+                </h2>
+                <p className={styles.sectionSubtitle}>
+                  저희는 행동, 시선, 표정을 평가하여 가이드 여러분의 능력을 향상시켜줍니다<br/>
+                  여행지 소개, 고객 응대 등을 평가받고 향상시켜 보세요!         
+                </p>
+                <div className={styles.featuresContainer}>
+                  {[
+                    { title: '음성인식 기술 (STT)', icon: sttIcon, description: '음성을 텍스트로 변환하는 STT 기술' },
+                    { title: '자연어 처리기술(NLP)', icon: nlpIcon, description: '말을 분석 및 이해하는 NLP 기술' },
+                    { title: '멀티모달 기술', icon: multimodalIcon, description: '다양한 유형의 데이터를 동시 처리하는 기술 ' }
+                  ].map((feature, index) => (
+                    <div key={index} className={styles.featureCard}>
+                      <img src={feature.icon} alt={feature.title} className={styles.featureIcon} />
+                      <div className={styles.featureContent}>
+                        <h3 className={styles.featureTitle}>{feature.title}</h3>
+                        <p className={styles.featureDescription}>{feature.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Us section */}
+            <div className={styles.contactSection} id="contact">
+              <div className={styles.contactImageWrapper}>
+                <img src={santoriniView} alt="World map with travel items" className={styles.contactImage} />
+                <h2 className={styles.contactTitle}>Contact Us</h2>
+              </div>
+              <div className={styles.contactInfoWrapper}>
+                <h2 className={styles.contactInfoTitle}>연락처</h2>
+                <div className={styles.contactInfo}>
+                  <div className={styles.infoGroup}>
+                    <img src={locationGif} alt="Location" className={styles.icon} />
+                    <span className={styles.infoText}>한국 ICT 인재 개발원</span>
+                  </div>
+                  <div className={styles.infoGroup}>
+                    <img src={telephoneGif} alt="Telephone" className={styles.icon} />
+                    <span className={styles.infoText}>02-739-7235</span>
+                  </div>
+                  <div className={styles.infoGroup}>
+                    <img src={envelopeGif} alt="Envelope" className={styles.icon} />
+                    <span className={styles.infoText}>tripmaven1234@gmail.com</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Footer />
+        
+        {showScrollTop && (
+          <button className={styles.scrollTopButton} onClick={scrollToTop}>
+            <img src={scrollTopGif} alt="Scroll to top" className={styles.scrollTopIcon} />
           </button>
-          <ul className={`${styles.navbarNav} ${!isNavCollapsed ? styles.show : ''}`}>
-            <li className={styles.navItem}><a className={styles.navLink} href="#about">About</a></li>
-            <li className={styles.navItem}><a className={styles.navLink} href="#contact">Contact</a></li>
-            <li className={styles.navItem}><a className={styles.navLink} href="/login">Login</a></li>
-          </ul>
-        </div>
-      </nav>
-
-      <header className={styles.masthead}>
-        <div 
-          className={`${styles.backgroundLayer} ${styles[`background${currentImageIndex + 1}`]}`}
-          style={{
-            opacity: isTransitioning ? 0 : 1,
-            transform: isTransitioning ? 'scale(1.05) translateY(-100px)' : 'scale(1) translateY(0)',
-            transition: 'opacity 1s ease-in-out, transform 5s ease-in-out'
-          }}
-        ></div>
-        <div className="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
-          <div className="d-flex justify-content-center">
-            <div className={styles.mastheadContent}>
-              <h1 className={styles.mastheadHeading}>TRIPMAVEN</h1>
-              <h2 className={styles.mastheadSubheading}>
-                프리랜서 여행 가이드의 완벽한 파트너,<br />
-                AI 기술로 더 편리한 서비스를 경험하세요.
-              </h2>
-              <a className={styles.btn} href="/home">시작하기</a>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <section className={styles.aboutSection} id="about">
-        <div className="container px-4 px-lg-5">
-          <div className="row gx-4 gx-lg-5 justify-content-center">
-            <div className="col-lg-8">
-              <h2 className="text-white mb-4">해파리와 함께</h2>
-              <p className="text-white-50">
-                해파리는 당신의 여행에 있어 행복(Happy)을 찾는(Finder) 리포터(Reporter)의 역할을 해줄꺼에요
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.projectsSection} id="projects">
-        <div className="container px-4 px-lg-5">
-          <div className="row gx-0 mb-4 mb-lg-5 align-items-center">
-            <div className="col-xl-8 col-lg-7"></div>
-            <div className="col-xl-4 col-lg-5">
-              <div className="featured-text text-center text-lg-left">
-                <h4>TripMaven</h4>
-                <p className="text-black-50 mb-0"></p>
-              </div>
-            </div>
-          </div>
-          <div className="row gx-0 mb-5 mb-lg-0 justify-content-center">
-            <div className="col-lg-6">
-              <div className={styles.projectCard}>
-                <img className={styles.projectImage} src={sightseeingImage} alt="Sightseeing" />
-                <div className={styles.projectText}>
-                  <h4 className="text-white">AI를 접목한 기술</h4>
-                  <p className="mb-0 text-white-50"></p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="row gx-0 justify-content-center">
-            <div className="col-lg-6">
-              <div className={styles.projectCard}>
-                <img className={styles.projectImage} src={sightseeingImage} alt="Sightseeing" />
-                <div className={styles.projectText}>
-                  <h4 className="text-white">가이드와 고객 모두 만족할만한 편리함</h4>
-                  <p className="mb-0 text-white-50"></p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.contactSection} id="contact">
-        <div className={styles.contactContainer}>
-          <div className={styles.contactCard}>
-            <FontAwesomeIcon icon={faMapMarkedAlt} className={styles.contactIcon} />
-            <h4 className={styles.contactTitle}>ADDRESS</h4>
-            <div className={styles.contactInfo}>소재지</div>
-          </div>
-          <div className={styles.contactCard}>
-            <FontAwesomeIcon icon={faEnvelope} className={styles.contactIcon} />
-            <h4 className={styles.contactTitle}>EMAIL</h4>
-            <div className={styles.contactInfo}>이메일 주소</div>
-          </div>
-          <div className={styles.contactCard}>
-            <FontAwesomeIcon icon={faMobileAlt} className={styles.contactIcon} />
-            <h4 className={styles.contactTitle}>PHONE</h4>
-            <div className={styles.contactInfo}>전화번호</div>
-          </div>
-        </div>
-      </section>
-      
-      <Footer />
-      
-      {showScrollTop && (
-        <button className={styles.scrollTopButton} onClick={scrollToTop}>
-          <FontAwesomeIcon icon={faArrowUp} />
-        </button>
-      )}
-    </div>
+        )}
+      </div>
+    </CSSTransition>
   );
 };
 
-export default Landing;
+export default TravelLandingPage;

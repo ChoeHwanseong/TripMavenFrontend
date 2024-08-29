@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/login/SignUp.module.css';
-import { SignUp } from '../../utils/memberData';
-import { useNavigate } from 'react-router-dom';
+import { findMemberbyEmail, SignUp } from '../../utils/memberData';
+import { useLocation } from 'react-router-dom';
 import useValid from './useValid';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { styled } from '@mui/material/styles';
@@ -16,67 +16,69 @@ const postcodeScriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/
 
 // Custom Stepper styles
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
-  [`&.${stepConnectorClasses.alternativeLabel}`]: {
-    top: 22,
-  },
-  [`&.${stepConnectorClasses.active}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage: 'linear-gradient( 95deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
+    [`&.${stepConnectorClasses.alternativeLabel}`]: {
+        top: 22,
     },
-  },
-  [`&.${stepConnectorClasses.completed}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage: 'linear-gradient( 95deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
+    [`&.${stepConnectorClasses.active}`]: {
+        [`& .${stepConnectorClasses.line}`]: {
+            backgroundImage: 'linear-gradient( 95deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
+        },
     },
-  },
-  [`& .${stepConnectorClasses.line}`]: {
-    height: 3,
-    border: 0,
-    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
-    borderRadius: 1,
-    width: '250px',
-  },
+    [`&.${stepConnectorClasses.completed}`]: {
+        [`& .${stepConnectorClasses.line}`]: {
+            backgroundImage: 'linear-gradient( 95deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
+        },
+    },
+    [`& .${stepConnectorClasses.line}`]: {
+        height: 3,
+        border: 0,
+        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
+        borderRadius: 1,
+        width: '250px',
+    },
 }));
 
 const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
-  zIndex: 1,
-  color: '#fff',
-  width: 50,
-  height: 50,
-  display: 'flex',
-  borderRadius: '50%',
-  justifyContent: 'center',
-  alignItems: 'center',
-  ...(ownerState.active && {
-    backgroundImage: 'linear-gradient( 136deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
-    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
-  }),
-  ...(ownerState.completed && {
-    backgroundImage: 'linear-gradient( 136deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
-  }),
+    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
+    zIndex: 1,
+    color: '#fff',
+    width: 50,
+    height: 50,
+    display: 'flex',
+    borderRadius: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...(ownerState.active && {
+        backgroundImage: 'linear-gradient( 136deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
+        boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+    }),
+    ...(ownerState.completed && {
+        backgroundImage: 'linear-gradient( 136deg, rgb(135,206,250) 0%, rgb(70,130,180) 50%, rgb(0,191,255) 100%)',
+    }),
 }));
 
 function ColorlibStepIcon(props) {
-  const { active, completed, className } = props;
+    const { active, completed, className } = props;
 
-  const icons = {
-    1: <Check />,
-    2: <Check />,
-    3: <Check />,
-  };
+    const icons = {
+        1: <Check />,
+        2: <Check />,
+        3: <Check />,
+    };
 
-  return (
-    <ColorlibStepIconRoot ownerState={{ completed, active }} className={className}>
-      {icons[String(props.icon)]}
-    </ColorlibStepIconRoot>
-  );
+    return (
+        <ColorlibStepIconRoot ownerState={{ completed, active }} className={className}>
+            {icons[String(props.icon)]}
+        </ColorlibStepIconRoot>
+    );
 }
 
 const Signup = () => {
-    const navigate = useNavigate();
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
+
     const [activeStep, setActiveStep] = useState(0);
-    const [addressObj, setAddressObj] = useState({ areaAddress: '', townAddress: '' });
+    const [addressObj, setAddressObj] = useState({ areaAddress: '', townAddress: '', detailAddress: '' });
 
     // Form validations
     const email = useValid('', (value) =>
@@ -92,12 +94,46 @@ const Signup = () => {
     const region = useValid('', (value) => !value ? '관심 지역을 선택하세요' : '');
     const gender = useValid('', (value) => !value ? '성별을 선택하세요' : '');
     const birthday = useValid('', (value) => !value ? '생년월일을 입력하세요' : '');
-    const address = useValid(addressObj, (value) => 
+    const address = useValid(addressObj, (value) =>
         !value.areaAddress || !value.townAddress ? '주소를 입력하세요' : ''
     );
-
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        let isValid = true;
+        if (activeStep == 0) {
+            if (email.value == '') {
+                email.setError('이메일을 입력하세요');
+                isValid = false;
+            }
+            if (name.value == '') {
+                name.setError('이름을 입력하세요');
+                isValid = false;
+            }
+            if (password.value == '') {
+                password.setError('비밀번호를 입력하세요');
+                isValid = false;
+            }
+            if (passwordConfirm.value == '') {
+                passwordConfirm.setError('비밀번호 확인을 입력하세요');
+                isValid = false;
+            }
+        }
+        if (activeStep == 1) {
+            if (region.value == "") {
+                region.setError('관심 지역을 선택하세요');
+                isValid = false;
+            }
+            if (gender.value == "") {
+                gender.setError('성별을 선택하세요');
+                isValid = false;
+            }
+            if (birthday.value == '') {
+                birthday.setError('생년월일을 입력하세요');
+                isValid = false;
+            }
+        }
+        if (isValid) setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        else alert('항목을 모두 입력해주세요.');
+
     };
 
     const handleBack = () => {
@@ -120,10 +156,10 @@ const Signup = () => {
                 email: email.value,
                 name: name.value,
                 password: password.value,
-                region: region.value,
+                interCity: region.value,
                 gender: gender.value,
                 birthday: birthday.value,
-                address: `${addressObj.areaAddress} ${addressObj.townAddress}`,
+                address: `${addressObj.areaAddress} ${addressObj.townAddress} ${addressObj.detailAddress}`,
                 loginType: 'local'
             };
             console.log(form);
@@ -133,9 +169,37 @@ const Signup = () => {
         }
     };
 
+    useEffect(() => {
+        const getEmail = query.get("email");
+        const getData = async () => {
+            const newMember = await findMemberbyEmail(getEmail);
+            console.log('%o', newMember);
+            if (newMember) {
+                alert('회원가입을 진행해주세요.');
+                document.querySelector('#email').setAttribute('readonly', true);
+            }
+            switch (newMember.loginType) {
+                case 'google': //구글에서 회원가입했다면
+                    console.log(newMember.loginType);
+                    email.setValue(newMember.email);
+                    name.setValue(newMember.name);
+                    password.setValue(newMember.password);
+                    passwordConfirm.setValue(newMember.password);
+                    break;
+                case 'naver': //네이버에서 햇다면
+                    console.log(newMember);
+                    break;
+                default: //캌캌오
+
+
+            }
+        }
+        if (getEmail) getData();
+    }, []);
+
     const DaumPost = () => {
         const open = useDaumPostcodePopup(postcodeScriptUrl);
-    
+
         const handleComplete = (data) => {
             let fullAddress = data.address;
             let extraAddress = '';
@@ -150,16 +214,44 @@ const Signup = () => {
                 fullAddress = fullAddress.replace(localAddress, '');
                 setAddressObj({
                     areaAddress: localAddress,
-                    townAddress: fullAddress += (extraAddress !== '' ? `(${extraAddress})` : '')
+                    townAddress: fullAddress += (extraAddress !== '' ? `(${extraAddress})` : ''),
+                    detailAddress: ''
                 });
             }
         }
-    
+
         const handleClick = () => {
-            open({onComplete: handleComplete});
+            open({ onComplete: handleComplete });
         }
-    
-        return <button type="button" onClick={handleClick} className={styles.searchButton2}>주소찾기</button>
+
+        const handleDetailAddressChange = (e) => {
+            setAddressObj(prev => ({ ...prev, detailAddress: e.target.value }));
+        }
+
+        return (
+            <>
+                <div className={styles.inputWithButton}>
+                    <input
+                        type="text"
+                        id="address"
+                        name="address"
+                        value={`${addressObj.areaAddress} ${addressObj.townAddress}`}
+                        readOnly
+                        placeholder="주소를 입력하세요"
+                    />
+                    <button type="button" onClick={handleClick} className={styles.searchButton2}>주소찾기</button>
+                </div>
+                <input
+                    type="text"
+                    id="detailAddress"
+                    name="detailAddress"
+                    value={addressObj.detailAddress}
+                    onChange={handleDetailAddressChange}
+                    placeholder="상세주소를 입력하세요"
+                    className={styles.detailAddressInput}
+                />
+            </>
+        );
     }
 
     const renderStepContent = (step) => {
@@ -247,7 +339,6 @@ const Signup = () => {
                                 <option value="gyeongbuk">경상북도</option>
                                 <option value="gyeongnam">경상남도</option>
                                 <option value="jeju">제주특별자치도</option>
-                                {/* Add other options */}
                             </select>
                             {region.error && <p className={styles.error}>{region.error}</p>}
                         </div>
@@ -280,17 +371,7 @@ const Signup = () => {
                         </div>
                         <div className={styles.inputGroup}>
                             <label htmlFor="address">주소</label>
-                            <div className={styles.inputWithButton}>
-                                <input
-                                    type="text"
-                                    id="address"
-                                    name="address"
-                                    value={`${addressObj.areaAddress} ${addressObj.townAddress}`}
-                                    readOnly
-                                    placeholder="주소를 입력하세요"
-                                />
-                                <DaumPost />
-                            </div>
+                            <DaumPost />
                             {address.error && <p className={styles.error}>{address.error}</p>}
                         </div>
                     </>
@@ -304,7 +385,7 @@ const Signup = () => {
                         <p>관심 지역: {region.value}</p>
                         <p>성별: {gender.value}</p>
                         <p>생년월일: {birthday.value}</p>
-                        <p>주소: {`${addressObj.areaAddress} ${addressObj.townAddress}`}</p>
+                        <p>주소: {`${addressObj.areaAddress} ${addressObj.townAddress} ${addressObj.detailAddress}`}</p>
                     </div>
                 );
             default:
@@ -323,7 +404,7 @@ const Signup = () => {
                     </Step>
                 ))}
             </Stepper>
-            <form className={styles.signupForm} onSubmit={handleSubmit} style={{marginTop: '20px'}}>
+            <form className={styles.signupForm} onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
                 {renderStepContent(activeStep)}
                 <div className={styles.buttonGroup}>
                     <button
@@ -335,7 +416,7 @@ const Signup = () => {
                         이전
                     </button>
                     {activeStep === steps.length - 1 ? (
-                        <button type="submit" className={styles.signupButton} onChange={handleSubmit}>
+                        <button type="submit" className={styles.signupButton} onClick={handleSubmit}>
                             가입
                         </button>
                     ) : (

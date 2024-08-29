@@ -15,7 +15,9 @@ const useValid = (initialState, validate) => {
     return {
         value,
         onChange,
-        error,
+        error,  
+        setValue,
+        setError
     };
 };
 

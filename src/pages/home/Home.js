@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Button, Grid, TextField, Typography, Card, CardMedia, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import KoreaWeatherMap from './KoreaWeather';
@@ -7,6 +7,7 @@ import { RoleContext } from '../../components/context/roleContext';
 import styles from '../../styles/home/Home.module.css';
 import { WidthFull } from '@mui/icons-material';
 import { useFormik } from 'formik';
+import { fetchedData } from '../../utils/memberData';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -16,14 +17,11 @@ const Home = () => {
     navigate(`/product?city=${city}`);
   };
 
-  //form 요소 상태관리 훅함수
   const formik = useFormik({ 
-    initialValues: { //초기값 설정
-      keyword: '', //form 형식의 name 속성명이랑 일치시켜야 함
+    initialValues: {
+      keyword: '',
       days: '', 
     },
-    //유효성 검사도 쉽게 추가할 수 있음
-    //https://formik.org/docs/examples/with-material-ui
     onSubmit: (values) => {
       navigate(`/product?keyword=${values.keyword}&days=${values.days}`);
     },
@@ -39,7 +37,7 @@ const Home = () => {
             boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
             background: '#ffffff',
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            border: '1px solid #0066ff'
+           
           }}>
             <TextField
               placeholder="검색어를 입력하세요"
@@ -88,6 +86,7 @@ const Home = () => {
         </form>
 
         {/* 인기 여행지 */}
+        <div>
         <Box sx={{
           background: '#ffffff',
           pl: 3, pt: 3, pr: 3,
@@ -121,7 +120,6 @@ const Home = () => {
                     onClick={() => handleCityClick(city)}
                     sx={{
                       borderRadius: 3,
-
                       cursor: 'pointer',
                       transition: 'transform 0.2s ease',
                       '&:hover': { transform: 'scale(1.05)' }
@@ -142,6 +140,7 @@ const Home = () => {
             </Grid>
           </Box>
         </Box>
+        </div>
 
         {/* 정보 섹션 */}
         <Grid container spacing={5}>
@@ -170,12 +169,30 @@ const Home = () => {
               border: '1px solid #f1f1f1',
               height: '100%'
             }}>
-              <Typography variant="h6" fontWeight="bold" gutterBottom>지역 행사</Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="h6" fontWeight="bold">지역 행사</Typography>
+                {selectedRegion && (
+                  <Button
+                    variant="contained"
+                    onClick={() => handleCityClick(selectedRegion.name)}
+                    sx={{
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      color: '#ffffff',
+                      backgroundColor: '#0066ff',
+                      borderRadius: 2,
+                      '&:hover': { backgroundColor: '#0056b3' }
+                    }}
+                  >
+                    {`${selectedRegion.name} - 추천 상품`}
+                  </Button>
+                )}
+              </Box>
               <RegionEventInfo
                 width="100%"
                 height="400px"
-                setSelectedRegion={setSelectedRegion}
                 selectedRegion={selectedRegion}
+                setSelectedRegion={setSelectedRegion}
               />
             </Box>
           </Grid>

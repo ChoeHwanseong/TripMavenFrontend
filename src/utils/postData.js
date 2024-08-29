@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = "/spring/product"
+const baseUrl = "http://localhost:9099/product"
 
 // 상품 등록
 export const postPost = (createData) => {
@@ -63,5 +63,20 @@ export const postDelete = (id) => {
   console.log('id : ',id)
   return axios.delete(baseUrl + `/${id}`).then(res =>{
       return res;
+  })
+}
+
+
+
+// 호텔 이름으로 호텔 주소 검색 컨트롤러 가져오기
+export const getHotelAd = (hotel) => {
+  console.log('hotel: ',hotel)
+  return axios.get(baseUrl + '/address', {
+    params: {
+      hotel: hotel
+    }
+  }).then(res =>{
+    console.log('res',res.data.documents)
+      return res.data.documents;
   })
 }

@@ -1,7 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar, Button } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar, Button, Modal } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { fetchData } from '../../utils/memberData';
+import GuideRegistration from '../registerguidepage/RegisterGuide';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  padding: 0,
+  width: 1200,
+  height: '85vh',
+  bgcolor: 'background.paper',
+  border: '1px solid primary',
+  borderRadius: '16px',
+  boxShadow: 24,
+};
 
 const MemberList = () => {
   const [data, setData] = useState([]);
@@ -13,9 +28,8 @@ const MemberList = () => {
       try {
         const fetchedData = await fetchData();
         setData(fetchedData);
-      } catch (error) {
-        console.error('에러났당', error);
       }
+      catch (error) {console.error('에러났당', error);}
     };
 
     getData();
@@ -33,7 +47,23 @@ const MemberList = () => {
     navigate(`/mypageprofile/${user.id}`);
   };
 
-  return (
+  //모달관련 스테이트, 함수
+  const [open, setOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+
+  const handleOpen = (userId) => {
+    if(localStorage.getItem("token")) {
+      setOpen(true);
+      setSelectedUserId(userId);
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedUserId(null);
+  };
+
+  return <>
     <Box sx={{ maxWidth: 1200, p: 3,mt: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" fontWeight="bold">
@@ -66,21 +96,23 @@ const MemberList = () => {
                 hover
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => handleClick(user)}
-                sx={{
-                  cursor: 'pointer',
-                  transition: 'background-color 0.3s',
-                  backgroundColor: hoveredRow === index ? '#D0F0FF' : 'inherit',
-                }}
               >
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.role}</TableCell>
-                <TableCell>{user.email}</TableCell>
+                <TableCell align="center">{user.id}</TableCell>
+
+                <TableCell onClick={() => handleClick(user)} 
+                  sx={{cursor: 'pointer'}}
+                >{user.name}</TableCell>
+
+                <TableCell>{user.role=='USER'?'일반회원':user.role=='GUIDE'?'가이드':'관리자'}</TableCell>
+                
+                <TableCell onClick={() => handleClick(user)} 
+                  sx={{cursor: 'pointer'}}
+                >{user.email}</TableCell>
+
                 <TableCell>{user.telNumber}</TableCell>
                 <TableCell>{user.address}</TableCell>
                 <TableCell>{user.createdAt.split('T')[0]}</TableCell> {/* 시간까지 나옴, 스플릿으로 앞부분만 뿌려주기 */}
-                <TableCell>{user.guidelicense ? '유' : '무'}</TableCell> {/* 자격증 디폴트값 '무', false면 '유' */}
+                <TableCell align="center">{(user.guidelicense && user.role=='USER') ? (<Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={()=>handleOpen(user.id)}>인증 요청</Button>) : '무'}</TableCell> {/* 자격증 디폴트값 '무', false면 '유' */}
               </TableRow>
             ))}
           </TableBody>
@@ -93,7 +125,18 @@ const MemberList = () => {
         <Button>{'>'}</Button>
       </Box>
     </Box>
-  );
+
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+          <GuideRegistration userId={selectedUserId}/>
+      </Box>
+    </Modal>
+  </>
 };
 
 export default MemberList;

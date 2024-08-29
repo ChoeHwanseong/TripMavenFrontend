@@ -22,7 +22,7 @@ const GuideMyPageMyPost = () => {
   }, []);
 
   const handleClick = (post) => {
-    navigate(`/guidemypagemypostdetails/${post.id}`, { state: post });
+    navigate(`/guidePostDetails/${post.id}`, { state: post });
   };
 
   if (!posts) {

@@ -5,7 +5,31 @@ import { Navigate } from 'react-router-dom';
 export const fetchData = async () => {
   try {
     const res = await axios.get('/spring/members');
-    //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
+    return res.data;
+  }
+  catch (error) {
+    console.error('에러났당', error);
+    throw error; 
+  }
+};
+
+//아이디로 멤버 가져오기
+export const fetchedData = async (id) => {
+  try {
+    //console.log(id) //디버그용
+    const res = await axios.get(`/spring/members/id/${id}`);
+    return res.data;
+  }
+  catch (error) {
+    console.error('에러났당', error);
+    throw error; 
+  }
+};
+
+//이메일로 멤버 가져오기
+export const findMemberbyEmail = async (email) => {
+  try {
+    const res = await axios.get(`/spring/members/email/${email}`);
     return res.data;
   }
   catch (error) {
@@ -15,20 +39,6 @@ export const fetchData = async () => {
 };
 
 //회원가입
-export const fetchedData = async (id) => {
-  try {
-    //console.log(id) //디버그용
-    const res = await axios.get(`/spring/members/id/${id}`);
-    //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
-    return res.data;
-  }
-  catch (error) {
-    console.error('에러났당', error);
-    throw error; 
-  }
-};
-
-
 //await axios 꼭 붙이기
 export const SignUp = async (form) => {
   await axios.post('/spring/signup', form)
@@ -38,7 +48,7 @@ export const SignUp = async (form) => {
   })
   .catch(error => {
     // 오류가 발생했을 때의 처리
-    if(error.code == 'ERR_BAD_REQUEST')alert('중복된 아이디입니다.');
+    if(error.code === 'ERR_BAD_REQUEST') alert('중복된 아이디입니다.');
     
   });
   //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
@@ -59,17 +69,31 @@ export const FormLogin = async (form) =>{
     window.localStorage.setItem("role", role);
     window.localStorage.setItem("membersId", response.data.membersId);
     window.localStorage.setItem("refresh", response.data.refresh);
+    window.localStorage.setItem("loginType", "local");
   }
 
   return response;
   }
+
+//로그아웃
+export const logout = async() =>{
+  await axios.post('/spring/logout')
+  .then(res =>{
+    return res
+  })
+  .catch(error => {
+    // 오류가 발생했을 때의 처리
+    if(error.code === 'ERR_BAD_REQUEST') alert('중복된 아이디입니다.');
+    
+  });
+}
 
   
 
 
   //가이드 등록.
   export const toGuide = async (form) =>{
-    const response = await axios.post('http://localhost:9099/toGuide', form ,{headers:{
+    await axios.post('http://localhost:9099/toGuide', form ,{headers:{
       'Content-Type': 'multipart/form-data'}})
       .then(res =>{
         window.localStorage.setItem("role", res.data.role);
@@ -82,8 +106,10 @@ export const FormLogin = async (form) =>{
       
     }
 
+
   export const updateProfile = async (id, updatedData) => {
     try {
+      console.log(updatedData);
       const res = await axios.put(`/spring/members/${id}`, updatedData);
       return res.data;
     } catch (error) {
@@ -91,6 +117,7 @@ export const FormLogin = async (form) =>{
       throw error;
     }
   };
+  
 
   // 회원 탈퇴
   export const deleteProfile = async (id) => {

@@ -1,0 +1,71 @@
+.container {
+    padding: 20px;
+    width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.title {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.question {
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.optionList {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.optionButton {
+    width: 730px;
+    padding: 10px;
+    font-size: 16px;
+    max-width: 730px;
+    text-align: left;
+    border: 1px solid #f1f1f1;
+    background-color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+.optionButton:hover {
+    border-color: #0066ff;
+}
+
+.selected {
+    border-color: #0066ff;
+    background-color: #e6f0ff;
+}
+
+.buttonContainer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    margin-left: 150px;
+}
+
+.nextButton {
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    width: 90px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nextButton:hover {
+    background-color: #0051cc;
+}

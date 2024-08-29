@@ -57,19 +57,24 @@ import FindPassword2 from './pages/login/FindPassword2';
 import FindPassword3 from './pages/login/FindPassword3';
 import FindID2 from './pages/login/FindId2';
 import PasswordChangeForm from './pages/login/PasswordChangeForm';
-import VideoRecorder from './pages/test/test2';
-import DeviceCheckComponent from './pages/test/test1';
 import ChattingRoom from './pages/chat/ChattingRoom';
 import AiServiceInfo from './pages/aiservicepage/AIServiceInfo';
+import DeviceCheckComponent from './pages/aiservicepage/webrecord/DeviceCheckComponent';
+import WebcamRecorder from './pages/aiservicepage/webrecord/WebcamRecorder';
+import LoginSuccess from './pages/login/LogInSuccess';
+import GuidePostDetails from './pages/guidemypage/GuidePostDetails';
+import GuidePostUpdate from './pages/guidemypage/GuidePostUpdate';
+import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
+import QuizForm from './pages/aiservicepage/QuizForm1';
+import QuizForm1 from './pages/aiservicepage/QuizForm1';
+import QuizForm2 from './pages/aiservicepage/QuizForm2';
+import QuizTutorial from './pages/aiservicepage/QuizTutorial';
 
 
 
 function App() {
 
-  /*
-
   
-  */
 
   return <>
     <Routes>
@@ -88,20 +93,21 @@ function App() {
 
           
           {/* GUIDE */}
-          <Route path='/guidemypagemypostdetails/:id' element={<GuideMyPageMyPostDetails/>}/>
           <Route path='/guidemypost' element={<GuideMyPageMyPost/>}/>
-          {/*<Route path='/guideaskdetails' element={<GuideAskDetails/>}/>*/}
   
           {/*<Route path='/guideask' element={<GuideAsk/>}/>*/}
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
           <Route path="/guideAsk" element={<GuideAsk />} />
         
-          <Route path='/guidePost/:id' element={<GuidePost/>}/>
-          <Route path='/guideUpdatePost/:id' element={<GuideUpdatePost/>}/>
+           <Route path='/guidePost/:id' element={<GuidePost/>}/>
           
           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
           <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
            */}
+
+            
+          <Route path='/guidePostDetails/:id' element={<GuidePostDetails/>}/>
+          <Route path='/guidePostUpdate/:id' element={<GuidePostUpdate/>}/>
 
            {/* USER */}
           <Route path='/userreview' element={<UserReview/>}/>
@@ -141,6 +147,7 @@ function App() {
         <Route path="/siteinfo" element={<SiteIntroduction/>}/>
         <Route path="/faq" element={<FAQ/>}/>
         <Route path="/login" element={<Login/>}/>
+        <Route path="/success" element={<LoginSuccess/>}/>
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/findId1' element={<FindID1/>}/>
         <Route path='/findId2' element={<FindID2/>}/>
@@ -149,6 +156,11 @@ function App() {
         <Route path='/findpassword3' element={<FindPassword3/>}/>
         <Route path='/passwordchange' element={<PasswordChangeForm/>}/>
         <Route path='/aiserviceinfo' element={<AiServiceInfo/>}/>
+        {/* <Route path='/precautionspage1' element={<PrecautionsPage1/>}/> */}
+        <Route path='/precautionspage1' element={<PrecautionsPage1/>}/>
+        <Route path='/quizform1' element={<QuizForm1/>}/>
+        <Route path='/quizform2' element={<QuizForm2/>}/>
+        <Route path='/quiztutorial' element={<QuizTutorial/>}/>
         
         
 
@@ -156,11 +168,12 @@ function App() {
         <Route path='/product' element={<ProductBoard/>}/>
         <Route path='/termsservice' element={<TermsService/>}/>
         <Route path='/adminreport' element={<ComplaintForm/>}/>
+        
 
         <Route path='/paymentproc' element={<OrderPopup/>}/>
         <Route path='/payment' element={<PaymentForm/>}/>
         <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
-        <Route path='/record' element={<VideoRecorder/>}/>
+        <Route path='/record' element={<WebcamRecorder/>}/>
         <Route path='/recordcheck' element={<DeviceCheckComponent/>}/>
         
         

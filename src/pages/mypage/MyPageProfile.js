@@ -2,21 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Avatar, Grid } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CircularProgress from '@mui/material/CircularProgress';
 import { deleteProfile, fetchedData, updateProfile } from '../../utils/memberData';
 
 const MypageProfile = () => {
   const [profileData, setProfileData] = useState(null);
   const [certificateFileName, setCertificateFileName] = useState('');
-  const { id } = useParams();
+  const { id } = useParams(); //관리자 페이지에서 유저 목록 클릭시 필요한 파라미터임
 
-  const membersId = localStorage.getItem('membersId');
-
+  //원래 프로필페이지에서는 이거 쓰다가 회원목록에서 넘어온 id값 있으면 id로 조회하기
+  const membersId = localStorage.getItem('membersId'); 
   const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const fetchData = await fetchedData(id);
+        const fetchData = await fetchedData(id?id:membersId);
         setProfileData(fetchData);
       } catch (error) {
         console.error('에러났당', error);
@@ -70,14 +71,17 @@ const MypageProfile = () => {
 
 
   if (!profileData) {
-    return <Typography variant="h6">로딩중</Typography>;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (
     <Box sx={{ p: 7 ,mt:-2,ml:-2}}>
       <Typography variant="h4" fontWeight="bold" gutterBottom>프로필</Typography>
-      <form>
-        <Grid container spacing={2}>
+      <form>        <Grid container spacing={2}>
           <Grid item xs={12} md={2}>
             <Avatar
               src="../../../images/defaultimage.png"
