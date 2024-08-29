@@ -68,6 +68,7 @@ import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
 import QuizForm from './pages/aiservicepage/QuizForm1';
 import QuizForm1 from './pages/aiservicepage/QuizForm1';
 import QuizForm2 from './pages/aiservicepage/QuizForm2';
+import QuizTutorial from './pages/aiservicepage/QuizTutorial';
 
 
 
