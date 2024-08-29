@@ -57,6 +57,7 @@ export const FormLogin = async (form) =>{
     window.localStorage.setItem("role", role);
     window.localStorage.setItem("membersId", response.data.membersId);
     window.localStorage.setItem("refresh", response.data.refresh);
+    window.localStorage.setItem("loginType", response.data.loginType);
   }
 
   return response;

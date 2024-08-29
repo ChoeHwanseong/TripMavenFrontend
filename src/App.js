@@ -70,10 +70,9 @@ import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
 
 function App() {
 
-  /*
-
-  
-  */
+  const Logout=()=>{
+    const loginType = localStorage.getItem('');
+  }
 
   return <>
     <Routes>
