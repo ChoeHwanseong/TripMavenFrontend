@@ -5,9 +5,10 @@ import { faTimes, faHeadset } from '@fortawesome/free-solid-svg-icons'; // 필�
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import {APIKEY} from './apiKey';
 
 // 발급받은 OpenAI API 키를 변수로 저장
-const apiKey = 'sk-eIjzFjsIap-GIoawbDJdGzE97pfLr4jRfbEelfxYQAT3BlbkFJvgJMUh3CYxxAQ32t6bUBIxOrwJgD35Nt4-M95LG3sA';
+const apiKey = APIKEY;
 
 const Chat = () => {
   const [isVisible, setIsVisible] = useState(false); // 챗봇 팝업의 표시 상태를 관리하는 상태 변수

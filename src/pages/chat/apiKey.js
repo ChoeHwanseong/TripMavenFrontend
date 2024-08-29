@@ -1,1 +1,4 @@
-const APIKEY = ''
+
+const APIKEY = '';
+
+export default APIKEY;
