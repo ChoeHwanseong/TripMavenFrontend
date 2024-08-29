@@ -29,4 +29,4 @@ npm install react-router-dom@6 이것두
       npm install http-proxy-middleware --save --legacy-peer-deps
 08/23 npm install uuid --legacy-peer-deps
 08/26 npm install react-quill --legacy-peer-deps
-08/29 npm install react-kakao-maps-sdk
+08/29 npm install react-kakao-maps-sdk --legacy-peer-deps
