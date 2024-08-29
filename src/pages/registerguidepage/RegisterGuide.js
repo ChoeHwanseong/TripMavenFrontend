@@ -12,10 +12,12 @@ const RegisterGuidePage = ({userId}) => {
   const [selectedFile, setSelectedFile] = useState([]);
   const [previewUrl, setPreviewUrl] = useState([]);
   const [loading, setLoading] = useState(false); //로딩 스테이트
+  const [loading2, setLoading2] = useState(false); //로딩 스테이트
   const [ocrResult, setOcrResult] = useState({});
   const [pendingLicense, setPendingLicense] = useState(false);
   const fileInputRef = useRef(null);
   const { memberInfo, setMemberInfo } = useContext(RoleContext);
+  const [verifyResult, setVerifyResult] = useState({});
   
   //input 타입 파일 선택
   const handleFileChange_ = async (event) => {
@@ -42,41 +44,63 @@ const RegisterGuidePage = ({userId}) => {
     const formData = new FormData();
     formData.append('image',fileList[0]);
     formData.append('ocrValue','ocr');
+    let responseData = '';
     try {
       const respData = await ocr(formData);
+      responseData = respData;
       if(respData.success == true){
         setOcrResult((prev)=>({...prev, name:respData.data.name, number:respData.data.number, subject:respData.data.subject}));
       }
     }
     catch (error) {console.error('Error uploading file:', error);}
     setLoading(false);
+    return responseData;
   };
 
+  //자격증 확인사이트 결과 받기
+  const verifyOCRResult = async(ocrResult)=>{
+    const formData = new FormData();
+    formData.append('subject',ocrResult.subject);
+    formData.append('name',ocrResult.name);
+    formData.append('number',ocrResult.number);
+    return await verifyLicense(formData);
+  };
 
   useEffect(() => {
     console.log(userId);
     const getData = async () => {
       try {
-        if(userId){
-          const userInfo = await fetchedData(userId);
+        if(userId){ //회원 목록에서 누른 모달창일 경우(관리자가 누르는 것)
+          const userInfo = await fetchedData(userId); 
           if(userInfo.role==='USER') setPendingLicense(true); //라이센스 인증 중
           const encodedFilename = encodeURIComponent(userInfo.guidelicense); //한글이름파일 인코딩
-          const fileUrl = await fetchLicenseFile(encodedFilename); //서버에서 파일 받아오기
+          const {fileUrl, file} = await fetchLicenseFile(encodedFilename); //서버에서 파일 받아오기
           console.log(fileUrl); //가이드 인증 파일 url
+
           setPreviewUrl([{
             name: userInfo.guidelicense,
             url: fileUrl
           }]);
+
+          const respData = await fileOCR([file]) //ocr해서 결과 보여주기
+          console.log(respData);
+
+          //자격증 확인 페이지 결과 반환
+          setLoading2(true);
+          const result = await verifyOCRResult(respData.data);  
+          setVerifyResult(prev => ({...prev, success:result.success, data:result.data}));
+          setLoading2(false);
         }
-        else if(memberInfo && memberInfo.guidelicense){
+        else if(memberInfo && memberInfo.guidelicense){ //헤더에서 열었을 경우
           if(memberInfo.role==='USER') setPendingLicense(true); //라이센스 인증 중
           const encodedFilename = encodeURIComponent(memberInfo.guidelicense); //한글이름파일 인코딩
-          const fileUrl = await fetchLicenseFile(encodedFilename); //서버에서 파일 받아오기
+          const {fileUrl, file} = await fetchLicenseFile(encodedFilename); //서버에서 파일 받아오기
           console.log(fileUrl); //가이드 인증 파일 url
           setPreviewUrl([{
             name: memberInfo.guidelicense,
             url: fileUrl
           }]);
+          await fileOCR([file]) //ocr해서 결과 보여주기
         }
       }
       catch (error) {console.error('에러났당', error);}
@@ -206,10 +230,16 @@ const RegisterGuidePage = ({userId}) => {
               {userId ? 
               (<Box sx={{ marginTop:'10px' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop:'10px' }}>
-                  <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={()=>{fileOCR(fileInputRef.current.files)}}>확인서 진위확인</Button>
-                  
+                  { (pendingLicense && loading2 ) ?
+                    (<Box sx={{ width: '100%' }}>
+                        <LinearProgress />
+                      </Box>) :
+                    (<Box sx={{ display: 'flex', justifyContent: 'center', marginTop:'20px' }}>
+                        <Typography variant="h7" gutterBottom sx={{fontWeight:'bold'}}>확인결과:</Typography>
+                      </Box>)
+                  }
                 </Box>
-                <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={submitToGuide}>등록 요청</Button>
+                <Button variant="contained" sx={{ backgroundColor: '#0066ff', marginTop:'20px'}} onClick={submitToGuide}>가이드 변경</Button>
               </Box>
               )
               :

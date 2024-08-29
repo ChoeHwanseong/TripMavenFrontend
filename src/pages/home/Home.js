@@ -37,7 +37,7 @@ const Home = () => {
             boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
             background: '#ffffff',
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            border: '1px solid #0066ff'
+           
           }}>
             <TextField
               placeholder="검색어를 입력하세요"

@@ -9,7 +9,9 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
 import { ButtonGroup, Button } from '@mui/material';
-import { logout, logOut } from '../utils/memberData';
+import { logout } from '../utils/memberData';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
     position: 'absolute',
@@ -23,6 +25,7 @@ const style = {
     border: '1px solid primary',
     borderRadius: '16px',
     boxShadow: 24,
+    overflow: 'hidden', // 추가
 };
 
 const Header = () => {
@@ -178,6 +181,18 @@ const Header = () => {
                 keepMounted
             >
                 <Box sx={style}>
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleClose}
+                        sx={{
+                            position: 'absolute',
+                            right: 8,
+                            top: 8,
+                            color: (theme) => theme.palette.grey[500],
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
                     <GuideRegistration />
                 </Box>
             </Modal>
