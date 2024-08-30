@@ -132,7 +132,7 @@ const GuidePostDetails = () => {
         </Box>
 
         <Box className={styles.hashtags} sx={{ mt: 2 }}>
-          {data.hashtag.split('#').map((tag, index) => (
+          {data && data.hashtag.split('#').map((tag, index) => (
             tag.trim() !== '' && (
               <Button
                 key={index}
