@@ -141,8 +141,10 @@ const DeviceCheckComponent = () => {
         장비 테스트
       </Typography>
       <img src="../../images/WebTestPageLine.png" alt="Line Image" />
-      <Typography variant="h5" gutterBottom align="center" sx={{ mt: '13px', mb: '13px' }}>
-        테스트에서는 웹캠과 마이크가 필요합니다. 장비를 확인해주세요
+      <Typography variant="h5" gutterBottom align="center" sx={{ mt: '20px', mb: '20px' }}>
+        지금부터 웹캡/마이크체크를 시작하겠습니다.
+        [웹캡/마이크체크] 버튼을 누르고 가이드 선 안에 얼굴을 위치시켜
+        5초 이내에 “안녕하세요! 만나서 반갑습니다.”을 소리 내어 읽어주세요.
       </Typography>
       <Grid container>
         <Grid item xs={5.4} sx={{ ml: '50px' }}>
@@ -151,10 +153,14 @@ const DeviceCheckComponent = () => {
               width: '100%', height: 360,
               bgcolor: '#F8F8F8', display: 'flex',
               alignItems: 'center', justifyContent: 'center',
-              border: '1px solid #000000', borderRadius: '5px'
+              border: '1px solid #000000', borderRadius: '5px',
+              flexDirection: 'column', textAlign: 'center'
             }}
           >
-            웹캠이 정상적으로 설치/연결되었는지 확인해주세요.
+            <img src='../../images/webcamImg.png' style={{ width: '180px', height: '180px' }} alt="WebCam" />
+            <Box sx={{ mt: 4 }}>
+              웹캠이 정상적으로 설치/연결되었는지 확인해주세요.
+            </Box>
           </Box>
         </Grid>
         <Grid item xs={5.4} sx={{ ml: '50px' }}>
@@ -163,11 +169,15 @@ const DeviceCheckComponent = () => {
               width: '100%', height: 360,
               bgcolor: '#F8F8F8', display: 'flex',
               alignItems: 'center', justifyContent: 'center',
-              border: '1px solid #000000', borderRadius: '5px'
+              border: '1px solid #000000', borderRadius: '5px',
+              flexDirection: 'column', textAlign: 'center'
             }}
           >
-            마이크 상태를 사전에 확인해주세요.<br />
-            (이어폰에 있는 마이크도 사용 가능합니다.)
+            <img src='../../images/micImg.png' style={{ width: '180px', height: '180px' }} alt="Mic" />
+            <Box sx={{ mt: 4 }}>
+              마이크 상태를 사전에 확인해주세요.<br />
+              (이어폰에 있는 마이크도 사용 가능합니다.)
+            </Box>
           </Box>
         </Grid>
       </Grid>
@@ -213,7 +223,7 @@ const DeviceCheckComponent = () => {
         <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}>
           실전 테스트 바로 가기
         </Button>
-        <Button variant="outlined" onClick={()=>{navigate('/precautionspage1')}}>
+        <Button variant="outlined" onClick={() => { navigate('/precautionspage1') }}>
           유의사항 확인
         </Button>
       </Stack>
