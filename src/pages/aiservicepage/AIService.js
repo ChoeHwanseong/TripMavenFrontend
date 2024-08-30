@@ -39,7 +39,7 @@ const AIService = () => {
           정확한 발음을 연습하고 싶다면?<br/>AI가 맞춤 제작한 발음 테스트로<br/>
           자신 있게 도전해보세요!
         </p>
-        <button className={styles.button} onClick={() => { handleClick('') }}>시작하기</button>
+        <button className={styles.button} onClick={() => { handleClick('/pronunciationtesttutorial') }}>시작하기</button>
       </div>
       <div className={styles.card}>
         <div className={styles.cardImage}>
@@ -59,7 +59,7 @@ const AIService = () => {
         <p className={styles.cardDescription}>
           내 여행지 소개 실력을 평가받고 싶다면?<br/>실전 테스트로 도전하세요!
         </p>
-        <button className={styles.button} onClick={() => { handleClick('/recordcheck') }} style={{ marginTop: '35px' }}>시작하기</button>
+        <button className={styles.button} onClick={() => { handleClick('/precautionspage1') }} style={{ marginTop: '35px' }}>시작하기</button>
       </div>
 
       {/* 모달 추가 */}
