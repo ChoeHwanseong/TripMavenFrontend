@@ -101,7 +101,7 @@ const ProductBoard = () => {
 
             <div className="App">
                 <h1 className={styles.youtubeHeading}>YouTube Video Search</h1>
-                <YouTubeSearch keyword={keyword} />
+                <YouTubeSearch keyword={keyword} city={city}/>
             </div>
 
 

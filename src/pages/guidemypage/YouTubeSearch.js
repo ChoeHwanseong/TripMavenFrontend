@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../../styles/productPage/YouTubeSearch.module.css'; // 스타일링을 위해 CSS 모듈 사용
 
-const YouTubeSearch = ({ keyword , city }) => {
+const YouTubeSearch = ({ keyword, city }) => {
     const [videos, setVideos] = useState([]);
-    const keywordTravel= keyword+'여행';
     
-    
-    console.log('keyword: ',keyword);
-    console.log('keywordTravel: ',keywordTravel);
+    // city와 keyword를 결합하여 검색어 생성
+    const keywordTravel = city ? `${city} 여행` : `${keyword} 여행`;
 
-     //const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY; 
-     //const YOUTUBE_API_KEY = 'AIzaSyCZayRJHfttrAoayZKY-owo_6TslcaEduM'; //1일 할당량 만료 (규림)
+    console.log('city: ', city);
+    console.log('keyword: ', keyword);
+    console.log('keywordTravel: ', keywordTravel);
+
+    //const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY; 
     const YOUTUBE_API_KEY = 'AIzaSyCZPSPkT5rNtWvV6lkmREOGemJkoieQAJk'; // 시은
-    
 
     const searchYouTube = async (searchTerm) => {
         if (!searchTerm) return;
@@ -40,7 +40,7 @@ const YouTubeSearch = ({ keyword , city }) => {
     return (
         <div className={styles.container}>
             <h2>
-                '<span className={styles.keyword}>{keyword}</span>' 관련 추천 영상
+                '<span className={styles.keyword}>{keywordTravel}</span>' 관련 추천 영상
             </h2>
             <div className={styles.videoGrid}>
                 {videos.map((video) => (
