@@ -11,7 +11,6 @@ body {
     text-align: center;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     background-color: #fff;
   }
   
@@ -39,21 +38,21 @@ body {
     display: block;
     width: 100%;
     padding: 15px;
-    border: 2px solid #0066ff;
+    border: 2px solid #8dbbff;
     border-radius: 5px;
     background-color: #fff;
     cursor: pointer;
     text-align: left;
-    transition: background-color 0.2s;
+    transition: background-color 0.25s;
     font-size: 16px;
   }
   
   .listItemButton:hover {
-    background-color: #f0f8ff;
+    background-color: #e6f1ff;
   }
   
   .listItemButton.selected {
-    background-color: #e0ecff;
+    background-color: #d8eaff;
   }
   
   .submitButton {
@@ -67,7 +66,7 @@ body {
   }
   
   .submitButton:disabled {
-    background-color: #cccccc;
+    background-color: #b9b9b9;
     cursor: not-allowed;
   }
   
