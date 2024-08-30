@@ -71,6 +71,7 @@ import QuizForm2 from './pages/aiservicepage/QuizForm2';
 import QuizTutorial from './pages/aiservicepage/QuizTutorial';
 import PronunciationTestTutorial from './pages/aiservicepage/PronunciationTestTutorial';
 import MICTest from './pages/aiservicepage/MICTest';
+import RealTest1 from './pages/aiservicepage/RealTest1';
 
 
 
@@ -165,7 +166,7 @@ function App() {
         <Route path='/quiztutorial' element={<QuizTutorial/>}/>
         <Route path='/pronunciationtesttutorial' element={<PronunciationTestTutorial/>}/>
         <Route path='/mictest' element={<MICTest/>}/>
-        
+        <Route path='/realtest1' element={<RealTest1 />}/>
         
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
