@@ -78,7 +78,7 @@ const ProductBoard = () => {
                 
             </div>
 
-            <div className={styles.productList}>
+            <div className={styles.productList} >
                 {products.map((product, index) => (
                     <div key={index} className={styles.productItem} onClick={()=>navigate(`/product?keyword=${keyword}`)}>
                         {/* 상품 이미지 */}
