@@ -5,7 +5,7 @@ import { faTimes, faHeadset } from '@fortawesome/free-solid-svg-icons'; // 필�
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import {APIKEY} from './apiKey';
+import APIKEY from '../chat/apiKey';
 
 // 발급받은 OpenAI API 키를 변수로 저장
 const apiKey = APIKEY;
