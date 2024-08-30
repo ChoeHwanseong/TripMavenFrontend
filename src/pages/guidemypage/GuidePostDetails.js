@@ -66,6 +66,8 @@ const GuidePostDetails = () => {
     setGuideModalOpen(false);
   };
 
+  
+  // 게시글 삭제 (ORA-02292: 무결성 제약조건)
   const deletePost = async () => {
     const confirmed = window.confirm("진짜 삭제?");
     if (confirmed) {
