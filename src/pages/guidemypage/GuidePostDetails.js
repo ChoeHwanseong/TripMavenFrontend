@@ -3,18 +3,21 @@ import { Box, Typography, Button, Avatar } from '@mui/material';
 import styles from '../../styles/guidemypage/GuidePostDetails.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { postDelete, postGetById } from '../../utils/postData';
-import KakaoMap from '../../utils/KakaoMap'; // KakaoMap 컴포넌트 가져오기
+import KakaoMap from '../../utils/KakaoMap'; 
 import { HotelIcon } from 'lucide-react';
+import ComplaintModal from '../report/ComplaintModal';
+import ProfileCardModal from './GuideProfileModal'; // 여기서 모달 컴포넌트 가져오기
 
 const GuidePostDetails = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
-  //const [fileUrls, setFileUrls] = useState([]); 파일 뿌려주기용
-
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
-  const { id } = useParams();
 
+  const [isGuideModalOpen, setGuideModalOpen] = useState(false);  // 가이드 모달 상태 변수
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [complaintId, setComplaintId] = useState(null);
+  const { id } = useParams();
 
   useEffect(() => {
     const getData = async () => {
@@ -22,35 +25,45 @@ const GuidePostDetails = () => {
         const fetchedData = await postGetById(id);
         console.log('fetchedData: ', fetchedData);
         setData(fetchedData);
-        setLikes(fetchedData.likes);
+        setLikes(fetchedData.likes == null ? 0 : fetchedData.likes);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-    //파일 이미지 뿌려주기
-    /*
-    const getFiles = async () => {
-      try {
-        const fileUrl = await fetchFiles(id);
-        setFileUrls([fileUrl]); // 받아온 파일 URL을 배열로 저장
-      } catch (error) {
-        console.error('Error fetching files:', error);
-      }
-    };
-  */
     getData();
   }, [id]);
 
-
-
   const handleLike = () => {
-    if (liked) {
-      setLikes(likes - 1);
-    } else {
-      setLikes(likes + 1);
-    }
-    setLiked(!liked);
+    setLikes((prevLikes) => (liked ? prevLikes - 1 : prevLikes + 1));
+    setLiked((prevLiked) => !prevLiked);
+  };
+
+  // 신고 모달
+  const openModal = () => {
+    setComplaintId(id); 
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setComplaintId(null); 
+  };
+
+  const handleSubmit = (complaintData) => {
+    console.log('Complaint submitted:', complaintData, 'for id:', complaintId);
+    closeModal();
+  };
+
+  // 가이드 프로필 모달
+  const openGuideModal = () => {
+    console.log('가이드 프로필 모달 오픈');
+    setGuideModalOpen(true);
+  };
+
+  const closeGuideModal = () => {
+    console.log('가이드 프로필 모달 닫기');
+    setGuideModalOpen(false);
   };
 
   const deletePost = async () => {
@@ -74,49 +87,85 @@ const GuidePostDetails = () => {
       <Box className={styles.shadowBox}>
         <Box className={styles.topBar}>
           <Typography variant="subtitle2">{id}번째 게시글</Typography>
-          <Button variant="contained" color="primary" size="small">프로필 보기</Button>
+          <Button 
+            variant="contained" 
+            color="primary" 
+            size="small" 
+            onClick={openGuideModal}
+          >
+            가이드 프로필 보기
+          </Button>
+          {/* ProfileCardModal 컴포넌트로 가이드 데이터 전달 */}
+          <ProfileCardModal 
+            isOpen={isGuideModalOpen} 
+            onClose={closeGuideModal} 
+            guideData={data.member} // 가이드 데이터를 ProfileCardModal로 전달
+          />
         </Box>
 
         <Box className={styles.titleSection}>
-          
-          <Typography variant="overline" color="textSecondary">{data.city}</Typography>
-          <Typography variant="h4" fontWeight="bold">{data.title}</Typography>
+          <Typography 
+            variant="overline" 
+            color="primary" 
+            sx={{ fontWeight: 'bold', display: 'inline-block', marginRight: 2 }}
+          >
+            {data.city}
+          </Typography>
+          <Typography 
+            variant="overline" 
+            color="secondary" 
+            sx={{ fontWeight: 'bold', display: 'inline-block', marginRight: 2 }}
+          >
+            {data.day}
+          </Typography>
+          <Typography variant="h4" fontWeight="bold" sx={{ marginTop: 2 }}>
+            {data.title}
+          </Typography>
         </Box>
 
         <Box className={styles.authorInfo}>
-          <Avatar src="/path/to/avatar.png" alt="Author Avatar" sx={{ width: 32, height: 32, mr: 1 }} />
+          <Avatar src={data.member.profileImageUrl || "/path/to/avatar.png"} alt="Author Avatar" sx={{ width: 32, height: 32, mr: 1 }} />
           <Typography variant="body2" sx={{ mr: 1 }}>{data.member.name}</Typography>
           <Typography variant="body2" color="textSecondary">{data.createdAt.split('T')[0]}</Typography>
         </Box>
 
-        {/* Hashtags Section */}
-        <Box className={styles.hashtags}>
-          {data.hashtag}
-        </Box>
-
-    
-
-        <Box className={styles.symbolsSection}>
-          <Box className={styles.symbol}>
-            <Typography variant="body1">125건의 리뷰</Typography>
-          </Box>
-          <Box className={`${styles.symbol} ${styles.star}`}>
-            <Typography variant="body1">★ 4.5</Typography>
-          </Box>
-          <Box className={styles.symbol}>
-            <Typography variant="body1">ai 평가 점수</Typography>
-          </Box>
-          <Box className={`${styles.symbol} ${styles.blueStar}`}>
-            <Typography variant="body1">★ 4.7</Typography>
-          </Box>
-          <button className={styles.likeButton} onClick={handleLike}>
-            {liked ? '♥' : '♡'}<span className={styles.likeCount}>{likes}</span>
-          </button>
-          <Button variant="text" color="secondary">신고</Button>
+        <Box className={styles.hashtags} sx={{ mt: 2 }}>
+          {data.hashtag.split('#').map((tag, index) => (
+            tag.trim() !== '' && (
+              <Button
+                key={index}
+                variant="outlined"
+                color="primary"
+                size="small"
+                sx={{ marginRight: 1, marginBottom: 1 }}
+              >
+                #{tag.trim()}
+              </Button>
+            )
+          ))}
         </Box>
       </Box>
 
-      {/* Content Section */}
+      <Box className={styles.symbolsSection} sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', mt: 2 }}>
+        <Box className={styles.symbol} sx={{ mr: 2 }}>
+          <Typography variant="body1">125건의 리뷰</Typography>
+        </Box>
+        <Box className={`${styles.symbol} ${styles.star}`} sx={{ mr: 2 }}>
+          <Typography variant="body1">★ 4.5</Typography>
+        </Box>
+        <Box className={styles.symbol} sx={{ mr: 2 }}>
+          <Typography variant="body1">AI 평가 점수</Typography>
+        </Box>
+        <Box className={`${styles.symbol} ${styles.blueStar}`} sx={{ mr: 2 }}>
+          <Typography variant="body1">★ 4.7</Typography>
+        </Box>
+        <button className={styles.likeButton} onClick={handleLike} style={{ marginRight: '16px' }}>
+          {liked ? '♥' : '♡'}<span className={styles.likeCount}>{likes}</span>
+        </button>
+        <Button variant="text" color="secondary" onClick={openModal}>신고</Button>
+        {isModalOpen && <ComplaintModal onClose={closeModal} onSubmit={handleSubmit} id={id} />}
+      </Box>
+
       <Box className={styles.shadowBox}>
         <Box className={styles.contentSection}>
           <Typography variant="body1" component="div">
@@ -126,45 +175,48 @@ const GuidePostDetails = () => {
 
         <Box className={styles.mapSection}>
           <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
-          <HotelIcon sx={{ mr: 1 }} />
-            호텔 정보
+            <HotelIcon sx={{ mr: 1 }} />
+            <span style={{ color: 'black' }}>호텔 정보</span>
           </Typography>
-          
-        <div>
-          <Typography variant="subtitle2">{data.hotel==null ? "호텔 정보가 없습니다." : data.hotel}</Typography>
-          <KakaoMap address={data.hotelAd==null ? data.hotel :data.hotelAd} latitude={37.5665} longitude={126.9780} /> {/* 서울의 위치를 예시로 사용 */}
-        </div>
-        </Box>       
+
+          <div>
+            <Typography variant="subtitle2" sx={{ fontWeight: 'bold', marginBottom: 1 }}>
+              {data.hotel == null ? "호텔 정보가 없습니다." : data.hotel}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" sx={{ marginBottom: 2 }}>
+              {data.hotelAd}
+            </Typography>
+            <KakaoMap address={data.hotelAd == null ? data.hotel : data.hotelAd} />
+          </div>
+        </Box>
       </Box>
 
       <Box className={styles.actions}>
-            <Button 
-                className={styles.actionButton}
-                variant="contained" 
-                color="primary" 
-                onClick={() => navigate(`/guidePostUpdate/${id}`)}
-            >
-                수정 하기
-            </Button>
-            <Button 
-                className={styles.actionButton}
-                variant="contained" 
-                color="primary" 
-                onClick={deletePost}
-            >
-                삭제 하기
-            </Button>
-            <Button 
-                className={styles.actionButton}
-                variant="outlined" 
-                color="primary" 
-                onClick={() => navigate('/guidemypost')}
-            >
-                목록
-            </Button>
-        </Box>
-
-      
+        <Button 
+          className={styles.actionButton}
+          variant="contained" 
+          color="primary" 
+          onClick={() => navigate(`/guidePostUpdate/${id}`)}
+        >
+          수정 하기
+        </Button>
+        <Button 
+          className={styles.actionButton}
+          variant="contained" 
+          color="primary" 
+          onClick={deletePost}
+        >
+          삭제 하기
+        </Button>
+        <Button 
+          className={styles.actionButton}
+          variant="outlined" 
+          color="primary" 
+          onClick={() => navigate('/guidemypost')}
+        >
+          목록
+        </Button>
+      </Box>
     </Box>
   );
 };

@@ -47,7 +47,7 @@ export const fetchLicenseFile = async (filename) => {
       });
       
       const fileUrl = URL.createObjectURL(response.data);
-      return fileUrl;
+      return {fileUrl, file:response.data};
     } catch (error) {
       console.error('Error fetching files:', error);
       throw error;

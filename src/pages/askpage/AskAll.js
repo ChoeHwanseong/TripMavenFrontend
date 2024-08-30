@@ -25,20 +25,19 @@ const AskAll = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto', p: 3 }}>
+    <Box sx={{ maxWidth: 1200, mx: 'auto', p: 3.5 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m:3 }}>
         <Typography 
-          style={{fontWeight:'bold'}}
+          style={{fontWeight:'bold',marginLeft:'-15px'}}
           variant="h4">문의 내역</Typography>
         <Button 
           variant="contained" 
           sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }} 
-          onClick={() => navigate(`/askdetails/${membersId}`)}
-        >
+          onClick={() => navigate(`/askdetails/${membersId}`)}>
           문의 하기
         </Button>
       </Box>
-
+            
       <TableContainer component={Paper}>
         <Table>
           <TableHead sx={{backgroundColor:'#f9f9f9'}}>

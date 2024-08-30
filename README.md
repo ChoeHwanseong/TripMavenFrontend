@@ -1,4 +1,4 @@
-터미널 가서 
+터미널 가서 .
 npm install 할것
 npm install react-router-dom@6 이것두
 7/31 npm install @fortawesome/fontawesome-free [FontAwesome사용시 필요]
@@ -30,4 +30,5 @@ npm install react-router-dom@6 이것두
 08/23 npm install uuid --legacy-peer-deps
 08/26 npm install react-quill --legacy-peer-deps
 08/29 npm install react-kakao-maps-sdk 
+08/29 npm install react-kakao-maps-sdk  --legacy-peer-deps
       npm install react-transition-group --legacy-peer-deps

@@ -10,13 +10,19 @@ import APIKEY from '../chat/apiKey';
 // 발급받은 OpenAI API 키를 변수로 저장
 const apiKey = APIKEY;
 
+const infoMessage = `You are the TripMaven customer service chatbot. The service we provide involves guide training evaluation and travel product introductions through AI services. Guides can enhance their skills and assess and improve their abilities through AI training. Customers can browse verified guides' travel products and enjoy them by contacting the guides.
+When responding, you must be polite and courteous to all users. If there is a question for which you do not have a clear answer, please respond with "Please contact the administrator."
+Since you are a Korean bot and most of your users are Korean, please make sure to respond in Korean.
+If the user wishes to cancel a payment or reservation, please instruct them to consult with a counselor at 010-1234-1234.
+If the user requests additional tour information, please display the link <a href="http://localhost:58337/faq/">here</a>.`;
+let messages = [{ 'role': 'system', 'content': infoMessage }];//new Array();
 const Chat = () => {
   const [isVisible, setIsVisible] = useState(false); // 챗봇 팝업의 표시 상태를 관리하는 상태 변수
   const [isClosing, setIsClosing] = useState(false);
   const [chatHistory, setChatHistory] = useState([]); //대화기록 저장
   const chatInputRef = useRef(null); // 입력 필드에 대한 참조를 생성
   const [loading, setLoading] = useState(false); //로딩 스테이트
-
+  console.log(messages)
   // 챗봇 팝업의 표시/숨기기 토글 함수
   const toggleChat = (event) => {
     event.preventDefault(); // 기본 동작 방지 (링크 클릭 시 페이지 이동 방지)
@@ -36,6 +42,7 @@ const Chat = () => {
     const chatBody = document.getElementById('chatBody'); //채팅 스크롤
     const chattingArea = document.getElementById('chattingArea'); // 채팅 메시지를 표시할 요소
     const message = chatInputRef.current.value; // 입력 필드에서 메시지 값을 가져옴
+    messages.push({ role: 'user', content: message });
 
     // 메시지가 비어 있지 않은 경우
     if (message.trim() !== '') {
@@ -46,7 +53,7 @@ const Chat = () => {
       chattingArea.appendChild(messageElement); // 메시지 요소를 채팅 본문에 추가
       chatInputRef.current.value = ''; // 입력 필드를 비움
       chatBody.scrollTop = chatBody.scrollHeight; // 스크롤을 맨 아래로 이동
-      
+
       try {
         const apiResponse = await axios.post(
           'https://api.openai.com/v1/chat/completions',
@@ -138,7 +145,7 @@ const Chat = () => {
                 <FontAwesomeIcon icon={faTimes} />
               </button>
             </header>
-            
+
             <div className={styles.chatBody} id="chatBody">
               <div className={styles.chattingArea} id="chattingArea">
                 <div className={`${styles.message} ${styles.received}`}>
@@ -154,17 +161,17 @@ const Chat = () => {
                 )}
               </div>
             </div>
-            
+
             <footer className={styles.chatFooter}>
               <input type="text" placeholder="메세지를 입력하세요" ref={chatInputRef} className={styles.chatInput} />
               <button type="button" onClick={sendMessage} className={styles.sendButton}>전송</button>
-            </footer>            
+            </footer>
           </div>
         </div>
       )}
     </div>
 
-    
+
   </>
 }
 

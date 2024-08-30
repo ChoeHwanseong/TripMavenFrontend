@@ -22,7 +22,7 @@ export const ocr = async (formData) => {
 // 자격증 확인
 export const verifyLicense = async (formData) => {
   try {
-      const response = await axios.post(`${baseUrl}/ocr`, formData, {
+      const response = await axios.post(`${baseUrl}/license`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

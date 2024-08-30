@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Navigate } from 'react-router-dom';
 
 //멤버 가져오기
 export const fetchData = async () => {
@@ -26,17 +25,30 @@ export const fetchedData = async (id) => {
   }
 };
 
+//이메일로 멤버 가져오기
+export const findMemberbyEmail = async (email) => {
+  try {
+    const res = await axios.get(`/spring/members/email/${email}`);
+    return res.data;
+  }
+  catch (error) {
+    console.error('에러났당', error);
+    throw error; 
+  }
+};
+
 //회원가입
 //await axios 꼭 붙이기
 export const SignUp = async (form) => {
   await axios.post('/spring/signup', form)
   .then(response => {    
     alert('가입 완료! 가입한 계정으로 로그인해주세요.');
-    Navigate('/login')
+    window.location.href ="/login";
   })
   .catch(error => {
     // 오류가 발생했을 때의 처리
     if(error.code === 'ERR_BAD_REQUEST') alert('중복된 아이디입니다.');
+    
     
   });
   //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
@@ -62,6 +74,19 @@ export const FormLogin = async (form) =>{
 
   return response;
   }
+
+//로그아웃
+export const logout = async() =>{
+  await axios.post('/spring/logout')
+  .then(res =>{
+    return res
+  })
+  .catch(error => {
+    // 오류가 발생했을 때의 처리
+    if(error.code === 'ERR_BAD_REQUEST') alert('중복된 아이디입니다.');
+    
+  });
+}
 
   
 

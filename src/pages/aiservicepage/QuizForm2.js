@@ -42,7 +42,7 @@ const QuizForm = () => {
   };
 
   const handleOptionClick = (option) => {
-    setSelectedOption(option);
+    setSelectedOption(option);  // 사용자가 옵션을 클릭할 때 선택된 옵션을 상태로 설정
   };
 
   const handleCloseModal = () => {

@@ -59,8 +59,6 @@ function BigChat() {
       }
     });
 
-
-
     mqttClient.on('error', (err) => {
       console.error('Connection error:', err);
     });
@@ -106,7 +104,7 @@ function BigChat() {
   };
 
   const handleSendClick = () => {
-    const input = document.querySelector(`.${styles.chatInput}`);
+    const input = document.querySelector("#chatInput");
     const text = input.value.trim();
     if (text) {
       sendMessage(text);
@@ -147,6 +145,7 @@ function BigChat() {
           <input
             type="text"
             className={styles.chatInput}
+            id="chatInput"
             placeholder="입력해주세요"
             onKeyDown={handleKeyDown}
           />
