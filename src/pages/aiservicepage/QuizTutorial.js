@@ -27,7 +27,6 @@ const QuizTutorial = () => {
                         </Typography>
                     </Box>
                 </div>
-                <h4 style={{marginTop:'10px'}}>멘트 자리만 만들어 놓을겡</h4>
                 <button className={styles.button} onClick={() => { navigate('/quizform2') }} style={{ marginTop: '35px' }}>시작하기</button>
 
             </div>
