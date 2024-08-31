@@ -66,6 +66,8 @@ export const getHotelAd = (hotel) => {
 
 // 찜
 export const postLikey = (memberId, productId) => {
+  console.log('찜 POST 회원id: ',memberId);
+  console.log('찜 POST 상품id: ',productId);
   return axios.post('http://localhost:9099/likey' + `/${productId}/${memberId}`).then(res =>{
       return res;
   })
@@ -73,7 +75,10 @@ export const postLikey = (memberId, productId) => {
 
 // 찜
 export const deleteLikey = (memberId, productId) => {  
+  console.log('찜 DELETE 회원id: ',memberId);
+  console.log('찜 DELETE 상품id: ',productId);
   return axios.delete('http://localhost:9099/likey' + `/${productId}/${memberId}`).then(res =>{
       return res;
   })
 }
+

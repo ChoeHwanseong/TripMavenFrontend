@@ -7,12 +7,16 @@ import KakaoMap from '../../utils/KakaoMap';
 import { HotelIcon, TreePalm } from 'lucide-react';
 import ComplaintModal from '../report/ComplaintModal';
 import ProfileCardModal from './GuideProfileModal'; // 여기서 모달 컴포넌트 가져오기
+import ImageSlider from './guidepost/ImageSlider';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { fetchFiles } from '../../utils/fileData';
 
 const GuidePostDetails = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [liked, setLiked] = useState(false);
-
+  const [fileUrls,setFileUrls] = useState([]);
   const [isGuideModalOpen, setGuideModalOpen] = useState(false);  // 가이드 모달 상태 변수
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [complaintId, setComplaintId] = useState(null);
@@ -32,15 +36,30 @@ const GuidePostDetails = () => {
       try {
         const fetchedData = await postGetById(id);
         console.log('fetchedData: ', fetchedData);
-        setData(fetchedData);
-        setLikes(fetchedData.likes == null ? 0 : fetchedData.likes);
+        !data ? setData(fetchedData) :setData(prev=>({...prev, likey:[...fetchedData.likey]}));
+
+        //likey 리스트에 현재 로그인된 멤버 아이디 찾기
+        const isLikey = fetchedData.likey.find(like=>like.member.id==localStorage.getItem("membersId"));
+        isLikey?setLiked(true):setLiked(false);
+        console.log(isLikey);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+
+    };
+    const getFiles = async () => {
+      try {
+        const fileData = await fetchFiles(id);
+        console.log('fileData: ', fileData);
+        setFileUrls(fileData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     getData();
-  }, [id]);
+    getFiles();
+  }, [liked]);
 
   const handleLike = async () => {
     if(!liked){
@@ -52,6 +71,7 @@ const GuidePostDetails = () => {
       setLiked(!liked);
     }
   };
+
 
   // 신고 모달
   const openModal = () => {
