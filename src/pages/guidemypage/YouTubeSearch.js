@@ -12,9 +12,10 @@ const YouTubeSearch = ({ keyword, city }) => {
     console.log('keyword: ', keyword);
     console.log('keywordTravel: ', keywordTravel);
 
-    //const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY; 
+    const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY; // 안먹으면 아래 키 중에 1개 사용
+    //const YOUTUBE_API_KEY = 'AIzaSyCZayRJHfttrAoayZKY-owo_6TslcaEduM'; // 규림
     //const YOUTUBE_API_KEY = 'AIzaSyCZPSPkT5rNtWvV6lkmREOGemJkoieQAJk'; // 시은
-    const YOUTUBE_API_KEY = 'AIzaSyAxRvCfzlqgdIOlU3C8SSFLWnJ_a9Dt3NU'//주원
+    //const YOUTUBE_API_KEY = 'AIzaSyAxRvCfzlqgdIOlU3C8SSFLWnJ_a9Dt3NU'//주원
 
     const searchYouTube = async (searchTerm) => {
         if (!searchTerm) return;
