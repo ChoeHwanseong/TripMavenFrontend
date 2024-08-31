@@ -23,13 +23,19 @@ const GuidePostDetails = () => {
   const { id } = useParams();
   const contentRef = useRef(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isMoreView, setIsMoreView] = useState(false); /* 더보기&접기 상태 저장 */
 
   //내용 더보기 버튼
   function onRefButtonClick() {
     // 버튼 누르면 기존 height값으로 바꾸기
     setIsExpanded(!isExpanded);
-    document.getElementById('contentBtn').hidden=true;
+    document.getElementById('contentBtn').hidden=true;  
+
+    setIsMoreView(!isMoreView);
   }
+
+
+
 
   useEffect(() => {
     const getData = async () => {
@@ -100,6 +106,7 @@ const GuidePostDetails = () => {
     setGuideModalOpen(false);
   };
 
+
   
   // 게시글 삭제 (ORA-02292: 무결성 제약조건)
   const deletePost = async () => {
@@ -113,6 +120,8 @@ const GuidePostDetails = () => {
       }
     }
   };
+
+
 
   if (!data) {
     return <div>로딩중</div>;
@@ -217,11 +226,11 @@ const GuidePostDetails = () => {
           
           {/* 글 내용 */}
           <Typography variant="body1" component="div">
-            <div dangerouslySetInnerHTML={{ __html: data.content }} ref={contentRef} 
-              className={`mt-3 overflow-hidden transition ${!isExpanded ? 'blur' : ''}`}
-              style={{
-                // render때 내용을 가리기 위해 400px
-                maxHeight: isExpanded ? 'none' : '400px'
+            <div  dangerouslySetInnerHTML={{ __html: data.content }} 
+            ref={contentRef} 
+            className={`mt-3 overflow-hidden transition ${!isExpanded ? styles.blur : ''}`} 
+            style={{
+              maxHeight: isExpanded ? 'none' : '400px'
               }}/>
           </Typography>
         </Box>
@@ -229,7 +238,7 @@ const GuidePostDetails = () => {
         <Box sx={{ display: 'flex', justifyContent:'center', mt: 2 }}>
           <Button
                 id='contentBtn'
-                className={styles.actionButton }
+                className={styles.actionButtonss }
                 variant="contained" 
                 onClick={onRefButtonClick}
               >상품 설명 더 보기</Button>
