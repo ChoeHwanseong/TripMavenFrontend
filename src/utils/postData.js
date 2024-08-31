@@ -63,3 +63,17 @@ export const getHotelAd = (hotel) => {
       return res.data.documents;
   })
 }
+
+// 찜
+export const postLikey = (memberId, productId) => {
+  return axios.post('http://localhost:9099/likey' + `/${productId}/${memberId}`).then(res =>{
+      return res;
+  })
+}
+
+// 찜
+export const deleteLikey = (memberId, productId) => {  
+  return axios.delete('http://localhost:9099/likey' + `/${productId}/${memberId}`).then(res =>{
+      return res;
+  })
+}

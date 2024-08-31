@@ -1,42 +1,62 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box, Typography, Button, Avatar } from '@mui/material';
 import styles from '../../styles/guidemypage/GuidePostDetails.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { postDelete, postGetById } from '../../utils/postData';
+import { postDelete, postGetById, postLikey, deleteLikey } from '../../utils/postData';
 import KakaoMap from '../../utils/KakaoMap'; 
-import { HotelIcon } from 'lucide-react';
+import { HotelIcon, TreePalm } from 'lucide-react';
 import ComplaintModal from '../report/ComplaintModal';
 import ProfileCardModal from './GuideProfileModal'; // 여기서 모달 컴포넌트 가져오기
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
+
 
 const GuidePostDetails = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
-  const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
-
   const [isGuideModalOpen, setGuideModalOpen] = useState(false);  // 가이드 모달 상태 변수
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [complaintId, setComplaintId] = useState(null);
   const { id } = useParams();
+  const contentRef = useRef(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  //내용 더보기 버튼
+  function onRefButtonClick() {
+    // 버튼 누르면 기존 height값으로 바꾸기
+    setIsExpanded(!isExpanded);
+    document.getElementById('contentBtn').hidden=true;
+  }
 
   useEffect(() => {
     const getData = async () => {
       try {
         const fetchedData = await postGetById(id);
         console.log('fetchedData: ', fetchedData);
-        setData(fetchedData);
-        setLikes(fetchedData.likes == null ? 0 : fetchedData.likes);
+        !data ? setData(fetchedData) :setData(prev=>({...prev, likey:[...fetchedData.likey]}));
+
+        //likey 리스트에 현재 로그인된 멤버 아이디 찾기
+        const isLikey = fetchedData.likey.find(like=>like.member.id==localStorage.getItem("membersId"));
+        isLikey?setLiked(true):setLiked(false);
+        console.log(isLikey);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     getData();
-  }, [id]);
+  }, [liked]);
 
-  const handleLike = () => {
-    setLikes((prevLikes) => (liked ? prevLikes - 1 : prevLikes + 1));
-    setLiked((prevLiked) => !prevLiked);
+  const handleLike = async () => {
+    if(!liked){
+      await postLikey(localStorage.getItem("membersId"),data.id);
+      setLiked(!liked);
+    }
+    else{
+      await deleteLikey(localStorage.getItem("membersId"),data.id);
+      setLiked(!liked);
+    }
   };
 
   // 신고 모달
@@ -162,23 +182,46 @@ const GuidePostDetails = () => {
           <Typography variant="body1">★ 4.7</Typography>
         </Box>
         <button className={styles.likeButton} onClick={handleLike} style={{ marginRight: '16px' }}>
-          {liked ? '♥' : '♡'}<span className={styles.likeCount}>{likes}</span>
+          {liked ? <FontAwesomeIcon icon={faHeart}/> : <FontAwesomeIcon icon={faHeart} /> }<span className={styles.likeCount}>{data.likey?data.likey.length:'0'}</span>
         </button>
         <Button variant="text" color="secondary" onClick={openModal}>신고</Button>
         {isModalOpen && <ComplaintModal onClose={closeModal} onSubmit={handleSubmit} id={id} />}
       </Box>
-
+      
+      
       <Box className={styles.shadowBox}>
         <Box className={styles.contentSection}>
+          <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
+            <TreePalm sx={{ mr: 1 }} />
+            <span style={{ color: 'black' }} className='align-text-top'>상품 설명</span>
+          </Typography>
+          
+          {/* 글 내용 */}
           <Typography variant="body1" component="div">
-            <div dangerouslySetInnerHTML={{ __html: data.content }} />
+            <div dangerouslySetInnerHTML={{ __html: data.content }} ref={contentRef} 
+              className={`mt-3 overflow-hidden transition ${!isExpanded ? 'blur' : ''}`}
+              style={{
+                // render때 내용을 가리기 위해 400px
+                maxHeight: isExpanded ? 'none' : '400px'
+              }}/>
           </Typography>
         </Box>
+        {/* 글 더보기 버튼 */}
+        <Box sx={{ display: 'flex', justifyContent:'center', mt: 2 }}>
+          <Button
+                id='contentBtn'
+                className={styles.actionButton }
+                variant="contained" 
+                onClick={onRefButtonClick}
+              >상품 설명 더 보기</Button>
+        </Box>
+        
+        <img src="../../images/WebTestPageLine.png" alt="Line Image" />
 
         <Box className={styles.mapSection}>
           <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
             <HotelIcon sx={{ mr: 1 }} />
-            <span style={{ color: 'black' }}>호텔 정보</span>
+            <span style={{ color: 'black' }} className='align-text-top'>호텔 정보</span>
           </Typography>
 
           <div>
