@@ -161,3 +161,20 @@
   flex-grow: 1;
   background-color: #fff;
 }
+.blur {
+  overflow: hidden; /* 콘텐츠가 넘치지 않도록 숨김 */
+  position: relative;
+  max-height: 400px; /* 초기 최대 높이 설정 */
+  transition: max-height 0.5s ease; /* 높이 전환 효과 */
+}
+
+/* 블러 효과를 위한 가상 요소 */
+.blur::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px; /* 블러 효과의 높이 조정 */
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)); /* 블러 그라데이션 */
+}
