@@ -7,12 +7,15 @@ import KakaoMap from '../../utils/KakaoMap';
 import { HotelIcon } from 'lucide-react';
 import ComplaintModal from '../report/ComplaintModal';
 import ProfileCardModal from './GuideProfileModal'; // 여기서 모달 컴포넌트 가져오기
+import { fetchFiles } from '../../utils/fileData';
+import ImageSlider from './guidepost/ImageSlider';
 
 const GuidePostDetails = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
+  const [fileUrls, setFileUrls] = useState([]); /// 파일 이미지 상태 관리
 
   const [isGuideModalOpen, setGuideModalOpen] = useState(false);  // 가이드 모달 상태 변수
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,12 +30,35 @@ const GuidePostDetails = () => {
         setData(fetchedData);
         setLikes(fetchedData.likes == null ? 0 : fetchedData.likes);
       } catch (error) {
+        console.error('Error fetching cdata:', error);
+      }
+    };
+
+    const getFiles = async () => {
+      try {
+        const urls = await fetchFiles(id);
+        console.log('fileUrl상품게시판: ', urls);
+        setFileUrls(urls);  // 파일 URL 상태 업데이트
+      } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     getData();
+    getFiles();
   }, [id]);
+
+   // 이미지 슬라이드
+   /*
+   const ImageSlider = ({ fileUrls }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+      console.log('fileUrls이미지슬라이더: ', fileUrls);
+    }, [fileUrls]);
+
+  }
+*/
 
   const handleLike = () => {
     setLikes((prevLikes) => (liked ? prevLikes - 1 : prevLikes + 1));
@@ -146,7 +172,13 @@ const GuidePostDetails = () => {
             )
           ))}
         </Box>
-      </Box>
+
+        <div className={styles.container}>
+          <ImageSlider fileUrls={fileUrls} />
+        </div>
+     </Box>
+
+      
 
       <Box className={styles.symbolsSection} sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', mt: 2 }}>
         <Box className={styles.symbol} sx={{ mr: 2 }}>
@@ -167,6 +199,9 @@ const GuidePostDetails = () => {
         <Button variant="text" color="secondary" onClick={openModal}>신고</Button>
         {isModalOpen && <ComplaintModal onClose={closeModal} onSubmit={handleSubmit} id={id} />}
       </Box>
+
+
+
 
       <Box className={styles.shadowBox}>
         <Box className={styles.contentSection}>
