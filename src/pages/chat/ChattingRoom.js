@@ -3,38 +3,21 @@ import styles from '../../styles/chat/BigChat.module.css';
 import { chattingRoomData, chattingListData } from '../../utils/chatData';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { fetchData } from '../../utils/Chatting';
-
+import mqtt from 'mqtt';
 function ChattingRoom({ setSelectedUser, data, client, setIsConnected, setChatMessages }) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
-
-    useEffect(() => {
-    const getData = async () => {
-        try {
-          const fetchedData = await fetchData();
-          setData(fetchedData);  // 가져온 데이터를 상태에 저장
-        } catch (error) {
-          console.error('에러났당', error);
-        }
-      };
-
-      getData();
-    }, []);
-
-    
-
+  useEffect(() => {
+  }, []);
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
   };
-
   const handleMouseLeave = () => {
     setHoveredRow(null);
   }
-
   const handleClick = (joinChatting) => {
     if (client && joinChatting.chattingRoom) {
-      client.subscribe(`${joinChatting.chattingRoom.id}`, (err) => {
+      client.subscribe('21', (err) => {
         if (!err) {
           console.log(joinChatting.chattingRoom.id, 'Subscribed to topic');
         } else {
@@ -45,9 +28,7 @@ function ChattingRoom({ setSelectedUser, data, client, setIsConnected, setChatMe
       setChatMessages([]);
     }
   };
-
   return (
-
     <div className={styles.messagesSection}>
       <div className={styles.header}>
         <h2 className={styles.messagesTitle}>Messages</h2>
@@ -59,7 +40,6 @@ function ChattingRoom({ setSelectedUser, data, client, setIsConnected, setChatMe
           />
         </div>
       </div>
-
       <div className={styles.chatList}>
         {data.map((joinChatting, index) => (
           <Box
@@ -88,8 +68,6 @@ function ChattingRoom({ setSelectedUser, data, client, setIsConnected, setChatMe
         ))}
       </div>
     </div>
-
   );
 };
-
 export default ChattingRoom;
