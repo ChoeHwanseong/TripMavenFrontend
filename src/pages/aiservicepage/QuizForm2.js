@@ -9,6 +9,7 @@ const QuizForm = () => {
   const [currentQuiz, setCurrentQuiz] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
   const [usedQuiz, setUsedQuiz] = useState([]);
+  const [score, setScore] = useState(0); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -53,7 +54,15 @@ const QuizForm = () => {
   const handleSubmit = async () => {
     if (currentQuiz && selectedOption) {
       try {
-        await submitAnswer(currentQuiz.id, selectedOption); 
+        const isCorrect = selectedOption === currentQuiz.answer;
+        await submitAnswer(currentQuiz.id, selectedOption);
+        if (isCorrect) {
+          setScore(prevScore => {
+            const newScore = prevScore + 10;
+            console.log('총점', newScore); 
+            return newScore;
+          });
+        }
         randomQuiz(data, usedQuiz);
         setSelectedOption(null);
       } catch (error) {
@@ -107,7 +116,7 @@ const QuizForm = () => {
           </button>
         </>
       )}
-       <QuizResult isOpen={isModalOpen} onClose={handleCloseModal} />
+       <QuizResult isOpen={isModalOpen} onClose={handleCloseModal} newScore={score} />  
     </div>
   );
 };

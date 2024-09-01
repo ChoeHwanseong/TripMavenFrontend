@@ -26,7 +26,7 @@ function BigChat() {
     getUserData();
 
     // MQTT 브로커에 연결
-    const mqttClient = mqtt.connect('mqtt://localhost:1884'); // 또는 'ws://broker.hivemq.com:8000/mqtt' (웹소켓 사용 시)
+    const mqttClient = mqtt.connect('mqtt://192.168.0.22:1884'); // 또는 'ws://broker.hivemq.com:8000/mqtt' (웹소켓 사용 시)
     
     mqttClient.on('connect', () => {
       console.log('Connected to MQTT broker');

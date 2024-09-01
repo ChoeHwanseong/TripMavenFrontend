@@ -3,6 +3,7 @@ import styles from '../../styles/chat/BigChat.module.css';
 import { fetchData } from '../../utils/memberData';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { fetchData } from '../../utils/Chatting';
 
 function ChattingRoom({ onSelectUser }) {
 
@@ -22,6 +23,8 @@ function ChattingRoom({ onSelectUser }) {
 
       getData();
     }, []);
+
+    
 
     const handleMouseEnter = (index) => {
         setHoveredRow(index);

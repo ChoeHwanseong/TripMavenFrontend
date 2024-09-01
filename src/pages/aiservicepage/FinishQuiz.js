@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from '../../styles/finishQuiz.module.css';
-import ScoreCircle from '../guidemypage/guidemypageaiservice/ScoreCircle';
 import { useNavigate } from 'react-router-dom';
+import ScoreCircle from '../guidemypage/guidemypageaiservice/ScoreCircle';
 
-const QuizResult = ({ isOpen}) => {
+const QuizResult = ({ isOpen, newScore}) => {
 
     const navigate = useNavigate();
 
@@ -20,19 +20,11 @@ const QuizResult = ({ isOpen}) => {
 
                 <div className={styles.scoreSection}>
                     <div className={styles.scoreCircle}>
-                        <ScoreCircle score={60} />
+                    <ScoreCircle score={newScore} />
                     </div>
-                    <div className={styles.graphSection}>
-                        <div className={styles.graph}>
-                            <div className={styles.averageBar}></div>
-                            <p>평균점수</p>
-                        </div>
-                        <div className={styles.graph}>
-                            <div className={styles.myBar}></div>
-                            <p>내점수</p>
-                        </div>
-                    </div>
+                
                 </div>
+              
                 <button className={styles.viewQuestionsButton} onClick={handleSubmit}>시작 페이지로 이동</button>
             </div>
         </div>
