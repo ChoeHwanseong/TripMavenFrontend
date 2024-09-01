@@ -95,7 +95,7 @@ const RegisterGuidePage = ({userId}) => {
           if(memberInfo.role==='USER') setPendingLicense(true); //라이센스 인증 중
           const encodedFilename = encodeURIComponent(memberInfo.guidelicense); //한글이름파일 인코딩
           const {fileUrl, file} = await fetchLicenseFile(encodedFilename); //서버에서 파일 받아오기
-          console.log(fileUrl); //가이드 인증 파일 url
+          console.log('자격등 등록 url: ',fileUrl); //가이드 인증 파일 url
           setPreviewUrl([{
             name: memberInfo.guidelicense,
             url: fileUrl

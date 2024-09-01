@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/chat/BigChat.module.css';
-import { fetchData } from '../../utils/memberData';
+import { chattingRoomData, chattingListData } from '../../utils/chatData';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { fetchData } from '../../utils/Chatting';
 
-function ChattingRoom({ onSelectUser }) {
-
-  const [data, setData] = useState([]); 
+function ChattingRoom({ setSelectedUser, data, client, setIsConnected, setChatMessages }) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
 
@@ -26,63 +24,72 @@ function ChattingRoom({ onSelectUser }) {
 
     
 
-    const handleMouseEnter = (index) => {
-        setHoveredRow(index);
-      };
-    
-      const handleMouseLeave = () => {
-        setHoveredRow(null);
-      }
-    
-      const handleClick = (user) => {
-        onSelectUser(user);
-        navigate(`/BigChat/${user.id}`);
-      };
- 
-    return (
-        
-          <div className={styles.messagesSection}>
-            <div className={styles.header}>
-              <h2 className={styles.messagesTitle}>Messages</h2>
-              <div className={styles.searchNewChat}>
-                <input
-                  type="text"
-                  className={styles.searchInput}
-                  placeholder="검색어를 입력하세요"
-                />
-              </div>
-            </div>
-    
-            <div className={styles.chatList}>
-              {data.map((user, index) => (
-                 <Box
-                 key={index}
-                 className={styles.chatItem}
-                 onMouseEnter={() => handleMouseEnter(index)}
-                 onMouseLeave={handleMouseLeave}
-                 onClick={() => handleClick(user)}
-                 sx={{
-                   cursor: 'pointer',
-                   transition: 'background-color 0.3s',
-                   backgroundColor: hoveredRow === index ? '#D0F0FF' : 'transparent',
-                   color: hoveredRow === index ? 'black' : 'inherit',
-                 }}
-               >
-                  <img
-                    src={user.profileImage ? user.profileImage : "../images/defaultimage.png"} 
-                    alt="profile"
-                    className={styles.profileImage}
-                  />
-                  <div className={styles.chatInfo}>
-                    <span className={styles.chatName}>{user.name}</span>
-                    <span className={styles.chatTime}>{user.lastMessageTime ? user.lastMessageTime : "00:00"}</span> 
-                  </div>
-                </Box>
-            ))} 
-</div>
-</div>
+  const handleMouseEnter = (index) => {
+    setHoveredRow(index);
+  };
 
-        );
-    };
-  
+  const handleMouseLeave = () => {
+    setHoveredRow(null);
+  }
+
+  const handleClick = (joinChatting) => {
+    if (client && joinChatting.chattingRoom) {
+      client.subscribe(`${joinChatting.chattingRoom.id}`, (err) => {
+        if (!err) {
+          console.log(joinChatting.chattingRoom.id, 'Subscribed to topic');
+        } else {
+          console.error('Subscription error:', err);
+        }
+      });
+      setSelectedUser(joinChatting);
+      setChatMessages([]);
+    }
+  };
+
+  return (
+
+    <div className={styles.messagesSection}>
+      <div className={styles.header}>
+        <h2 className={styles.messagesTitle}>Messages</h2>
+        <div className={styles.searchNewChat}>
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="검색어를 입력하세요"
+          />
+        </div>
+      </div>
+
+      <div className={styles.chatList}>
+        {data.map((joinChatting, index) => (
+          <Box
+            key={index}
+            className={styles.chatItem}
+            onMouseEnter={() => handleMouseEnter(index)}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => handleClick(joinChatting)}
+            sx={{
+              cursor: 'pointer',
+              transition: 'background-color 0.3s',
+              backgroundColor: hoveredRow === index ? '#D0F0FF' : 'transparent',
+              color: hoveredRow === index ? 'black' : 'inherit',
+            }}
+          >
+            <img
+              src={joinChatting.member.profileImage ? joinChatting.member.profileImage : "../images/defaultimage.png"}
+              alt="profile"
+              className={styles.profileImage}
+            />
+            <div className={styles.chatInfo}>
+              <span className={styles.chatName}>{joinChatting.member.name}</span>
+              <span className={styles.chatTime}>{joinChatting.lastMessageTime ? joinChatting.lastMessageTime : "00:00"}</span>
+            </div>
+          </Box>
+        ))}
+      </div>
+    </div>
+
+  );
+};
+
 export default ChattingRoom;

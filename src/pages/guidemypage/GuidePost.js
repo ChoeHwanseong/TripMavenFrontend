@@ -282,6 +282,9 @@ const GuidePost = () => {
                     <BeachAccessIcon sx={{ mr: 1 }} />
                     테마 소개
                 </Typography>
+                {errors.content && <Typography color="error" sx={{ 
+
+}}>{errors.content}</Typography>}
                 <ReactQuill 
                     theme="snow" 
                     placeholder="내용을 입력하세요..." 
@@ -289,8 +292,9 @@ const GuidePost = () => {
                     onChange={setEditorContent}
                     modules={modules}
                     formats={formats}
+                    style={{ height: '500px' }}
                 />
-                {errors.content && <Typography color="error">{errors.content}</Typography>}
+
             </Box>
             <Divider />
 

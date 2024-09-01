@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from '../../styles/finishQuiz.module.css';
-import { useNavigate } from 'react-router-dom';
+import styles from '../../styles/aiservicepage/FinishQuiz.module.css';
 import ScoreCircle from '../guidemypage/guidemypageaiservice/ScoreCircle';
+import { useNavigate } from 'react-router-dom';
 
 const QuizResult = ({ isOpen, newScore}) => {
 
