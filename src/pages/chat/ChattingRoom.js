@@ -4,6 +4,7 @@ import { chattingRoomData, chattingListData } from '../../utils/chatData';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import mqtt from 'mqtt';
+
 function ChattingRoom({ setSelectedUser, data, client, setIsConnected, setChatMessages }) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function ChattingRoom({ setSelectedUser, data, client, setIsConnected, setChatMe
   }
   const handleClick = (joinChatting) => {
     if (client && joinChatting.chattingRoom) {
-      client.subscribe('21', (err) => {
+      client.subscribe(`${joinChatting.chattingRoom.id}`, (err) => {
         if (!err) {
           console.log(joinChatting.chattingRoom.id, 'Subscribed to topic');
         } else {

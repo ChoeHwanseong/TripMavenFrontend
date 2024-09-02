@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../../styles/quiz.module.css';
+import styles from '../../styles/aiservicepage/Quiz.module.css';
 import { fetchData, submitAnswer } from '../../utils/Quiz';  
 import { useNavigate } from 'react-router-dom';
-import QuizResult from '../../pages/aiservicepage/FinishQuiz';
+import QuizResult from './FinishQuiz';
 
 const QuizForm = () => {
   const [data, setData] = useState([]);
