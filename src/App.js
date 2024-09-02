@@ -73,6 +73,9 @@ import PronunciationTestTutorial from './pages/aiservicepage/PronunciationTestTu
 import MICTest from './pages/aiservicepage/MICTest';
 import RealTest1 from './pages/aiservicepage/RealTest1';
 import PronunciationTest from './pages/aiservicepage/PronunciationTest';
+import PostDetails from './pages/productPage/PostDetails';
+import RealTestPage from './pages/aiservicepage/RealTestPage'
+import RealTestResult from './pages/aiservicepage/RealTestResult'
 
 
 
