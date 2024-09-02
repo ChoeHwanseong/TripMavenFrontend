@@ -73,8 +73,6 @@ import PronunciationTestTutorial from './pages/aiservicepage/PronunciationTestTu
 import MICTest from './pages/aiservicepage/MICTest';
 import RealTest1 from './pages/aiservicepage/RealTest1';
 import PronunciationTest from './pages/aiservicepage/PronunciationTest';
-import RealTestPage from './pages/aiservicepage/RealTestPage';
-import RealTestResult from './pages/aiservicepage/RealTestResult';
 
 
 
@@ -174,9 +172,10 @@ function App() {
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
+        <Route path='/postDetails/:id/:keyword' element={<PostDetails/>}/>
+        
         <Route path='/termsservice' element={<TermsService/>}/>
         <Route path='/adminreport' element={<ComplaintForm/>}/>
-        
 
         <Route path='/paymentproc' element={<OrderPopup/>}/>
         <Route path='/payment' element={<PaymentForm/>}/>
