@@ -184,6 +184,7 @@ const GuidePostDetails = () => {
                 className={styles.hashtagButton} 
                 variant="contained"
                 size="small"
+                onClick={()=>navigate(`/product?keyword=${tag.trim()}`)}
               >
                 #{tag.trim()}
               </Button>

@@ -171,7 +171,7 @@ function App() {
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
-        <Route path='/postDetails/:id/:keyword' element={<PostDetails/>}/>
+        <Route path='/postDetails/:id' element={<PostDetails/>}/>
         
         <Route path='/termsservice' element={<TermsService/>}/>
         <Route path='/adminreport' element={<ComplaintForm/>}/>

@@ -16,6 +16,7 @@ const YouTubeSearch = ({ keyword, city }) => {
     //const YOUTUBE_API_KEY = 'AIzaSyCZayRJHfttrAoayZKY-owo_6TslcaEduM'; // 규림
     //const YOUTUBE_API_KEY = 'AIzaSyCZPSPkT5rNtWvV6lkmREOGemJkoieQAJk'; // 시은
     //const YOUTUBE_API_KEY = 'AIzaSyAxRvCfzlqgdIOlU3C8SSFLWnJ_a9Dt3NU'//주원
+    //const YOUTUBE_API_KEY = AIzaSyCL0xNyeIjXFRhAeO5nd6dIi5d_8PjhiFU
 
 
     const searchYouTube = async (searchTerm) => {
