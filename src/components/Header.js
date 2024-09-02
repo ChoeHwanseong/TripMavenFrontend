@@ -1,17 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from '../styles/components/Header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { menuData } from '../config/MyPageEndPoint';
 import { RoleContext } from './context/roleContext';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
-import { ButtonGroup, Button } from '@mui/material';
+import { ButtonGroup, Button, IconButton, Badge, Typography } from '@mui/material';
 import { logout } from '../utils/memberData';
-import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import styled from '@emotion/styled';
 
 const style = {
     position: 'absolute',
@@ -25,7 +26,108 @@ const style = {
     border: '1px solid primary',
     borderRadius: '16px',
     boxShadow: 24,
-    overflow: 'hidden', // 추가
+    overflow: 'hidden',
+};
+
+const NotificationPopup = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+`;
+
+const NotificationItem = styled.div`
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  &:last-child {
+    border-bottom: none;
+  }
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
+
+const NotificationTitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+const NotificationComponent = () => {
+    const [showNotifications, setShowNotifications] = useState(false);
+    const [notifications, setNotifications] = useState([
+        { id: 1, title: "새로운 알림", message: "내 게시물에 답변이 달렸습니다" },
+        { id: 2, title: "새로운 메시지", message: "관리자로부터 새로운 메세지가 도착했습니다" },
+        { id: 3, title: "승인 알림", message: "가이드 등록이 승인되었습니다" }
+    ]);
+
+    const handleClick = () => {
+        setShowNotifications(!showNotifications);
+    };
+
+    const handleNotificationClick = (id) => {
+        setNotifications(prevNotifications => 
+            prevNotifications.filter(notification => notification.id !== id)
+        );
+    };
+
+    const notificationCount = notifications.length;
+
+    const ringAnimation = notificationCount > 0 ? `
+        @keyframes ring {
+            0% { transform: rotate(0); }
+            5% { transform: rotate(15deg); }
+            10% { transform: rotate(-15deg); }
+            15% { transform: rotate(15deg); }
+            20% { transform: rotate(-15deg); }
+            25% { transform: rotate(0); }
+            100% { transform: rotate(0); }
+        }
+    ` : '';
+
+    return (
+        <div style={{ position: 'relative' }}>
+            <IconButton 
+                onClick={handleClick} 
+                style={{ 
+                    transition: 'transform 0.3s ease',
+                    animation: notificationCount > 0 ? 'ring 2s infinite' : 'none',
+                }}
+            >
+                <Badge badgeContent={notificationCount} color="error">
+                    <NotificationsIcon />
+                </Badge>
+            </IconButton>
+            <style>
+                {ringAnimation}
+            </style>
+            {showNotifications && (
+                <NotificationPopup>
+                    {notificationCount > 0 ? (
+                        notifications.map((notification) => (
+                            <NotificationItem 
+                                key={notification.id} 
+                                onClick={() => handleNotificationClick(notification.id)}
+                            >
+                                <NotificationTitle>{notification.title}</NotificationTitle>
+                                <Typography variant="body2">{notification.message}</Typography>
+                            </NotificationItem>
+                        ))
+                    ) : (
+                        <NotificationItem>
+                            <Typography variant="body2">알림이 없습니다</Typography>
+                        </NotificationItem>
+                    )}
+                </NotificationPopup>
+            )}
+        </div>
+    );
 };
 
 const Header = () => {
@@ -34,19 +136,18 @@ const Header = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
     const { role, setRole } = useContext(RoleContext);
     const [open, setOpen] = useState(false);
-    const [notificationCount, setNotificationCount] = useState(0);
     let menuList = menuData[role];
 
-    const handleLogout=()=>{
-        logout().then(res =>{
+    const handleLogout = () => {
+        logout().then(res => {
             localStorage.clear();
             navigate('/home');
         })
-      }
+    }
 
     //가이드 등록 모달 관련 함수
     const handleOpen = () => {
-        if(localStorage.getItem("token")) setOpen(true);
+        if (localStorage.getItem("token")) setOpen(true);
     };
     const handleClose = () => setOpen(false);
 
@@ -54,7 +155,6 @@ const Header = () => {
     useEffect(() => {
         handleSearchKeyword();
     }, [location.pathname]);
-    
 
     const handleSearchKeyword = () => {
         if (!location.pathname.includes('/product')) {
@@ -86,25 +186,6 @@ const Header = () => {
     const handleClick = (path) => {
         navigate(path);
         scrollToTop();
-    };
-
-    //알람 관련 함수
-    const handleNotificationClick = () => {
-        console.log('알림 아이콘 클릭됨');
-        setNotificationCount(prevCount => prevCount + 1);
-    };
-
-    const renderNotificationIcon = () => {
-        return (
-            <div className={styles.notificationIconWrapper} onClick={handleNotificationClick}>
-                <div className={`${styles.notificationIcon} ${notificationCount > 0 ? styles.shake : ''}`}>
-                    <FontAwesomeIcon icon={faBell} className={styles.bellIcon} />
-                </div>
-                {notificationCount > 0 && (
-                    <span className={styles.notificationBadge}>{notificationCount}</span>
-                )}
-            </div>
-        );
     };
 
     return (
@@ -161,9 +242,8 @@ const Header = () => {
                                 </div>
                             </div>
                             <button className={styles.navButton} onClick={handleOpen}>가이드 등록</button>
+                            <NotificationComponent />
                         </div>
-
-                        {renderNotificationIcon()}
 
                         {!localStorage.getItem("token") ?
                             <NavLink className={styles.loginButton} to="/login" >로그인</NavLink>

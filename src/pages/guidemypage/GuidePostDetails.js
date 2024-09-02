@@ -26,6 +26,8 @@ const GuidePostDetails = () => {
   const contentRef = useRef(null);
   const [isExpanded, setIsExpanded] = useState(false);/* 더보기&접기 상태 저장 */
 
+  const membersId = localStorage.getItem('membersId');
+
   //내용 더보기 버튼
   function onRefButtonClick() {
     // 버튼 누르면 기존 height값으로 바꾸기
@@ -287,6 +289,8 @@ const GuidePostDetails = () => {
       </Box>
 
       <Box className={styles.actions}>
+      {data.member.id === Number(membersId) && (
+          <>
         <Button 
           className={styles.actionButton}
           variant="contained" 
@@ -303,6 +307,10 @@ const GuidePostDetails = () => {
         >
           삭제 하기
         </Button>
+
+        </>
+        )}
+
         <Button 
           className={styles.actionButton}
           variant="outlined" 

@@ -33,6 +33,8 @@ import UserLike from './pages/usermypage/UserLike';
 
 
 
+
+
 import MemberList from './pages/adminmypage/MemberList';
 import GuideAskUpdate from './pages/guidemypage/GuideAskUpdate';
 import GuideAsk from './pages/guidemypage/GuideAsk';
@@ -71,7 +73,6 @@ import PronunciationTestTutorial from './pages/aiservicepage/PronunciationTestTu
 import MICTest from './pages/aiservicepage/MICTest';
 import RealTest1 from './pages/aiservicepage/RealTest1';
 import PronunciationTest from './pages/aiservicepage/PronunciationTest';
-import PostDetails from './pages/productPage/PostDetails';
 
 
 
@@ -143,8 +144,6 @@ function App() {
           <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
           <Route path='/askupdate/:id' element={<AskUpdate/>}/>
 
-          <Route path='/postDetails/:id/:keyword' element={<PostDetails/>}/>
-
         </Route>
         
         <Route path='/aiservice' element={<AIService/>}/>
@@ -173,7 +172,7 @@ function App() {
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
-      
+        <Route path='/postDetails/:id/:keyword' element={<PostDetails/>}/>
         
         <Route path='/termsservice' element={<TermsService/>}/>
         <Route path='/adminreport' element={<ComplaintForm/>}/>
@@ -184,7 +183,11 @@ function App() {
         <Route path='/record' element={<WebcamRecorder/>}/>
         <Route path='/recordcheck' element={<DeviceCheckComponent/>}/>
         
-        
+        <Route path='/realTestPage' element={<RealTestPage />}/>
+        <Route path='/realTestResult' element={<RealTestResult />}/>
+
+
+
       </Route>
     </Routes>
   </>

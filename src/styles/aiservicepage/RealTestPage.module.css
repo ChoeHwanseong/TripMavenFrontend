@@ -1,0 +1,70 @@
+.container {
+    text-align: center;
+    margin: 20px;
+  }
+  
+  .testContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .videoBox {
+    width: 45%;
+    height: 400px; /* 고정된 높이 설정 */
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 45%; /* 네모 박스와 같은 너비로 설정 */
+    margin-top: 20px; /* 네모 박스와의 간격 조정 */
+  }
+  
+  .selectContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px; /* 마이크 선택 버튼과 녹화 버튼 사이 간격 조정 */
+  }
+  
+  .selectControl {
+    width: 48%; /* 각 선택 버튼을 절반 크기로 설정 */
+  }
+  
+  .recordButton {
+    width: 48%; /* 마이크 선택 버튼과 동일한 크기로 설정 */
+    margin-top: 20px; /* 녹화하기 버튼과 위 요소 간의 간격 조정 */
+  }
+  
+  .video {
+    width: 100%;
+    height: 100%; /* 비디오가 박스 크기에 맞게 조정 */
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  .textBox {
+    width: 45%;
+    height: 400px; /* 고정된 높이 설정 */
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    padding: 20px;
+    overflow-y: auto;
+    text-align: left;
+  }
+  
+  .textBox p {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+  }
+  
