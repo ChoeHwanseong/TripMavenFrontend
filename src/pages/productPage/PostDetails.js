@@ -37,6 +37,7 @@ const PostDetails = () => {
   useEffect(() => {
     const getData = async () => {
       try {
+        console.log('포스트 디테일 들어옴');
         const fetchedData = await postGetById(id);
         console.log('fetchedData: ', fetchedData);
         setData(fetchedData);
