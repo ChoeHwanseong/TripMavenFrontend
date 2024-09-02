@@ -73,9 +73,10 @@ import PronunciationTestTutorial from './pages/aiservicepage/PronunciationTestTu
 import MICTest from './pages/aiservicepage/MICTest';
 import RealTest1 from './pages/aiservicepage/RealTest1';
 import PronunciationTest from './pages/aiservicepage/PronunciationTest';
-import PostDetails from './pages/bulletin/PostDetails';
+import PostDetails from './pages/productPage/PostDetails';
 import RealTestPage from './pages/aiservicepage/RealTestPage'
 import RealTestResult from './pages/aiservicepage/RealTestResult'
+
 
 
 function App() {
@@ -174,7 +175,7 @@ function App() {
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
-        <Route path='/postDetails/:id/:keyword' element={<PostDetails/>}/>
+        <Route path='/postDetails/:id' element={<PostDetails/>}/>
         
         <Route path='/termsservice' element={<TermsService/>}/>
         <Route path='/adminreport' element={<ComplaintForm/>}/>

@@ -187,6 +187,7 @@ const PostDetails = () => {
                 className={styles.hashtagButton}
                 variant="contained"
                 size="small"
+                onClick={()=>navigate(`/product?keyword=${tag.trim()}`)}
               >
                 #{tag.trim()}
               </Button>
@@ -300,14 +301,26 @@ const PostDetails = () => {
           </>
         )}
 
-        <Button
-          className={styles.actionButton}
-          variant="outlined"
-          color="primary"
-          onClick={() => navigate(`/product?keyword=${keyword}`)}
-        >
-          목록
-        </Button>
+{keyword ? (
+  <Button
+    className={styles.actionButton}
+    variant="outlined"
+    color="primary"
+    onClick={() => navigate(`/product?keyword=${keyword}`)}
+  >
+    목록
+  </Button>
+) : (
+  <Button
+    className={styles.actionButton}
+    variant="outlined"
+    color="primary"
+    onClick={() => navigate(-1)} // 이전 페이지로 이동
+  >
+    목록
+  </Button>
+)}
+
       </Box>
     </Box>
   );
