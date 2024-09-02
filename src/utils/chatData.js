@@ -21,4 +21,4 @@ catch (error) {
     console.error('에러났당', error);
     throw error; 
 }
-};
+}; 

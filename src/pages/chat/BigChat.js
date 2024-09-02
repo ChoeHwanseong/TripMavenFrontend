@@ -12,65 +12,83 @@ function BigChat() {
   const [chatMessages, setChatMessages] = useState([]);
   const [data, setData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const { roomId } = useParams();
 
   useEffect(() => {
-    console.log(new Date().toString());
     console.log(new Date().toISOString());
     //console.log(new Date().toString());
     const getData = async () => {
       try {
         const fetchedData = await chattingListData(localStorage.getItem("membersId"));
         setData(fetchedData);  // 가져온 데이터를 상태에 저장
+        return fetchedData;
       } catch (error) {
         console.error('에러났당', error);
       }
     };
 
-    //마운트시 엠큐티티 클라이언트 객체 없으면 생성
     if (!client) {
       getData();
 
-      // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
-      const mqttClient = mqtt.connect('ws://121.133.84.38:1884'); // MQTT 브로커에 연결
+        // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
+        const mqttClient = mqtt.connect('ws://121.133.84.38:1884'); // MQTT 브로커에 연결
 
-      mqttClient.on('connect', () => {
-        console.log('Connected to MQTT broker');
-        setIsConnected(true);
-      });
+        mqttClient.on('connect', () => {
+          console.log('Connected to MQTT broker');
+          setIsConnected(true);
+        });
 
-      mqttClient.on('error', (err) => {
-        console.error('Connection error:', err);
-      });
+        mqttClient.on('error', (err) => {
+          console.error('Connection error:', err);
+        });
 
-      //메시지 수신 설정
-      mqttClient.on('message', (topic, message) => {
-        console.log('Received message:', message.toString());
-        try {
-          const parsedMessage = JSON.parse(message.toString());
-          const { text, sender, timestamp } = parsedMessage;
+        //메시지 수신 설정
+        mqttClient.on('message', (topic, message) => {
+          console.log('Received message:', message.toString());
+          try {
+            const parsedMessage = JSON.parse(message.toString());
+            const { text, sender, timestamp } = parsedMessage;
 
-          // 중복 메시지 방지
-          if (chatMessages.some(msg => msg.text === text && msg.time === new Date(timestamp).toLocaleTimeString())) {
-            return;
+            // 중복 메시지 방지
+            if (chatMessages.some(msg => msg.text === text && msg.time === new Date(timestamp).toLocaleTimeString())) {
+              return;
+            }
+
+            setChatMessages((prevMessages) => [
+              ...prevMessages,
+              {
+                sender: sender,
+                text,
+                time: new Date(timestamp).toISOString(),
+              },
+            ]);
+            
+          } catch (error) {
+            console.error('Error parsing message:', error);
           }
-
-          setChatMessages((prevMessages) => [
-            ...prevMessages,
-            {
-              sender: sender,
-              text,
-              time: new Date(timestamp).toISOString(),
-            },
-          ]);
-          
-        } catch (error) {
-          console.error('Error parsing message:', error);
+        });
+        
+        if(roomId){
+          for(let joinchat of list_){
+            if(joinchat.chattingRoom.id==roomId){
+              mqttClient.subscribe(`${roomId}`, (err) => {
+                if (!err) {
+                  console.log(roomId, 'Subscribed to topic');
+                } else {
+                  console.error('Subscription error:', err);
+                }
+                setSelectedUser(joinchat);
+              });
+            }
+          }
         }
-      });
 
-      // 클라이언트를 상태로 설정
-      setClient(mqttClient);
+        // 클라이언트를 상태로 설정
+        setClient(mqttClient);
+      }
     }
+
+    func();
 
     // 컴포넌트 언마운트 시 클라이언트 종료
     return () => {
@@ -110,7 +128,7 @@ function BigChat() {
   
   return (
     <div className={styles.container}>
-       <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages}/>
+       <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages} roomId={roomId}/>
 
         <div className={styles.chatSection}>
         <div className={styles.chatHeader}>
