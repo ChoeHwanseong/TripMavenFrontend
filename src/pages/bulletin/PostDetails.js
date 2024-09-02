@@ -33,11 +33,12 @@ const PostDetails = () => {
         <h1 className="my-4">게시글 상세</h1>
       </div>
       <div className={styles.column}>
-        <h1 className="my-3" style={{ textAlign: 'left' }}>{post.title}</h1>
-        <p><strong>작성자:</strong> {post.author}</p>
-        <p><strong>작성일:</strong> {post.date}</p>
-        <div>{post.content}</div>
+        <h1 className="my-3" style={{ textAlign: 'left' }}>{post&&post.title}</h1>
+        <p><strong>작성자:</strong> {post&&post.author}</p>
+        <p><strong>작성일:</strong> {post&&post.date}</p>
+        <div>{post&&post.content}</div>
       </div>
+      
       <button
         className="btn btn-secondary mt-4"
         onClick={() => navigate('/bulletin')}
