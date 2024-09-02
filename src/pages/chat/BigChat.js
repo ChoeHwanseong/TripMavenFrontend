@@ -14,6 +14,9 @@ function BigChat() {
   const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
+    console.log(new Date().toString());
+    console.log(new Date().toISOString());
+    //console.log(new Date().toString());
     const getData = async () => {
       try {
         const fetchedData = await chattingListData(localStorage.getItem("membersId"));
@@ -23,6 +26,7 @@ function BigChat() {
       }
     };
 
+    //마운트시 엠큐티티 클라이언트 객체 없으면 생성
     if (!client) {
       getData();
 
@@ -50,15 +54,12 @@ function BigChat() {
             return;
           }
 
-          //중복 메시지 방지
-          if(sender == localStorage.getItem("membersId")) return;
-          
           setChatMessages((prevMessages) => [
             ...prevMessages,
             {
               sender: sender,
               text,
-              time: new Date(timestamp).toLocaleTimeString(),
+              time: new Date(timestamp).toISOString(),
             },
           ]);
           
@@ -85,18 +86,10 @@ function BigChat() {
       const message = JSON.stringify({
         text,
         sender: localStorage.getItem('membersId'),
-        timestamp: new Date().toLocaleTimeString(),
+        timestamp: new Date(),
       });
       console.log(`토픽 ${selectedUser.chattingRoom.id} 으로 채팅 보내기, 채팅내용 :`,message);
       client.publish(`${selectedUser.chattingRoom.id}`, message);
-      setChatMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          sender: localStorage.getItem('membersId'),
-          text,
-          time: new Date().toLocaleTimeString(),
-        },
-      ]);
     }
   };
 
@@ -140,7 +133,7 @@ function BigChat() {
                   <span>{msg.text}</span>
                 </div>  
               </div>
-              <span className={`${styles.messageTime} ${msg.sender === localStorage.getItem('membersId') ? styles.sent : ''}`}>{msg.time}</span>
+              <span className={`${styles.messageTime} ${msg.sender === localStorage.getItem('membersId') ? styles.sent : ''}`}>{(new Date().toLocaleDateString == new Date(msg.time).toLocaleDateString?'':new Date(msg.time).toLocaleDateString)+new Date(msg.time).toLocaleTimeString()}</span>
             </div>
           ))}
         </div>
