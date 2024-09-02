@@ -143,8 +143,6 @@ function App() {
           <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
           <Route path='/askupdate/:id' element={<AskUpdate/>}/>
 
-          <Route path='/postDetails/:id/:keyword' element={<PostDetails/>}/>
-
         </Route>
         
         <Route path='/aiservice' element={<AIService/>}/>
@@ -173,7 +171,7 @@ function App() {
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
-      
+        <Route path='/postDetails/:id/:keyword' element={<PostDetails/>}/>
         
         <Route path='/termsservice' element={<TermsService/>}/>
         <Route path='/adminreport' element={<ComplaintForm/>}/>

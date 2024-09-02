@@ -84,7 +84,14 @@ const ProductBoard = () => {
                         className={styles.productItem}
                         onClick={() => {
                             console.log('넘길때 keyword:', keyword);
-                            navigate(`/postDetails/${product.id}/${keyword}`)}} // 상품 상세 페이지로 이동
+
+                        if (keyword) {
+                            navigate(`/postDetails/${product.id}/${keyword}`);
+                          } else if (city) {
+                            navigate(`/postDetails/${product.id}/${city}`);
+                        }
+                        }}// 상품 상세 페이지로 이동
+   
                     >
                         {/* 상품 이미지 */}
                         <img
