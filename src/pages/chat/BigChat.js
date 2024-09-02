@@ -27,7 +27,7 @@ function BigChat() {
       getData();
 
       // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
-      const mqttClient = mqtt.connect('ws://121.133.84.38:1884'); // MQTT 브로커에 연결
+      const mqttClient = mqtt.connect('mqtt://localhost:1884'); // MQTT 브로커에 연결
 
       mqttClient.on('connect', () => {
         console.log('Connected to MQTT broker');

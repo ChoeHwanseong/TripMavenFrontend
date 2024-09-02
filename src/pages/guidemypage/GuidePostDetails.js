@@ -12,6 +12,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fetchFiles } from '../../utils/fileData';
 import ForumIcon from '@mui/icons-material/Forum';
+import { chattingRoomData } from '../../utils/chatData';
 
 const GuidePostDetails = () => {
   const navigate = useNavigate();
@@ -119,7 +120,18 @@ const GuidePostDetails = () => {
     }
   };
 
+  const handleClick = async () => {
+    try {
+      const myId = localStorage.getItem("membersId");
+      const yourId = data.member.id;
+      const roomId = await chattingRoomData(myId, yourId);
+      console.log('Room ID:', roomId);
+        navigate(`/bigChat/${roomId}`);
   
+    } catch (error) {
+      console.error('에러났당', error);
+    }
+  };
 
 
 
@@ -200,7 +212,7 @@ const GuidePostDetails = () => {
       <Button
         variant="outlined" 
         color="primary" 
-        onClick={() => navigate(`/bigchat/${id}`)} // 상품 id 넘기기
+        onClick={handleClick} // 상품 id 넘기기
         sx={{ mr: 'auto' }}
         startIcon={<ForumIcon />}
       >가이드에게 채팅하기</Button>

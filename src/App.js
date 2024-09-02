@@ -128,7 +128,7 @@ function App() {
           
           <Route path='/bigChat/:id' element={<BigChat/>}/>
           <Route path='/chattingRoom' element={<ChattingRoom/>}/>
-          
+          <Route path="/chattingRoom/:roomId" element={<ChattingRoom />} />
 
           {/* MYPAGE */}
           <Route path="/mypageprofile/:id" element={<MypageProfile />} />
