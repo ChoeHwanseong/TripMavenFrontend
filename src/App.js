@@ -70,6 +70,7 @@ import QuizTutorial from './pages/aiservicepage/QuizTutorial';
 import PronunciationTestTutorial from './pages/aiservicepage/PronunciationTestTutorial';
 import MICTest from './pages/aiservicepage/MICTest';
 import RealTest1 from './pages/aiservicepage/RealTest1';
+import PronunciationTest from './pages/aiservicepage/PronunciationTest';
 
 
 
@@ -164,6 +165,7 @@ function App() {
         <Route path='/pronunciationtesttutorial' element={<PronunciationTestTutorial/>}/>
         <Route path='/mictest' element={<MICTest/>}/>
         <Route path='/realtest1' element={<RealTest1 />}/>
+        <Route path='/pronunciationtest' element={<PronunciationTest/>}/>
         
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
