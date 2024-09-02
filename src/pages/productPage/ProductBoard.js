@@ -82,7 +82,9 @@ const ProductBoard = () => {
                     <div
                         key={index}
                         className={styles.productItem}
-                        onClick={() => navigate(`/guidePostDetails/${product.id}`)} // 상품 상세 페이지로 이동
+                        onClick={() => {
+                            console.log('넘길때 keyword:', keyword);
+                            navigate(`/postDetails/${product.id}/${keyword}`)}} // 상품 상세 페이지로 이동
                     >
                         {/* 상품 이미지 */}
                         <img
@@ -101,8 +103,8 @@ const ProductBoard = () => {
                             </div>
                             <div className={styles.rating}>
                                 {/* 상품 평점 및 리뷰 수 */}
-                                <span>:별: {product.rating}</span>
-                                <span>{product.reviewCount || '0'}건의 리뷰</span>
+                                <span>별 {product.rating}</span>
+                                <span>{product.review || '0'}건의 리뷰</span>
                             </div>
                         </div>
                     </div>

@@ -69,9 +69,9 @@ const ProfileCardModal = ({ isOpen, onClose, guideData }) => {
         </Box>
 
          {/* 문의하기 버튼 */}
-        <Button variant="outlined" className={styles.button} onClick={handelClick}>
+        {/* <Button variant="outlined" className={styles.button} onClick={handelClick}>
            문의하기
-        </Button>
+        </Button> */}
 
          {/* 소개 섹션 */}
          <Box className={styles.description}>
