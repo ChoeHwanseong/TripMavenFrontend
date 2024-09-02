@@ -27,8 +27,11 @@ function BigChat() {
       }
     };
 
-    if (!client) {
-      getData();
+a    //마운트시 엠큐티티 클라이언트 객체 없으면 생성
+    const func = async ()=>{
+      if (!client) {
+        const list_ = await getData();
+        console.log(list_);
 
         // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
         const mqttClient = mqtt.connect('ws://121.133.84.38:1884'); // MQTT 브로커에 연결
