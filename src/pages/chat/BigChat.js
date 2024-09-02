@@ -3,95 +3,99 @@ import mqtt from 'mqtt';
 import { useParams } from 'react-router-dom';
 import styles from '../../styles/chat/BigChat.module.css';
 import ChattingRoom from './ChattingRoom';
-import { fetchData } from '../../utils/memberData';
+import { chattingRoomData, chattingListData } from '../../utils/chatData';
 
 function BigChat() {
   const { id } = useParams();
   const [client, setClient] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
+  const [data, setData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const userData = await fetchData(id); 
-        setSelectedUser(userData);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-    getUserData();
+    if (!client) {
+      // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
+      const mqttClient = mqtt.connect('mqtt://localhost:1884'); // MQTT 브로커에 연결
 
-    // MQTT 브로커에 연결
-    const mqttClient = mqtt.connect('mqtt://localhost:1884'); // 또는 'ws://broker.hivemq.com:8000/mqtt' (웹소켓 사용 시)
-    
-    mqttClient.on('connect', () => {
-      console.log('Connected to MQTT broker');
-      setIsConnected(true);
-      mqttClient.subscribe('python/mqtt'); // 원하는 토픽 구독
-    });
+      mqttClient.on('connect', () => {
+        console.log('Connected to MQTT broker');
+        setIsConnected(true);
+      });
 
-    mqttClient.on('message', (topic, message) => {
-      console.log('Received message:', message.toString());
-      
-      try {
-        const parsedMessage = JSON.parse(message.toString());
-        const { text, sender, timestamp } = parsedMessage;
+      mqttClient.on('error', (err) => {
+        console.error('Connection error:', err);
+      });
 
-        // 메세지 연속으로 2개 나옴 방지
-        if (chatMessages.some(msg => msg.text === text && msg.time === new Date(timestamp).toLocaleTimeString())) {
-          return;
-        }
-
-        setChatMessages((prevMessages) => [
-          ...prevMessages,
-          {
-            sender: sender === 'inPython' ? 'other' : 'self', 
-            text,
-            time: new Date(timestamp).toLocaleTimeString(),
-          },
-        ]);
-        
-      } catch (error) {
-        console.error('Error parsing message:', error);
-      }
-    });
-
-    mqttClient.on('error', (err) => {
-      console.error('Connection error:', err);
-    });
-
-    mqttClient.on('close', () => {
-      console.log('Disconnected from MQTT broker');
-    });
-
-    setClient(mqttClient);
-
-    const chatBody = document.getElementById('chatMessages'); //채팅 스크롤
-    chatBody.scrollTop = chatBody.scrollHeight; // 스크롤을 맨 아래로 이동
+      // 클라이언트를 상태로 설정
+      setClient(mqttClient);
+    }
 
     // 컴포넌트 언마운트 시 클라이언트 종료
     return () => {
-      if (mqttClient) {
-        mqttClient.end();
+      if (client) {
+        client.end();
       }
     };
-  }, [chatMessages]); // 여기서 chatMessages 의존성을 사용하여 중복 체크
+  }, [client]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const fetchedData = await chattingListData(localStorage.getItem("membersId"));
+        setData(fetchedData);  // 가져온 데이터를 상태에 저장
+      } catch (error) {
+        console.error('에러났당', error);
+      }
+    };
+    getData();
+  }, []); // 여기서 chatMessages 의존성을 사용하여 중복 체크
+
+  
+  useEffect(() => {
+    if (client) {
+      client.on('message', (topic, message) => {
+        console.log('Received message:', message.toString());
+
+        try {
+          const parsedMessage = JSON.parse(message.toString());
+          const { text, sender, timestamp } = parsedMessage;
+
+          // 중복 메시지 방지
+          if (chatMessages.some(msg => msg.text === text && msg.time === new Date(timestamp).toLocaleTimeString())) {
+            return;
+          }
+
+          setChatMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              sender: sender === 'inPython' ? 'other' : 'self', 
+              text,
+              time: new Date(timestamp).toLocaleTimeString(),
+            },
+          ]);
+          
+        } catch (error) {
+          console.error('Error parsing message:', error);
+        }
+      });
+    }
+  }, [client, chatMessages]);
+  
 
   const sendMessage = (text) => {
     if (client && isConnected) {
       const message = JSON.stringify({
         text,
-        sender: 'inReact',
+        sender: localStorage.getItem('membersId'),
         timestamp: new Date().toISOString(),
-
       });
-      client.publish('python/mqtt', message);
+
+      client.publish(selectedUser.chattingRoom.id, message);
       setChatMessages((prevMessages) => [
         ...prevMessages,
         {
-          sender: 'self',
+          sender: localStorage.getItem('membersId'),
           text,
           time: new Date().toLocaleTimeString(),
         },
@@ -118,23 +122,22 @@ function BigChat() {
   
   return (
     <div className={styles.container}>
-       <ChattingRoom onSelectUser={setSelectedUser} />
+       <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setIsConnected={setIsConnected} setChatMessages={setChatMessages}/>
 
         <div className={styles.chatSection}>
         <div className={styles.chatHeader}>
-          <h2 className={styles.chatName}>{selectedUser ? selectedUser.name : 'Select a user'}</h2>
+          <h2 className={styles.chatName}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
           <button className={styles.infoButton}>i</button>
         </div>
 
         <div className={styles.chatMessages} id='chatMessages'>
           {chatMessages.map((msg, index) => (
-            <div className={styles.messageNTime}>
+            <div className={styles.messageNTime} key={index}>
               <div
-                key={index}
-                className={`${styles.message} ${msg.sender === 'self' ? styles.sent : ''}`}
+                className={`${styles.message} ${msg.sender === localStorage.getItem('membersId') ? styles.sent : ''}`}
               >
                 <img
-                  src={msg.sender === 'self' ? "../images/defaultimage.png" : "../images/choehwanseong.png"}
+                  src={msg.sender === localStorage.getItem('membersId') ? "../images/defaultimage.png" : "../images/choehwanseong.png"}
                   alt="profile"
                   className={styles.profileImage}
                 />
@@ -142,7 +145,7 @@ function BigChat() {
                   <span>{msg.text}</span>
                 </div>  
               </div>
-              <span className={`${styles.messageTime} ${msg.sender === 'self' ? styles.sent : ''}`}>{msg.time}</span>
+              <span className={`${styles.messageTime} ${msg.sender === localStorage.getItem('membersId') ? styles.sent : ''}`}>{msg.time}</span>
             </div>
           ))}
         </div>

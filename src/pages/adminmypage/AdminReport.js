@@ -47,16 +47,16 @@ const AdminReport = () => {
               <TableRow key={index}>
                 <TableCell>{inquiry.member.id}</TableCell>
                 <TableCell>{inquiry.member.name}</TableCell>
-                <TableCell>{inquiry.productBoard.title}</TableCell>
+                <TableCell>{inquiry.productBoard.member.name}</TableCell>
                 <TableCell>
-                  {inquiry.attitude && '불친절한 태도, '}
-                  {inquiry.information && '부정확한 정보, '}
-                  {inquiry.disgust && '혐오발언, '}
-                  {inquiry.offensive && '공격적인 언어, '}
-                  {inquiry.noShow && '예약 불이행'}
+                  {inquiry.attitude && '불친절한 태도 '}
+                  {inquiry.information && '부정확한 정보 '}
+                  {inquiry.disgust && '혐오발언 '}
+                  {inquiry.offensive && '공격적인 언어 '}
+                  {inquiry.noShow && '예약 불이행 '}
                 </TableCell>
                 <TableCell>{inquiry.createdAt.split('T')[0]}</TableCell>
-                <TableCell>{inquiry.isactive ? '처리중' : '처리 완료'}</TableCell>
+                <TableCell>{inquiry.isactive ? '처리 중' : '처리 완료'}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -22,16 +22,13 @@ const GuidePostDetails = () => {
   const [complaintId, setComplaintId] = useState(null);
   const { id } = useParams();
   const contentRef = useRef(null);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isMoreView, setIsMoreView] = useState(false); /* 더보기&접기 상태 저장 */
+  const [isExpanded, setIsExpanded] = useState(false);/* 더보기&접기 상태 저장 */
 
   //내용 더보기 버튼
   function onRefButtonClick() {
     // 버튼 누르면 기존 height값으로 바꾸기
     setIsExpanded(!isExpanded);
     document.getElementById('contentBtn').hidden=true;  
-
-    setIsMoreView(!isMoreView);
   }
 
 
@@ -120,6 +117,8 @@ const GuidePostDetails = () => {
       }
     }
   };
+
+  
 
 
 
@@ -231,14 +230,16 @@ const GuidePostDetails = () => {
             className={`mt-3 overflow-hidden transition ${!isExpanded ? styles.blur : ''}`} 
             style={{
               maxHeight: isExpanded ? 'none' : '400px'
-              }}/>
+            }}/>
+            <div className={`${!isExpanded && styles.blurOverlay} ${isExpanded ? styles.noBlur : ''}`}></div>
           </Typography>
         </Box>
         {/* 글 더보기 버튼 */}
-        <Box sx={{ display: 'flex', justifyContent:'center', mt: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent:'center', mt: 2 }}
+            className={styles.blurOverlay}>
           <Button
                 id='contentBtn'
-                className={styles.actionButtonss }
+                className={styles.actionButtons }
                 variant="contained" 
                 onClick={onRefButtonClick}
               >상품 설명 더 보기</Button>
