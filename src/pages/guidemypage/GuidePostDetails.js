@@ -234,6 +234,7 @@ const GuidePostDetails = () => {
             <div className={`${!isExpanded && styles.blurOverlay} ${isExpanded ? styles.noBlur : ''}`}></div>
           </Typography>
         </Box>
+        
         {/* 글 더보기 버튼 */}
         <Box sx={{ display: 'flex', justifyContent:'center', mt: 2 }}
             className={styles.blurOverlay}>
