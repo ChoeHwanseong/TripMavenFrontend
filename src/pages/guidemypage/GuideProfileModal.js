@@ -84,7 +84,7 @@ const ProfileCardModal = ({ isOpen, onClose, guideData }) => {
              <Box className={styles.certifications} sx={{ marginTop: 3 }}>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>자격증</Typography>
                 <ul>
-                {guideData.certifications.map((cert, index) => (
+                {guideData.certifications && guideData.certifications.map((cert, index) => (
                 <li key={index} className={styles.certItem}>
                 <Typography variant="body2">{cert}</Typography>
                 </li>

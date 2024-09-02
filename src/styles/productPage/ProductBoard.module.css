@@ -66,3 +66,9 @@
   text-align: center;
   margin-top: 50px;
 }
+
+.productImage {
+  width: 100%; /* 가로 크기를 고정 */
+  height: 200px; /* 원하는 높이로 고정 */
+  object-fit: cover; /* 이미지가 요소에 맞게 자르도록 설정 */
+}

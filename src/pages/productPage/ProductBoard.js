@@ -6,10 +6,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { postsAllGet, postsCityGet, postsKeywordGet } from '../../utils/postData';
 import YouTubeSearch from '../guidemypage/YouTubeSearch';
+import { fetchFiles } from '../../utils/fileData';
+
 const ProductBoard = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    // 검색어 받기
     const params = new URLSearchParams(location.search);
     const keyword = params.get('keyword');
     const city = params.get('city');
@@ -17,9 +18,11 @@ const ProductBoard = () => {
     const [page, setPage] = useState(0); // 페이지(20개씩임)
     const [hasMore, setHasMore] = useState(true); // 더 불러올 데이터가 있는지 여부
     const [loading, setLoading] = useState(false);
+    const [fileUrl, setFileUrl] = useState(''); // 첫 번째 파일 URL 저장
     const { ref, inView } = useInView({
         threshold: 0, // 요소가 100% 보일 때 트리거
     });
+
     // 데이터를 더 가져오는 함수
     const fetchMoreData = async () => {
         if (!hasMore || loading) return; // 이미 초기화된 상태에서만 데이터 불러오기
@@ -36,23 +39,38 @@ const ProductBoard = () => {
             setHasMore(false);
             console.log('마지막 페이지');
         }
+
+        // 첫 번째 상품의 파일 URL만 가져오기
+        if (results.length > 0) {
+            const productId = results[0].id;
+            const fileData = await fetchFiles(productId);
+            if (fileData.length > 0) {
+                setFileUrl(fileData[0]); // 첫 번째 파일 URL만 저장
+            }
+        }
     };
+
     // 검색어가 바뀔 때마다 데이터를 초기화하고, 새로 가져옴
     useEffect(() => {
         const resetAndFetch = async () => {
             setProducts([]);
             setPage(0);
             setHasMore(true);
+            setFileUrl(''); // URL 초기화
             await fetchMoreData();
         };
+
         resetAndFetch();
+
     }, [location.search]);
+
     // inView 상태가 변경될 때마다 데이터를 더 가져옴
     useEffect(() => {
         if (inView && hasMore) {
             fetchMoreData();
         }
     }, [inView, hasMore]);
+
     return (
         <div className={styles.container}>
             <div>
@@ -64,12 +82,13 @@ const ProductBoard = () => {
                     <div
                         key={index}
                         className={styles.productItem}
-                        onClick={() => navigate(`/guidePostDetails/${product.id}`)} // 여기서 상품 상세 페이지로 이동
+                        onClick={() => navigate(`/guidePostDetails/${product.id}`)} // 상품 상세 페이지로 이동
                     >
                         {/* 상품 이미지 */}
                         <img
-                            src={product.image || './images/travel.jpg'}
+                            src={fileUrl || './images/travel.jpg'}
                             alt={product.title}
+                            className={styles.productImage} // 고정된 크기를 위한 클래스 추가
                         />
                         <div>
                             <h3>{product.title}</h3>
@@ -103,9 +122,8 @@ const ProductBoard = () => {
                 <h1 className={styles.youtubeHeading}>YouTube Video Search</h1>
                 <YouTubeSearch keyword={keyword} city={city}/>
             </div>
-
-
         </div>
     );
 };
+
 export default ProductBoard;
