@@ -27,7 +27,7 @@ const QuizTutorial = () => {
                         </Typography>
                     </Box>
                 </div>
-                <button className={styles.button} onClick={() => { navigate('/quizform2') }} style={{ marginTop: '35px' }}>시작하기</button>
+                <button className={styles.button} onClick={() => { navigate('/quizform2') }} style={{ marginTop: '35px'}}>확인</button>
 
             </div>
 
