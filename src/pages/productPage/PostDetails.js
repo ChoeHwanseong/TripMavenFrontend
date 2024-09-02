@@ -6,14 +6,15 @@ import { postDelete, postGetById, postLikey, deleteLikey } from '../../utils/pos
 import KakaoMap from '../../utils/KakaoMap'; 
 import { HotelIcon, TreePalm } from 'lucide-react';
 import ComplaintModal from '../report/ComplaintModal';
-import ProfileCardModal from './GuideProfileModal'; // 여기서 모달 컴포넌트 가져오기
-import ImageSlider from './guidepost/ImageSlider';
+
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fetchFiles } from '../../utils/fileData';
 import ForumIcon from '@mui/icons-material/Forum';
+import ImageSlider from '../guidemypage/guidepost/ImageSlider';
+import ProfileCardModal from '../guidemypage/GuideProfileModal';
 
-const GuidePostDetails = () => {
+const PostDetails = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [liked, setLiked] = useState(false);
@@ -21,7 +22,7 @@ const GuidePostDetails = () => {
   const [isGuideModalOpen, setGuideModalOpen] = useState(false);  // 가이드 모달 상태 변수
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [complaintId, setComplaintId] = useState(null);
-  const { id } = useParams();
+  const { id , keyword } = useParams();
   const contentRef = useRef(null);
   const [isExpanded, setIsExpanded] = useState(false);/* 더보기&접기 상태 저장 */
 
@@ -141,7 +142,7 @@ const GuidePostDetails = () => {
             가이드 프로필 보기
           </Button>
           {/* ProfileCardModal 컴포넌트로 가이드 데이터 전달 */}
-          <ProfileCardModal 
+          <ProfileCardModal
             isOpen={isGuideModalOpen} 
             onClose={closeGuideModal} 
             guideData={data.member} // 가이드 데이터를 ProfileCardModal로 전달
@@ -295,7 +296,7 @@ const GuidePostDetails = () => {
           className={styles.actionButton}
           variant="outlined" 
           color="primary" 
-          onClick={() => navigate('/guidemypost')}
+          onClick={() => navigate(`/product?keyword=${keyword}`)}
         >
           목록
         </Button>
@@ -304,4 +305,4 @@ const GuidePostDetails = () => {
   );
 };
 
-export default GuidePostDetails;
+export default PostDetails;
