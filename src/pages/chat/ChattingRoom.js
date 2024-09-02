@@ -5,17 +5,20 @@ import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import mqtt from 'mqtt';
 
-function ChattingRoom({ setSelectedUser,  data = [], client, setChatMessages }) {
+function ChattingRoom({ setSelectedUser, data, client, setChatMessages}) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
-  useEffect(() => {
-  }, []);
+
+
+
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
   };
+
   const handleMouseLeave = () => {
     setHoveredRow(null);
   }
+
   const handleClick = (joinChatting) => {
     if (client && joinChatting.chattingRoom) {
       client.subscribe(`${joinChatting.chattingRoom.id}`, (err) => {
@@ -29,7 +32,10 @@ function ChattingRoom({ setSelectedUser,  data = [], client, setChatMessages }) 
       setChatMessages([]);
     }
   };
+
+
   return (
+
     <div className={styles.messagesSection}>
       <div className={styles.header}>
         <h2 className={styles.messagesTitle}>Messages</h2>
@@ -41,11 +47,12 @@ function ChattingRoom({ setSelectedUser,  data = [], client, setChatMessages }) 
           />
         </div>
       </div>
+
       <div className={styles.chatList}>
         {data.map((joinChatting, index) => (
           <Box
             key={index}
-            className={styles.chatItem}
+            className={`${styles.chatItem} ${joinChatting.chattingRoom.id}`}
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={handleMouseLeave}
             onClick={() => handleClick(joinChatting)}
@@ -69,6 +76,8 @@ function ChattingRoom({ setSelectedUser,  data = [], client, setChatMessages }) 
         ))}
       </div>
     </div>
+
   );
 };
+
 export default ChattingRoom;

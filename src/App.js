@@ -129,7 +129,7 @@ function App() {
           <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
           <Route path='/askall' element={<AskAll/>}/>
           
-          <Route path='/bigChat/:id' element={<BigChat/>}/>
+          <Route path='/bigChat/:roomId' element={<BigChat/>}/>
           <Route path='/chattingRoom' element={<ChattingRoom/>}/>
           <Route path="/chattingRoom/:roomId" element={<ChattingRoom />} />
 

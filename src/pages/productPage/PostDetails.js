@@ -116,6 +116,19 @@ const PostDetails = () => {
     closeModal();
   };
 
+  const handleClick = async () => {
+    try {
+      const myId = localStorage.getItem("membersId"); 
+      const yourId = data.member.id; 
+      const roomId = await chattingRoomData(myId, yourId);
+      
+      navigate(`/bigChat/${roomId}`);
+
+    } catch (error) {
+      console.error('Error fetching or creating chat room:', error);
+    }
+  };
+
   if (!data) {
     return <div>로딩중</div>;
   }
@@ -190,7 +203,7 @@ const PostDetails = () => {
         <Button
           variant="outlined"
           color="primary"
-          onClick={() => navigate(`/bigchat/${id}`)} // 상품 id 넘기기
+          onClick={handleClick} // 상품 id 넘기기
           sx={{ mr: 'auto' }}
           startIcon={<ForumIcon />}
         >
