@@ -23,6 +23,7 @@ const DeviceCheckComponent = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [activeButton, setActiveButton] = useState(null);
   const navigate = useNavigate();
+  const [isWebcamConnected, setIsWebcamConnected] = useState(false);
 
 
   useEffect(() => {
@@ -34,6 +35,12 @@ const DeviceCheckComponent = () => {
         // 기본 카메라와 마이크 선택
         setSelectedVideoDevice(devices.find((d) => d.kind === 'videoinput'));
         setSelectedAudioDevice(devices.find((d) => d.kind === 'audioinput'));
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+        if (videoDevices.length > 0) {
+          setIsWebcamConnected(true);
+        } else {
+          setIsWebcamConnected(false);
+        }
       })
       .catch((error) => {
         console.error('Error getting device information:', error);
@@ -87,7 +94,12 @@ const DeviceCheckComponent = () => {
     }
   };
 
-  /*
+  const selectWebcam = (e) =>{
+    if (e.value=''){
+      setIsWebcamConnected(false);
+    }
+  };
+
   const downloadRecording = () => {
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, {
@@ -102,11 +114,7 @@ const DeviceCheckComponent = () => {
       document.body.removeChild(link);
     }
   };
-  */
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  }
 
   /*
     const handlePlay = () => {
@@ -149,6 +157,7 @@ const DeviceCheckComponent = () => {
       <Grid container>
         <Grid item xs={5.4} sx={{ ml: '50px' }}>
           <Box
+
             sx={{
               width: '100%', height: 360,
               bgcolor: '#F8F8F8', display: 'flex',
@@ -157,10 +166,26 @@ const DeviceCheckComponent = () => {
               flexDirection: 'column', textAlign: 'center'
             }}
           >
-            <img src='../../images/webcamImg.png' style={{ width: '180px', height: '180px' }} alt="WebCam" />
-            <Box sx={{ mt: 4 }}>
-              웹캠이 정상적으로 설치/연결되었는지 확인해주세요.
-            </Box>
+            {selectedVideoDevice ? (
+              <Webcam
+                ref={webcamRef}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  borderRadius: '5px',
+                }}
+              />
+            ) : (
+              <>
+                <img src='../../images/webcamImg.png' style={{ width: '180px', height: '180px' }} alt="WebCam" />
+                <Box sx={{ mt: 4 }}>
+                  웹캠이 정상적으로 설치/연결되었는지 확인해주세요.
+                </Box>
+              </>
+            )}
+
+
           </Box>
         </Grid>
         <Grid item xs={5.4} sx={{ ml: '50px' }}>
@@ -189,7 +214,8 @@ const DeviceCheckComponent = () => {
             onChange={(e) => setSelectedVideoDevice(videoDevices.find((d) => d.deviceId === e.target.value))}
             sx={{ width: '430px', ml: '15px' }}
           >
-            <MenuItem value="">웹캠을 선택하세요</MenuItem>
+
+            <MenuItem value="" >웹캠을 선택하세요</MenuItem>
             {videoDevices.map((device) => (
               <MenuItem key={device.deviceId} value={device.deviceId}>
                 {device.label}
