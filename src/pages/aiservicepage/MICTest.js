@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Webcam from 'react-webcam';
 import { Box, Button, Container, Grid, IconButton, MenuItem, Select, Typography } from '@mui/material';
 import { VolumeDown, VolumeUp, PlayArrow, Pause, Replay } from '@mui/icons-material';
 import Slider from '@mui/material/Slider';
@@ -27,9 +26,11 @@ const MICTest = () => {
         // 카메라와 마이크 장치 정보 가져오기
         navigator.mediaDevices.enumerateDevices()
             .then((devices) => {
-                setAudioDevices(devices.filter((d) => d.kind === 'audioinput'));
-                // 기본 카메라와 마이크 선택
-                setSelectedAudioDevice(devices.find((d) => d.kind === 'audioinput'));
+                const audioDevicesList = devices.filter((d) => d.kind === 'audioinput');
+                setAudioDevices(audioDevicesList);
+                if (audioDevicesList.length > 0) {
+                    setSelectedAudioDevice(audioDevicesList[0]); // 첫 번째 마이크 장치를 기본으로 선택
+                }
             })
             .catch((error) => {
                 console.error('Error getting device information:', error);
@@ -41,6 +42,7 @@ const MICTest = () => {
             }
         };
     }, []);
+
 
     const handleStartRecording = () => {
         setIsRecording(true);
@@ -113,8 +115,13 @@ const MICTest = () => {
                             마이크 상태를 사전에 확인해주세요.<br />
                             (이어폰에 있는 마이크도 사용 가능합니다.)
                         </Box>
-                        <Box sx={{ position: 'absolute', bottom: '14px', right: '14px' }} >
-                            <img src='../../images/micIcon.png' style={{ width: '50px', height: '50px' }} alt="MicIcon" />
+                        <Box sx={{ position: 'absolute', bottom: '14px', right: '14px' }}>
+                            <img
+                                src='../../images/micIcon.png'
+                                style={{ width: '50px', height: '50px', cursor: 'pointer' }}
+                                alt="MicIcon"
+                                onClick={handleStartRecording}
+                            />
                         </Box>
                     </Box>
                 </Grid>
@@ -142,6 +149,7 @@ const MICTest = () => {
             <Typography variant="h7" align="center" display="block" sx={{ mt: 5, color: '#979797' }}>
                 ※정확한 측정을 위해 주변 소음을 최소화해 주시기 바랍니다.
             </Typography>
+            
             <Stack display="flex" justifyContent="center" direction="row" spacing={3} sx={{ mt: '25px' }}>
                 <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}>
                     발음 테스트 바로 가기
