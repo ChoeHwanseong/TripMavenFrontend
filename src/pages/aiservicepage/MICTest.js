@@ -35,7 +35,7 @@ const MICTest = () => {
             .catch((error) => {
                 console.error('Error getting device information:', error);
             });
-
+    
         return () => {
             if (timerIntervalRef.current) {
                 clearInterval(timerIntervalRef.current);
@@ -47,7 +47,7 @@ const MICTest = () => {
     const handleStartRecording = () => {
         setIsRecording(true);
         setTimer(60); // 타이머 초기화
-
+        console.log(selectedAudioDevice)
         navigator.mediaDevices.getUserMedia({
             audio: { deviceId: selectedAudioDevice?.deviceId }
         })
