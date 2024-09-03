@@ -73,6 +73,9 @@ import PronunciationTestTutorial from './pages/aiservicepage/PronunciationTestTu
 import MICTest from './pages/aiservicepage/MICTest';
 import RealTest1 from './pages/aiservicepage/RealTest1';
 import PronunciationTest from './pages/aiservicepage/PronunciationTest';
+import PostDetails from './pages/productPage/PostDetails';
+import RealTestPage from './pages/aiservicepage/RealTestPage'
+import RealTestResult from './pages/aiservicepage/RealTestResult'
 
 
 
@@ -127,9 +130,9 @@ function App() {
           <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
           <Route path='/askall' element={<AskAll/>}/>
           
-          <Route path='/bigChat/:roomId' element={<BigChat/>}/>
+          <Route path='/bigChat/:id' element={<BigChat/>}/>
           <Route path='/chattingRoom' element={<ChattingRoom/>}/>
-          <Route path="/chattingRoom/:roomId" element={<ChattingRoom />} />
+          
 
           {/* MYPAGE */}
           <Route path="/mypageprofile/:id" element={<MypageProfile />} />
