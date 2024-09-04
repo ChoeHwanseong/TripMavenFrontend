@@ -46,6 +46,44 @@ const DeviceCheckComponent = () => {
       }
     };
   }, []);
+  
+
+  useEffect(() => {
+    // 마이크와 카메라 권한 요청
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+      .then((stream) => {
+        console.log('권한 요청 성공');
+        // 권한을 허용한 경우에만 enumerateDevices를 호출
+        navigator.mediaDevices.enumerateDevices()
+          .then((devices) => {
+            console.log(devices.filter((d) => d.kind === 'videoinput'));
+            setVideoDevices(devices.filter((d) => d.kind === 'videoinput'));
+            console.log(devices.filter((d) => d.kind === 'audioinput'));
+            setAudioDevices(devices.filter((d) => d.kind === 'audioinput'));
+
+            // 기본 카메라와 마이크 선택
+            if(devices.find((d) => d.kind === 'videoinput').length > 0)
+              setSelectedVideoDevice(devices.find((d) => d.kind === 'videoinput')[0]);
+            if(devices.find((d) => d.kind === 'audioinput').length > 0)
+              setSelectedAudioDevice(devices.find((d) => d.kind === 'audioinput')[0]);
+            
+            //setIsWebcamConnected(videoDevices.length > 0);
+          })
+          .catch((error) => {
+            console.error('Error getting device information:', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error accessing media devices:', error);
+      });
+  
+    return () => {
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+      }
+    };
+  }, []);
+  
 
   const handleStartRecording = () => {
     setIsTestStarted(true); // 테스트 시작 상태로 변경
