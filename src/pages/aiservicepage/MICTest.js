@@ -8,15 +8,13 @@ import { useNavigate } from 'react-router-dom';
 const MICTest = () => {
     const webcamRef = useRef(null);
     const audioRef = useRef(null);
-    const mediaRecorderRef = useRef(null);
     const [isRecording, setIsRecording] = useState(false);
+    const mediaRecorderRef = useRef(null);
     const [recordedChunks, setRecordedChunks] = useState([]);
     const [timer, setTimer] = useState(60); // 1분 타이머
     const timerIntervalRef = useRef(null);
-    const [videoDevices, setVideoDevices] = useState([]);
-    const [audioDevices, setAudioDevices] = useState([]);
-    const [selectedVideoDevice, setSelectedVideoDevice] = useState(null);
-    const [selectedAudioDevice, setSelectedAudioDevice] = useState(null);
+    const [audioDevices, setAudioDevices] = useState([]); //오디오 리스트
+    const [selectedAudioDevice, setSelectedAudioDevice] = useState(null); //선택한 오디오
     const [isAudioPlaying, setIsAudioPlaying] = useState(false);
     const [value, setValue] = useState(30);
     const navigate = useNavigate();
@@ -43,7 +41,6 @@ const MICTest = () => {
         };
     }, []);
 
-
     const handleStartRecording = () => {
         setIsRecording(true);
         setTimer(60); // 타이머 초기화
@@ -58,7 +55,7 @@ const MICTest = () => {
                 mediaRecorderRef.current.start();
 
                 // 마이크 테스트
-                audioRef.current.play();
+                audioRef.current.play();        
                 setIsAudioPlaying(true);
 
                 timerIntervalRef.current = setInterval(() => {
@@ -69,6 +66,7 @@ const MICTest = () => {
                 console.error('Error getting user media:', error);
             });
     };
+
 
     const handleStopRecording = () => {
         setIsRecording(false);
@@ -87,6 +85,66 @@ const MICTest = () => {
         setValue(newValue);
     }
 
+    /*
+    const [isRecording, setIsRecording] = useState(false);
+    const mediaStreamRef = useRef(null);
+    const socketRef = useRef(null);
+    const audioContextRef = useRef(null);
+    const processorRef = useRef(null);
+
+
+    useEffect(() => {
+        if (isRecording) {
+          // 마이크 입력 캡처 시작
+          navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+              mediaStreamRef.current = stream;
+    
+              // 오디오 컨텍스트 및 프로세서 설정
+              audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
+              const source = audioContextRef.current.createMediaStreamSource(stream);
+              processorRef.current = audioContextRef.current.createScriptProcessor(4096, 1, 1);
+    
+              source.connect(processorRef.current);
+              processorRef.current.connect(audioContextRef.current.destination);
+    
+              // 오디오 데이터가 준비되면 호출되는 이벤트 핸들러
+              processorRef.current.onaudioprocess = (e) => {
+                if (!socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) return;
+    
+                // 오디오 버퍼 데이터를 WebSocket을 통해 전송
+                const inputData = e.inputBuffer.getChannelData(0);
+                socketRef.current.send(inputData.buffer);
+              };
+    
+              // WebSocket 설정
+              socketRef.current = new WebSocket('ws://localhost:8765');
+              socketRef.current.onopen = () => console.log('WebSocket connected');
+              socketRef.current.onclose = () => console.log('WebSocket disconnected');
+              socketRef.current.onerror = (error) => console.error('WebSocket error:', error);
+            })
+            .catch(err => console.error('Error accessing microphone:', err));
+        } else {
+          // 녹음 중지 시 리소스 해제
+          if (processorRef.current) {
+            processorRef.current.disconnect();
+            processorRef.current = null;
+          }
+          if (audioContextRef.current) {
+            audioContextRef.current.close();
+            audioContextRef.current = null;
+          }
+          if (mediaStreamRef.current) {
+            mediaStreamRef.current.getTracks().forEach(track => track.stop());
+            mediaStreamRef.current = null;
+          }
+          if (socketRef.current) {
+            socketRef.current.close();
+            socketRef.current = null;
+          }
+        }
+        }, [isRecording]);
+        */
 
     return (
         <Container sx={{ mt: '20px', width: '1100px' }}>

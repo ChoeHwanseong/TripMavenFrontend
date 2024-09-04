@@ -27,7 +27,7 @@ function BigChat() {
       }
     };
 
-a    //마운트시 엠큐티티 클라이언트 객체 없으면 생성
+    //마운트시 엠큐티티 클라이언트 객체 없으면 생성
     const func = async ()=>{
       if (!client) {
         const list_ = await getData();

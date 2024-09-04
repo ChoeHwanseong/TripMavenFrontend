@@ -25,7 +25,7 @@ const DeviceCheckComponent = () => {
   const navigate = useNavigate();
   const [isWebcamConnected, setIsWebcamConnected] = useState(false);
 
-
+  /*
   useEffect(() => {
     // 카메라와 마이크 장치 정보 가져오기
     navigator.mediaDevices.enumerateDevices()
@@ -52,6 +52,44 @@ const DeviceCheckComponent = () => {
       }
     };
   }, []);
+  */
+
+  useEffect(() => {
+    // 마이크와 카메라 권한 요청
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+      .then((stream) => {
+        console.log('권한 요청 성공');
+        // 권한을 허용한 경우에만 enumerateDevices를 호출
+        navigator.mediaDevices.enumerateDevices()
+          .then((devices) => {
+            console.log(devices.filter((d) => d.kind === 'videoinput'));
+            setVideoDevices(devices.filter((d) => d.kind === 'videoinput'));
+            console.log(devices.filter((d) => d.kind === 'audioinput'));
+            setAudioDevices(devices.filter((d) => d.kind === 'audioinput'));
+
+            // 기본 카메라와 마이크 선택
+            if(devices.find((d) => d.kind === 'videoinput').length > 0)
+              setSelectedVideoDevice(devices.find((d) => d.kind === 'videoinput')[0]);
+            if(devices.find((d) => d.kind === 'audioinput').length > 0)
+              setSelectedAudioDevice(devices.find((d) => d.kind === 'audioinput')[0]);
+            
+            //setIsWebcamConnected(videoDevices.length > 0);
+          })
+          .catch((error) => {
+            console.error('Error getting device information:', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error accessing media devices:', error);
+      });
+  
+    return () => {
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+      }
+    };
+  }, []);
+  
 
   const handleStartRecording = () => {
     setIsRecording(true);
@@ -239,7 +277,7 @@ const DeviceCheckComponent = () => {
           </Select>
         </Grid>
       </Grid>
-      <Typography variant="body2" color={isAudioPlaying ? 'success.main' : 'error'} align="left" sx={{ mt: 2, ml: '75px' }}>
+      <Typography variant="body2" color={isAudioPlaying ? 'success.main' : 'error'} align="left" sx={{ mt:2, mr:'300px', display:'flex',justifyContent:'end' }}>
         {isAudioPlaying ? '카메라 작동 중' : '*인식이 되지 않습니다.'}
       </Typography>
       <Typography variant="h7" align="center" display="block" sx={{ mt: 5, color: '#979797' }}>
