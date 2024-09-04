@@ -1,150 +1,111 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Box, Button, Container, Grid, IconButton, MenuItem, Select, Typography } from '@mui/material';
-import { VolumeDown, VolumeUp, PlayArrow, Pause, Replay } from '@mui/icons-material';
-import Slider from '@mui/material/Slider';
+import React, { useState, useEffect, useRef } from 'react'; // useRef를 추가
+import { Box, Button, Container, Grid, MenuItem, Select, Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
 
 const MICTest = () => {
-    const webcamRef = useRef(null);
-    const audioRef = useRef(null);
-    const [isRecording, setIsRecording] = useState(false);
-    const mediaRecorderRef = useRef(null);
-    const [recordedChunks, setRecordedChunks] = useState([]);
-    const [timer, setTimer] = useState(60); // 1분 타이머
-    const timerIntervalRef = useRef(null);
-    const [audioDevices, setAudioDevices] = useState([]); //오디오 리스트
-    const [selectedAudioDevice, setSelectedAudioDevice] = useState(null); //선택한 오디오
+    const [isMicActive, setIsMicActive] = useState(false);
+    const [transcript, setTranscript] = useState('');
+    const [audioDevices, setAudioDevices] = useState([]);
+    const [selectedAudioDevice, setSelectedAudioDevice] = useState(null);
     const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-    const [value, setValue] = useState(30);
+    const [timer, setTimer] = useState(10); // 10초 타이머 초기값
+    const [micError, setMicError] = useState(false); // 마이크 인식 여부
+    const recognitionRef = useRef(null); // SpeechRecognition 인스턴스 참조
     const navigate = useNavigate();
 
-
     useEffect(() => {
-        // 카메라와 마이크 장치 정보 가져오기
         navigator.mediaDevices.enumerateDevices()
             .then((devices) => {
                 const audioDevicesList = devices.filter((d) => d.kind === 'audioinput');
                 setAudioDevices(audioDevicesList);
                 if (audioDevicesList.length > 0) {
-                    setSelectedAudioDevice(audioDevicesList[0]); // 첫 번째 마이크 장치를 기본으로 선택
+                    setSelectedAudioDevice(audioDevicesList[0]);
+                } else {
+                    setMicError(true); // 마이크가 없는 경우 에러 상태로 설정
                 }
             })
             .catch((error) => {
                 console.error('Error getting device information:', error);
+                setMicError(true); // 장치 정보를 가져오는 데 실패한 경우 에러 상태로 설정
             });
-
-        return () => {
-            if (timerIntervalRef.current) {
-                clearInterval(timerIntervalRef.current);
-            }
-        };
     }, []);
 
     const handleStartRecording = () => {
-        setIsRecording(true);
-        setTimer(60); // 타이머 초기화
+        setTranscript(''); // 이전 자막 초기화
+        setIsMicActive(true);
+        setTimer(10); // 타이머 초기화
+        setMicError(false); // 마이크 에러 상태 초기화
 
         navigator.mediaDevices.getUserMedia({
             audio: { deviceId: selectedAudioDevice?.deviceId }
         })
             .then((stream) => {
-                audioRef.current.srcObject = stream;
-                mediaRecorderRef.current = new MediaRecorder(stream);
-                mediaRecorderRef.current.addEventListener('dataavailable', handleDataAvailable);
-                mediaRecorderRef.current.start();
-
-                // 마이크 테스트
-                audioRef.current.play();        
+                const audioRef = new Audio();
+                audioRef.srcObject = stream;
+                audioRef.play();
                 setIsAudioPlaying(true);
 
-                timerIntervalRef.current = setInterval(() => {
-                    setTimer((prevTimer) => prevTimer - 1);
-                }, 1000);
+                startSpeechRecognition();
+                startTimer(); // 타이머 시작
             })
             .catch((error) => {
                 console.error('Error getting user media:', error);
+                setMicError(true); // 마이크 접근 실패 시 에러 상태로 설정
             });
     };
 
 
-    const handleStopRecording = () => {
-        setIsRecording(false);
-        setIsAudioPlaying(false);
-        mediaRecorderRef.current.stop();
-        clearInterval(timerIntervalRef.current);
+    const startSpeechRecognition = () => {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognitionRef.current = recognition; // ref로 인스턴스 참조
+        recognition.lang = 'ko-KR'; // 한국어 설정
+        recognition.interimResults = false; // 중간 결과를 실시간으로 보여주지 않음
+        recognition.continuous = true; // 인식이 한 번만 실행되도록 설정
+
+        recognition.onresult = (event) => {
+            const transcriptResult = event.results[0][0].transcript;
+            setTranscript(transcriptResult); // 이전 결과를 덮어쓰기
+        };
+
+        recognition.onerror = (event) => {
+            console.error('Speech recognition error:', event.error);
+            setIsMicActive(false);
+            recognition.stop();
+        };
+
+        recognition.onend = () => {
+            if (isMicActive) {
+                recognition.start(); // 자동 종료되면 다시 시작
+            } else {
+                setIsMicActive(false);
+                setIsAudioPlaying(false);
+            }
+        };
+
+        recognition.start();
+
+        // 10초 후 음성 인식 종료
+        setTimeout(() => {
+            recognition.stop();
+        }, 10000); // 10000ms = 10초
     };
 
-    const handleDataAvailable = (event) => {
-        if (event.data.size > 0) {
-            setRecordedChunks((prev) => [...prev, event.data]);
-        }
+    const startTimer = () => {
+        const countdown = setInterval(() => {
+            setTimer(prevTimer => {
+                if (prevTimer <= 1) {
+                    clearInterval(countdown); // 타이머 종료
+                    if (recognitionRef.current) {
+                        recognitionRef.current.stop(); // 타이머가 종료될 때 음성 인식 종료
+                    }
+                    return 0;
+                }
+                return prevTimer - 1;
+            });
+        }, 1000); // 1초마다 타이머 감소
     };
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    }
-
-    /*
-    const [isRecording, setIsRecording] = useState(false);
-    const mediaStreamRef = useRef(null);
-    const socketRef = useRef(null);
-    const audioContextRef = useRef(null);
-    const processorRef = useRef(null);
-
-
-    useEffect(() => {
-        if (isRecording) {
-          // 마이크 입력 캡처 시작
-          navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(stream => {
-              mediaStreamRef.current = stream;
-    
-              // 오디오 컨텍스트 및 프로세서 설정
-              audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
-              const source = audioContextRef.current.createMediaStreamSource(stream);
-              processorRef.current = audioContextRef.current.createScriptProcessor(4096, 1, 1);
-    
-              source.connect(processorRef.current);
-              processorRef.current.connect(audioContextRef.current.destination);
-    
-              // 오디오 데이터가 준비되면 호출되는 이벤트 핸들러
-              processorRef.current.onaudioprocess = (e) => {
-                if (!socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) return;
-    
-                // 오디오 버퍼 데이터를 WebSocket을 통해 전송
-                const inputData = e.inputBuffer.getChannelData(0);
-                socketRef.current.send(inputData.buffer);
-              };
-    
-              // WebSocket 설정
-              socketRef.current = new WebSocket('ws://localhost:8765');
-              socketRef.current.onopen = () => console.log('WebSocket connected');
-              socketRef.current.onclose = () => console.log('WebSocket disconnected');
-              socketRef.current.onerror = (error) => console.error('WebSocket error:', error);
-            })
-            .catch(err => console.error('Error accessing microphone:', err));
-        } else {
-          // 녹음 중지 시 리소스 해제
-          if (processorRef.current) {
-            processorRef.current.disconnect();
-            processorRef.current = null;
-          }
-          if (audioContextRef.current) {
-            audioContextRef.current.close();
-            audioContextRef.current = null;
-          }
-          if (mediaStreamRef.current) {
-            mediaStreamRef.current.getTracks().forEach(track => track.stop());
-            mediaStreamRef.current = null;
-          }
-          if (socketRef.current) {
-            socketRef.current.close();
-            socketRef.current = null;
-          }
-        }
-        }, [isRecording]);
-        */
 
     return (
         <Container sx={{ mt: '20px', width: '1100px' }}>
@@ -154,7 +115,7 @@ const MICTest = () => {
             <img src="../../images/WebTestPageLine.png" alt="Line Image" />
             <Typography variant="h5" gutterBottom align="center" sx={{ mt: '13px', mb: '13px' }}>
                 지금부터 마이크체크를 시작하겠습니다.<br />
-                마이크 아이콘을 누른 후, <br />5초 이내에 “안녕하세요! 만나서 반갑습니다.”을 소리 내어 읽어주세요.
+                <strong>[마이크체크]</strong> 버튼을 누른 후, <br />10초 이내에 “안녕하세요! 만나서 반갑습니다.”을 소리 내어 읽어주세요.
             </Typography>
             <Grid container>
                 <Grid container sx={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -168,19 +129,24 @@ const MICTest = () => {
                             position: 'relative'
                         }}
                     >
-                        <img src='../../images/micImg.png' style={{ width: '180px', height: '180px' }} alt="Mic" />
-                        <Box sx={{ mt: 4 }}>
-                            마이크 상태를 사전에 확인해주세요.<br />
-                            (이어폰에 있는 마이크도 사용 가능합니다.)
-                        </Box>
-                        <Box sx={{ position: 'absolute', bottom: '14px', right: '14px' }}>
-                            <img
-                                src='../../images/micIcon.png'
-                                style={{ width: '50px', height: '50px', cursor: 'pointer' }}
-                                alt="MicIcon"
-                                onClick={handleStartRecording}
-                            />
-                        </Box>
+                        {isMicActive ? (
+                            <>
+                                <Typography variant="subtitle1" align="center" sx={{ mt: 2 }}>
+                                    {transcript || "음성을 인식 중입니다..."} {/* 음성 인식 결과 표시 */}
+                                </Typography>
+                                <Typography variant="h6" align="center" sx={{ mt: 2 }}>
+                                    남은 시간: {timer}초 {/* 타이머 표시 */}
+                                </Typography>
+                            </>
+                        ) : (
+                            <>
+                                <img src='../../images/micImg.png' style={{ width: '180px', height: '180px' }} alt="Mic" />
+                                <Box sx={{ mt: 4 }}>
+                                    마이크 상태를 사전에 확인해주세요.<br />
+                                    (이어폰에 있는 마이크도 사용 가능합니다.)
+                                </Box>
+                            </>
+                        )}
                     </Box>
                 </Grid>
             </Grid>
@@ -201,15 +167,26 @@ const MICTest = () => {
                     </Select>
                 </Grid>
             </Grid>
+            {/* 마이크 인식 여부에 따른 상태 메시지 표시 */}
             <Typography variant="body2" color={isAudioPlaying ? 'success.main' : 'error'} align="left" sx={{ mt: 2, ml: '335px' }}>
-                {isAudioPlaying ? '마이크 작동 중' : '*인식이 되지 않습니다.'}
+                {isAudioPlaying ? '마이크 작동 중' : (micError ? '*인식이 되지 않습니다.' : '')}
             </Typography>
-            <Typography variant="h7" align="center" display="block" sx={{ mt: 5, color: '#979797' }}>
+            <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <img
+                        src='../../images/micIcon.png'
+                        style={{ width: '50px', height: '50px', cursor: 'pointer' }}
+                        alt="MicIcon"
+                        onClick={handleStartRecording}
+                    />
+                </Box>
+            </Grid>
+            <Typography variant="h7" align="center" display="block" sx={{ mt: 2, color: '#979797' }}>
                 ※정확한 측정을 위해 주변 소음을 최소화해 주시기 바랍니다.
             </Typography>
             
             <Stack display="flex" justifyContent="center" direction="row" spacing={3} sx={{ mt: '25px' }}>
-                <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}>
+                <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }} onClick={()=>{navigate('/pronunciationtest')}}>
                     발음 테스트 바로 가기
                 </Button>
                 <Button variant="outlined" onClick={() => { navigate('/pronunciationtesttutorial') }}>

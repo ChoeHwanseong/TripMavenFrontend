@@ -1,0 +1,98 @@
+.container {
+    margin: 0 auto;
+    width: 1100px;
+    padding: 20px;
+
+}
+
+.header {
+    font-size: 30px;
+}
+
+.resultbox {
+    width: 1050px;
+    height: 700px;
+    display: flex;
+    margin: 0 auto;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    flex-direction: column;
+    position: relative;
+}
+
+.boxheader {
+    font-size: 25px;
+    padding: 10px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.chartContainer {
+    display: flex;
+    align-items: flex-start;
+}
+
+.chartPtag {
+    margin-top: 30px;
+    margin-right: 30px;
+    font-size: 18px;
+}
+/*
+.progressContainer {
+    position: relative;  
+    width: 350px;  
+    height: 10px;  
+    background-color: #e0e0e0;  
+    border-radius: 5px;  
+    margin-bottom: 10px;
+    margin-top: 30px;
+    margin-left: 20px;
+}
+
+.progressBar {
+    width: 75%;  
+    height: 100%;  
+    background-color: #0066ff;  
+    border-radius: 5px 0 0 5px;  
+}
+
+.progressText {
+    position: absolute;  
+    right: 10px;  
+    top: 50%;  
+    transform: translateY(-50%); 
+    font-weight: bold; 
+    color: #0066ff; 
+}
+*/
+
+.improvContainer {
+    padding-top: 10px;
+    padding-left: 30px;
+    position: relative;
+}
+
+.improvHeader {
+    font-size: 25px;
+    font-weight: bold;
+    /*background: linear-gradient(1deg,#0066ff,#78a9f1,#ffffff,#ffffff,#ffffff);*/
+    padding: 3px;
+    border-radius: 2px;
+}
+
+.improv1  {
+    margin-top: 5px;
+    font-size: 18px;
+    text-align: 10px;
+}
+
+.improvTitle {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+
+
+
+
