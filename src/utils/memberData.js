@@ -15,8 +15,9 @@ export const fetchData = async () => {
 //아이디로 멤버 가져오기
 export const fetchedData = async (id) => {
   try {
-    //console.log(id) //디버그용
+    console.log(id) //디버그용
     const res = await axios.get(`/spring/members/id/${id}`);
+    console.log('res.data: ',)
     return res.data;
   }
   catch (error) {
