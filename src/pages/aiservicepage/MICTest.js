@@ -143,7 +143,7 @@ const MICTest = () => {
                 ※정확한 측정을 위해 주변 소음을 최소화해 주시기 바랍니다.
             </Typography>
             <Stack display="flex" justifyContent="center" direction="row" spacing={3} sx={{ mt: '25px' }}>
-                <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}>
+                <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }} onClick={()=>{navigate('/pronunciationtest')}}>
                     발음 테스트 바로 가기
                 </Button>
                 <Button variant="outlined" onClick={() => { navigate('/pronunciationtesttutorial') }}>
