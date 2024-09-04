@@ -82,3 +82,11 @@ export const deleteLikey = (memberId, productId) => {
   })
 }
 
+// 찜 목록
+export const getLikey = (memberId) => {
+  console.log('찜 GET 회원id: ',memberId);
+  return axios.get('http://localhost:9099/likey' + `/${memberId}`).then(res =>{
+      return res.data;
+  })
+}
+

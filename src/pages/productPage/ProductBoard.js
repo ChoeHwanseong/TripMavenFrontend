@@ -18,7 +18,6 @@ const ProductBoard = () => {
     const [page, setPage] = useState(0); // 페이지(20개씩임)
     const [hasMore, setHasMore] = useState(true); // 더 불러올 데이터가 있는지 여부
     const [loading, setLoading] = useState(false);
-    const [fileUrl, setFileUrl] = useState(''); // 첫 번째 파일 URL 저장
     const { ref, inView } = useInView({
         threshold: 0, // 요소가 100% 보일 때 트리거
     });
@@ -33,20 +32,23 @@ const ProductBoard = () => {
         else results = await postsKeywordGet(keyword, page); // 페이지도 넘기기
         console.log('검색 결과:', results);
         setLoading(false);
-        setProducts((prevProducts) => [...prevProducts, ...results]);
-        setPage(prevPage => prevPage + 1); // 다음 페이지로 설정
+
+        // Fetch the first file URL for each product
+        const productsWithFiles = await Promise.all(
+            results.map(async (product) => {
+                const fileData = await fetchFiles(product.id);
+                return {
+                    ...product,
+                    fileUrl: fileData.length > 0 ? fileData[0] : './images/travel.jpg', // 첫 번째 파일 URL 또는 기본 이미지
+                };
+            })
+        );
+
+        setProducts((prevProducts) => [...prevProducts, ...productsWithFiles]);
+        setPage((prevPage) => prevPage + 1); // 다음 페이지로 설정
         if (results.length < 20) {
             setHasMore(false);
             console.log('마지막 페이지');
-        }
-
-        // 첫 번째 상품의 파일 URL만 가져오기
-        if (results.length > 0) {
-            const productId = results[0].id;
-            const fileData = await fetchFiles(productId);
-            if (fileData.length > 0) {
-                setFileUrl(fileData[0]); // 첫 번째 파일 URL만 저장
-            }
         }
     };
 
@@ -56,7 +58,6 @@ const ProductBoard = () => {
             setProducts([]);
             setPage(0);
             setHasMore(true);
-            setFileUrl(''); // URL 초기화
             await fetchMoreData();
         };
 
@@ -82,11 +83,21 @@ const ProductBoard = () => {
                     <div
                         key={index}
                         className={styles.productItem}
-                        onClick={() => navigate(`/guidePostDetails/${product.id}`)} // 상품 상세 페이지로 이동
+                        onClick={() => {
+                            console.log('넘길때 keyword:', keyword);
+
+                            if (keyword) {
+                                navigate(`/postDetails/${product.id}?keyword=${keyword}`);
+                            } else if (city) {
+                                navigate(`/postDetails/${product.id}?keyword=${city}`);
+                            } else {
+                                navigate(`/postDetails/${product.id}`);
+                            }
+                        }} // 상품 상세 페이지로 이동
                     >
                         {/* 상품 이미지 */}
                         <img
-                            src={fileUrl || './images/travel.jpg'}
+                            src={product.fileUrl || './images/travel.jpg'}
                             alt={product.title}
                             className={styles.productImage} // 고정된 크기를 위한 클래스 추가
                         />
@@ -101,8 +112,8 @@ const ProductBoard = () => {
                             </div>
                             <div className={styles.rating}>
                                 {/* 상품 평점 및 리뷰 수 */}
-                                <span>:별: {product.rating}</span>
-                                <span>{product.reviewCount || '0'}건의 리뷰</span>
+                                <span>별 {product.rating}</span>
+                                <span>{product.review || '0'}건의 리뷰</span>
                             </div>
                         </div>
                     </div>

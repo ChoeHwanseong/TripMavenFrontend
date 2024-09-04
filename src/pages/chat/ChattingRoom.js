@@ -5,12 +5,11 @@ import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import mqtt from 'mqtt';
 
-function ChattingRoom({ setSelectedUser, data, client, setIsConnected, setChatMessages }) {
+function ChattingRoom({ setSelectedUser, data, client, setChatMessages}) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
-  useEffect(() => {
 
-  }, []);
+
 
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
@@ -34,6 +33,7 @@ function ChattingRoom({ setSelectedUser, data, client, setIsConnected, setChatMe
     }
   };
 
+
   return (
 
     <div className={styles.messagesSection}>
@@ -52,7 +52,7 @@ function ChattingRoom({ setSelectedUser, data, client, setIsConnected, setChatMe
         {data.map((joinChatting, index) => (
           <Box
             key={index}
-            className={styles.chatItem}
+            className={`${styles.chatItem} ${joinChatting.chattingRoom.id}`}
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={handleMouseLeave}
             onClick={() => handleClick(joinChatting)}

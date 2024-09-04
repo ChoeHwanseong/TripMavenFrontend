@@ -17,7 +17,7 @@
   gap: 20px;  /* 항목 사이의 간격 설정 */
 }
 .productItem {
-  width: 100%;  /* 항목이 전체 너비를 차지하도록 설정 */
+  width: 150%;  /* 항목이 전체 너비를 차지하도록 설정 */
   display: flex;
   align-items: center;  /* 항목 내부의 내용물을 세로로 중앙 정렬 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* 상자 그림자 설정 */
@@ -68,7 +68,9 @@
 }
 
 .productImage {
-  width: 100%; /* 가로 크기를 고정 */
-  height: 200px; /* 원하는 높이로 고정 */
-  object-fit: cover; /* 이미지가 요소에 맞게 자르도록 설정 */
+  width: 150px; /* Fixed width */
+  height: 150px; /* Fixed height */
+  object-fit: fill;
+  border-radius: 8px; /* Optional: Adds rounded corners if you want */
+  margin-right: 20px; /* Space between image and other elements */
 }

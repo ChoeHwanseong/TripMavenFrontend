@@ -1,25 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper } from '@mui/material';
-import { postsAllGet } from '../../utils/postData';
+import { postGetByEmail, postsAllGet } from '../../utils/postData';
+import { fetchedData } from '../../utils/memberData';
 
 const GuideMyPageMyPost = () => {
   const [posts, setPosts] = useState(null);
-  const membersId = localStorage.getItem('membersId');
+  const { membersId } = localStorage.getItem('membersId');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getPostData = async () => {
+
+    // 회원 이메일로 상품 조회 >> 내 게시글 관리
+    const getData = async () => {
       try {
-        const fetchData = await postsAllGet(0);
-        setPosts(fetchData);
+        const fetchData = await fetchedData(localStorage.getItem('membersId'));
+        const postData = await postGetByEmail(fetchData.email);
+        setPosts(postData);
+
+        console.log('posts: ',posts);
       } catch (error) {
         console.error('에러났당', error);
       }
     };
 
-    getPostData();
+    getData();
+    console.log('내 게시글 : ',posts);
+
   }, []);
+
+
 
   const handleClick = (post) => {
     navigate(`/guidePostDetails/${post.id}`, { state: post });

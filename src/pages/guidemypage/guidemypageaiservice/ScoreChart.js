@@ -2,6 +2,8 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { BarChart } from '@mui/x-charts/BarChart';
 
+
+
 export default function ScoreChart() {
     const [seriesNb] = React.useState(5);
     const [itemNb] = React.useState(3);

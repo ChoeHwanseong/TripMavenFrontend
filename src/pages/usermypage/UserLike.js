@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styles from '../../styles/usermypage/UserLike.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
+import { getLikey } from '../../utils/postData';
+import { fetchFiles } from '../../utils/fileData';
 
 const UserLike = () => {
   const navigate = useNavigate();
@@ -14,14 +16,62 @@ const UserLike = () => {
     threshold: 0, // 요소가 100% 보일 때 트리거
   });
 
+  const  memberId  = localStorage.getItem('membersId');
+  const [likeys, setLikeys] = useState([]);
+  const [fileUrls, setFileUrls] = useState(null);
+  
+
   // 데이터를 더 가져오는 함수
-  const fetchMoreData = () => {
+  const fetchMoreData = async () => {
     if (products.length >= 100) {
       setHasMore(false);
       return;
     }
 
+    const productBoardIds = likeys.map((likey) => likey.productBoard.id);
+    console.log('productBoardIds: ', productBoardIds);
+
+     // 이미지 업로드
+    const filesUpload = productBoardIds.map(async (productBoardId) => {
+      const file = await fetchFiles(productBoardId);
+      console.log('Fetched file[0]:', file[0]);
+      return file[0];
+    });
+
+    const fileUrls = await Promise.all(filesUpload);
+    setFileUrls(fileUrls);
+    console.log('fileUrls:', fileUrls);
+
+
+    const newProducts = likeys.map((likey,index) => {
+
+       // Remove HTML tags from the content
+    const plainTextContent = likey.productBoard.content.replace(/<[^>]+>/g, '');
+    
+    // Limit the content to 30 characters
+    const truncatedContent = plainTextContent.slice(0, 500);
+
+      return {
+      id: likey.id,
+      title: likey.productBoard.title,
+      //description: likey.productBoard.content,
+      image: fileUrls[index] || 'https://via.placeholder.com/150',  // 이미지 URL (placeholder 이미지)
+      tags: likey.productBoard.hashtag,
+      rating: (Math.random() * 5).toFixed(1), // 0부터 5까지의 무작위 평점
+      reviewCount: Math.floor(Math.random() * 100), // 0부터 100까지의 무작위 리뷰 수
+      isLiked: true, // 좋아요 상태를 나타내는 플래그
+      timestamp: Date.now() - Math.floor(Math.random() * 10000000000), // Random timestamp within last ~4 months
+      city : likey.productBoard.city,
+      productId : likey.productBoard.id
+    };
+  });
+    
+    
+    console.log('상품 안에 likeys: ',likeys)
+    
+    /* 기존 더미데이터
     const newProducts = Array.from({ length: 20 }, (_, index) => ({
+      
       id: products.length + index + 1, 
       title: `Product ${products.length + index + 1}`, // 새로운 제품 제목
       description: 'This is a description.', // 제품 설명
@@ -32,19 +82,30 @@ const UserLike = () => {
       isLiked: true, // 좋아요 상태를 나타내는 플래그
       timestamp: Date.now() - Math.floor(Math.random() * 10000000000), // Random timestamp within last ~4 months
     }));
+    */
 
-    setProducts((prevProducts) => [...prevProducts, ...newProducts]);
+    setProducts(newProducts);
   };
 
-  useEffect(() => {
-    fetchMoreData();
-  }, []);
 
   useEffect(() => {
+    console.log('memberId: ', memberId);
     if (inView && hasMore) {
       fetchMoreData();
     }
-  }, [inView, hasMore]);
+    // 찜목록
+    const likeyList = async () => {
+      const likes = await getLikey(memberId);
+      console.log('likes: ',likes);
+      setLikeys(likes)
+    };
+
+    likeyList();
+
+  }, [inView, hasMore, memberId]);
+
+
+
 
   useEffect(() => {
     let sortedProducts = [...products];
@@ -102,20 +163,21 @@ const UserLike = () => {
           onChange={handleSearchChange}
         />
       </div>
-
+     
       <div className={styles.productList}>
+
         {displayedProducts.map((product) => (
-          <div key={product.id} className={styles.productItem}>
+          <div key={product.id} className={styles.productItem} 
+              onClick={() => navigate(`/guidePostDetails/${product.productId}`)}
+          >
             <img src={product.image} alt={product.title} />
             <div>
               <h3>{product.title}</h3>
               <p>{product.description}</p>
               <div className={styles.tags}>
-                {product.tags.map((tag, index) => (
-                  <span key={index} className={styles.tag}>
-                    #{tag}
+                  <span className={styles.tag}>
+                    {product.tags}
                   </span>
-                ))}
               </div>
               <div className={styles.rating}>
                 <span>⭐ {product.rating}</span>
@@ -130,6 +192,8 @@ const UserLike = () => {
             />
           </div>
         ))}
+
+     
       </div>
       <div ref={ref} className={styles.loadingIndicator}>
         {hasMore && <p>Loading...</p>}
