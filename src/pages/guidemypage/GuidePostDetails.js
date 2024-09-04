@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fetchFiles } from '../../utils/fileData';
 import ForumIcon from '@mui/icons-material/Forum';
 
+
 const GuidePostDetails = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
@@ -121,9 +122,6 @@ const GuidePostDetails = () => {
     }
   };
 
-  
-
-
 
   if (!data) {
     return <div>로딩중</div>;
@@ -184,6 +182,7 @@ const GuidePostDetails = () => {
                 className={styles.hashtagButton} 
                 variant="contained"
                 size="small"
+                onClick={()=>navigate(`/product?keyword=${tag.trim()}`)}
               >
                 #{tag.trim()}
               </Button>
@@ -199,13 +198,7 @@ const GuidePostDetails = () => {
       
 
       <Box className={styles.symbolsSection} sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', mt: 2 }}>
-      <Button
-        variant="outlined" 
-        color="primary" 
-        onClick={() => navigate(`/bigchat/${id}`)} // 상품 id 넘기기
-        sx={{ mr: 'auto' }}
-        startIcon={<ForumIcon />}
-      >가이드에게 채팅하기</Button>
+   
 
         <Box className={styles.symbol} sx={{ mr: 2 }}>
           <Typography variant="body1">125건의 리뷰</Typography>
