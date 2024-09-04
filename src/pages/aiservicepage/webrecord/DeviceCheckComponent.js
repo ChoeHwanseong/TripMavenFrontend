@@ -46,7 +46,7 @@ const DeviceCheckComponent = () => {
       }
     };
   }, []);
-  */
+  
 
   useEffect(() => {
     // 마이크와 카메라 권한 요청
