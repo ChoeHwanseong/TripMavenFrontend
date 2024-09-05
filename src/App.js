@@ -78,6 +78,7 @@ import RealTestPage from './pages/aiservicepage/RealTestPage'
 import RealTestResult from './pages/aiservicepage/RealTestResult'
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import Result from './pages/aiservicepage/Result';
+import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
 
 
 
@@ -189,6 +190,7 @@ function App() {
         <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
         <Route path='/record' element={<WebcamRecorder/>}/>
         <Route path='/recordcheck' element={<DeviceCheckComponent/>}/>
+        <Route path='/test' element={<DeviceCheckComponent2/>}/>
         
         <Route path='/realTestPage' element={<RealTestPage />}/>
         <Route path='/realTestResult' element={<RealTestResult />}/>
