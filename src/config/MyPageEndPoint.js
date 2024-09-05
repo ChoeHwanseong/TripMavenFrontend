@@ -22,7 +22,7 @@ export const menuData = {
         {path: "/askdetailsview"}      
     ],
     user: [
-        { name: "내 정보 관리", path: `/mypageprofile/` },
+        { name: "내 정보 관리", path: `/mypageprofile` },
         { name: "이용후기", path: "/userreview" },
         { name: "1:1문의 내역", path: "/askall" },
         { name: "찜 목록", path: "/userlike" },
