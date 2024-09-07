@@ -38,33 +38,42 @@ const MICTest = () => {
     }, []);
 
     const handleStartRecording = () => {
-        setTranscript(''); // 자막 초기화
-        setIsMicActive(true); // 음성 인식 중 상태
-        setTimer(10); // 타이머 초기화
-        setMicError(false); // 마이크 에러 상태 초기화
-        setIsButtonDisabled(true); // 버튼 비활성화
-        setTestMessage(''); // 이전 테스트 메시지 초기화
-        setIsRecognitionDone(false); // 음성 인식 완료 상태 초기화
-        lastFinalTranscriptRef.current = ''; // 마지막 최종 자막 초기화
-        accumulatedTranscriptRef.current = ''; // 누적된 자막 초기화
-
-        navigator.mediaDevices.getUserMedia({
-            audio: { deviceId: selectedAudioDevice?.deviceId }
-        })
-            .then((stream) => {
-                const audioRef = new Audio();
-                audioRef.srcObject = stream;
-                audioRef.play();
-                setIsAudioPlaying(true);
-
-                startSpeechRecognition(); // 음성 인식 시작
-                startTimer(); // 타이머 시작
+        if (isMicActive) { // 마이크가 활성화된 경우 음성 기록 중지
+            recognitionRef.current.stop(); // 음성 인식 중지
+            clearInterval(timerRef.current); // 타이머 중지
+            setIsMicActive(false); // 마이크 비활성화
+            setIsAudioPlaying(false); // 음성 중지 상태로 전환
+            setIsButtonDisabled(false); // 버튼 다시 활성화
+            setTestMessage('음성 기록이 중단되었습니다.'); // 중단 메시지 표시
+        } else {
+            setIsButtonDisabled(true); // 버튼 비활성화
+            setTranscript(''); // 자막 초기화
+            setIsMicActive(true); // 음성 인식 중 상태
+            setTimer(10); // 타이머 초기화
+            setMicError(false); // 마이크 에러 상태 초기화
+            setTestMessage(''); // 이전 테스트 메시지 초기화
+            setIsRecognitionDone(false); // 음성 인식 완료 상태 초기화
+            lastFinalTranscriptRef.current = ''; // 마지막 최종 자막 초기화
+            accumulatedTranscriptRef.current = ''; // 누적된 자막 초기화
+    
+            navigator.mediaDevices.getUserMedia({
+                audio: { deviceId: selectedAudioDevice?.deviceId }
             })
-            .catch((error) => {
-                console.error('Error getting user media:', error);
-                setMicError(true); // 마이크 접근 실패 시 에러 상태로 설정
-                setIsButtonDisabled(false); // 에러가 발생하면 버튼 다시 활성화
-            });
+                .then((stream) => {
+                    const audioRef = new Audio();
+                    audioRef.srcObject = stream;
+                    audioRef.play();
+                    setIsAudioPlaying(true);
+    
+                    startSpeechRecognition(); // 음성 인식 시작
+                    startTimer(); // 타이머 시작
+                })
+                .catch((error) => {
+                    console.error('Error getting user media:', error);
+                    setMicError(true); // 마이크 접근 실패 시 에러 상태로 설정
+                    setIsButtonDisabled(false); // 에러가 발생하면 버튼 다시 활성화
+                });
+        }
     };
 
     const startSpeechRecognition = () => {
@@ -132,7 +141,7 @@ const MICTest = () => {
     const handlePronunciationTest = () => {
         if (!isRecognitionDone) {
             // 마이크 테스트가 진행되지 않았을 때
-            setTestMessage('장치 테스트를 진행해주세요.');
+            setTestMessage('<strong>[마이크체크]</strong> 버튼을 누른 후, <br />10초 이내에 “안녕하세요! 만나서 반갑습니다.”을 소리 내어 읽어주세요.');
         } else if (!isTranscriptValid(transcript)) {
             // 자막이 맞지 않을 때
             setTestMessage('장치 테스트에 실패하였습니다. 다시 시도해주세요.');
@@ -198,17 +207,17 @@ const MICTest = () => {
                                 </>
                             )
                         )}
-                        {testMessage && (
-                            <Typography variant="body2" color="error" sx={{ mt: 2 }}>
-                                {testMessage} {/* 테스트 메시지 출력 */}
-                            </Typography>
-                        )}
+
                     </Box>
                 </Grid>
             </Grid>
+            {/* 마이크 인식 여부에 따른 상태 메시지 표시 */}
+            <Typography variant="body2" fontSize="1.2em" color={isAudioPlaying ? 'success.main' : 'error'} align="center" sx={{ mt: 4 }}>
+                {isAudioPlaying ? '마이크 작동 중' : (micError ? '*인식이 되지 않습니다.' : '')}
+            </Typography>
             <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <IconButton onClick={handleStartRecording} disabled={isButtonDisabled}>
+                    <IconButton onClick={handleStartRecording} >
                         <img
                             src='../../images/micIcon.png'
                             style={{ width: '50px', height: '50px', cursor: 'pointer' }}
@@ -217,6 +226,7 @@ const MICTest = () => {
                     </IconButton>
                 </Box>
             </Grid>
+
             <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                 <Grid item sx={{ width: '400px' }}>
                     <Select
@@ -234,10 +244,11 @@ const MICTest = () => {
                     </Select>
                 </Grid>
             </Grid>
-            {/* 마이크 인식 여부에 따른 상태 메시지 표시 */}
-            <Typography variant="body2" color={isAudioPlaying ? 'success.main' : 'error'} align="left" sx={{ mt: 2, ml: '335px' }}>
-                {isAudioPlaying ? '마이크 작동 중' : (micError ? '*인식이 되지 않습니다.' : '')}
-            </Typography>
+            {testMessage && (
+                <Typography fontSize="1.5em" align="center" variant="body2" color="error" sx={{ mt: 2 }}>
+                    <span dangerouslySetInnerHTML={{ __html: testMessage }} /> {/* 테스트 메시지 출력 */}
+                </Typography>
+            )}
             <Stack display="flex" justifyContent="center" direction="row" spacing={3} sx={{ mt: '25px' }}>
                 <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }} onClick={handlePronunciationTest}>
                     발음 테스트 바로 가기
