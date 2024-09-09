@@ -14,6 +14,7 @@ import ForumIcon from '@mui/icons-material/Forum';
 import ImageSlider from '../guidemypage/guidepost/ImageSlider';
 import ProfileCardModal from '../guidemypage/GuideProfileModal';
 import { chattingRoomData } from '../../utils/chatData';
+import { text } from '@fortawesome/fontawesome-svg-core';
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const PostDetails = () => {
 
   useEffect(() => {
     const getData = async () => {
-      try {
+      try { 
         console.log('포스트 디테일 들어옴');
         const fetchedData = await postGetById(id);
         console.log('fetchedData: ', fetchedData);
@@ -60,7 +61,6 @@ const PostDetails = () => {
         console.error('Error fetching data:', error);
       }
     };
-
     getData();
     getFiles();
 
@@ -239,19 +239,18 @@ const PostDetails = () => {
             <span style={{ color: 'black' }} className='align-text-top'>상품 설명</span>
           </Typography>
 
-          <Typography variant="body1" component="div">
+          <Typography variant="body1" component="div" className={styles.wrapper}>
             <div dangerouslySetInnerHTML={{ __html: data.content }}
               ref={contentRef}
               className={`mt-3 overflow-hidden transition ${!isExpanded ? styles.blur : ''}`}
               style={{
                 maxHeight: isExpanded ? 'none' : '400px'
-              }} />
-            <div className={`${!isExpanded && styles.blurOverlay} ${isExpanded ? styles.noBlur : ''}`}></div>
+              }}/>
+            <div className={`${!isExpanded ? styles.blurOverlay : ''}`}></div>
           </Typography>
         </Box>
 
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}
-          className={styles.blurOverlay}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
           <Button
             id='contentBtn'
             className={styles.actionButtons}
@@ -260,7 +259,8 @@ const PostDetails = () => {
           >상품 설명 더 보기</Button>
         </Box>
 
-        <img src="../../images/WebTestPageLine.png" alt="Line Image" />
+        <img src="../../images/WebTestPageLine.png" alt="Line Image" 
+            style={{ width: '100%', height: '1px', marginTop:'20px' }}/>
 
         <Box className={styles.mapSection}>
           <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
