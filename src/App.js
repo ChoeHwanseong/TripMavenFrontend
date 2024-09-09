@@ -79,12 +79,13 @@ import RealTestResult from './pages/aiservicepage/RealTestResult'
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import Result from './pages/aiservicepage/Result';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
+import PronunciationTest1 from './pages/aiservicepage/PronunciationTest';
+import { newsCrawling } from './utils/PythonServerAPI';
+import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
 
 
 
 function App() {
-
-  
 
   return <>
     <Routes>
@@ -171,11 +172,10 @@ function App() {
         <Route path='/quizform2' element={<QuizForm2/>}/>
         <Route path='/quiztutorial' element={<QuizTutorial/>}/>
         <Route path='/pronunciationtesttutorial' element={<PronunciationTestTutorial/>}/>
-        <Route path='/mictest' element={<MICTest/>}/>
         <Route path='/realtest1' element={<RealTest1 />}/>
-        <Route path='/pronunciationtest' element={<PronunciationTest/>}/>
         <Route path='/analysisresult' element={<AnalysisResult/>}/>
         <Route path='/result' element={<Result/>}/>
+        <Route path='/pronunciation/*' element={<PronunciationRoutes />}/>
         
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
@@ -195,7 +195,7 @@ function App() {
         <Route path='/realTestPage' element={<RealTestPage />}/>
         <Route path='/realTestResult' element={<RealTestResult />}/>
 
-
+        
 
       </Route>
     </Routes>
