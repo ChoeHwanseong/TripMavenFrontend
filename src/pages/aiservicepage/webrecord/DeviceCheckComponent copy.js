@@ -51,11 +51,13 @@ const DeviceCheckComponent2 = () => {
   
 
   useEffect(() => {
-    const mediaInfo = navigator.mediaDevices.enumerateDevices();
-    console.log(mediaInfo);
 
-    // 마이크와 카메라 권한 요청
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+    const effect = async()=>{
+      const mediaInfo = await navigator.mediaDevices.enumerateDevices();
+      console.log(mediaInfo);
+
+      // 마이크와 카메라 권한 요청
+      navigator.mediaDevices.getUserMedia({ audio: true, video: true })
       .then((stream) => {
         console.log('권한 요청 성공');
         // 권한을 허용한 경우에만 enumerateDevices를 호출
@@ -80,6 +82,8 @@ const DeviceCheckComponent2 = () => {
       .catch((error) => {
         console.error('Error accessing media devices:', error);
       });
+    };
+    effect();
   
     return () => {
       if (timerIntervalRef.current) {
@@ -277,6 +281,10 @@ const DeviceCheckComponent2 = () => {
           유의사항 확인
         </Button>
       </Stack>
+
+      <Typography variant="h7" align="center" display="block" sx={{ mt: 5 }} >
+        ※정확한 측정을 위해 얼굴이 전체적으로 잘 보이도록 하고, 주변 소음을 최소화해 주시기 바랍니다.
+      </Typography>
     </Container>
   );
 };

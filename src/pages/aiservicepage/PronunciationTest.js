@@ -177,10 +177,10 @@ const PronunciationTest = () => {
                 버튼을 누르고 아래에 있는 문장을 읽으세요
             </Typography>
             <Grid container>
-                <Grid container sx={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Grid container sx={{ justifyContent: 'center', alignItems: 'center', ml:'23px' }}>
                     <Box
                         sx={{
-                            width: '500px', height: 370,
+                            width: '1150px', height: '400px',
                             bgcolor: '#F8F8F8', display: 'flex',
                             alignItems: 'center', justifyContent: 'center',
                             border: '1px solid #000000', borderRadius: '5px',
@@ -188,64 +188,32 @@ const PronunciationTest = () => {
                             position: 'relative'
                         }}
                     >
-                        {transcript && isRecognitionDone ? (
-                            // 음성 인식이 끝났고 자막이 있을 때 자막 유지
-                            <>
-                                <Typography variant="subtitle1" align="center" sx={{ mt: 2 }}>
-                                    {transcript} {/* 음성 인식 결과 표시 */}
-                                </Typography>
-                            </>
-                        ) : (
-                            isMicActive ? (
-                                <>
-                                    <Typography variant="subtitle1" align="center" sx={{ mt: 2 }}>
-
-                                        {transcript || "음성을 인식 중입니다..."}<br /> {/* 실시간 음성 인식 결과 표시 */}
-                                    </Typography>
-                                    <Typography variant="subtitle1" align="center" sx={{ mt: 2, fontSize: '1.5em', fontWeight: 'bold' }}>
-                                        {"문장: " + newsHeadLine[sequenceNumber - 1]}
-                                    </Typography>
-                                    <Typography variant="h6" align="center" sx={{ mt: 2 }}>
-                                        남은 시간: {timer}초 {/* 타이머 표시 */}
-                                    </Typography>
-                                </>
-                            ) : (
-                                <>
-                                    <img
-                                        src='../../images/speakIcon.png'
-                                        alt='speak Icon'
-                                        style={{
-                                            top: '40px',
-                                            left: '40px'
-                                        }}
-                                    />
-                                    <Box sx={{ mt: 4, fontSize: '20px' }}>
-                                        {newsHeadLine[sequenceNumber - 1]}
-                                    </Box>
-                                </>
-                            )
-                        )}
-
+                        <img
+                            src='../../images/speakIcon.png'
+                            alt='speak Icon'
+                            style={{
+                                position: 'absolute',
+                                top: '40px',
+                                left: '40px'
+                            }}
+                        />
+                        <Box sx={{ mt: 3, fontSize: '20px', textAlign: 'left', mb: 3,ml:'-300px' }}>
+                            -분당 운중동 한국학중앙연구원<br />
+                            <br />
+                            -신분당선 환승역과 신논현역 사이<br />
+                            <br />
+                            -점검 전담반실과 검거 전담반실 점거 뒤 이뤄진 위법사항 점검<br />
+                            <br />
+                            -유관 기관과의 관련 문의 협의 완료 중인 국회법제사법위원회<br />
+                            <br />
+                            -스웨덴 왕립과학원 노벨위원회<br />
+                            <br />
+                            -역대 최연소 30세 307일만에 2만 5000득점을 기록
+                        </Box>
                     </Box>
                 </Grid>
             </Grid>
-            {/* 마이크 인식 여부에 따른 상태 메시지 표시 */}
-            <Typography variant="body2" fontSize="1.2em" color={isAudioPlaying ? 'success.main' : 'error'} align="center" sx={{ mt: 4 }}>
-                {isAudioPlaying ? '마이크 작동 중' : (micError ? '*인식이 되지 않습니다.' : '')}
-            </Typography>
-            <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <IconButton onClick={handleStartRecording} >
-                        <img
-                            src='../../images/micIcon.png'
-                            style={{ width: '50px', height: '50px', cursor: 'pointer' }}
-                            alt="MicIcon"
-                        />
-                    </IconButton>
-                </Box>
-            </Grid>
-
-            <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
+            <Grid container justifyContent="left" sx={{ mt: 2, ml: '145px' }}>
                 <Grid item sx={{ width: '400px' }}>
                     <Select
                         value={selectedAudioDevice?.deviceId || ''}
@@ -262,17 +230,18 @@ const PronunciationTest = () => {
                     </Select>
                 </Grid>
             </Grid>
-            {testMessage && (
-                <Typography fontSize="1.5em" align="center" variant="body2" color="error" sx={{ mt: 2 }}>
-                    <span dangerouslySetInnerHTML={{ __html: testMessage }} /> {/* 테스트 메시지 출력 */}
-                </Typography>
-            )}
-            <Stack display="flex" justifyContent="center" direction="row" spacing={3} sx={{ mt: '25px' }}>
-                <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }} onClick={handlePronunciationTest}>
-                    다음 문장으로 가기
-                </Button>
-            </Stack>
-        </Container >
+            <Typography variant="body2" color={isAudioPlaying ? 'success.main' : 'error'} align="left" sx={{ mt: 2, ml: '150px', mb: '20px' }}>
+                {isAudioPlaying ? '마이크 작동 중' : '*인식이 되지 않습니다.'}
+            </Typography>
+            <Typography sx={{ display: 'flex', justifyContent: 'center', mb: '30px', color: '#979797', fontSize: '16px' }}>
+                버튼을 눌러 녹음을 완료 하세요!
+            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <button style={{ border: 'none', background: 'none' }} onClick={handleStartRecording}>
+                    <img src='../../images/micIcon.png' style={{ width: '80px', height: '80px' }} alt="MicIcon" />
+                </button>
+            </Box>
+        </Container>
     );
 };
 
