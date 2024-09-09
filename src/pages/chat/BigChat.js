@@ -15,6 +15,8 @@ function BigChat() {
   const { roomId } = useParams();
 
   useEffect(() => {
+    console.log('roomId',roomId);
+    console.log('id',id);
     console.log(new Date().toISOString());
     //console.log(new Date().toString());
     const getData = async () => {
