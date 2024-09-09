@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styles from '../styles/components/Footer.module.css'; // CSS 모듈 파일을 불러옵니다.
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { RoleContext, TemplateContext } from './context/TemplateContext';
+import { TemplateContext } from '../context/TemplateContext';
 
 
 const Footer = ({ className, ...props }) => {

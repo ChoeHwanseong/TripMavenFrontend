@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import styles from "../styles/Template.module.css";
 import Chat from "./chat/Chat";
 import { useEffect, useState } from "react";
-import { TemplateContext } from "../components/context/TemplateContext";
+import { TemplateContext } from "../context/TemplateContext";
 import { fetchedData } from "../utils/memberData";
 import { ChattingListMyData } from "../utils/chatData";
 
