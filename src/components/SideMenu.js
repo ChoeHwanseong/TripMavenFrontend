@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { FaUser, FaUsers, FaQuestionCircle, FaFlag, FaPencilAlt, FaComments, FaRobot, FaStar, FaHeart } from 'react-icons/fa';
 import styles from '../styles/components/SideMenu.module.css';
 import { menuData } from '../config/MyPageEndPoint';
-import { RoleContext } from './context/roleContext';
+import { RoleContext } from '../context/roleContext';
 
 //메뉴 데이터 구조
 /*

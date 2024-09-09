@@ -6,7 +6,7 @@ import { Box, Button, TextField, Typography, Divider } from '@mui/material';
 import { ocr, verifyLicense } from '../../utils/PythonServerAPI';
 import LinearProgress from '@mui/material/LinearProgress';
 import { fetchedData, updateProfile } from '../../utils/memberData';
-import { RoleContext } from '../../components/context/roleContext';
+import { RoleContext } from '../../context/roleContext';
 
 const RegisterGuidePage = ({userId}) => {
   const [selectedFile, setSelectedFile] = useState([]);

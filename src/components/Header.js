@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { menuData } from '../config/MyPageEndPoint';
-import { RoleContext } from './context/roleContext';
+import { RoleContext } from '../context/roleContext';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';

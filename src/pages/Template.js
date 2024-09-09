@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import styles from "../styles/Template.module.css";
 import Chat from "./chat/Chat";
 import { useEffect, useState } from "react";
-import { RoleContext } from "../components/context/roleContext";
+import { RoleContext } from "../context/roleContext";
 import { fetchedData } from "../utils/memberData";
 
 //레이아웃용 컴포넌트
