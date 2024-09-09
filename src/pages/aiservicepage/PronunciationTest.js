@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Container, Grid, MenuItem, Select, Typography } from '@mui/material';
+import styles from '../../styles/aiservicepage/PronunciationTest.module.css'
 import { useNavigate } from 'react-router-dom';
+import { MenuItem, Select } from '@mui/material';
+
 
 const PronunciationTest = () => {
     const audioRef = useRef(null);
@@ -71,80 +73,48 @@ const PronunciationTest = () => {
     };
 
     return (
-        <Container sx={{ mt: '20px', width: '1100px' }}>
-            <Typography variant="h4" gutterBottom align="left" sx={{ mt: '120px', fontWeight: 'bold' }}>
-                발음 테스트
-            </Typography>
-            <img src="../../images/WebTestPageLine.png" alt="Line Image" />
-            <Typography variant="h5" gutterBottom align="center" sx={{ mt: '13px', mb: '13px' }}>
-                버튼을 누르고 아래에 있는 문장을 읽으세요
-            </Typography>
-            <Grid container>
-                <Grid container sx={{ justifyContent: 'center', alignItems: 'center', ml:'23px' }}>
-                    <Box
-                        sx={{
-                            width: '1150px', height: '400px',
-                            bgcolor: '#F8F8F8', display: 'flex',
-                            alignItems: 'center', justifyContent: 'center',
-                            border: '1px solid #000000', borderRadius: '5px',
-                            flexDirection: 'column', textAlign: 'center',
-                            position: 'relative'
-                        }}
-                    >
-                        <img
-                            src='../../images/speakIcon.png'
-                            alt='speak Icon'
-                            style={{
-                                position: 'absolute',
-                                top: '40px',
-                                left: '40px'
-                            }}
-                        />
-                        <Box sx={{ mt: 3, fontSize: '20px', textAlign: 'left', mb: 3,ml:'-300px' }}>
-                            -분당 운중동 한국학중앙연구원<br />
-                            <br />
-                            -신분당선 환승역과 신논현역 사이<br />
-                            <br />
-                            -점검 전담반실과 검거 전담반실 점거 뒤 이뤄진 위법사항 점검<br />
-                            <br />
-                            -유관 기관과의 관련 문의 협의 완료 중인 국회법제사법위원회<br />
-                            <br />
-                            -스웨덴 왕립과학원 노벨위원회<br />
-                            <br />
-                            -역대 최연소 30세 307일만에 2만 5000득점을 기록
-                        </Box>
-                    </Box>
-                </Grid>
-            </Grid>
-            <Grid container justifyContent="left" sx={{ mt: 2, ml: '145px' }}>
-                <Grid item sx={{ width: '400px' }}>
-                    <Select
-                        value={selectedAudioDevice?.deviceId || ''}
-                        displayEmpty
-                        onChange={(e) => setSelectedAudioDevice(audioDevices.find((d) => d.deviceId === e.target.value))}
-                        sx={{ width: '400px' }}
-                    >
-                        <MenuItem value="">마이크를 선택하세요</MenuItem>
-                        {audioDevices.map((device) => (
-                            <MenuItem key={device.deviceId} value={device.deviceId}>
-                                {device.label}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </Grid>
-            </Grid>
-            <Typography variant="body2" color={isAudioPlaying ? 'success.main' : 'error'} align="left" sx={{ mt: 2, ml: '150px', mb: '20px' }}>
-                {isAudioPlaying ? '마이크 작동 중' : '*인식이 되지 않습니다.'}
-            </Typography>
-            <Typography sx={{ display: 'flex', justifyContent: 'center', mb: '30px', color: '#979797', fontSize: '16px' }}>
-                버튼을 눌러 녹음을 완료 하세요!
-            </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <button style={{ border: 'none', background: 'none' }} onClick={handleStartRecording}>
-                    <img src='../../images/micIcon.png' style={{ width: '80px', height: '80px' }} alt="MicIcon" />
+        <div className={styles.container}>
+            <h4 className={styles.title}>발음 테스트</h4>
+            <img src="../../images/WebTestPageLine.png" alt="Line Image" className={styles.lineImage} />
+            <h5 className={styles.subtitle}>버튼을 누르고 아래에 있는 문장을 읽으세요</h5>
+            <div className={styles.gridContainer}>
+                <div className={styles.contentBox}>
+                    <img src='../../images/speakIcon.png' alt='speak Icon' className={styles.speakIcon} />
+                    <div className={styles.textContent}>
+                        -분당 운중동 한국학중앙연구원<br /><br />
+                        -신분당선 환승역과 신논현역 사이<br /><br />
+                        -점검 전담반실과 검거 전담반실 점거 뒤 이뤄진 위법사항 점검<br /><br />
+                        -유관 기관과의 관련 문의 협의 완료 중인 국회법제사법위원회<br /><br />
+                        -스웨덴 왕립과학원 노벨위원회<br /><br />
+                        -역대 최연소 30세 307일만에 2만 5000득점을 기록
+                    </div>
+                </div>
+            </div>
+            <div className={styles.selectContainer}>
+                <Select
+                    value={selectedAudioDevice?.deviceId || ''}
+                    displayEmpty
+                    onChange={(e) => setSelectedAudioDevice(audioDevices.find((d) => d.deviceId === e.target.value))}
+                    sx={{ width: '500px' }}
+                >
+                    <MenuItem value="">마이크를 선택하세요</MenuItem>
+                    {audioDevices.map((device) => (
+                        <MenuItem key={device.deviceId} value={device.deviceId}>
+                            {device.label}
+                        </MenuItem>
+                    ))}
+                </Select>
+                <div>
+                    <button className={styles.resultButton}>발음 테스트 결과 보기</button>
+                </div>
+            </div>
+            <p className={styles.instruction}>버튼을 눌러 녹음을 완료 하세요!</p>
+            <div className={styles.buttonContainer}>
+                <button className={styles.recordButton} onClick={handleStartRecording}>
+                    <img src='../../images/micIcon.png' alt="MicIcon" className={styles.micIcon} />
                 </button>
-            </Box>
-        </Container>
+            </div>
+        </div>
     );
 };
 

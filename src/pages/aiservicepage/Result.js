@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import WordCloud from 'react-d3-cloud';
 import styles from '../../styles/aiservicepage/Result.module.css';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { dataset } from '../aiservicepage/BasicDataset';
 
-// 모든 가능한 긍정적인 키워드
+//긍정적인 키워드
 const allKeywords = [
     { text: '명확한 발음', value: 1000 },
     { text: '정확한 억양', value: 900 },
@@ -44,7 +44,7 @@ const allKeywords = [
     { text: '활기찬 목소리', value: 50 },
 ];
 
-// 주어진 데이터에서 랜덤하게 n개의 항목을 선택하는 함수
+// 랜덤하게 항목을 선택하는 함수
 const getRandomKeywords = (data, n) => {
     const shuffled = data.sort(() => 0.5 - Math.random());
     return shuffled.slice(0, n);
@@ -53,11 +53,17 @@ const getRandomKeywords = (data, n) => {
 // 워드클라우드에 사용할 랜덤 키워드 15개
 const wordCloudData = getRandomKeywords(allKeywords, 15);
 
-// 글꼴 크기와 회전 각도를 조정하는 함수
+// 글씨 크기와 각도를 조정하는 함수
 const fontSizeMapper = word => Math.log2(word.value) * 8;
 const rotate = () => (Math.random() > 0.5 ? 0 : 90);
 
 const Result = () => {
+
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 스크롤을 최상단으로 이동
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <div className={styles.container}>
             <h2 className={styles.header}>발음 테스트 총 결과</h2>
@@ -107,7 +113,7 @@ const Result = () => {
                         편안한 여행 경험을 제공하는 데 큰 강점이 될 것입니다.
                     </p>
                 </div>
-                {/* 개선할 부분과 워드클라우드가 가로로 정렬된 컨테이너 */}
+                
                 <div className={styles.improvWordCloudContainer}>
                     <div className={styles.improvContainer}>
                         <span className={styles.improvHeader}>개선할 부분</span>
@@ -130,7 +136,7 @@ const Result = () => {
                             </p>
                         </div>
                     </div>
-                    {/* 워드클라우드 추가 */}
+                    
                     <div className={styles.wordCloudContainer}>
                         <h3 className={styles.wordCloudheader}>키워드</h3>
                         <WordCloud
