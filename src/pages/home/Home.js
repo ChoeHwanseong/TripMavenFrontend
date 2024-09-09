@@ -3,7 +3,7 @@ import { Box, Button, Grid, TextField, Typography, Card, CardMedia, CardContent 
 import { useNavigate } from 'react-router-dom';
 import KoreaWeatherMap from './KoreaWeather';
 import RegionEventInfo from './RegionEvent';
-import { RoleContext } from '../../components/context/roleContext';
+import { RoleContext } from '../../components/context/TemplateContext';
 import styles from '../../styles/home/Home.module.css';
 import { WidthFull } from '@mui/icons-material';
 import { useFormik } from 'formik';

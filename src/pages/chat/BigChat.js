@@ -3,7 +3,7 @@ import mqtt from 'mqtt';
 import { useParams } from 'react-router-dom';
 import styles from '../../styles/chat/BigChat.module.css';
 import ChattingRoom from './ChattingRoom';
-import { chattingRoomData, chattingListData } from '../../utils/chatData';
+import { chattingRoomData, chattingListYourData } from '../../utils/chatData';
 
 function BigChat() {
   const { id } = useParams();
@@ -21,7 +21,7 @@ function BigChat() {
     //console.log(new Date().toString());
     const getData = async () => {
       try {
-        const fetchedData = await chattingListData(localStorage.getItem("membersId"));
+        const fetchedData = await chattingListYourData(localStorage.getItem("membersId"));
         setData(fetchedData);  // 가져온 데이터를 상태에 저장
         return fetchedData;
       } catch (error) {
@@ -133,9 +133,10 @@ function BigChat() {
   
   return (
     <div className={styles.container}>
-       <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages} roomId={roomId}/>
+      <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages} roomId={roomId}/>
 
-        <div className={styles.chatSection}>
+      <div className={styles.chatSection}>
+        
         <div className={styles.chatHeader}>
           <h2 className={styles.chatName}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
           <button className={styles.infoButton}>i</button>
@@ -174,6 +175,7 @@ function BigChat() {
           </button>
           <button className={styles.attachmentButton}><img src="../images/filebutton.png"/></button>
         </div>
+
       </div>
     </div>
    

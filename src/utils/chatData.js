@@ -12,13 +12,25 @@ export const chattingRoomData = async (myId, yourId) => {
   };
 
 
-export const chattingListData = async (myId) => {
-try {
+export const chattingListYourData = async (myId) => {
+  try {
     const res = await axios.get(`/spring/chat/topic/${myId}`);
     return res.data;
-}
-catch (error) {
+  }
+  catch (error) {
     console.error('에러났당', error);
     throw error; 
-}
+  }
+}; 
+
+
+export const ChattingListMyData = async (myId) => {
+  try {
+    const res = await axios.get(`/spring/chat/topic/my/${myId}`);
+    return res.data;
+  }
+  catch (error) {
+    console.error('에러났당', error);
+    throw error; 
+  }
 }; 

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { FaUser, FaUsers, FaQuestionCircle, FaFlag, FaPencilAlt, FaComments, FaRobot, FaStar, FaHeart } from 'react-icons/fa';
 import styles from '../styles/components/SideMenu.module.css';
 import { menuData } from '../config/MyPageEndPoint';
-import { RoleContext } from './context/roleContext';
+import { TemplateContext } from './context/TemplateContext';
 
 //메뉴 데이터 구조
 /*
@@ -56,7 +56,7 @@ const DecideSideMenu = (nowPageEndPoint) => {
 }
 */
 const SideMenu = () => {
-    const { role } = useContext(RoleContext);
+    const { role } = useContext(TemplateContext);
     //endpoint 받아오기(location.pathname)
     const location = useLocation();
     const navigate = useNavigate();

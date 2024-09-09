@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { menuData } from '../config/MyPageEndPoint';
-import { RoleContext } from './context/roleContext';
+import { TemplateContext } from './context/TemplateContext';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
@@ -61,6 +61,8 @@ const NotificationTitle = styled.div`
 
 const NotificationComponent = () => {
     const [showNotifications, setShowNotifications] = useState(false);
+
+    //서버로부터 받아올 알림 내용들
     const [notifications, setNotifications] = useState([
         { id: 1, title: "새로운 알림", message: "내 게시물에 답변이 달렸습니다" },
         { id: 2, title: "새로운 메시지", message: "관리자로부터 새로운 메세지가 도착했습니다" },
@@ -130,11 +132,15 @@ const NotificationComponent = () => {
     );
 };
 
+
+
+
+
 const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [searchKeyword, setSearchKeyword] = useState('');
-    const { role, setRole } = useContext(RoleContext);
+    const { role, setRole } = useContext(TemplateContext);
     const [open, setOpen] = useState(false);
     let menuList = menuData[role];
 
@@ -151,11 +157,12 @@ const Header = () => {
     };
     const handleClose = () => setOpen(false);
 
-    //검색관련 함수
+    
     useEffect(() => {
         handleSearchKeyword();
     }, [location.pathname]);
 
+    //검색관련 함수
     const handleSearchKeyword = () => {
         if (!location.pathname.includes('/product')) {
             setSearchKeyword('');

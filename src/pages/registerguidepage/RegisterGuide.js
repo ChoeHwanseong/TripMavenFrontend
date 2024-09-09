@@ -6,7 +6,7 @@ import { Box, Button, TextField, Typography, Divider } from '@mui/material';
 import { ocr, verifyLicense } from '../../utils/PythonServerAPI';
 import LinearProgress from '@mui/material/LinearProgress';
 import { fetchedData, updateProfile } from '../../utils/memberData';
-import { RoleContext } from '../../components/context/roleContext';
+import { TemplateContext } from '../../components/context/TemplateContext';
 
 const RegisterGuidePage = ({userId}) => {
   const [selectedFile, setSelectedFile] = useState([]);
@@ -16,7 +16,7 @@ const RegisterGuidePage = ({userId}) => {
   const [ocrResult, setOcrResult] = useState({});
   const [pendingLicense, setPendingLicense] = useState(false);
   const fileInputRef = useRef(null);
-  const { memberInfo, setMemberInfo } = useContext(RoleContext);
+  const { memberInfo, setMemberInfo } = useContext(TemplateContext);
   const [verifyResult, setVerifyResult] = useState({});
   
   //input 타입 파일 선택
