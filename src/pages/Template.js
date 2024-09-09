@@ -33,7 +33,7 @@ export default function Template() {
                 const chattingList = await ChattingListMyData(localStorage.getItem('membersId'));
                 let mqttClients=[];
                 for(let joinchatting in chattingList){
-                    
+
                 }
                 setMemberInfo(chattingList);
             }

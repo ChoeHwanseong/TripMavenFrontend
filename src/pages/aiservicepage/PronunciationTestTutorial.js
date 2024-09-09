@@ -47,7 +47,7 @@ const PronunciationTestTutorial = () => {
     };
 
     const handleStartClick = () => {
-        navigate('/mictest');
+        navigate('/pronunciation');
     }
 
     return (

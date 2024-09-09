@@ -11,7 +11,6 @@ const MICTest = () => {
     const [isAudioPlaying, setIsAudioPlaying] = useState(false);
     const [timer, setTimer] = useState(10); // 10초 타이머 초기값
     const [micError, setMicError] = useState(false); // 마이크 인식 여부
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false); // 버튼 비활성화 상태
     const [testMessage, setTestMessage] = useState(''); // 테스트 메시지 상태
     const [isRecognitionDone, setIsRecognitionDone] = useState(false); // 음성 인식 완료 여부
     const recognitionRef = useRef(null); // SpeechRecognition 인스턴스 참조
@@ -43,10 +42,8 @@ const MICTest = () => {
             clearInterval(timerRef.current); // 타이머 중지
             setIsMicActive(false); // 마이크 비활성화
             setIsAudioPlaying(false); // 음성 중지 상태로 전환
-            setIsButtonDisabled(false); // 버튼 다시 활성화
             setTestMessage('음성 기록이 중단되었습니다.'); // 중단 메시지 표시
         } else {
-            setIsButtonDisabled(true); // 버튼 비활성화
             setTranscript(''); // 자막 초기화
             setIsMicActive(true); // 음성 인식 중 상태
             setTimer(10); // 타이머 초기화
@@ -71,7 +68,6 @@ const MICTest = () => {
                 .catch((error) => {
                     console.error('Error getting user media:', error);
                     setMicError(true); // 마이크 접근 실패 시 에러 상태로 설정
-                    setIsButtonDisabled(false); // 에러가 발생하면 버튼 다시 활성화
                 });
         }
     };
@@ -115,7 +111,6 @@ const MICTest = () => {
             setIsMicActive(false); // 음성 인식이 끝났을 때 상태 비활성화
             setIsAudioPlaying(false); // 음성 인식 중이 아님
             setIsRecognitionDone(true); // 음성 인식이 완료됨
-            setIsButtonDisabled(false); // 버튼 다시 활성화
         }, 10000); // 10000ms = 10초
     };
 
@@ -139,16 +134,19 @@ const MICTest = () => {
     }, []);
 
     const handlePronunciationTest = () => {
+        /*
         if (!isRecognitionDone) {
             // 마이크 테스트가 진행되지 않았을 때
             setTestMessage('<strong>[마이크체크]</strong> 버튼을 누른 후, <br />10초 이내에 “안녕하세요! 만나서 반갑습니다.”을 소리 내어 읽어주세요.');
-        } else if (!isTranscriptValid(transcript)) {
+        } 
+        else if (!isTranscriptValid(transcript)) {
             // 자막이 맞지 않을 때
             setTestMessage('장치 테스트에 실패하였습니다. 다시 시도해주세요.');
         } else {
             // 자막이 맞을 때 페이지 이동
-            navigate('/pronunciationtest');
-        }
+            navigate('/pronunciation/1');
+        }*/
+            navigate('/pronunciation/1');
     };
 
     // 자막이 띄워쓰기를 무시하고 글자 순서만 맞는지 확인하는 함수
