@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import styles from '../../styles/chat/BigChat.module.css';
 import ChattingRoom from './ChattingRoom';
 import { chattingRoomData, chattingListData } from '../../utils/chatData';
+import { postGetById } from '../../utils/postData';
 
 function BigChat() {
   const { id } = useParams();
@@ -13,10 +14,25 @@ function BigChat() {
   const [data, setData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const { roomId } = useParams();
+  const [productData, setProductData] = useState(null);
 
   useEffect(() => {
     console.log(new Date().toISOString());
-    //console.log(new Date().toString());
+    console.log('상품아이디:',id);
+    console.log('채팅방아이디:',roomId);
+
+    const getProductData = async () => {
+      try {
+        console.log('포스트 디테일 들어옴');
+        const fetchedData = await postGetById(id);
+        console.log('fetchedData: ', fetchedData);
+        setProductData(fetchedData);
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
     const getData = async () => {
       try {
         const fetchedData = await chattingListData(localStorage.getItem("membersId"));
@@ -90,7 +106,7 @@ function BigChat() {
         setClient(mqttClient);
       }
     }
-
+    getProductData();
     func();
 
     // 컴포넌트 언마운트 시 클라이언트 종료
@@ -131,13 +147,29 @@ function BigChat() {
   
   return (
     <div className={styles.container}>
-       <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages} roomId={roomId}/>
+    <ChattingRoom
+      setSelectedUser={setSelectedUser}
+      data={data}
+      client={client}
+      setChatMessages={setChatMessages}
+      roomId={roomId}
+      setProductData={setProductData}
+    />
 
-        <div className={styles.chatSection}>
+    <div className={styles.chatSection}>
+      <div>
         <div className={styles.chatHeader}>
-          <h2 className={styles.chatName}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
+          <h2 className={styles.chatName}>
+            {selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}
+          </h2>
           <button className={styles.infoButton}>i</button>
         </div>
+        <div>   
+            <div>
+              <h3>{productData?.title}</h3> 
+            </div>
+        </div>
+      </div>
 
         <div className={styles.chatMessages} id='chatMessages'>
           {chatMessages.map((msg, index) => (
@@ -171,10 +203,9 @@ function BigChat() {
             <img src="../images/sendbutton.png" alt="Send" />
           </button>
           <button className={styles.attachmentButton}><img src="../images/filebutton.png"/></button>
-        </div>
+          </div>
       </div>
     </div>
-   
   );
 }
 

@@ -126,11 +126,12 @@ function App() {
           <Route path='/bigChat' element={<BigChat/>}/>
           {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
 
-
+          <Route path='/bigChat/:id/:roomId' element={<BigChat/>}/>
+          <Route path='/chattingRoom' element={<ChattingRoom/>}/>
+          
           <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
           <Route path='/askall' element={<AskAll/>}/>
-          
-          <Route path='/bigChat/:roomId' element={<BigChat/>}/>
+         
           <Route path='/chattingRoom' element={<ChattingRoom/>}/>
           <Route path="/chattingRoom/:roomId" element={<ChattingRoom />} />
 

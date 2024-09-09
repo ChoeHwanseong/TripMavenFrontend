@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import mqtt from 'mqtt';
 
-function ChattingRoom({ setSelectedUser, data, client, setChatMessages}) {
+function ChattingRoom({ setSelectedUser, data, client, setChatMessages, setProductData}) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
 
@@ -30,6 +30,7 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages}) {
       });
       setSelectedUser(joinChatting);
       setChatMessages([]);
+      setProductData(joinChatting);
     }
   };
 

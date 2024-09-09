@@ -75,7 +75,7 @@ const MemberList = () => {
         </Box>
       </Box>
 
-      <TableContainer component={Paper} sx={{}}>
+      <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
