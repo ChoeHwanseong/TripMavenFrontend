@@ -4,7 +4,7 @@ import { Box, Button, Container, Grid, MenuItem, Select, Typography } from '@mui
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
 
-const DeviceCheckComponent = () => {
+const DeviceCheckComponent2 = () => {
   const webcamRef = useRef(null);
   const [isRecording, setIsRecording] = useState(false);
   const [timer, setTimer] = useState(60); // 1분 타이머
@@ -20,6 +20,7 @@ const DeviceCheckComponent = () => {
   const [testResult, setTestResult] = useState(""); // 테스트 결과 저장 상태
   const navigate = useNavigate();
 
+  /*
   useEffect(() => {
     // 카메라와 마이크 장치 정보 가져오기
     navigator.mediaDevices.enumerateDevices()
@@ -29,7 +30,7 @@ const DeviceCheckComponent = () => {
         // 기본 카메라와 마이크 선택
         setSelectedVideoDevice(devices.find((d) => d.kind === 'videoinput'));
         setSelectedAudioDevice(devices.find((d) => d.kind === 'audioinput'));
-        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+        const videoDevices = devices.filter(device => device.kind === 'videoinput'); 
         if (videoDevices.length > 0) {
           setIsWebcamConnected(true);
         } else {
@@ -46,11 +47,17 @@ const DeviceCheckComponent = () => {
       }
     };
   }, []);
+  */
   
 
   useEffect(() => {
-    // 마이크와 카메라 권한 요청
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+
+    const effect = async()=>{
+      const mediaInfo = await navigator.mediaDevices.enumerateDevices();
+      console.log(mediaInfo);
+
+      // 마이크와 카메라 권한 요청
+      navigator.mediaDevices.getUserMedia({ audio: true, video: true })
       .then((stream) => {
         console.log('권한 요청 성공');
         // 권한을 허용한 경우에만 enumerateDevices를 호출
@@ -67,7 +74,6 @@ const DeviceCheckComponent = () => {
             if(devices.find((d) => d.kind === 'audioinput').length > 0)
               setSelectedAudioDevice(devices.find((d) => d.kind === 'audioinput')[0]);
             
-            //setIsWebcamConnected(videoDevices.length > 0);
           })
           .catch((error) => {
             console.error('Error getting device information:', error);
@@ -76,6 +82,8 @@ const DeviceCheckComponent = () => {
       .catch((error) => {
         console.error('Error accessing media devices:', error);
       });
+    };
+    effect();
   
     return () => {
       if (timerIntervalRef.current) {
@@ -273,8 +281,12 @@ const DeviceCheckComponent = () => {
           유의사항 확인
         </Button>
       </Stack>
+
+      <Typography variant="h7" align="center" display="block" sx={{ mt: 5 }} >
+        ※정확한 측정을 위해 얼굴이 전체적으로 잘 보이도록 하고, 주변 소음을 최소화해 주시기 바랍니다.
+      </Typography>
     </Container>
   );
 };
 
-export default DeviceCheckComponent;
+export default DeviceCheckComponent2;

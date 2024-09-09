@@ -76,6 +76,9 @@ import PronunciationTest from './pages/aiservicepage/PronunciationTest';
 import PostDetails from './pages/productPage/PostDetails';
 import RealTestPage from './pages/aiservicepage/RealTestPage'
 import RealTestResult from './pages/aiservicepage/RealTestResult'
+import AnalysisResult from './pages/aiservicepage/AnalysisResult';
+import Result from './pages/aiservicepage/Result';
+import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
 
 
 
@@ -131,9 +134,9 @@ function App() {
           
           <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
           <Route path='/askall' element={<AskAll/>}/>
-         
+          
           <Route path='/chattingRoom' element={<ChattingRoom/>}/>
-          <Route path="/chattingRoom/:roomId" element={<ChattingRoom />} />
+          
 
           {/* MYPAGE */}
           <Route path="/mypageprofile/:id" element={<MypageProfile />} />
@@ -172,6 +175,8 @@ function App() {
         <Route path='/mictest' element={<MICTest/>}/>
         <Route path='/realtest1' element={<RealTest1 />}/>
         <Route path='/pronunciationtest' element={<PronunciationTest/>}/>
+        <Route path='/analysisresult' element={<AnalysisResult/>}/>
+        <Route path='/result' element={<Result/>}/>
         
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
@@ -186,6 +191,7 @@ function App() {
         <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
         <Route path='/record' element={<WebcamRecorder/>}/>
         <Route path='/recordcheck' element={<DeviceCheckComponent/>}/>
+        <Route path='/test' element={<DeviceCheckComponent2/>}/>
         
         <Route path='/realTestPage' element={<RealTestPage />}/>
         <Route path='/realTestResult' element={<RealTestResult />}/>

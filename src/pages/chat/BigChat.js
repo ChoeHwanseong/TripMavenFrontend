@@ -17,6 +17,8 @@ function BigChat() {
   const [productData, setProductData] = useState(null);
 
   useEffect(() => {
+    console.log('roomId',roomId);
+    console.log('id',id);
     console.log(new Date().toISOString());
     console.log('상품아이디:',id);
     console.log('채팅방아이디:',roomId);
