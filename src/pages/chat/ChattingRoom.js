@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../../styles/chat/BigChat.module.css';
-import { chattingRoomData, chattingListData } from '../../utils/chatData';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import mqtt from 'mqtt';
 
 function ChattingRoom({ setSelectedUser, data, client, setChatMessages}) {
   const [hoveredRow, setHoveredRow] = useState(null);
