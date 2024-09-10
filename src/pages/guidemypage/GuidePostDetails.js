@@ -11,6 +11,8 @@ import ImageSlider from './guidepost/ImageSlider';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fetchFiles } from '../../utils/fileData';
+import ForumIcon from '@mui/icons-material/Forum';
+
 
 const GuidePostDetails = () => {
   const navigate = useNavigate();
@@ -23,6 +25,8 @@ const GuidePostDetails = () => {
   const { id } = useParams();
   const contentRef = useRef(null);
   const [isExpanded, setIsExpanded] = useState(false);/* 더보기&접기 상태 저장 */
+
+  const membersId = localStorage.getItem('membersId');
 
   //내용 더보기 버튼
   function onRefButtonClick() {
@@ -118,9 +122,6 @@ const GuidePostDetails = () => {
     }
   };
 
-  
-
-
 
   if (!data) {
     return <div>로딩중</div>;
@@ -178,10 +179,10 @@ const GuidePostDetails = () => {
             tag.trim() !== '' && (
               <Button
                 key={index}
-                variant="outlined"
-                color="primary"
+                className={styles.hashtagButton} 
+                variant="contained"
                 size="small"
-                sx={{ marginRight: 1, marginBottom: 1 }}
+                onClick={()=>navigate(`/product?keyword=${tag.trim()}`)}
               >
                 #{tag.trim()}
               </Button>
@@ -197,6 +198,8 @@ const GuidePostDetails = () => {
       
 
       <Box className={styles.symbolsSection} sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', mt: 2 }}>
+   
+
         <Box className={styles.symbol} sx={{ mr: 2 }}>
           <Typography variant="body1">125건의 리뷰</Typography>
         </Box>
@@ -267,6 +270,8 @@ const GuidePostDetails = () => {
       </Box>
 
       <Box className={styles.actions}>
+      {data.member.id === Number(membersId) && (
+          <>
         <Button 
           className={styles.actionButton}
           variant="contained" 
@@ -283,6 +288,10 @@ const GuidePostDetails = () => {
         >
           삭제 하기
         </Button>
+
+        </>
+        )}
+
         <Button 
           className={styles.actionButton}
           variant="outlined" 

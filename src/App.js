@@ -33,6 +33,8 @@ import UserLike from './pages/usermypage/UserLike';
 
 
 
+
+
 import MemberList from './pages/adminmypage/MemberList';
 import GuideAskUpdate from './pages/guidemypage/GuideAskUpdate';
 import GuideAsk from './pages/guidemypage/GuideAsk';
@@ -71,12 +73,19 @@ import PronunciationTestTutorial from './pages/aiservicepage/PronunciationTestTu
 import MICTest from './pages/aiservicepage/MICTest';
 import RealTest1 from './pages/aiservicepage/RealTest1';
 import PronunciationTest from './pages/aiservicepage/PronunciationTest';
+import PostDetails from './pages/productPage/PostDetails';
+import RealTestPage from './pages/aiservicepage/RealTestPage'
+import RealTestResult from './pages/aiservicepage/RealTestResult'
+import AnalysisResult from './pages/aiservicepage/AnalysisResult';
+import Result from './pages/aiservicepage/Result';
+import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
+import PronunciationTest1 from './pages/aiservicepage/PronunciationTest';
+import { newsCrawling } from './utils/PythonServerAPI';
+import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
 
 
 
 function App() {
-
-  
 
   return <>
     <Routes>
@@ -163,14 +172,16 @@ function App() {
         <Route path='/quizform2' element={<QuizForm2/>}/>
         <Route path='/quiztutorial' element={<QuizTutorial/>}/>
         <Route path='/pronunciationtesttutorial' element={<PronunciationTestTutorial/>}/>
-        <Route path='/mictest' element={<MICTest/>}/>
         <Route path='/realtest1' element={<RealTest1 />}/>
-        <Route path='/pronunciationtest' element={<PronunciationTest/>}/>
+        <Route path='/analysisresult' element={<AnalysisResult/>}/>
+        <Route path='/result' element={<Result/>}/>
+        <Route path='/pronunciation/*' element={<PronunciationRoutes />}/>
         
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
         <Route path='/product' element={<ProductBoard/>}/>
-       
+        <Route path='/postDetails/:id' element={<PostDetails/>}/>
+        
         <Route path='/termsservice' element={<TermsService/>}/>
         <Route path='/adminreport' element={<ComplaintForm/>}/>
 
@@ -179,8 +190,13 @@ function App() {
         <Route path='/paymentconfirm' element={<PaymentConfirmation/>}/>
         <Route path='/record' element={<WebcamRecorder/>}/>
         <Route path='/recordcheck' element={<DeviceCheckComponent/>}/>
+        <Route path='/test' element={<DeviceCheckComponent2/>}/>
         
+        <Route path='/realTestPage' element={<RealTestPage />}/>
+        <Route path='/realTestResult' element={<RealTestResult />}/>
+
         
+
       </Route>
     </Routes>
   </>

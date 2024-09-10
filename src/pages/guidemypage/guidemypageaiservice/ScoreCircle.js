@@ -2,8 +2,9 @@ import * as React from 'react';
 import { Gauge, gaugeClasses} from '@mui/x-charts/Gauge';
 import { useState, useEffect } from 'react';
 
-export default function ScoreCircle({ score }) {
+export default function ScoreCircle({score}) {
   const [animatedScore, setAnimatedScore] = useState(0);
+
 
   const settings = {
     width: 220,

@@ -61,7 +61,9 @@ const UserLike = () => {
       reviewCount: Math.floor(Math.random() * 100), // 0부터 100까지의 무작위 리뷰 수
       isLiked: true, // 좋아요 상태를 나타내는 플래그
       timestamp: Date.now() - Math.floor(Math.random() * 10000000000), // Random timestamp within last ~4 months
-      };
+      city : likey.productBoard.city,
+      productId : likey.productBoard.id
+    };
   });
     
     
@@ -83,7 +85,6 @@ const UserLike = () => {
     */
 
     setProducts(newProducts);
-    
   };
 
 
@@ -162,10 +163,13 @@ const UserLike = () => {
           onChange={handleSearchChange}
         />
       </div>
-
+     
       <div className={styles.productList}>
+
         {displayedProducts.map((product) => (
-          <div key={product.id} className={styles.productItem}>
+          <div key={product.id} className={styles.productItem} 
+              onClick={() => navigate(`/guidePostDetails/${product.productId}`)}
+          >
             <img src={product.image} alt={product.title} />
             <div>
               <h3>{product.title}</h3>

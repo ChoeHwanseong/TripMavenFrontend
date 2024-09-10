@@ -97,8 +97,10 @@ const Signup = () => {
     const address = useValid(addressObj, (value) =>
         !value.areaAddress || !value.townAddress ? '주소를 입력하세요' : ''
     );
+    const detailAddressRef = useRef(null); // 상세주소 입력 필드에 대한 참조 생성
     const handleNext = () => {
         let isValid = true;
+
         if (activeStep == 0) {
             if (email.value == '') {
                 email.setError('이메일을 입력하세요');
@@ -116,6 +118,10 @@ const Signup = () => {
                 passwordConfirm.setError('비밀번호 확인을 입력하세요');
                 isValid = false;
             }
+            if (passwordConfirm.value != password.value) {
+                passwordConfirm.setError('비밀번호가 일치하지 않아요!');
+                isValid = false;
+            }
         }
         if (activeStep == 1) {
             if (region.value == "") {
@@ -131,11 +137,14 @@ const Signup = () => {
                 isValid = false;
             }
         }
-        if (isValid) setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        if (isValid) {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            if(activeStep ==2 ) setAddressObj(prev => ({ ...prev, detailAddress: detailAddressRef.current.value }));
+        }
         else alert('항목을 모두 입력해주세요.');
 
     };
-    
+
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
@@ -198,7 +207,7 @@ const Signup = () => {
                     password.setValue(newMember.password);
                     passwordConfirm.setValue(newMember.password);
                     gender.setValue(newMember.gender);
-                    
+
 
 
             }
@@ -208,8 +217,8 @@ const Signup = () => {
 
     const DaumPost = () => {
         const open = useDaumPostcodePopup(postcodeScriptUrl);
-        const detailAddressRef = useRef(null); // 상세주소 입력 필드에 대한 참조 생성
-    
+        
+
         const handleComplete = (data) => {
             let fullAddress = data.address;
             let extraAddress = '';
@@ -229,20 +238,11 @@ const Signup = () => {
                 }));
             }
         };
-    
+
         const handleClick = () => {
             open({ onComplete: handleComplete });
-        };
-    
-        const handleDetailAddressChange = (e) => {
-            setAddressObj(prev => ({ ...prev, detailAddress: e.target.value }));
-            detailAddressRef.current.focus(); // 상세주소 입력 필드에 포커스 유지
-        };
-        useEffect(() => {
-            if (addressObj.detailAddress !== '') {
-                detailAddressRef.current.focus(); // 상세주소가 변경될 때마다 포커스 유지
-            }
-        }, [addressObj.detailAddress]);
+        };    
+
         return (
             <>
                 <div className={styles.inputWithButton}>
@@ -260,8 +260,7 @@ const Signup = () => {
                     type="text"
                     id="detailAddress"
                     name="detailAddress"
-                    value={addressObj.detailAddress}
-                    onChange={handleDetailAddressChange}
+                    onBlur={()=>{if(detailAddressRef.current.value!='')setAddressObj(prev => ({ ...prev, detailAddress: detailAddressRef.current.value }))}}                  
                     placeholder="상세주소를 입력하세요"
                     className={styles.detailAddressInput}
                     ref={detailAddressRef} // 참조 연결

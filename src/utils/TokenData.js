@@ -53,8 +53,6 @@ const logout = () => {
 };
 
 
-
-
 // 응답 인터셉터 추가
 instance.interceptors.response.use(
     response => response, // 정상 응답

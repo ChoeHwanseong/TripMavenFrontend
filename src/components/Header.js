@@ -1,17 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from '../styles/components/Header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { menuData } from '../config/MyPageEndPoint';
-import { RoleContext } from './context/roleContext';
+import { TemplateContext } from '../context/TemplateContext';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
-import { ButtonGroup, Button } from '@mui/material';
+import { ButtonGroup, Button, IconButton, Badge, Typography } from '@mui/material';
 import { logout } from '../utils/memberData';
-import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import styled from '@emotion/styled';
+import { chattingListMyData } from "../utils/chatData";
+import mqtt from 'mqtt';
+import { getNotifications, postNotification } from '../utils/NotificationData';
 
 const style = {
     position: 'absolute',
@@ -25,42 +29,230 @@ const style = {
     border: '1px solid primary',
     borderRadius: '16px',
     boxShadow: 24,
-    overflow: 'hidden', // 추가
+    overflow: 'hidden',
 };
 
+const NotificationPopup = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+`;
+
+const NotificationItem = styled.div`
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  &:last-child {
+    border-bottom: none;
+  }
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
+
+const NotificationTitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+//알림 컴포넌트
+//헤더 컴포넌트에서 받아올 알림 상태
+const NotificationComponent = ({notifications, setNotifications}) => {
+    //알림 펼치기 여부 상태
+    const [showNotifications, setShowNotifications] = useState(false);
+
+    /*
+    const [notifications, setNotifications] = useState([
+        { id: 1, title: "새로운 알림", message: "내 게시물에 답변이 달렸습니다" },
+        { id: 2, title: "새로운 메시지", message: "관리자로부터 새로운 메세지가 도착했습니다" },
+        { id: 3, title: "승인 알림", message: "가이드 등록이 승인되었습니다" }
+    ]);
+    */
+
+    //알림 펼치기
+    const handleClick = () => {
+        setShowNotifications(!showNotifications);
+    };
+
+    //알림 내용 눌렀을때
+    const handleNotificationClick = (id) => {
+        setNotifications(prevNotifications => 
+            prevNotifications.filter(notification => notification.id !== id)
+        );
+    };
+
+    //알림 개수
+    const notificationCount = notifications.length;
+    //알림 모션
+    const ringAnimation = notificationCount > 0 ? `
+        @keyframes ring {
+            0% { transform: rotate(0); }
+            5% { transform: rotate(5deg); }
+            10% { transform: rotate(-5deg); }
+            15% { transform: rotate(5deg); }
+            20% { transform: rotate(-5deg); }
+            25% { transform: rotate(0); }
+            100% { transform: rotate(0); }
+        }
+    ` : '';
+
+    return (
+        <div style={{ position: 'relative' }}>
+            <IconButton 
+                onClick={handleClick} 
+                style={{ 
+                    transition: 'transform 0.3s ease',
+                    animation: notificationCount > 0 ? 'ring 2s infinite' : 'none',
+                }}
+            >
+                <Badge badgeContent={notificationCount} color="error">
+                    <NotificationsIcon />
+                </Badge>
+            </IconButton>
+            <style>
+                {ringAnimation}
+            </style>
+            {showNotifications && (
+                <NotificationPopup>
+                    {notificationCount > 0 ? (
+                        notifications.map((notification) => (
+                            <NotificationItem 
+                                key={notification.id} 
+                                onClick={() => handleNotificationClick(notification.id)}
+                            >
+                                <NotificationTitle>{notification.title}</NotificationTitle>
+                                <Typography variant="body2">{notification.message}</Typography>
+                            </NotificationItem>
+                        ))
+                    ) : (
+                        <NotificationItem>
+                            <Typography variant="body2">알림이 없습니다</Typography>
+                        </NotificationItem>
+                    )}
+                </NotificationPopup>
+            )}
+        </div>
+    );
+};
+
+
+//헤더 컴포넌트
 const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const [searchKeyword, setSearchKeyword] = useState('');
-    const { role, setRole } = useContext(RoleContext);
-    const [open, setOpen] = useState(false);
-    const [notificationCount, setNotificationCount] = useState(0);
-    let menuList = menuData[role];
+    const [searchKeyword, setSearchKeyword] = useState(''); //검색어 상태
+    const { role, setRole } = useContext(TemplateContext); //사용자 role 상태
+    const [open, setOpen] = useState(false); //가이드 등록 모달 사용여부 상태
+    let menuList = menuData[role]; //사용자 role에 따라 메뉴 변경
+    const [mqttClientList, setMqttClientList] = useState([]); //mqtt 객체 리스트 상태
+    const [notifications, setNotifications] = useState([]); //알림 리스트 상태
 
-    const handleLogout=()=>{
-        logout().then(res =>{
+    //로그아웃 함수
+    const handleLogout = () => {
+        logout().then(res => {
             localStorage.clear();
             navigate('/home');
         })
-      }
+    }
 
     //가이드 등록 모달 관련 함수
     const handleOpen = () => {
-        if(localStorage.getItem("token")) setOpen(true);
+        if (localStorage.getItem("token")) setOpen(true);
     };
     const handleClose = () => setOpen(false);
 
-    //검색관련 함수
-    useEffect(() => {
-        handleSearchKeyword();
-    }, [location.pathname]);
     
+    //채팅방 알림을 위한 함수
+    //채팅방 알림을 위해서 상위 컴포넌트에서 채팅방 연결 관리
+    const getChattingList = async ()=>{
+        if(localStorage.getItem('token')){
+            //채팅방 리스트 불러오기
+            const chattingList = await chattingListMyData(localStorage.getItem('membersId'));
+            console.log(chattingList);
 
-    const handleSearchKeyword = () => {
+            //mqtt 연결 객체 리스트
+            let mqttClients=[];
+
+            for(let joinChatting of chattingList){
+                //mqtt 연결 객체 생성, 각 객체는 각각의 채팅방 연결이 된다.
+                const mqttClient = mqtt.connect('ws://121.133.84.38:1884');
+
+                //연결 성공
+                mqttClient.on('connect', () => {
+                    console.log('Connected to MQTT broker:',joinChatting.chattingRoom.id);
+                });
+          
+                //연결 실패시
+                mqttClient.on('error', (err) => {
+                    console.error('Connection error:', err);
+                });
+
+                //채팅방 subscribe, 즉 토픽(채팅방) 정하기
+                mqttClient.subscribe(`${joinChatting.chattingRoom.id}`, (err) => {
+                    if (!err) {console.log('Subscribed to topic', joinChatting.chattingRoom.id);}
+                    else {console.error('Subscription error:', err);}
+                });
+
+                //메시지 수신시 아래 코드 실행
+                mqttClient.on('message', async (topic, message) => {
+                    console.log('Received message:', message.toString());
+                    try {
+                        const parsedMessage = JSON.parse(message.toString());
+                        const { text, sender, timestamp } = parsedMessage;
+            
+                        //자신 메세지 제외
+                        if (sender == localStorage.getItem('membersId')) return;
+
+                        //받은 메세지 디비 저장 메소드(이걸 왜 여기에서???? 보낼때하면 되잖아)
+
+                        //알림 테이블에 추가하는 함수(memberId, content, type, link)
+                        //현재 채팅방에 들어가있으면 알림테이블에 추가하지 않는다
+                        if(location.pathname.includes('bigchat') &&
+                             location.pathname.includes(`${topic}`)) return;
+                        else{
+                            //알림 테이블에 추가
+                            const jsonData = {
+                                'memberId': localStorage.getItem('membersId'),
+                                'content': text,
+                                'createAt': timestamp,
+                                'type': 'chat',
+                                'link': `/bigchat/${topic}`
+                            }
+                            postNotification(jsonData);
+
+                            //받은 메세지 알림 리스트 상태에 추가(dto 그대로 받기)
+                            const notificationList = await getNotifications(localStorage.getItem('membersId'));
+                            setNotifications(notificationList);
+                        }                 
+                    } catch (error) {console.error('Error parsing message:', error);}
+                });
+            }
+
+            return mqttClients; //각 채팅방 mqtt 연결객체 리스트를 반환
+        }
+    };
+
+    //마운트시 모든 채팅방 mqtt 연결(처음엔 이게 맞음)
+    //상품목록 페이지 벗어날때 검색창 비우기
+    //url변경시 리렌더링 되게?
+    useEffect(() => {
+        console.log(location.pathname);
+        if(mqttClientList.length==0){ //mqtt연결 리스트가 비어있을 경우에만(마운트시)
+            const chatList = getChattingList();
+            setMqttClientList(chatList);
+        }
+
         if (!location.pathname.includes('/product')) {
             setSearchKeyword('');
         }
-    };
+    }, [location.pathname]);
 
     const handleChange = (event) => {
         setSearchKeyword(event.target.value);
@@ -86,25 +278,6 @@ const Header = () => {
     const handleClick = (path) => {
         navigate(path);
         scrollToTop();
-    };
-
-    //알람 관련 함수
-    const handleNotificationClick = () => {
-        console.log('알림 아이콘 클릭됨');
-        setNotificationCount(prevCount => prevCount + 1);
-    };
-
-    const renderNotificationIcon = () => {
-        return (
-            <div className={styles.notificationIconWrapper} onClick={handleNotificationClick}>
-                <div className={`${styles.notificationIcon} ${notificationCount > 0 ? styles.shake : ''}`}>
-                    <FontAwesomeIcon icon={faBell} className={styles.bellIcon} />
-                </div>
-                {notificationCount > 0 && (
-                    <span className={styles.notificationBadge}>{notificationCount}</span>
-                )}
-            </div>
-        );
     };
 
     return (
@@ -155,15 +328,14 @@ const Header = () => {
                                 <div className={styles.dropdownContent}>
                                     {menuList && menuList.map((item, index) => {
                                         if (item.name) {
-                                            return <a key={index}><button className={styles.navButton1} onClick={() => { handleClick(item.path) }}>{item.name}</button></a>
+                                            return <a key={index}><button className={styles.navButton1} onClick={() => { handleClick(item.path.includes('mypageprofile')?`${item.path}/${localStorage.getItem('membersId')}`:item.path) }}>{item.name}</button></a>
                                         }
                                     })}
                                 </div>
                             </div>
                             <button className={styles.navButton} onClick={handleOpen}>가이드 등록</button>
+                            <NotificationComponent notifications={notifications} setNotifications={setNotifications}/>
                         </div>
-
-                        {renderNotificationIcon()}
 
                         {!localStorage.getItem("token") ?
                             <NavLink className={styles.loginButton} to="/login" >로그인</NavLink>

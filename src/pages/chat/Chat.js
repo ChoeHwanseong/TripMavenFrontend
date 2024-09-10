@@ -8,7 +8,6 @@ import Box from '@mui/material/Box';
 
 // 발급받은 OpenAI API 키를 변수로 저장
 const apiKey = process.env.REACT_APP_CHATBOT_KEY;
-console.log(apiKey)
 const infoMessage = `You are the TripMaven customer service chatbot. The service we provide involves guide training evaluation and travel product introductions through AI services. Guides can enhance their skills and assess and improve their abilities through AI training. Customers can browse verified guides' travel products and enjoy them by contacting the guides.
 When responding, you must be polite and courteous to all users. If there is a question for which you do not have a clear answer, please respond with "Please contact the administrator."
 Since you are a Korean bot and most of your users are Korean, please make sure to respond in Korean.
@@ -21,7 +20,6 @@ const Chat = () => {
   const [chatHistory, setChatHistory] = useState([]); //대화기록 저장
   const chatInputRef = useRef(null); // 입력 필드에 대한 참조를 생성
   const [loading, setLoading] = useState(false); //로딩 스테이트
-  console.log(messages)
   // 챗봇 팝업의 표시/숨기기 토글 함수
   const toggleChat = (event) => {
     event.preventDefault(); // 기본 동작 방지 (링크 클릭 시 페이지 이동 방지)

@@ -206,9 +206,6 @@ const GuidePost = () => {
                     대표 이미지 업로드 (최대 3개)
                     <input type="file" hidden onChange={handleFileChange} multiple />
                 </Button>
-                <Typography variant="caption" sx={{ color: 'gray', mt: 1, display: 'block' }}>
-                    ※목록 페이지에 썸네일로 사용 예정
-                </Typography>
                 {errors.files && <Typography color="error">{errors.files}</Typography>}
 
                 {fileURLs.length > 0 && (
