@@ -254,9 +254,20 @@ const Header = () => {
                             }
                             const postedData = await postNotification(jsonData);
                             //받은 메세지 알림 리스트 상태에 추가(dto 그대로 받기)
-                            const notiStateList =[...notifications]; //새로운 리스트 만들기
+                            const notiStateList =[]; //새로운 리스트 만들기
+                            for(let noti of notifications){
+                                if(noti.senderId == postedData.senderId){
+                                    console.log('같은게 있다');
+                                    noti.content.push(postedData);
+                                    notiStateList.push(noti);
+                                }
+                                else{
+                                    notiStateList.push(noti);
+                                }
+                            }
+
+                            /*
                             if(notiStateList.find(ele=>ele.senderId==postedData.senderId)){
-                                console.log('같은게 있다');
                                 notiStateList.forEach(ele => {
                                     if(ele.senderId==postedData.senderId){
                                         ele.content.push(postedData);
@@ -269,8 +280,9 @@ const Header = () => {
                                 console.log('같은게 없다');
                                 notiStateList.push({...postedData, content:[postedData]});
                             }
+                            */
 
-                            setNotifications([...notiStateList]);
+                            setNotifications(notiStateList);
                         }                 
                     } catch (error) {console.error('Error parsing message:', error);}
                 });
