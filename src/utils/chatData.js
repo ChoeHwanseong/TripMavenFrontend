@@ -22,3 +22,13 @@ catch (error) {
     throw error; 
 }
 }; 
+
+export const submitMessage  = async (topic, userMessage , userId) => {
+  try {
+      const res = await axios.post('/spring/chat/save', {topic, userMessage, userId});  // 프록시 설정에 맞게 /spring 경로 유지
+      return res.data;
+  } catch (error) {
+      console.error('에러났당', error);
+      throw error;
+  }
+};

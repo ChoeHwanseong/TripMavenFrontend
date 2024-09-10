@@ -9,8 +9,6 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, setProdu
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
 
-
-
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
   };
