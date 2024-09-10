@@ -292,7 +292,7 @@ const DetailedWeatherMap = ({ selectedRegion: externalSelectedRegion }) => {
                 <LineChart data={forecast}>
                   <XAxis 
                     dataKey="time" 
-                    angle={-45}
+                    angle={0}
                     textAnchor="end"
                     height={70}
                     interval={5}
