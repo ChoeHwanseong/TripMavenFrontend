@@ -252,22 +252,25 @@ const Header = () => {
                                 'link': `/bigchat/${topic}`,
                                 'senderId': `${sender}`
                             }
-                            postNotification(jsonData);
-
+                            const postedData = await postNotification(jsonData);
                             //받은 메세지 알림 리스트 상태에 추가(dto 그대로 받기)
-                            notifications.forEach(noti => {
-                                if(noti.type=='chat'){ //타입이 채팅이면
-                                    if(noti.senderId == jsonData.senderId) { //이미 있다면
-                                        noti.content.push(jsonData);
-                                        noti.timestamp = jsonData.timestamp;
+                            const notiStateList =[...notifications]; //새로운 리스트 만들기
+                            if(notiStateList.find(ele=>ele.senderId==postedData.senderId)){
+                                console.log('같은게 있다');
+                                notiStateList.forEach(ele => {
+                                    if(ele.senderId==postedData.senderId){
+                                        ele.content.push(postedData);
+                                        ele.timestamp=postedData.timestamp;
+                                        ele.id=postedData.id;
                                     }
-                                    else{
-                                        notifications.push({...noti, content:[noti]});
-                                    }
-                                }
-                    
-                            });
-                            setNotifications([...notifications])
+                                });
+                            }
+                            else {
+                                console.log('같은게 없다');
+                                notiStateList.push({...postedData, content:[postedData]});
+                            }
+
+                            setNotifications([...notiStateList]);
                         }                 
                     } catch (error) {console.error('Error parsing message:', error);}
                 });
