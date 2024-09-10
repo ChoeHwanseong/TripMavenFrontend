@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import dummyImg from '../../images/dummyImg.png';
 import styles from '../../styles/home/RegionEvent.module.css';
-import { RoleContext } from '../../components/context/roleContext';
+import { TemplateContext } from '../../context/TemplateContext';
 
 const API_KEY = 'fxK0NInA37%2B5%2FUmqb3ZtIqKfeJDzlDS9iU9A25kDySbSG2wyyzESFN8pUjf1G3sBAqnKnI0ZkDOCaNC8PDJTxg%3D%3D';
 const BASE_URL = 'https://apis.data.go.kr/B551011/KorService1';
@@ -92,7 +92,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
   const [eventDetails, setEventDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [direction, setDirection] = useState(0);
-  const { memberInfo } = useContext(RoleContext);
+  const { memberInfo } = useContext(TemplateContext);
   const selectbox = useRef(null);
 
   useEffect(() => {

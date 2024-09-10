@@ -37,7 +37,7 @@ function BigChat() {
 
     const getData = async () => {
       try {
-        const fetchedData = await chattingListData(localStorage.getItem("membersId"));
+        const fetchedData = await chattingListYourData(localStorage.getItem("membersId"));
         setData(fetchedData);  // 가져온 데이터를 상태에 저장
         return fetchedData;
       } catch (error) {
@@ -149,17 +149,9 @@ function BigChat() {
   
   return (
     <div className={styles.container}>
-    <ChattingRoom
-      setSelectedUser={setSelectedUser}
-      data={data}
-      client={client}
-      setChatMessages={setChatMessages}
-      roomId={roomId}
-      setProductData={setProductData}
-    />
+       <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages} roomId={roomId}/>
 
-    <div className={styles.chatSection}>
-      <div>
+        <div className={styles.chatSection}>
         <div className={styles.chatHeader}>
           <h2 className={styles.chatName}>
             {selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}
@@ -205,7 +197,7 @@ function BigChat() {
             <img src="../images/sendbutton.png" alt="Send" />
           </button>
           <button className={styles.attachmentButton}><img src="../images/filebutton.png"/></button>
-          </div>
+        </div>
       </div>
     </div>
   );

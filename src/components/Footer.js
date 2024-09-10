@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import styles from '../styles/components/Footer.module.css'; // CSS 모듈 파일을 불러옵니다.
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { RoleContext } from './context/roleContext';
+import { TemplateContext } from '../context/TemplateContext';
 
 
 const Footer = ({ className, ...props }) => {
-  const { setSearchKeyword } = useContext(RoleContext);
+  const { setSearchKeyword } = useContext(TemplateContext);
 
   const navigate = useNavigate();
 
