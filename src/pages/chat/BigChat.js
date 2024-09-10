@@ -85,7 +85,7 @@ function BigChat() {
       const message = JSON.stringify({
         text,
         sender: localStorage.getItem('membersId'),
-        timestamp: new Date().toLocaleTimeString(),
+        timestamp: new Date(),
       });
       console.log(`토픽 ${selectedUser.chattingRoom.id} 으로 채팅 보내기, 채팅내용 :`,message);
       client.publish(`${selectedUser.chattingRoom.id}`, message);
