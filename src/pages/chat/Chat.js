@@ -20,7 +20,6 @@ const Chat = () => {
   const [chatHistory, setChatHistory] = useState([]); //대화기록 저장
   const chatInputRef = useRef(null); // 입력 필드에 대한 참조를 생성
   const [loading, setLoading] = useState(false); //로딩 스테이트
-  console.log(messages)
   // 챗봇 팝업의 표시/숨기기 토글 함수
   const toggleChat = (event) => {
     event.preventDefault(); // 기본 동작 방지 (링크 클릭 시 페이지 이동 방지)

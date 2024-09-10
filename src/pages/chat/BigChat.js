@@ -6,16 +6,14 @@ import ChattingRoom from './ChattingRoom';
 import { chattingRoomData, chattingListYourData } from '../../utils/chatData';
 
 function BigChat() {
-  const { id } = useParams();
+  const { id } = useParams(); //url파라미터로 받은 채팅방 id
   const [client, setClient] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [data, setData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const { roomId } = useParams();
 
   useEffect(() => {
-    console.log('roomId',roomId);
     console.log('id',id);
     console.log(new Date().toISOString());
     //console.log(new Date().toString());
@@ -73,12 +71,12 @@ function BigChat() {
           }
         });
         
-        if(roomId){
+        if(id){
           for(let joinchat of list_){
-            if(joinchat.chattingRoom.id==roomId){
-              mqttClient.subscribe(`${roomId}`, (err) => {
+            if(joinchat.chattingRoom.id==id){
+              mqttClient.subscribe(`${id}`, (err) => {
                 if (!err) {
-                  console.log(roomId, 'Subscribed to topic');
+                  console.log(id, 'Subscribed to topic');
                 } else {
                   console.error('Subscription error:', err);
                 }
@@ -133,7 +131,7 @@ function BigChat() {
   
   return (
     <div className={styles.container}>
-      <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages} roomId={roomId}/>
+      <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages}/>
 
       <div className={styles.chatSection}>
         
