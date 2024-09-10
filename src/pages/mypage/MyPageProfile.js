@@ -4,6 +4,7 @@ import { Box, Button, TextField, Typography, Avatar, Grid } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CircularProgress from '@mui/material/CircularProgress';
 import { deleteProfile, fetchedData, updateProfile } from '../../utils/memberData';
+import styles from '../../styles/mypage/MyProfile.module.css';
 
 const MypageProfile = () => {
   const [profileData, setProfileData] = useState(null);
@@ -11,13 +12,13 @@ const MypageProfile = () => {
   const { id } = useParams(); //관리자 페이지에서 유저 목록 클릭시 필요한 파라미터임
 
   //원래 프로필페이지에서는 이거 쓰다가 회원목록에서 넘어온 id값 있으면 id로 조회하기
-  const membersId = localStorage.getItem('membersId'); 
+  const membersId = localStorage.getItem('membersId');
   const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const fetchData = await fetchedData(id?id:membersId);
+        const fetchData = await fetchedData(id ? id : membersId);
         setProfileData(fetchData);
       } catch (error) {
         console.error('에러났당', error);
@@ -79,164 +80,74 @@ const MypageProfile = () => {
   }
 
   return (
-    <Box sx={{ p: 7 ,mt:-2,ml:-2}}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom>프로필</Typography>
-      <form>        <Grid container spacing={2}>
-          <Grid item xs={12} md={2}>
-            <Avatar
-              src="../../../images/defaultimage.png"
-              alt="프로필 이미지"
-              sx={{ width: 100, height: 100, mb: 2.5, ml: 0.6 }}
-            />
-            <Button
-              sx={{ backgroundColor: '#0066ff', height: .13, '&:hover': { backgroundColor: '#0056b3' }, }}
-              variant="contained"
-              component="label"
-              startIcon={<CloudUploadIcon />}
-            >
-              파일 찾기
-              <input type="file" hidden />
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={10}>
-            <Box sx={{ display: 'flex' }}>
-              <Button sx={{ textDecoration: 'underline', mr: '720px' }} onClick={() => { navigate('/passwordchange') }}>
-                비밀번호 수정
-              </Button>
-              <Button style={{ textDecoration: 'underline', color: '#000000' }} onClick={deleteMember}>
-                탈퇴하기
-              </Button>
-            </Box>
-            <TextField
-              fullWidth
-              label="닉네임"
-              id="name"
-              name="name"
-              value={profileData.name || ''}
-              onChange={handleUpdate}
-              margin="normal"
-            />
-            <TextField
-              fullWidth
-              label="이메일"
-              id="email"
-              name="email"
-              value={profileData.email || ''}
-              onChange={handleUpdate}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <TextField
-              fullWidth
-              label="전화번호"
-              id="telNumber"
-              name="telNumber"
-              value={profileData.telNumber || ''}
-              onChange={handleUpdate}
-              margin="normal"
-            />
-            <TextField
-              sx={{ width: 0.883 }}
-              label="주소"
-              id="address"
-              name="address"
-              value={profileData.address || ''}
-              onChange={handleUpdate}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <Button
-              sx={{
-                mt: 1.9, ml: 1, color: '#000000',
-                border: 1, backgroundColor: '#f1f1f1',
-                justifyContent:'flex-end',
-                height: .16, '&:hover': { backgroundColor: '#DEDEDE' },
-              }}
-              variant="contained"
-              component="label"
-            >
-              주소 찾기
-              <input type="button" hidden />
-            </Button>
-          </Grid>
-        </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="성별"
-              id="gender"
-              name="gender"
-              value={profileData.gender || ''}
-              onChange={handleUpdate}
-              margin="normal"
-            />
-            <TextField
-              fullWidth
-              label="생년월일"
-              id="birthday"
-              name="birthday"
-              value={profileData.birthday || ''}
-              onChange={handleUpdate}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <TextField
-              sx={{ width: 0.72 }}
-              label="자격증"
-              id="certificate"
-              name="certificate"
-              value={certificateFileName || profileData.certificate || ''}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <Button
-              sx={{ mt: 2, ml: 2, backgroundColor: '#0066ff', height: .23, '&:hover': { backgroundColor: '#0056b3' }, }}
-              variant="contained"
-              component="label"
-              startIcon={<CloudUploadIcon />}
-            >
-              파일 찾기
-              <input type="file" hidden onChange={handleFileChange} />
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="자기소개"
-              id="about"
-              name="about"
-              value={profileData.about || ''}
-              onChange={handleUpdate}
-              margin="normal"
-              multiline
-              rows={8}
-            />
-          </Grid>
-        </Grid>
+    <div className={styles.container}>
+      <main className={styles.mainContent}>
+        <div className={styles.titlecotainer}>
+          <h1 className={styles.title}>프로필</h1>
+          <div className={styles.buttoncontainer}>
+            <button className={styles.passwdButton} onClick={() => { navigate('/passwordchange') }}>비밀번호 수정</button>
+            <button className={styles.deleteButton} onClick={deleteMember}>탈퇴하기</button>
+          </div>
+        </div>
+        <form className={styles.form} >
+          <div className={styles.profileSection}>
+            <div className={styles.avatarContainer}>
+              <img src="../../../images/defaultimage.png" alt="프로필 이미지" className={styles.avatar} />
+              <label htmlFor="upload-file" className={styles.fileButton}>
+                <CloudUploadIcon /> 파일 찾기
+              </label>
 
-        <Box display="flex" justifyContent="flex-end">
-          <Button
-            onClick={() => { navigate(`/mypageUpdate/${membersId}`) }}
-            variant="contained"
-            sx={{
-              mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px',
-              '&:hover': { backgroundColor: '#0056b3' },
-            }}
-          >
-            수정 하기
-          </Button>
-        </Box>
-      </form>
-    </Box>
+              {/* 실제 파일 업로드 input (화면에서 숨김) */}
+              <input
+                type="file"
+                id="upload-file"
+                style={{ display: 'none' }}
+                onChange={handleFileChange} // 파일 선택시 처리할 함수
+              />
+            </div>
+            <div className={styles.infoSection}>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="name">닉네임</label>
+                <input className={styles.inputbox} type="text" id="name" name="name" value={profileData.name || ''} onChange={handleUpdate} readOnly />
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="email">이메일</label>
+                <input type="text" id="email" name="email" value={profileData.email || ''} onChange={handleUpdate} readOnly />
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="telNumber">전화번호</label>
+                <input type="text" id="telNumber" name="telNumber" value={profileData.telNumber || ''} onChange={handleUpdate} readOnly />
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="address">주소</label>
+                <input type="text" id="address" name="address" value={profileData.address || ''} onChange={handleUpdate} readOnly />
+              </div>
+            </div>
+            <div className={styles.extraSection}>
+              <div className={styles.formGroup}>
+                <label htmlFor="gender">성별</label>
+                <input type="text" id="gender" name="gender" value={profileData.gender ? profileData.gender : ''} onChange={handleUpdate} readOnly />
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="birthday">생년월일</label>
+                <input type="text" id="birthday" name="birthday" value={profileData.birthday ? profileData.birthday : ''} onChange={handleUpdate} readOnly />
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="certificate">자격증</label>
+                <input type="text" id="certificate" name="certificate" value={profileData.certificate ? profileData.certificate : ''} readOnly />
+
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="about">자기소개</label>
+                <textarea id="about" name="about" rows="4" value={profileData.about ? profileData.about : ''} onChange={handleUpdate} readOnly></textarea>
+              </div>
+            </div>
+          </div>
+          <button type="submit" className={styles.submitButton}>수정 하기</button>
+        </form>
+      </main>
+    </div>
   );
 };
 

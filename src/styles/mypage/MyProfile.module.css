@@ -85,14 +85,37 @@
   flex-grow: 1;
 }
 
+.titlecotainer {
+  display: flex;
+}
+
 .title {
   font-size: 2em;
   margin-bottom: 20px;
+  margin-right: 30px;
 }
 
 .form {
   display: flex;
   flex-direction: column;
+}
+
+.buttoncontainer {
+  margin-top: 15px;
+}
+
+.passwdButton {
+  color: #0066ff;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  margin-right: 815px;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  text-decoration: underline;
 }
 
 .profileSection {
