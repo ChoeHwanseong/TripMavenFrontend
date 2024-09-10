@@ -35,7 +35,7 @@ export const submitMessage  = async (topic, userMessage , userId) => {
    
 
 
-export const ChattingListMyData = async (myId) => {
+export const chattingListMyData = async (myId) => {
   try {
     const res = await axios.get(`/spring/chat/topic/my/${myId}`);
     return res.data;

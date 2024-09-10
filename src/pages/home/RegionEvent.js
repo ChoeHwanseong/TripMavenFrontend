@@ -164,7 +164,6 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
       const { response: apiResponse } = response.data;
       if (apiResponse && apiResponse.header.resultCode === "0000") {
         const regions_ = apiResponse.body.items.item;
-        console.log(regions_);
         setRegions(regions_);
       }
       else {throw new Error(apiResponse?.header?.resultMsg || '알 수 없는 API 오류');}
