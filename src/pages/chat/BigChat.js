@@ -3,7 +3,7 @@ import mqtt from 'mqtt';
 import { useParams } from 'react-router-dom';
 import styles from '../../styles/chat/BigChat.module.css';
 import ChattingRoom from './ChattingRoom';
-import { chattingRoomData, chattingListData } from '../../utils/chatData';
+import { chattingRoomData, chattingListData, chattingListYourData } from '../../utils/chatData';
 import { postGetById } from '../../utils/postData';
 
 function BigChat() {
@@ -199,7 +199,7 @@ function BigChat() {
           <button className={styles.attachmentButton}><img src="../images/filebutton.png"/></button>
         </div>
       </div>
-    </div>
+    
   );
 }
 
