@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Typography, Button, Avatar } from '@mui/material';
+import { Box, Typography, Button, Avatar, ListItemText, ListItemAvatar, Divider, ListItem } from '@mui/material';
 import styles from '../../styles/guidemypage/GuidePostDetails.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { postDelete, postGetById, postLikey, deleteLikey } from '../../utils/postData';
 import KakaoMap from '../../utils/KakaoMap'; 
-import { HotelIcon, TreePalm } from 'lucide-react';
+import { HotelIcon, List, TreePalm } from 'lucide-react';
 import ComplaintModal from '../report/ComplaintModal';
 import ProfileCardModal from './GuideProfileModal'; // 여기서 모달 컴포넌트 가져오기
 import ImageSlider from './guidepost/ImageSlider';
@@ -12,6 +12,8 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fetchFiles } from '../../utils/fileData';
 import ForumIcon from '@mui/icons-material/Forum';
+import Reviews from './guidepost/ReviewList';
+import { reviewPost } from '../../utils/reviewData';
 
 const GuidePostDetails = () => {
   const navigate = useNavigate();
@@ -21,7 +23,7 @@ const GuidePostDetails = () => {
   const [isGuideModalOpen, setGuideModalOpen] = useState(false);  // 가이드 모달 상태 변수
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [complaintId, setComplaintId] = useState(null);
-  const { id } = useParams();
+  const { id } = useParams(); // 상품id
   const contentRef = useRef(null);
   const [isExpanded, setIsExpanded] = useState(false);/* 더보기&접기 상태 저장 */
 
@@ -33,7 +35,6 @@ const GuidePostDetails = () => {
     setIsExpanded(!isExpanded);
     document.getElementById('contentBtn').hidden=true;  
   }
-
 
 
 
@@ -62,6 +63,7 @@ const GuidePostDetails = () => {
         console.error('Error fetching data:', error);
       }
     };
+ 
 
     getData();
     getFiles();
@@ -275,7 +277,20 @@ const GuidePostDetails = () => {
             <KakaoMap address={data.hotelAd == null ? data.hotel : data.hotelAd} />
           </div>
         </Box>
-      </Box>
+
+
+        <img src="../../images/WebTestPageLine.png" alt="Line Image" />
+        </Box>
+
+
+
+
+        <Box className={styles.symbolsSection} sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', mt: 2 }}>
+            <Reviews id={id}/>
+        </Box>
+
+   
+ 
 
       <Box className={styles.actions}>
       {data.member.id === Number(membersId) && (
@@ -309,6 +324,10 @@ const GuidePostDetails = () => {
           목록
         </Button>
       </Box>
+
+
+
+
     </Box>
   );
 };

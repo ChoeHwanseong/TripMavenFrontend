@@ -6,10 +6,12 @@ import { fetchedData } from '../../utils/memberData';
 
 const GuideMyPageMyPost = () => {
   const [posts, setPosts] = useState(null);
-  const { membersId } = localStorage.getItem('membersId');
+  const  membersId  = localStorage.getItem('membersId');
   const navigate = useNavigate();
 
   useEffect(() => {
+
+    console.log('id: ', membersId)
 
     // 회원 이메일로 상품 조회 >> 내 게시글 관리
     const getData = async () => {

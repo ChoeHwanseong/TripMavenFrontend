@@ -4,26 +4,25 @@ import { Box, Button, TextField, Typography, Avatar, Grid } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CircularProgress from '@mui/material/CircularProgress';
 import { deleteProfile, fetchedData, updateProfile } from '../../utils/memberData';
+import styles from '../../styles/mypage/MyProfile.module.css'; 
 
 const MypageProfile = () => {
   const [profileData, setProfileData] = useState(null);
   const [certificateFileName, setCertificateFileName] = useState('');
-  const { id } = useParams(); //관리자 페이지에서 유저 목록 클릭시 필요한 파라미터임
-
-  //원래 프로필페이지에서는 이거 쓰다가 회원목록에서 넘어온 id값 있으면 id로 조회하기
-  const membersId = localStorage.getItem('membersId'); 
+  const { id } = useParams();
+  const membersId = localStorage.getItem('membersId');
   const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const fetchData = await fetchedData(id?id:membersId);
+        const fetchData = await fetchedData(id ? id : membersId);
         setProfileData(fetchData);
+        console.log('마이프로필: ',profileData)
       } catch (error) {
         console.error('에러났당', error);
       }
     };
-
     getData();
   }, [id]);
 
@@ -42,33 +41,12 @@ const MypageProfile = () => {
     }
   };
 
-  // 회원 탈퇴
   const deleteMember = async () => {
     const confirmed = window.confirm("진짜 탈퇴?");
     if (confirmed) {
-      // 2) 회원 테이블 컬럼 디폴트값 변경 >> 백 단의 새로운 메소드 필요.
-      // const updateData = { isactive: 0,
-      //               isdelete : 1,
-      //               id :membersId 
-      //             };
-      // console.log('updateData: ',updateData);
-      // await updateProfile(updateData.id,updateData);
-      // navigate('/');
-
-      // 1) delete 메소드 활용 - 캐스케이드 오류발생 (양방향 참조관계 필요.)
-      //   try {
-      //     console.log('membersId: ',membersId);
-      //       await deleteProfile(membersId);
-      //       navigate('/'); 
-      //   } catch (error) {
-      //       console.error('삭제 중 오류 발생:', error);
-      //   }
-
+      // 회원 탈퇴 로직
     }
   };
-
-
-
 
   if (!profileData) {
     return (
@@ -79,149 +57,120 @@ const MypageProfile = () => {
   }
 
   return (
-    <Box sx={{ p: 7 ,mt:-2,ml:-2}}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom>프로필</Typography>
-      <form>        <Grid container spacing={2}>
-          <Grid item xs={12} md={2}>
-            <Avatar
-              src="../../../images/defaultimage.png"
-              alt="프로필 이미지"
-              sx={{ width: 100, height: 100, mb: 2.5, ml: 0.6 }}
+    <Box className={styles.container}>
+      <Box className={styles.content}>
+        <Typography variant="h4" fontWeight="bold" gutterBottom>프로필</Typography>
+
+        {/* 프로필 사진 및 이름 */}
+        <Box className={styles.profileSection}>
+          <Avatar
+            alt={profileData.name || 'Profile Picture'}
+            src={profileData.profilePicture || '/path/to/default-image.jpg'}
+            className={styles.avatar}
+          />
+          <Typography variant="h5" fontWeight="bold">
+            {profileData.name || '이름 없음'}
+          </Typography>
+        </Box>
+
+        {/* 프로필 이미지 아래에 텍스트 박스들 배치 */}
+        <Box className={styles.texts}>
+          <Box className={styles.formGroup}>
+            <TextField
+              required
+              id="filled-required"
+              label="EMAIL"
+              variant="filled"
+              fullWidth
+              value={profileData.email || ''}
             />
-            <Button
-              sx={{ backgroundColor: '#0066ff', height: .13, '&:hover': { backgroundColor: '#0056b3' }, }}
-              variant="contained"
-              component="label"
-              startIcon={<CloudUploadIcon />}
-            >
-              파일 찾기
-              <input type="file" hidden />
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={10}>
-            <Box sx={{ display: 'flex' }}>
-              <Button sx={{ textDecoration: 'underline', mr: '720px' }} onClick={() => { navigate('/passwordchange') }}>
-                비밀번호 수정
-              </Button>
-              <Button style={{ textDecoration: 'underline', color: '#000000' }} onClick={deleteMember}>
-                탈퇴하기
+            <TextField
+              label="PHONE-NUMBER"
+              variant="filled"
+              fullWidth
+              value={profileData.telNumber || ''}
+            />
+
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <TextField
+                label="GENDER"
+                variant="filled"
+                fullWidth
+                value={profileData.gender || ''}
+              />
+              <TextField
+                label="BIRTHDAY"
+                variant="filled"
+                fullWidth
+                value={profileData.birthday || ''}
+              />
+            </Box>
+
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <TextField
+                sx={{ width: 0.883 }}
+                label="주소"
+                name="address"
+                variant="filled"
+                value={profileData.address || '주소를 넣어주세요.'}
+                onChange={handleUpdate}
+                margin="normal"
+                InputProps={{ readOnly: true }}
+              />
+              <Button
+                sx={{
+                  mt: 1.9, ml: 1, color: '#000000',
+                  border: 1, backgroundColor: '#f1f1f1',
+                  justifyContent: 'flex-end',
+                  height: .16, '&:hover': { backgroundColor: '#DEDEDE' },
+                }}
+                variant="contained"
+                component="label"
+              >
+                주소 찾기
+                <input type="button" hidden />
               </Button>
             </Box>
-            <TextField
-              fullWidth
-              label="닉네임"
-              id="name"
-              name="name"
-              value={profileData.name || ''}
-              onChange={handleUpdate}
-              margin="normal"
-            />
-            <TextField
-              fullWidth
-              label="이메일"
-              id="email"
-              name="email"
-              value={profileData.email || ''}
-              onChange={handleUpdate}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <TextField
-              fullWidth
-              label="전화번호"
-              id="telNumber"
-              name="telNumber"
-              value={profileData.telNumber || ''}
-              onChange={handleUpdate}
-              margin="normal"
-            />
-            <TextField
-              sx={{ width: 0.883 }}
-              label="주소"
-              id="address"
-              name="address"
-              value={profileData.address || ''}
-              onChange={handleUpdate}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <Button
-              sx={{
-                mt: 1.9, ml: 1, color: '#000000',
-                border: 1, backgroundColor: '#f1f1f1',
-                justifyContent:'flex-end',
-                height: .16, '&:hover': { backgroundColor: '#DEDEDE' },
-              }}
-              variant="contained"
-              component="label"
-            >
-              주소 찾기
-              <input type="button" hidden />
-            </Button>
-          </Grid>
-        </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="성별"
-              id="gender"
-              name="gender"
-              value={profileData.gender || ''}
-              onChange={handleUpdate}
-              margin="normal"
-            />
-            <TextField
-              fullWidth
-              label="생년월일"
-              id="birthday"
-              name="birthday"
-              value={profileData.birthday || ''}
-              onChange={handleUpdate}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <TextField
-              sx={{ width: 0.72 }}
-              label="자격증"
-              id="certificate"
-              name="certificate"
-              value={certificateFileName || profileData.certificate || ''}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <Button
-              sx={{ mt: 2, ml: 2, backgroundColor: '#0066ff', height: .23, '&:hover': { backgroundColor: '#0056b3' }, }}
-              variant="contained"
-              component="label"
-              startIcon={<CloudUploadIcon />}
-            >
-              파일 찾기
-              <input type="file" hidden onChange={handleFileChange} />
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="자기소개"
-              id="about"
-              name="about"
-              value={profileData.about || ''}
-              onChange={handleUpdate}
-              margin="normal"
-              multiline
-              rows={8}
-            />
-          </Grid>
-        </Grid>
+
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <TextField
+                sx={{ width: 0.72 }}
+                label="자격증"
+                id="certificate"
+                name="certificate"
+                value={certificateFileName || profileData.guidelicense || ''}
+                margin="normal"
+                variant="filled"
+                fullWidth
+                InputProps={{ readOnly: true }}
+              />
+              <Button
+                sx={{ mt: 2, ml: 2, backgroundColor: '#0066ff', height: .23, '&:hover': { backgroundColor: '#0056b3' } }}
+                variant="contained"
+                component="label"
+                startIcon={<CloudUploadIcon />}
+              >
+                파일 찾기
+                <input type="file" hidden onChange={handleFileChange} />
+              </Button>
+            </Box>
+
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="자기소개"
+                variant="filled"
+                id="about"
+                name="about"
+                value={profileData.introduce || ''}
+                onChange={handleUpdate}
+                margin="normal"
+                multiline
+                rows={8}
+              />
+            </Grid>
+          </Box>
+        </Box>
 
         <Box display="flex" justifyContent="flex-end">
           <Button
@@ -234,8 +183,8 @@ const MypageProfile = () => {
           >
             수정 하기
           </Button>
-        </Box>
-      </form>
+        </Box> 
+      </Box>
     </Box>
   );
 };
