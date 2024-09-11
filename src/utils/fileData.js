@@ -69,6 +69,7 @@ export const fetchFile = async (filename,productboardId) => {
 // 파일 가져오기(가이드 인증용 파일 이름으로 가져오기, guidelicense)
 export const fetchLicenseFile = async (filename) => {
   try {
+      console.log('파일 이름: ',filename);
       const response = await axios.get(`${baseUrl}/downloadlicense/${filename}`, {
         responseType: 'blob' // 서버에서 Blob으로 파일 데이터를 받아옴
       });
