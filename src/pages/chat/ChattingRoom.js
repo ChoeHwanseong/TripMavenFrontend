@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import mqtt from 'mqtt';
 import { getMessages } from '../../utils/chatData';
 
-function ChattingRoom({ setSelectedUser, data, client, setChatMessages}) {
+function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages}) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
 
@@ -19,6 +19,7 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages}) {
     setHoveredRow(null);
   }
 
+  /*
   const fetchChatMessages = async (chattingRoomId) => {
     try {
       const response = await getMessages(chattingRoomId); 
@@ -32,6 +33,7 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages}) {
       console.error('메시지 불러오기 에러:', error);
     }
   };
+  */
 
   const handleClick = (joinChatting) => {
     if (client && joinChatting.chattingRoom) {
