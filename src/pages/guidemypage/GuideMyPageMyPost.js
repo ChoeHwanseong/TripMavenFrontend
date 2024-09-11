@@ -6,11 +6,7 @@ import { fetchedData } from '../../utils/memberData';
 
 const GuideMyPageMyPost = () => {
   const [posts, setPosts] = useState(null);
-<<<<<<< HEAD
   const  membersId  = localStorage.getItem('membersId');
-=======
-  const membersId = localStorage.getItem('membersId');
->>>>>>> e743506a255d2e947b8242b5070e47c6dd08decf
   const navigate = useNavigate();
 
   useEffect(() => {

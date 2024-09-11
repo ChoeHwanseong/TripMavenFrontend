@@ -24,19 +24,23 @@ const ReviewList = ({ id }) => {
   }, [id]);
 
   const renderStars = (rating) => {
-    const fullStars = Math.floor(rating);
+    const fullStars = Math.max(0, Math.floor(rating));
     const halfStar = rating % 1 !== 0;
-    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+    const emptyStars = Math.max(0, 5 - fullStars - (halfStar ? 1 : 0));
+
+    console.log('fullStars:', fullStars, 'halfStar:', halfStar, 'emptyStars:', emptyStars);
+
+    const generateStars = (count, Component) => (
+      Array.from({ length: count }, (_, index) => (
+        <Component className={styles.reviewRating} key={`${Component.name}-${index}`} />
+      ))
+    );
 
     return (
       <>
-        {Array(fullStars).fill().map((_, index) => (
-          <Star className={styles.reviewRating} key={`full-${index}`} />
-        ))}
+        {generateStars(fullStars, Star)}
         {halfStar && <StarHalf className={styles.reviewRating} key="half-star" />}
-        {Array(emptyStars).fill().map((_, index) => (
-          <StarBorder className={styles.reviewRating} key={`empty-${index}`} />
-        ))}
+        {generateStars(emptyStars, StarBorder)}
       </>
     );
   };
