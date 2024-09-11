@@ -3,7 +3,8 @@ import mqtt from 'mqtt';
 import { useParams } from 'react-router-dom';
 import styles from '../../styles/chat/BigChat.module.css';
 import ChattingRoom from './ChattingRoom';
-import { chattingRoomData, chattingListYourData } from '../../utils/chatData';
+import { chattingListYourData, getMessages } from '../../utils/chatData';
+import { submitMessage } from '../../utils/chatData';
 
 function BigChat() {
   const { id } = useParams(); //url파라미터로 받은 채팅방 id
@@ -16,7 +17,7 @@ function BigChat() {
   useEffect(() => {
     console.log('id',id);
     console.log(new Date().toISOString());
-    //console.log(new Date().toString());
+
     const getData = async () => {
       try {
         const fetchedData = await chattingListYourData(localStorage.getItem("membersId"));
@@ -62,7 +63,7 @@ function BigChat() {
               {
                 sender: sender,
                 text,
-                time: new Date(timestamp).toISOString(),
+                timestamp: new Date(timestamp).toISOString(),
               },
             ]);
             
@@ -77,11 +78,13 @@ function BigChat() {
               mqttClient.subscribe(`${id}`, (err) => {
                 if (!err) {
                   console.log(id, 'Subscribed to topic');
+                  
                 } else {
                   console.error('Subscription error:', err);
                 }
                 setSelectedUser(joinchat);
               });
+              fetchChatMessages(joinchat.chattingRoom.id);
             }
           }
         }
@@ -102,17 +105,25 @@ function BigChat() {
   }, []);
 
   //메시지 보내기 설정
-  const sendMessage = (text) => {
+  const sendMessage = async (text) => {
     if (client && isConnected) {
       const message = JSON.stringify({
         text,
         sender: localStorage.getItem('membersId'),
         timestamp: new Date(),
       });
-      console.log(`토픽 ${selectedUser.chattingRoom.id} 으로 채팅 보내기, 채팅내용 :`,message);
+      
       client.publish(`${selectedUser.chattingRoom.id}`, message);
+
+      try {
+        await submitMessage(selectedUser.chattingRoom.id, text, localStorage.getItem('membersId'));
+        console.log('메시지 저장됨');
+      } catch (error) {
+        console.error('에러났당', error);
+      }
     }
   };
+
 
   const handleSendClick = () => {
     const input = document.querySelector("#chatInput");
@@ -128,37 +139,52 @@ function BigChat() {
       handleSendClick();
     }
   };
+
+  const fetchChatMessages = async (chattingRoomId) => {
+    try {
+      const response = await getMessages(chattingRoomId); 
+      console.log('Fetched messages response:', response);  // 더 구체적으로 확인하기 위한 로그
+      if (response) {
+        setChatMessages(response); 
+      } else {
+        console.log('No messages received');
+      }
+    } catch (error) {
+      console.error('메시지 불러오기 에러:', error);
+    }
+  };
   
   return (
     <div className={styles.container}>
-      <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages}/>
+    <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages}/>
 
-      <div className={styles.chatSection}>
-        
-        <div className={styles.chatHeader}>
-          <h2 className={styles.chatName}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
-          <button className={styles.infoButton}>i</button>
-        </div>
+    <div className={styles.chatSection}>
+      <div className={styles.chatHeader}>
+        <h2 className={styles.chatName}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
+      </div>
 
-        <div className={styles.chatMessages} id='chatMessages'>
-          {chatMessages.map((msg, index) => (
-            <div className={styles.messageNTime} key={index}>
-              <div
-                className={`${styles.message} ${msg.sender === localStorage.getItem('membersId') ? styles.sent : ''}`}
-              >
-                <img
-                  src={msg.sender === localStorage.getItem('membersId') ? "../images/defaultimage.png" : "../images/choehwanseong.png"}
-                  alt="profile"
-                  className={styles.profileImage}
-                />
-                <div className={styles.messageBubble}>
-                  <span>{msg.text}</span>
-                </div>  
+      <div className={styles.chatMessages} id='chatMessages'>
+        {chatMessages.map((msg, index) => (
+          <div className={styles.messageNTime} key={index}>
+            <div
+              className={`${styles.message} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}
+            >
+              <img
+                src={msg.sender.toString() === localStorage.getItem('membersId') ? "../images/defaultimage.png" : "../images/choehwanseong.png"}
+                alt="profile"
+                className={styles.profileImage}
+              />
+              <div className={styles.messageBubble}>
+                <span>{msg.text}</span>
               </div>
-              <span className={`${styles.messageTime} ${msg.sender === localStorage.getItem('membersId') ? styles.sent : ''}`}>{(new Date().toLocaleDateString == new Date(msg.time).toLocaleDateString?'':new Date(msg.time).toLocaleDateString)+new Date(msg.time).toLocaleTimeString()}</span>
             </div>
-          ))}
-        </div>
+            <span className={`${styles.messageTime} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}>
+              {(new Date(msg.timestamp).toLocaleDateString() === new Date().toLocaleDateString() ? '' : new Date(msg.timestamp).toLocaleDateString())}
+              {new Date(msg.timestamp).toLocaleTimeString()}
+            </span>
+          </div>
+        ))}
+      </div>
 
         <div className={styles.chatInputSection}>
           <input

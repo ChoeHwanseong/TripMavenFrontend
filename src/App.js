@@ -76,6 +76,7 @@ import PronunciationTest from './pages/aiservicepage/PronunciationTest';
 import PostDetails from './pages/productPage/PostDetails';
 import RealTestPage from './pages/aiservicepage/RealTestPage'
 import RealTestResult from './pages/aiservicepage/RealTestResult'
+import Reviews from './pages/guidemypage/guidepost/ReviewList';
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import Result from './pages/aiservicepage/Result';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
@@ -122,7 +123,7 @@ function App() {
 
            {/* USER */}
           <Route path='/userreview' element={<UserReview/>}/>
-          <Route path='/reviewdetails' element={<ReviewDetails/>}/>
+          <Route path='/reviewdetails/:id' element={<ReviewDetails/>}/>
           {/*<Route path='/userask' element={<UserAsk/>}/>*/}
           <Route path='/userlike' element={<UserLike/>}/>
           {/*<Route path='/useraskpage' element={<UserAskPage/>}/>*/}
@@ -130,11 +131,12 @@ function App() {
           <Route path='/bigChat' element={<BigChat/>}/>
           {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
 
-
+          <Route path='/bigChat/:id' element={<BigChat/>}/>
+          <Route path='/chattingRoom' element={<ChattingRoom/>}/>
+          
           <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
           <Route path='/askall' element={<AskAll/>}/>
           
-          <Route path='/bigChat/:id' element={<BigChat/>}/>
           <Route path='/chattingRoom' element={<ChattingRoom/>}/>
           
 
@@ -175,7 +177,7 @@ function App() {
         <Route path='/realtest1' element={<RealTest1 />}/>
         <Route path='/analysisresult' element={<AnalysisResult/>}/>
         <Route path='/result' element={<Result/>}/>
-        <Route path='/pronunciation/*' element={<PronunciationRoutes />}/>
+        <Route path='/pronunciation/*' element={<PronunciationRoutes />}/> {/*  URL이 /pronunciation 로 시작하는 애들은 PronunciationRoutes여기서 처리해주세요~ */}
         
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>

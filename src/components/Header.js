@@ -222,7 +222,7 @@ const Header = () => {
         if(localStorage.getItem('token')){
             //채팅방 리스트 불러오기
             const chattingList = await chattingListMyData(localStorage.getItem('membersId'));
-            console.log(chattingList);
+            //console.log(chattingList);
 
             //mqtt 연결 객체 리스트
             let mqttClients=[];
@@ -313,15 +313,29 @@ const Header = () => {
     //상품목록 페이지 벗어날때 검색창 비우기
     //url변경시 리렌더링 되게?
     useEffect(() => {
-        console.log(location.pathname);
+        //console.log(location.pathname);
         if(mqttClientList.length==0){ //mqtt연결 리스트가 비어있을 경우에만(마운트시)
             const chatList = getChattingList();
             setMqttClientList(chatList); //mqtt연결 리스트 상태
             getNoti(1); //알림 상태
         }
 
+        //상품페이지 벗어날때 검색창 검색어 초기화
         if (!location.pathname.includes('/product')) {
             setSearchKeyword('');
+        }
+
+        //채팅방 들어갔을때 알림 제거용
+        if(location.pathname.includes('bigchat')){
+            //채팅방 url이랑 알림 링크랑 비교해서 들어왓으면 알림 제거
+            for(let noti of notifications){
+                if(noti.link == location.pathname){
+                    setNotifications(prevNotifications => 
+                        prevNotifications.filter(notification => notification.link !== location.pathname)
+                    );
+                    readNotification(noti.content[0]);
+                }
+            }
         }
     }, [location.pathname]);
 

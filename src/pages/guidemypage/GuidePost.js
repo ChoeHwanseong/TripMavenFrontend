@@ -37,6 +37,8 @@ const GuidePost = () => {
 
     // day 컬럼 통합
     useEffect(() => {
+        console.log('id: ', membersId)
+
         const dayPeriod = `${nights}박 ${days}일`;
         if (dayRef.current) {
             dayRef.current.value = dayPeriod;
@@ -107,7 +109,13 @@ const GuidePost = () => {
     // 유효성 검증    
     const validateFields = () => {
         const newErrors = {};
-        if (!titleRef.current?.value) newErrors.title = "제목을 입력해주세요.";
+        // 제목이 입력되지 않았거나, 20자를 초과한 경우
+        const titleValue = titleRef.current?.value;
+        if (!titleValue) {
+            newErrors.title = "제목을 입력해주세요. 최대 20자까지 제한합니다.";
+        } else if (titleValue.length > 20) {
+            newErrors.title = "제목은 최대 20자까지 입력 가능합니다.";
+        }
         if (!hashtagRef.current?.value) newErrors.hashtag = "해시태그를 입력해주세요.";
         if (!files.length) newErrors.files = "최소 1개의 이미지를 업로드해주세요.";
         if (!nights || !days) newErrors.dayPeriod = "박과 일 수를 입력해주세요.";
