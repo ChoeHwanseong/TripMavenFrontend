@@ -57,7 +57,7 @@ export const fetchFile = async (filename,productboardId) => {
     
     console.log(response.data)
     // Blob 데이터를 Blob URL로 변환하여 반환
-    const blobUrl = URL.createObjectURL(response.data);
+    let blobUrl = URL.createObjectURL(response.data);
     console.log('blobUrl: ', blobUrl);
     return blobUrl;
   } catch (error) {

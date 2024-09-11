@@ -131,11 +131,12 @@ function App() {
           <Route path='/bigChat' element={<BigChat/>}/>
           {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
 
-
+          <Route path='/bigChat/:id/:roomId' element={<BigChat/>}/>
+          <Route path='/chattingRoom' element={<ChattingRoom/>}/>
+          
           <Route path='/askdetailsview/:id' element={<AskDetailsView/>}/>
           <Route path='/askall' element={<AskAll/>}/>
           
-          <Route path='/bigChat/:id' element={<BigChat/>}/>
           <Route path='/chattingRoom' element={<ChattingRoom/>}/>
           
 
@@ -176,7 +177,7 @@ function App() {
         <Route path='/realtest1' element={<RealTest1 />}/>
         <Route path='/analysisresult' element={<AnalysisResult/>}/>
         <Route path='/result' element={<Result/>}/>
-        <Route path='/pronunciation/*' element={<PronunciationRoutes />}/>
+        <Route path='/pronunciation/*' element={<PronunciationRoutes />}/> {/*  URL이 /pronunciation 로 시작하는 애들은 PronunciationRoutes여기서 처리해주세요~ */}
         
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
