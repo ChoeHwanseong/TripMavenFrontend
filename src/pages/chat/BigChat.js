@@ -84,6 +84,7 @@ function BigChat() {
                 }
                 setSelectedUser(joinchat);
               });
+              fetchChatMessages(joinchat.chattingRoom.id);
             }
           }
         }
@@ -101,7 +102,7 @@ function BigChat() {
         client.end();
       }
     };
-  }, [id]);
+  }, []);
 
   //메시지 보내기 설정
   const sendMessage = async (text) => {
@@ -138,10 +139,24 @@ function BigChat() {
       handleSendClick();
     }
   };
+
+  const fetchChatMessages = async (chattingRoomId) => {
+    try {
+      const response = await getMessages(chattingRoomId); 
+      console.log('Fetched messages response:', response);  // 더 구체적으로 확인하기 위한 로그
+      if (response) {
+        setChatMessages(response); 
+      } else {
+        console.log('No messages received');
+      }
+    } catch (error) {
+      console.error('메시지 불러오기 에러:', error);
+    }
+  };
   
   return (
     <div className={styles.container}>
-    <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages}/>
+    <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages}/>
 
     <div className={styles.chatSection}>
       <div className={styles.chatHeader}>
