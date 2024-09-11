@@ -123,7 +123,7 @@ const PostDetails = () => {
       const yourId = data.member.id; 
       const roomId = await chattingRoomData(myId, yourId);
       
-      navigate(`/bigChat/${data.id}/${roomId}`);
+      navigate(`/bigChat/${data.id}`);
 
     } catch (error) {
       console.error('Error fetching or creating chat room:', error);
