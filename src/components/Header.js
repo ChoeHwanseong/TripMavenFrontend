@@ -11,11 +11,13 @@ import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
 import { ButtonGroup, Button, IconButton, Badge, Typography } from '@mui/material';
 import { logout } from '../utils/memberData';
 import CloseIcon from '@mui/icons-material/Close';
+import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import styled from '@emotion/styled';
 import { chattingListMyData } from "../utils/chatData";
 import mqtt from 'mqtt';
 import { getNotifications, postNotification, readNotification } from '../utils/NotificationData';
+
 
 const style = {
     position: 'absolute',
@@ -142,20 +144,29 @@ const NotificationComponent = ({notifications, setNotifications}) => {
                 {ringAnimation}
             </style>
             {showNotifications && (
-                <NotificationPopup>
+                <NotificationPopup style={{width:"200px"}}>
                     {notificationCount > 0 ? (
-                        notifications.map((notification) => (
+                        notifications.map((notification) => {
+                            console.log(new Date(notification.createAt));
+                            return (
                             <NotificationItem 
                                 key={notification.id} 
                                 onClick={() => handleNotificationClick(notification)}
                             >
                                 <NotificationTitle style={{ display: 'inline' }}>{convertNotificationType[notification.type] }</NotificationTitle>
-                                <Typography variant="caption" style={{ display: 'inline', color: 'gray' }}>{` ${new Date().toLocaleDateString() == new Date(notification.createAt).toLocaleDateString()?'':new Date(notification.createAt).toLocaleDateString().slice(6,-1)} ${new Date(notification.createAt).toLocaleTimeString().slice(0,-3)}`}</Typography>
-                                <Typography variant="body2" style={{fontWeight: 'bold'}}>{`유저아이디 ${notification.senderId}`}</Typography>
-                                <Typography variant="body2" >{notification.content[0].content}</Typography>
-                                <Typography variant="body2" style={{fontWeight: 'bold', color: 'red'}}>{notification.type=='chat' && notification.content.length}</Typography>
+                                <Typography variant="caption" style={{ display: 'inline', color: 'gray' }}>{` ${new Date().toLocaleDateString() == new Date(notification.createAt+'Z').toLocaleDateString()?'':new Date(notification.createAt+'Z').toLocaleDateString().slice(6,-1)} ${new Date(notification.createAt+'Z').toLocaleTimeString().slice(0,-3)}`}</Typography>
+                                <Box sx={{display:'flex', justifyContent:'space-between', paddingRight:'10px'}}>
+                                    <Typography variant="body2" style={{fontWeight: 'bold'}}>{`유저아이디 ${notification.senderId}`}</Typography>
+                                    {/*
+                                    <Typography variant="body2" >{notification.content[0].content}</Typography>
+                                    <Typography variant="body2" style={{fontWeight: 'bold', color: 'red'}}>{notification.type=='chat' && notification.content.length}</Typography>
+                                    */}
+                                    {notification.type=='chat' && (
+                                        <span class="badge rounded-pill bg-danger" style={{fontSize:'11px'}}>{notification.type=='chat' && notification.content.length}</span>
+                                    )}
+                                </Box>
                             </NotificationItem>
-                        ))
+                        )})
                     ) : (
                         <NotificationItem>
                             <Typography variant="body2">알림이 없습니다</Typography>
