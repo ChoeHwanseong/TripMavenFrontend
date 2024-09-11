@@ -222,7 +222,7 @@ const Header = () => {
         if(localStorage.getItem('token')){
             //채팅방 리스트 불러오기
             const chattingList = await chattingListMyData(localStorage.getItem('membersId'));
-            console.log(chattingList);
+            //console.log(chattingList);
 
             //mqtt 연결 객체 리스트
             let mqttClients=[];
@@ -313,7 +313,7 @@ const Header = () => {
     //상품목록 페이지 벗어날때 검색창 비우기
     //url변경시 리렌더링 되게?
     useEffect(() => {
-        console.log(location.pathname);
+        //console.log(location.pathname);
         if(mqttClientList.length==0){ //mqtt연결 리스트가 비어있을 경우에만(마운트시)
             const chatList = getChattingList();
             setMqttClientList(chatList); //mqtt연결 리스트 상태
