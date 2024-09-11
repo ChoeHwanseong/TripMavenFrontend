@@ -24,9 +24,9 @@ export default function PronunciationRoutes() {
     return <>
         <PronunContext.Provider value={{newsHeadLine}}>
             <Routes>
-                <Route path="" element={<MICTest />} />
-                <Route path="/:sequence" element={<PronunciationTest />} />
-                <Route path="*" element={<Navigate to="" replace={true} />} />
+                <Route path="" element={<MICTest />} /> {/*URL이 /pronunciation 라면 마이크 테스트 */}
+                <Route path="/:sequence" element={<PronunciationTest />} /> {/* URL이 /pronunciation/시퀀스면 라면 발음 테스트 */}
+                <Route path="*" element={<Navigate to="" replace={true} />} /> {/*URL이 /pronunciation/시퀀스 이외의 URL은 URL이 /pronunciation로 */}
             </Routes>
         </PronunContext.Provider>
     </>
