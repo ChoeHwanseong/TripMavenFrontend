@@ -23,9 +23,9 @@ export const chattingListYourData = async (myId) => {
 }
 }; 
 
-export const submitMessage  = async (topic, userMessage , userId) => {
+export const submitMessage  = async (topic, userMessage , membersId) => {
   try {
-      const res = await axios.post('/spring/chat/save', {topic, userMessage, userId});  // 프록시 설정에 맞게 /spring 경로 유지
+      const res = await axios.post('/spring/chat/save', {topic, userMessage, membersId});  // 프록시 설정에 맞게 /spring 경로 유지
       return res.data;
   } catch (error) {
       console.error('에러났당', error);
@@ -45,3 +45,14 @@ export const chattingListMyData = async (myId) => {
     throw error; 
   }
 }; 
+
+
+export const getMessages = async (chattingRoomId) => {
+  try {
+    const res = await axios.get(`/spring/chat/history/${chattingRoomId}`);  // POST 요청으로 채팅방 ID를 전송
+    return res.data;
+  } catch (error) {
+    console.error('에러났당', error);
+    throw error;
+  }
+};

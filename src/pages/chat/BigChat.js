@@ -3,8 +3,8 @@ import mqtt from 'mqtt';
 import { useParams } from 'react-router-dom';
 import styles from '../../styles/chat/BigChat.module.css';
 import ChattingRoom from './ChattingRoom';
-import { chattingRoomData, chattingListData, chattingListYourData } from '../../utils/chatData';
-import { postGetById } from '../../utils/postData';
+import { chattingListYourData, getMessages } from '../../utils/chatData';
+import { submitMessage } from '../../utils/chatData';
 
 function BigChat() {
   const { id } = useParams(); //url파라미터로 받은 채팅방 id
@@ -17,20 +17,6 @@ function BigChat() {
   useEffect(() => {
     console.log('id',id);
     console.log(new Date().toISOString());
-    console.log('상품아이디:',id);
-    console.log('채팅방아이디:',roomId);
-
-    const getProductData = async () => {
-      try {
-        console.log('포스트 디테일 들어옴');
-        const fetchedData = await postGetById(id);
-        console.log('fetchedData: ', fetchedData);
-        setProductData(fetchedData);
-
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
 
     const getData = async () => {
       try {
@@ -77,7 +63,7 @@ function BigChat() {
               {
                 sender: sender,
                 text,
-                time: new Date(timestamp).toISOString(),
+                timestamp: new Date(timestamp).toISOString(),
               },
             ]);
             
@@ -92,6 +78,7 @@ function BigChat() {
               mqttClient.subscribe(`${id}`, (err) => {
                 if (!err) {
                   console.log(id, 'Subscribed to topic');
+                  
                 } else {
                   console.error('Subscription error:', err);
                 }
@@ -105,7 +92,7 @@ function BigChat() {
         setClient(mqttClient);
       }
     }
-    getProductData();
+
     func();
 
     // 컴포넌트 언마운트 시 클라이언트 종료
@@ -114,20 +101,28 @@ function BigChat() {
         client.end();
       }
     };
-  }, []);
+  }, [id]);
 
   //메시지 보내기 설정
-  const sendMessage = (text) => {
+  const sendMessage = async (text) => {
     if (client && isConnected) {
       const message = JSON.stringify({
         text,
         sender: localStorage.getItem('membersId'),
         timestamp: new Date(),
       });
-      console.log(`토픽 ${selectedUser.chattingRoom.id} 으로 채팅 보내기, 채팅내용 :`,message);
+      
       client.publish(`${selectedUser.chattingRoom.id}`, message);
+
+      try {
+        await submitMessage(selectedUser.chattingRoom.id, text, localStorage.getItem('membersId'));
+        console.log('메시지 저장됨');
+      } catch (error) {
+        console.error('에러났당', error);
+      }
     }
   };
+
 
   const handleSendClick = () => {
     const input = document.querySelector("#chatInput");
@@ -146,41 +141,35 @@ function BigChat() {
   
   return (
     <div className={styles.container}>
-      <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages}/>
+    <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages}/>
 
-        <div className={styles.chatSection}>
-        <div className={styles.chatHeader}>
-          <h2 className={styles.chatName}>
-            {selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}
-          </h2>
-          <button className={styles.infoButton}>i</button>
-        </div>
-        <div>   
-            <div>
-              <h3>{productData?.title}</h3> 
-            </div>
-        </div>
+    <div className={styles.chatSection}>
+      <div className={styles.chatHeader}>
+        <h2 className={styles.chatName}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
       </div>
 
-        <div className={styles.chatMessages} id='chatMessages'>
-          {chatMessages.map((msg, index) => (
-            <div className={styles.messageNTime} key={index}>
-              <div
-                className={`${styles.message} ${msg.sender === localStorage.getItem('membersId') ? styles.sent : ''}`}
-              >
-                <img
-                  src={msg.sender === localStorage.getItem('membersId') ? "../images/defaultimage.png" : "../images/choehwanseong.png"}
-                  alt="profile"
-                  className={styles.profileImage}
-                />
-                <div className={styles.messageBubble}>
-                  <span>{msg.text}</span>
-                </div>  
+      <div className={styles.chatMessages} id='chatMessages'>
+        {chatMessages.map((msg, index) => (
+          <div className={styles.messageNTime} key={index}>
+            <div
+              className={`${styles.message} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}
+            >
+              <img
+                src={msg.sender.toString() === localStorage.getItem('membersId') ? "../images/defaultimage.png" : "../images/choehwanseong.png"}
+                alt="profile"
+                className={styles.profileImage}
+              />
+              <div className={styles.messageBubble}>
+                <span>{msg.text}</span>
               </div>
-              <span className={`${styles.messageTime} ${msg.sender === localStorage.getItem('membersId') ? styles.sent : ''}`}>{(new Date().toLocaleDateString == new Date(msg.time).toLocaleDateString?'':new Date(msg.time).toLocaleDateString)+new Date(msg.time).toLocaleTimeString()}</span>
             </div>
-          ))}
-        </div>
+            <span className={`${styles.messageTime} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}>
+              {(new Date(msg.timestamp).toLocaleDateString() === new Date().toLocaleDateString() ? '' : new Date(msg.timestamp).toLocaleDateString())}
+              {new Date(msg.timestamp).toLocaleTimeString()}
+            </span>
+          </div>
+        ))}
+      </div>
 
         <div className={styles.chatInputSection}>
           <input
@@ -195,8 +184,10 @@ function BigChat() {
           </button>
           <button className={styles.attachmentButton}><img src="../images/filebutton.png"/></button>
         </div>
+
       </div>
-    
+    </div>
+   
   );
 }
 
