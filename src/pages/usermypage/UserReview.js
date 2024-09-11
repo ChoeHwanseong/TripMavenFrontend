@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/usermypage/UserReview.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { reviewGet } from '../../utils/reviewData';
+import { postGetByEmail } from '../../utils/postData';
+import { fetchedData } from '../../utils/memberData';
 
 
-const ReviewPage = () => {
+const UserReview = () => {
   const navigate = useNavigate();
   const availableReviews = [
     {
@@ -28,6 +31,46 @@ const ReviewPage = () => {
     { id: 1, productName: '경주◎ㅇ◎ㅇㅇㄹ', title: '안조아요', date: '2023-12-31' },
   ];
 
+  const  membersId  = localStorage.getItem('membersId');
+  const [reviews,setReviews] = useState(null);
+  const [posts,setPosts] = useState(null);
+  const [members,setMembers] = useState(null);
+  
+
+  useEffect(()=>{
+
+    // 멤버 정보 가져오기
+   
+    const getMember = async () => {
+      const memberResult = await fetchedData(membersId);
+      console.log('회원 결과: ',memberResult);
+      setMembers(memberResult);
+    };
+
+    // 게시글 가져오기
+    const getPosts = async () => {
+      const result = await postGetByEmail(members.email);
+      console.log('게시글result: ',result);
+      setPosts(result);
+    };
+ 
+    // 리뷰 가져오기
+    const getReview = async () => {
+      const result = await reviewGet(membersId);
+      console.log('리뷰result',result);
+      setReviews(result);
+    };
+
+    getMember();
+    getPosts();
+    getReview();
+
+  },[membersId]);
+
+
+  
+
+
   return (
     <div className={styles.container}>
 
@@ -42,7 +85,7 @@ const ReviewPage = () => {
               <div key={review.id} className={styles.reviewItem}>
                 <img src={review.image} alt="review" className={styles.reviewImage} />
                 <span className={styles.reviewText}>{review.description}</span>
-                <button className={styles.reviewButton} onClick={()=>navigate('/reviewdetails')}>리뷰 작성</button>
+                <button className={styles.reviewButton} onClick={()=>navigate(`/reviewdetails/43`)}>리뷰 작성</button>
               </div>
             ))}
           </div>
@@ -89,5 +132,5 @@ const ReviewPage = () => {
   );
 };
 
-export default ReviewPage;
+export default UserReview;
 

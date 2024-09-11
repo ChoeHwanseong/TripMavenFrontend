@@ -320,8 +320,22 @@ const Header = () => {
             getNoti(1); //알림 상태
         }
 
+        //상품페이지 벗어날때 검색창 검색어 초기화
         if (!location.pathname.includes('/product')) {
             setSearchKeyword('');
+        }
+
+        //채팅방 들어갔을때 알림 제거용
+        if(location.pathname.includes('bigchat')){
+            //채팅방 url이랑 알림 링크랑 비교해서 들어왓으면 알림 제거
+            for(let noti of notifications){
+                if(noti.link == location.pathname){
+                    setNotifications(prevNotifications => 
+                        prevNotifications.filter(notification => notification.link !== location.pathname)
+                    );
+                    readNotification(noti.content[0]);
+                }
+            }
         }
     }, [location.pathname]);
 

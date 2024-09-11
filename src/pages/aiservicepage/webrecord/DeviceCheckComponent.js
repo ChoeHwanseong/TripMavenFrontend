@@ -3,34 +3,42 @@ import Webcam from 'react-webcam';
 import { Box, Button, Container, Grid, MenuItem, Select, Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
+import * as faceapi from 'face-api.js';
 
 const DeviceCheckComponent = () => {
   const webcamRef = useRef(null);
+  const canvasRef = useRef(null);
   const [isRecording, setIsRecording] = useState(false);
-  const [timer, setTimer] = useState(60); // 1분 타이머
-  const timerIntervalRef = useRef(null);
   const [videoDevices, setVideoDevices] = useState([]);
   const [audioDevices, setAudioDevices] = useState([]);
   const [selectedVideoDevice, setSelectedVideoDevice] = useState(null);
   const [selectedAudioDevice, setSelectedAudioDevice] = useState(null);
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  const [transcript, setTranscript] = useState(""); // 음성 인식 자막 저장용 상태
+  const [transcript, setTranscript] = useState(""); 
   const [isWebcamConnected, setIsWebcamConnected] = useState(false);
-  const [isTestStarted, setIsTestStarted] = useState(false); // 테스트 시작 여부 상태
-  const [testResult, setTestResult] = useState(""); // 테스트 결과 저장 상태
+  const [isTestStarted, setIsTestStarted] = useState(false);
+  const [isFaceDetected, setIsFaceDetected] = useState(false); 
+  const [isMicWorking, setIsMicWorking] = useState(false);
+  const [timer, setTimer] = useState(10);
+  const [isTestComplete, setIsTestComplete] = useState(false);
+  const [isTestPassed, setIsTestPassed] = useState(false); 
+  const [warningMessage, setWarningMessage] = useState(""); 
+  const [successMessage, setSuccessMessage] = useState(""); // 테스트 통과 메시지 저장
+  const [failureReason, setFailureReason] = useState(""); // 실패 원인 저장
+  const [testButtonWarning, setTestButtonWarning] = useState(""); // 실전 테스트 버튼 클릭 시 경고 메시지
   const navigate = useNavigate();
 
+  let audioContext, analyser, microphone;
+
   useEffect(() => {
-    // 카메라와 마이크 장치 정보 가져오기
     navigator.mediaDevices.enumerateDevices()
       .then((devices) => {
         setVideoDevices(devices.filter((d) => d.kind === 'videoinput'));
         setAudioDevices(devices.filter((d) => d.kind === 'audioinput'));
-        // 기본 카메라와 마이크 선택
-        setSelectedVideoDevice(devices.find((d) => d.kind === 'videoinput'));
+        const selectedCam = devices.find((d) => d.kind === 'videoinput');
+        setSelectedVideoDevice(selectedCam);
         setSelectedAudioDevice(devices.find((d) => d.kind === 'audioinput'));
-        const videoDevices = devices.filter(device => device.kind === 'videoinput');
-        if (videoDevices.length > 0) {
+        
+        if (selectedCam) {
           setIsWebcamConnected(true);
         } else {
           setIsWebcamConnected(false);
@@ -38,36 +46,23 @@ const DeviceCheckComponent = () => {
       })
       .catch((error) => {
         console.error('Error getting device information:', error);
+        setIsWebcamConnected(false);
       });
-
-    return () => {
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current);
-      }
-    };
   }, []);
-  
 
   useEffect(() => {
-    // 마이크와 카메라 권한 요청
     navigator.mediaDevices.getUserMedia({ audio: true, video: true })
       .then((stream) => {
         console.log('권한 요청 성공');
-        // 권한을 허용한 경우에만 enumerateDevices를 호출
         navigator.mediaDevices.enumerateDevices()
           .then((devices) => {
-            console.log(devices.filter((d) => d.kind === 'videoinput'));
             setVideoDevices(devices.filter((d) => d.kind === 'videoinput'));
-            console.log(devices.filter((d) => d.kind === 'audioinput'));
             setAudioDevices(devices.filter((d) => d.kind === 'audioinput'));
 
-            // 기본 카메라와 마이크 선택
-            if(devices.find((d) => d.kind === 'videoinput').length > 0)
+            if (devices.find((d) => d.kind === 'videoinput').length > 0)
               setSelectedVideoDevice(devices.find((d) => d.kind === 'videoinput')[0]);
-            if(devices.find((d) => d.kind === 'audioinput').length > 0)
+            if (devices.find((d) => d.kind === 'audioinput').length > 0)
               setSelectedAudioDevice(devices.find((d) => d.kind === 'audioinput')[0]);
-            
-            //setIsWebcamConnected(videoDevices.length > 0);
           })
           .catch((error) => {
             console.error('Error getting device information:', error);
@@ -76,28 +71,60 @@ const DeviceCheckComponent = () => {
       .catch((error) => {
         console.error('Error accessing media devices:', error);
       });
-  
-    return () => {
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current);
-      }
-    };
   }, []);
-  
+
+  useEffect(() => {
+    const loadModels = async () => {
+      await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+      await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+    };
+    loadModels();
+  }, []);
 
   const handleStartRecording = () => {
-    setIsTestStarted(true); // 테스트 시작 상태로 변경
+    // 실패 메시지와 원인 초기화
+    setWarningMessage("");
+    setFailureReason("");
+    setSuccessMessage(""); // 테스트 통과 메시지 초기화
+    setTestButtonWarning(""); // 실전 테스트 버튼 경고 초기화
+    
+    setIsTestStarted(true);
     setIsRecording(true);
-    setTestResult(""); // 테스트 결과 초기화
+    setTimer(10);
+    setIsTestComplete(false);
+    setIsTestPassed(false);
 
     navigator.mediaDevices.getUserMedia({
       video: { deviceId: selectedVideoDevice?.deviceId },
       audio: { deviceId: selectedAudioDevice?.deviceId }
     })
-      .then((stream) => {
+    .then((stream) => {
         webcamRef.current.srcObject = stream;
 
-        // 음성 인식 시작
+        audioContext = new AudioContext();
+        analyser = audioContext.createAnalyser();
+        microphone = audioContext.createMediaStreamSource(stream);
+        microphone.connect(analyser);
+        analyser.fftSize = 512;
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        // 마이크 감도 확인 (볼륨 값 로그 출력)
+        const checkMicActivity = () => {
+          analyser.getByteFrequencyData(dataArray);
+          const volume = dataArray.reduce((a, b) => a + b) / bufferLength;
+          console.log(`마이크 볼륨: ${volume}`); // 볼륨 로그로 확인
+
+          // 볼륨 값 기준을 조정하여 인식 감도 향상
+          if (volume > 5) { // 기존 10에서 5로 감도 하향 조정
+            setIsMicWorking(true); // 마이크가 소리를 감지
+          } else {
+            setIsMicWorking(false); // 마이크가 소리를 감지하지 않음
+          }
+        };
+
+        const micInterval = setInterval(checkMicActivity, 100);
+
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition = new SpeechRecognition();
         recognition.continuous = true;
@@ -113,26 +140,94 @@ const DeviceCheckComponent = () => {
         };
         recognition.start();
 
-        // 10초 후에 자동으로 인식 종료
-        setTimeout(() => {
-          recognition.stop();
-          handleStopRecording();
-          setTestResult(transcript ? "완료되었습니다!" : "실패했습니다.");
-        }, 10000);
+        webcamRef.current.video.addEventListener('canplay', () => {
+          const video = webcamRef.current.video;
+          const canvas = canvasRef.current;
 
-      })
-      .catch((error) => {
-        console.error('Error getting user media:', error);
-        handleStopRecording();
-        setTestResult("실패했습니다.");
-      });
+          // 캔버스 크기 설정 (비디오의 크기에 맞춤)
+          if (video.videoWidth > 0 && video.videoHeight > 0) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+          } else {
+            console.error('비디오 크기가 올바르지 않습니다.');
+          }
+
+          // 비디오가 제대로 로드된 후에만 drawImage를 호출
+          const drawImage = () => {
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          };
+
+          // 주기적으로 비디오를 캔버스에 그리기 (얼굴 인식 및 테스트 로직 수행)
+          const drawInterval = setInterval(drawImage, 100);
+        });
+
+        const stopStream = () => {
+          const videoTracks = stream.getVideoTracks();
+          videoTracks.forEach((track) => track.stop());
+          setIsTestComplete(true);
+          setIsRecording(false);
+          recognition.stop();
+          clearInterval(micInterval);
+
+          const normalizedTranscript = transcript.replace(/[\s.]/g, ""); 
+          let failureMessage = "";
+
+          // 마이크 감도가 충분히 높을 때만 성공으로 간주
+          if (!isMicWorking) {
+            failureMessage = "마이크 장치 연결이 끊겼습니다.";
+          } else if (!isWebcamConnected) {
+            failureMessage = "웹캠 장치 연결이 끊겼습니다.";
+          } else if (!normalizedTranscript.includes("안녕하세요만나서반갑습니다")) {
+            failureMessage = "발음 인식이 잘 되지 않았습니다.";
+          }
+
+          if (failureMessage) {
+            setIsTestPassed(false);
+            setWarningMessage("장치 테스트를 통과하지 못했습니다. 다시 시도해주세요.");
+            setFailureReason(`원인: ${failureMessage}`);
+          } else {
+            setIsTestPassed(true);
+            setSuccessMessage("장치 테스트에 통과했습니다!"); // 성공 메시지 설정
+            setWarningMessage(""); 
+            setFailureReason(""); 
+          }
+        };
+
+        const timerInterval = setInterval(() => {
+          setTimer((prevTimer) => {
+            if (prevTimer <= 1) {
+              clearInterval(timerInterval);
+              stopStream();
+            }
+            return prevTimer - 1;
+          });
+        }, 1000);
+    })
+    .catch((error) => {
+      console.error('Error getting user media:', error);
+    });
   };
 
-  const handleStopRecording = () => {
-    setIsRecording(false);
-    setIsAudioPlaying(false);
-    if (timerIntervalRef.current) {
-      clearInterval(timerIntervalRef.current);
+  const detectFace = async () => {
+    const video = webcamRef.current.video;
+
+    setInterval(async () => {
+      const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions());
+
+      if (detections.length === 0) {
+        setIsFaceDetected(false);
+      } else {
+        setIsFaceDetected(true);
+      }
+    }, 100);
+  };
+
+  const handleTestButtonClick = () => {
+    if (!isTestPassed) {
+      setTestButtonWarning("장치 테스트 통과 후 눌러주세요.");
+    } else {
+      navigate('/realTestPage'); // 실전 테스트 페이지로 이동
     }
   };
 
@@ -143,32 +238,49 @@ const DeviceCheckComponent = () => {
       </Typography>
       <img src="../../images/WebTestPageLine.png" alt="Line Image" />
       <Typography variant="h5" gutterBottom align="center" sx={{ mt: '20px', mb: '20px' }}>
-        지금부터 웹캡/마이크체크를 시작하겠습니다.
-        [웹캡/마이크체크] 버튼을 누르고 가이드 선 안에 얼굴을 위치시켜
-        5초 이내에 “안녕하세요! 만나서 반갑습니다.”을 소리 내어 읽어주세요.
+        지금부터 웹캠/마이크체크를 시작하겠습니다.
+        [웹캠/마이크체크] 버튼을 누르고 가이드 선 안에 얼굴을 위치시켜
+        10초 이내에 “안녕하세요! 만나서 반갑습니다.”를 소리 내어 읽어주세요.
       </Typography>
       <Grid container>
-        {/* 왼쪽 박스: 웹캠 미리보기 */}
         <Grid item xs={5.4} sx={{ ml: '50px' }}>
           <Box
             sx={{
-              width: '100%', height: 360,
-              bgcolor: '#F8F8F8', display: 'flex',
-              alignItems: 'center', justifyContent: 'center',
-              border: '1px solid #000000', borderRadius: '5px',
-              flexDirection: 'column', textAlign: 'center'
+              position: 'relative',
+              width: '100%', 
+              height: 360,
+              bgcolor: '#F8F8F8', 
+              display: 'flex',
+              alignItems: 'center', 
+              justifyContent: 'center',
+              border: '1px solid #000000', 
+              borderRadius: '5px',
+              flexDirection: 'column', 
+              textAlign: 'center'
             }}
           >
             {isTestStarted ? (
-              <Webcam
-                ref={webcamRef}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  borderRadius: '5px',
-                }}
-              />
+              <>
+                <Webcam
+                  ref={webcamRef}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    borderRadius: '5px',
+                  }}
+                />
+                <canvas
+                  ref={canvasRef}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                  }}
+                />
+              </>
             ) : (
               <>
                 <img src='../../images/webcamImg.png' style={{ width: '180px', height: '180px' }} alt="WebCam" />
@@ -180,7 +292,6 @@ const DeviceCheckComponent = () => {
           </Box>
         </Grid>
 
-        {/* 오른쪽 박스: 음성 인식 자막 표시 또는 기본 이미지 및 문구 */}
         <Grid item xs={5.4} sx={{ ml: '50px' }}>
           <Box
             sx={{
@@ -207,6 +318,7 @@ const DeviceCheckComponent = () => {
           </Box>
         </Grid>
       </Grid>
+
       <Grid container spacing={1} justifyContent="left" alignItems="center" sx={{ mt: 2, ml: '53px' }}>
         <Grid item>
           <Select
@@ -222,7 +334,16 @@ const DeviceCheckComponent = () => {
               </MenuItem>
             ))}
           </Select>
+
+          <Typography variant="body2" color={isWebcamConnected ? 'success.main' : 'error'} align="left" sx={{ mt: 2, ml: '15px' }}>
+            {isWebcamConnected ? '카메라가 연결되었습니다.' : '* 카메라가 연결되지 않았습니다. 연결을 확인해주세요.'}
+          </Typography>
+
+          <Typography variant="body2" color={isFaceDetected ? 'success.main' : 'error'} align="left" sx={{ mt: 2, ml: '15px' }}>
+            {isFaceDetected ? '얼굴이 인식되었습니다!' : '* 얼굴을 카메라 중앙에 맞춰주세요.'}
+          </Typography>
         </Grid>
+
         <Grid item sx={{ width: '490px', ml: '50px' }}>
           <Select
             value={selectedAudioDevice?.deviceId || ''}
@@ -237,42 +358,65 @@ const DeviceCheckComponent = () => {
               </MenuItem>
             ))}
           </Select>
+
+          <Typography variant="body2" color={isMicWorking ? 'success.main' : 'error'} align="left" sx={{ mt: 2, ml: '30px' }}>
+            {isMicWorking ? '마이크가 작동 중입니다!' : '* 마이크가 작동하지 않습니다.'}
+          </Typography>
         </Grid>
       </Grid>
 
-      {/* 인식이 되지 않습니다 문구 */}
-      <Typography variant="body2" color={isAudioPlaying ? 'success.main' : 'error'} align="left" sx={{ mt: 2, ml: '75px' }}>
-        {isAudioPlaying ? '카메라 작동 중' : '*인식이 되지 않습니다.'}
-      </Typography>
+      {isTestStarted && (
+        <Typography variant="h6" align="center" sx={{ color: '#000', mt: 2 }}>
+          남은 시간: {timer}초
+        </Typography>
+      )}
 
-      {/* 웹캠/마이크 체크 버튼 */}
-      <Stack display="flex" justifyContent="center" direction="row" sx={{ mt: 2 }}>
+      <Stack display="flex" justifyContent="center" direction="row" sx={{ mt: 3 }}>
         <Button
           variant="contained"
-          sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}
+          sx={{ width: '200px', backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}
           onClick={handleStartRecording}
         >
           웹캠/마이크 체크
         </Button>
       </Stack>
 
-      {testResult && (
-        <Typography variant="h6" align="center" sx={{ mt: 3, color: testResult === "완료되었습니다!" ? 'success.main' : 'error.main' }}>
-          {testResult}
+      {/* 경고 메시지 표시 - 빨간색, 실패 이유 추가 */}
+      {warningMessage && (
+        <Typography variant="body2" align="center" sx={{ color: 'red', mt: 2 }}>
+          {warningMessage}<br />
+          {failureReason}
+        </Typography>
+      )}
+
+      {/* 테스트 통과 메시지 - 녹색 */}
+      {successMessage && (
+        <Typography variant="body2" align="center" sx={{ color: 'green', mt: 2 }}>
+          {successMessage}
         </Typography>
       )}
 
       <Typography variant="h7" align="center" display="block" sx={{ mt: 5, color: '#979797' }}>
         ※정확한 측정을 위해 얼굴이 전체적으로 잘 보이도록 하고, 주변 소음을 최소화해 주시기 바랍니다.
       </Typography>
-      <Stack display="flex" justifyContent="center" direction="row" spacing={3} sx={{ mt: '25px' }}>
-        <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}>
+
+      <Stack display="flex" justifyContent="center" direction="row" spacing={3} sx={{ mt: 3 }}>
+        <Button variant="contained" sx={{ width: '200px', backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}
+          onClick={handleTestButtonClick}
+        >
           실전 테스트 바로 가기
         </Button>
-        <Button variant="outlined" onClick={() => { navigate('/precautionspage1') }}>
+        <Button variant="outlined" sx={{ width: '200px' }} onClick={() => { navigate('/precautionspage1') }}>
           유의사항 확인
         </Button>
       </Stack>
+
+      {/* 실전 테스트 버튼 경고 메시지 */}
+      {testButtonWarning && (
+        <Typography variant="body2" align="center" sx={{ color: 'red', mt: 2 }}>
+          {testButtonWarning}
+        </Typography>
+      )}
     </Container>
   );
 };

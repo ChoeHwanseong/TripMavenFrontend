@@ -21,4 +21,4 @@ export const submitAnswer  = async (id, userAnswer) => {
         console.error('에러났당', error);
         throw error;
     }
-};
+  }
