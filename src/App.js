@@ -76,16 +76,13 @@ import PronunciationTest from './pages/aiservicepage/PronunciationTest';
 import PostDetails from './pages/productPage/PostDetails';
 import RealTestPage from './pages/aiservicepage/RealTestPage'
 import RealTestResult from './pages/aiservicepage/RealTestResult'
-<<<<<<< HEAD
 import Reviews from './pages/guidemypage/guidepost/ReviewList';
-=======
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import Result from './pages/aiservicepage/Result';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
 import PronunciationTest1 from './pages/aiservicepage/PronunciationTest';
 import { newsCrawling } from './utils/PythonServerAPI';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
->>>>>>> e743506a255d2e947b8242b5070e47c6dd08decf
 
 
 
@@ -199,10 +196,7 @@ function App() {
         <Route path='/realTestPage' element={<RealTestPage />}/>
         <Route path='/realTestResult' element={<RealTestResult />}/>
 
-<<<<<<< HEAD
-=======
         
->>>>>>> e743506a255d2e947b8242b5070e47c6dd08decf
 
       </Route>
     </Routes>
