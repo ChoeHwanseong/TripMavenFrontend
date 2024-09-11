@@ -11,11 +11,13 @@ import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
 import { ButtonGroup, Button, IconButton, Badge, Typography } from '@mui/material';
 import { logout } from '../utils/memberData';
 import CloseIcon from '@mui/icons-material/Close';
+import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import styled from '@emotion/styled';
 import { chattingListMyData } from "../utils/chatData";
 import mqtt from 'mqtt';
 import { getNotifications, postNotification, readNotification } from '../utils/NotificationData';
+
 
 const style = {
     position: 'absolute',
@@ -100,8 +102,18 @@ const NotificationComponent = ({notifications, setNotifications}) => {
         navigate(noti.link);
     };
 
+    const getNotiCount = () => {
+        let count = 0;
+        notifications.forEach(noti=>{
+            if(noti.type=="chat") count = count + noti.content.length;
+            else count = count + 1;
+        });
+        return count;
+    };
+
     //알림 개수
-    const notificationCount = notifications.length;
+    const notificationCount = getNotiCount();
+
     //알림 모션
     const ringAnimation = notificationCount > 0 ? `
         @keyframes ring {
@@ -132,20 +144,29 @@ const NotificationComponent = ({notifications, setNotifications}) => {
                 {ringAnimation}
             </style>
             {showNotifications && (
-                <NotificationPopup>
+                <NotificationPopup style={{width:"200px"}}>
                     {notificationCount > 0 ? (
-                        notifications.map((notification) => (
+                        notifications.map((notification) => {
+                            console.log(new Date(notification.createAt));
+                            return (
                             <NotificationItem 
                                 key={notification.id} 
                                 onClick={() => handleNotificationClick(notification)}
                             >
                                 <NotificationTitle style={{ display: 'inline' }}>{convertNotificationType[notification.type] }</NotificationTitle>
-                                <Typography variant="caption" style={{ display: 'inline', color: 'gray' }}>{` ${new Date().toLocaleDateString() == new Date(notification.createAt).toLocaleDateString()?'':new Date(notification.createAt).toLocaleDateString().slice(6,-1)} ${new Date(notification.createAt).toLocaleTimeString().slice(0,-3)}`}</Typography>
-                                <Typography variant="body2" style={{fontWeight: 'bold'}}>{`유저아이디 ${notification.senderId}`}</Typography>
-                                <Typography variant="body2" >{notification.content[0].content}</Typography>
-                                <Typography variant="body2" style={{fontWeight: 'bold', color: 'red'}}>{notification.type=='chat' && notification.content.length}</Typography>
+                                <Typography variant="caption" style={{ display: 'inline', color: 'gray' }}>{` ${new Date().toLocaleDateString() == new Date(notification.createAt+'Z').toLocaleDateString()?'':new Date(notification.createAt+'Z').toLocaleDateString().slice(6,-1)} ${new Date(notification.createAt+'Z').toLocaleTimeString().slice(0,-3)}`}</Typography>
+                                <Box sx={{display:'flex', justifyContent:'space-between', paddingRight:'10px'}}>
+                                    <Typography variant="body2" style={{fontWeight: 'bold'}}>{`유저아이디 ${notification.senderId}`}</Typography>
+                                    {/*
+                                    <Typography variant="body2" >{notification.content[0].content}</Typography>
+                                    <Typography variant="body2" style={{fontWeight: 'bold', color: 'red'}}>{notification.type=='chat' && notification.content.length}</Typography>
+                                    */}
+                                    {notification.type=='chat' && (
+                                        <span class="badge rounded-pill bg-danger" style={{fontSize:'11px'}}>{notification.type=='chat' && notification.content.length}</span>
+                                    )}
+                                </Box>
                             </NotificationItem>
-                        ))
+                        )})
                     ) : (
                         <NotificationItem>
                             <Typography variant="body2">알림이 없습니다</Typography>
@@ -252,37 +273,10 @@ const Header = () => {
                                 'link': `/bigchat/${topic}`,
                                 'senderId': `${sender}`
                             }
-                            const postedData = await postNotification(jsonData);
+                            const postedData = await postNotification(jsonData); //알림테이블에 추가하기
                             //받은 메세지 알림 리스트 상태에 추가(dto 그대로 받기)
-                            const notiStateList =[]; //새로운 리스트 만들기
-                            for(let noti of notifications){
-                                if(noti.senderId == postedData.senderId){
-                                    console.log('같은게 있다');
-                                    noti.content.push(postedData);
-                                    notiStateList.push(noti);
-                                }
-                                else{
-                                    notiStateList.push(noti);
-                                }
-                            }
-
-                            /*
-                            if(notiStateList.find(ele=>ele.senderId==postedData.senderId)){
-                                notiStateList.forEach(ele => {
-                                    if(ele.senderId==postedData.senderId){
-                                        ele.content.push(postedData);
-                                        ele.timestamp=postedData.timestamp;
-                                        ele.id=postedData.id;
-                                    }
-                                });
-                            }
-                            else {
-                                console.log('같은게 없다');
-                                notiStateList.push({...postedData, content:[postedData]});
-                            }
-                            */
-
-                            setNotifications(notiStateList);
+                            const notiList = await getNoti(); //알림 테이블 불러오기
+                            setNotifications(notiList);
                         }                 
                     } catch (error) {console.error('Error parsing message:', error);}
                 });
@@ -292,7 +286,7 @@ const Header = () => {
         }
     };
 
-    const getNoti= async ()=>{
+    const getNoti= async (type)=>{
         const notificationList = await getNotifications(localStorage.getItem('membersId'));
         const notiStateList =[]; //새로운 리스트 만들기
         for(let noti of notificationList){ //불러온거
@@ -311,7 +305,8 @@ const Header = () => {
             }
 
         }
-        setNotifications(notiStateList);
+        type && setNotifications(notiStateList);
+        return notiStateList;
     };
 
     //마운트시 모든 채팅방 mqtt 연결(처음엔 이게 맞음)
@@ -322,7 +317,7 @@ const Header = () => {
         if(mqttClientList.length==0){ //mqtt연결 리스트가 비어있을 경우에만(마운트시)
             const chatList = getChattingList();
             setMqttClientList(chatList); //mqtt연결 리스트 상태
-            getNoti(); //알림 상태
+            getNoti(1); //알림 상태
         }
 
         if (!location.pathname.includes('/product')) {
