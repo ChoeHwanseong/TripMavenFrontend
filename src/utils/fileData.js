@@ -34,7 +34,7 @@ export const fetchFiles = async (productboardId) => {
 
     // 파일 이름들을 각각 인코딩하고, fetchFile을 호출하여 Blob URL을 가져옵니다.
     const promises = response.data.map((filename) => fetchFile(filename, productboardId));
-
+    console.log(promises.data)
     // 모든 파일에 대한 Promise를 처리하고 결과를 얻습니다.
     const fileUrls = await Promise.all(promises);
 
@@ -54,7 +54,8 @@ export const fetchFile = async (filename,productboardId) => {
     const response = await axios.get(`${baseUrl}/upload/${productboardId}/${filename}`, {
        responseType: 'blob'
     });
-
+    
+    console.log(response.data)
     // Blob 데이터를 Blob URL로 변환하여 반환
     const blobUrl = URL.createObjectURL(response.data);
     console.log('blobUrl: ', blobUrl);

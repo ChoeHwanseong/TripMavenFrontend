@@ -5,6 +5,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CircularProgress from '@mui/material/CircularProgress';
 import { deleteProfile, fetchedData, updateProfile } from '../../utils/memberData';
 import styles from '../../styles/mypage/MyProfile.module.css'; 
+import { fetchedData } from '../../utils/memberData';
+import  defaultImage  from '../../images/default_profile.png';
 
 const MypageProfile = () => {
   const [profileData, setProfileData] = useState(null);
@@ -65,7 +67,7 @@ const MypageProfile = () => {
         <Box className={styles.profileSection}>
           <Avatar
             alt={profileData.name || 'Profile Picture'}
-            src={profileData.profilePicture || '/path/to/default-image.jpg'}
+            src={profileData.profile || defaultImage}
             className={styles.avatar}
           />
           <Typography variant="h5" fontWeight="bold">

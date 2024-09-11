@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../../styles/chat/BigChat.module.css';
-import { chattingRoomData, chattingListData } from '../../utils/chatData';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import mqtt from 'mqtt';
 
-function ChattingRoom({ setSelectedUser, data, client, setChatMessages }) {
+function ChattingRoom({ setSelectedUser, data, client, setChatMessages}) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
-  useEffect(() => {
 
-  }, []);
+
 
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
@@ -31,8 +28,11 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages }) {
       });
       setSelectedUser(joinChatting);
       setChatMessages([]);
+      
     }
+    navigate(`/bigchat/${joinChatting.chattingRoom.id}`);
   };
+
 
   return (
 
@@ -52,7 +52,7 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages }) {
         {data.map((joinChatting, index) => (
           <Box
             key={index}
-            className={styles.chatItem}
+            className={`${styles.chatItem} ${joinChatting.chattingRoom.id}`}
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={handleMouseLeave}
             onClick={() => handleClick(joinChatting)}
