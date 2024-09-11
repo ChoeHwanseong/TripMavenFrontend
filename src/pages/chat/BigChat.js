@@ -101,7 +101,7 @@ function BigChat() {
         client.end();
       }
     };
-  }, [id]);
+  }, []);
 
   //메시지 보내기 설정
   const sendMessage = async (text) => {
