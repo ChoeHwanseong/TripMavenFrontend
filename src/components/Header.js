@@ -11,11 +11,13 @@ import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
 import { ButtonGroup, Button, IconButton, Badge, Typography } from '@mui/material';
 import { logout } from '../utils/memberData';
 import CloseIcon from '@mui/icons-material/Close';
+import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import styled from '@emotion/styled';
 import { chattingListMyData } from "../utils/chatData";
 import mqtt from 'mqtt';
-import { getNotifications, postNotification } from '../utils/NotificationData';
+import { getNotifications, postNotification, readNotification } from '../utils/NotificationData';
+
 
 const style = {
     position: 'absolute',
@@ -62,9 +64,16 @@ const NotificationTitle = styled.div`
   margin-bottom: 5px;
 `;
 
+const convertNotificationType={
+    'chat':'채팅',
+    'review':'리뷰'
+}
+
+
 //알림 컴포넌트
 //헤더 컴포넌트에서 받아올 알림 상태
 const NotificationComponent = ({notifications, setNotifications}) => {
+    const navigate = useNavigate();
     //알림 펼치기 여부 상태
     const [showNotifications, setShowNotifications] = useState(false);
 
@@ -82,14 +91,29 @@ const NotificationComponent = ({notifications, setNotifications}) => {
     };
 
     //알림 내용 눌렀을때
-    const handleNotificationClick = (id) => {
+    const handleNotificationClick = (noti) => {
+        //누른 알림 상태리스트에서 삭제
         setNotifications(prevNotifications => 
-            prevNotifications.filter(notification => notification.id !== id)
+            prevNotifications.filter(notification => notification.id !== noti.id)
         );
+        //알림테이블에서 읽음처리로 수정하기
+        readNotification(noti.content[0]);
+        setShowNotifications(false);
+        navigate(noti.link);
+    };
+
+    const getNotiCount = () => {
+        let count = 0;
+        notifications.forEach(noti=>{
+            if(noti.type=="chat") count = count + noti.content.length;
+            else count = count + 1;
+        });
+        return count;
     };
 
     //알림 개수
-    const notificationCount = notifications.length;
+    const notificationCount = getNotiCount();
+
     //알림 모션
     const ringAnimation = notificationCount > 0 ? `
         @keyframes ring {
@@ -120,17 +144,29 @@ const NotificationComponent = ({notifications, setNotifications}) => {
                 {ringAnimation}
             </style>
             {showNotifications && (
-                <NotificationPopup>
+                <NotificationPopup style={{width:"200px"}}>
                     {notificationCount > 0 ? (
-                        notifications.map((notification) => (
+                        notifications.map((notification) => {
+                            console.log(new Date(notification.createAt));
+                            return (
                             <NotificationItem 
                                 key={notification.id} 
-                                onClick={() => handleNotificationClick(notification.id)}
+                                onClick={() => handleNotificationClick(notification)}
                             >
-                                <NotificationTitle>{notification.title}</NotificationTitle>
-                                <Typography variant="body2">{notification.message}</Typography>
+                                <NotificationTitle style={{ display: 'inline' }}>{convertNotificationType[notification.type] }</NotificationTitle>
+                                <Typography variant="caption" style={{ display: 'inline', color: 'gray' }}>{` ${new Date().toLocaleDateString() == new Date(notification.createAt+'Z').toLocaleDateString()?'':new Date(notification.createAt+'Z').toLocaleDateString().slice(6,-1)} ${new Date(notification.createAt+'Z').toLocaleTimeString().slice(0,-3)}`}</Typography>
+                                <Box sx={{display:'flex', justifyContent:'space-between', paddingRight:'10px'}}>
+                                    <Typography variant="body2" style={{fontWeight: 'bold'}}>{`유저아이디 ${notification.senderId}`}</Typography>
+                                    {/*
+                                    <Typography variant="body2" >{notification.content[0].content}</Typography>
+                                    <Typography variant="body2" style={{fontWeight: 'bold', color: 'red'}}>{notification.type=='chat' && notification.content.length}</Typography>
+                                    */}
+                                    {notification.type=='chat' && (
+                                        <span class="badge rounded-pill bg-danger" style={{fontSize:'11px'}}>{notification.type=='chat' && notification.content.length}</span>
+                                    )}
+                                </Box>
                             </NotificationItem>
-                        ))
+                        )})
                     ) : (
                         <NotificationItem>
                             <Typography variant="body2">알림이 없습니다</Typography>
@@ -141,6 +177,17 @@ const NotificationComponent = ({notifications, setNotifications}) => {
         </div>
     );
 };
+
+/*
+const jsonData = {
+    'memberId': localStorage.getItem('membersId'),
+    'content': text,
+    'createAt': timestamp,
+    'type': 'chat',
+    'link': `/bigchat/${topic}`,
+    'senderId': sender
+}
+*/
 
 
 //헤더 컴포넌트
@@ -223,13 +270,13 @@ const Header = () => {
                                 'content': text,
                                 'createAt': timestamp,
                                 'type': 'chat',
-                                'link': `/bigchat/${topic}`
+                                'link': `/bigchat/${topic}`,
+                                'senderId': `${sender}`
                             }
-                            postNotification(jsonData);
-
+                            const postedData = await postNotification(jsonData); //알림테이블에 추가하기
                             //받은 메세지 알림 리스트 상태에 추가(dto 그대로 받기)
-                            const notificationList = await getNotifications(localStorage.getItem('membersId'));
-                            setNotifications(notificationList);
+                            const notiList = await getNoti(); //알림 테이블 불러오기
+                            setNotifications(notiList);
                         }                 
                     } catch (error) {console.error('Error parsing message:', error);}
                 });
@@ -239,6 +286,29 @@ const Header = () => {
         }
     };
 
+    const getNoti= async (type)=>{
+        const notificationList = await getNotifications(localStorage.getItem('membersId'));
+        const notiStateList =[]; //새로운 리스트 만들기
+        for(let noti of notificationList){ //불러온거
+            if(noti.type=='chat'){ //타입이 채팅이면
+                if(notiStateList.find(ele => ele.senderId==noti.senderId)) { //이미 새로운리스트에 있다면
+                    notiStateList.forEach(ele => {
+                        if(ele.senderId==noti.senderId){
+                            ele.content.push(noti);
+                            ele.timestamp=noti.timestamp;
+                        }
+                    });
+                }
+                else{
+                    notiStateList.push({...noti, content:[noti]});
+                }
+            }
+
+        }
+        type && setNotifications(notiStateList);
+        return notiStateList;
+    };
+
     //마운트시 모든 채팅방 mqtt 연결(처음엔 이게 맞음)
     //상품목록 페이지 벗어날때 검색창 비우기
     //url변경시 리렌더링 되게?
@@ -246,11 +316,26 @@ const Header = () => {
         console.log(location.pathname);
         if(mqttClientList.length==0){ //mqtt연결 리스트가 비어있을 경우에만(마운트시)
             const chatList = getChattingList();
-            setMqttClientList(chatList);
+            setMqttClientList(chatList); //mqtt연결 리스트 상태
+            getNoti(1); //알림 상태
         }
 
+        //상품페이지 벗어날때 검색창 검색어 초기화
         if (!location.pathname.includes('/product')) {
             setSearchKeyword('');
+        }
+
+        //채팅방 들어갔을때 알림 제거용
+        if(location.pathname.includes('bigchat')){
+            //채팅방 url이랑 알림 링크랑 비교해서 들어왓으면 알림 제거
+            for(let noti of notifications){
+                if(noti.link == location.pathname){
+                    setNotifications(prevNotifications => 
+                        prevNotifications.filter(notification => notification.link !== location.pathname)
+                    );
+                    readNotification(noti.content[0]);
+                }
+            }
         }
     }, [location.pathname]);
 

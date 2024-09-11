@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../../styles/chat/BigChat.module.css';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -45,7 +45,9 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages}) {
       setSelectedUser(joinChatting);
       fetchChatMessages(joinChatting.chattingRoom.id);
       setChatMessages([]);
+      
     }
+    navigate(`/bigchat/${joinChatting.chattingRoom.id}`);
   };
 
 

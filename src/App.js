@@ -76,6 +76,7 @@ import PronunciationTest from './pages/aiservicepage/PronunciationTest';
 import PostDetails from './pages/productPage/PostDetails';
 import RealTestPage from './pages/aiservicepage/RealTestPage'
 import RealTestResult from './pages/aiservicepage/RealTestResult'
+import Reviews from './pages/guidemypage/guidepost/ReviewList';
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import Result from './pages/aiservicepage/Result';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
@@ -122,7 +123,7 @@ function App() {
 
            {/* USER */}
           <Route path='/userreview' element={<UserReview/>}/>
-          <Route path='/reviewdetails' element={<ReviewDetails/>}/>
+          <Route path='/reviewdetails/:id' element={<ReviewDetails/>}/>
           {/*<Route path='/userask' element={<UserAsk/>}/>*/}
           <Route path='/userlike' element={<UserLike/>}/>
           {/*<Route path='/useraskpage' element={<UserAskPage/>}/>*/}
