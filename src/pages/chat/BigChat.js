@@ -3,25 +3,23 @@ import mqtt from 'mqtt';
 import { useParams } from 'react-router-dom';
 import styles from '../../styles/chat/BigChat.module.css';
 import ChattingRoom from './ChattingRoom';
-import { chattingRoomData, chattingListData } from '../../utils/chatData';
+import { chattingRoomData, chattingListYourData } from '../../utils/chatData';
 
 function BigChat() {
-  const { id } = useParams();
+  const { id } = useParams(); //url파라미터로 받은 채팅방 id
   const [client, setClient] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [data, setData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const { roomId } = useParams();
 
   useEffect(() => {
-    console.log('roomId',roomId);
     console.log('id',id);
     console.log(new Date().toISOString());
     //console.log(new Date().toString());
     const getData = async () => {
       try {
-        const fetchedData = await chattingListData(localStorage.getItem("membersId"));
+        const fetchedData = await chattingListYourData(localStorage.getItem("membersId"));
         setData(fetchedData);  // 가져온 데이터를 상태에 저장
         return fetchedData;
       } catch (error) {
@@ -73,12 +71,12 @@ function BigChat() {
           }
         });
         
-        if(roomId){
+        if(id){
           for(let joinchat of list_){
-            if(joinchat.chattingRoom.id==roomId){
-              mqttClient.subscribe(`${roomId}`, (err) => {
+            if(joinchat.chattingRoom.id==id){
+              mqttClient.subscribe(`${id}`, (err) => {
                 if (!err) {
-                  console.log(roomId, 'Subscribed to topic');
+                  console.log(id, 'Subscribed to topic');
                 } else {
                   console.error('Subscription error:', err);
                 }
@@ -133,9 +131,10 @@ function BigChat() {
   
   return (
     <div className={styles.container}>
-       <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages} roomId={roomId}/>
+      <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages}/>
 
-        <div className={styles.chatSection}>
+      <div className={styles.chatSection}>
+        
         <div className={styles.chatHeader}>
           <h2 className={styles.chatName}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
           <button className={styles.infoButton}>i</button>
@@ -174,6 +173,7 @@ function BigChat() {
           </button>
           <button className={styles.attachmentButton}><img src="../images/filebutton.png"/></button>
         </div>
+
       </div>
     </div>
    

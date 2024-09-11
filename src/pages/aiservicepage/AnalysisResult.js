@@ -165,7 +165,7 @@ const AnalysisResult = () => {
                 </AccordionDetails>
             </Accordion>
             <Box sx={{display:'flex',justifyContent:'center',mt:'30px',}}>
-                <button style={{width:'220px',padding:'8px',backgroundColor:'#0066ff',border:'none', color:'#ffffff',borderRadius:'5px'}}>발음 테스트 결과 보러 가기</button>
+                <button style={{width:'220px',padding:'8px',backgroundColor:'#0066ff',border:'none', color:'#ffffff',borderRadius:'5px'}} onClick={()=>{navigate('/result')}}>최종 결과 보러 가기</button>
             </Box>
 
             

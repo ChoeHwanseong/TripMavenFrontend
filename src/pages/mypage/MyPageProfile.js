@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Avatar, Grid } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CircularProgress from '@mui/material/CircularProgress';
-import { deleteProfile, fetchedData, updateProfile } from '../../utils/memberData';
+import { fetchedData } from '../../utils/memberData';
 
 const MypageProfile = () => {
   const [profileData, setProfileData] = useState(null);

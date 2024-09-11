@@ -34,5 +34,7 @@ npm install react-router-dom@6 이것두
       npm install react-transition-group --legacy-peer-deps
 09/02 npm install @mui/icons-material --legacy-peer-deps
 09/04 npm install react-d3-cloud --force
+09/10 npm install moment --legacy-peer-deps
+      npm install recharts --legacy-peer-deps
 
 09/11 npm install face-api.js --legacy-peer-deps
