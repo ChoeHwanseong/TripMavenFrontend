@@ -178,7 +178,17 @@ const GuidePostDetails = () => {
         </div>
       </Box>
 
+
       <Box className={styles.symbolsSection} sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', mt: 2 }}>
+
+      <Button
+        variant="outlined"
+        className={styles.outlinedButton}
+        onClick={() => navigate('/bigchat')}
+      >
+        <Typography variant="body1">가이드에게 채팅하기</Typography>
+      </Button>
+       
         <Box className={styles.symbol} sx={{ mr: 2 }}>
           <Typography variant="body1">125건의 리뷰</Typography>
         </Box>

@@ -222,3 +222,15 @@ background-color: #fff;
 .container {
   margin-top: 20px; /* Adjust the value as needed */
 }
+
+/* ButtonStyles.module.css */
+.buttonContainer {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%; /* 전체 너비를 사용하여 왼쪽 정렬 */
+}
+
+.outlinedButton {
+  margin-right: 16px; /* 버튼 오른쪽에 마진 추가 */
+  justify-content: flex-start;
+}
