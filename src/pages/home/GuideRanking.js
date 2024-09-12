@@ -51,7 +51,7 @@ const GuideRanking = () => {
     return (
         <Box className={styles.leaderboardContainer} sx={{ bgcolor: '#ffffff' }}>
             <Paper className={styles.leaderboardTitle} elevation={3} sx={{ bgcolor: '#5da7f7' }}>
-                <Typography variant="h4" align="center" className={styles.titleText} sx={{ color: '#000000', fontWeight: 'bold' }}>
+                <Typography variant="h4" align="center" className={styles.titleText} sx={{ color: '#ffffff', fontWeight: 'bold' }}>
                     LEADERBOARD
                 </Typography>
             </Paper>
