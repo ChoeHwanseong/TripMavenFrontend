@@ -7,7 +7,7 @@
 
 .title {
   font-size: 35px;
-  margin-bottom: 80px;
+  margin-bottom: 50px;
   font-weight: bold;
 }
 
@@ -33,6 +33,24 @@
   font-size: 30px;
   font-weight: bold;
   color: #333;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.sttImage {
+  margin: 0 auto;
+  width: 1000px;
+}
+
+.nlpImage {
+  width: 460px;
+  display: flex;
+  justify-content: start;
+  margin-left: 150px;
+  margin-top: 25px;
 }
 
 .description {

@@ -78,12 +78,12 @@ import RealTestPage from './pages/aiservicepage/RealTestPage'
 import RealTestResult from './pages/aiservicepage/RealTestResult'
 import Reviews from './pages/guidemypage/guidepost/ReviewList';
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
-import Result from './pages/aiservicepage/Result';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
 import PronunciationTest1 from './pages/aiservicepage/PronunciationTest';
 import { newsCrawling } from './utils/PythonServerAPI';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
 import CombinedPage from './pages/aiservicepage/AIPage';
+
 
 
 
@@ -177,9 +177,7 @@ function App() {
         <Route path='/pronunciationtesttutorial' element={<PronunciationTestTutorial/>}/>
         <Route path='/realtest1' element={<RealTest1 />}/>
         <Route path='/analysisresult' element={<AnalysisResult/>}/>
-        <Route path='/result' element={<Result/>}/>
         <Route path='/pronunciation/*' element={<PronunciationRoutes />}/> {/*  URL이 /pronunciation 로 시작하는 애들은 PronunciationRoutes여기서 처리해주세요~ */}
-        <Route path='/pronunciation/*' element={<PronunciationRoutes />}/>
         <Route path='/aipage' element={<CombinedPage/>}/>
         
 
