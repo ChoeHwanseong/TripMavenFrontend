@@ -52,7 +52,7 @@ export const newsCrawling = async()=>{
 export const videoFace = async(formData)=>{
   try {
     console.log('파이썬서버 formData: ',formData);
-    const response = await axios.post(`http:/localhost:8282/face/`,formData, {
+    const response = await axios.post(`h${baseUrl}/face/`,formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

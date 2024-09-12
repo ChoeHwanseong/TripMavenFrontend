@@ -148,6 +148,12 @@ const RealTestPage = () => {
   const uploadVideo = async (videoType) => {
     const recordedChunks = videoType === 'first' ? recordedChunksFirst : recordedChunksSecond;
     const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+
+    // 디버깅: Blob 정보 출력
+    console.log('Blob 타입:', videoBlob.type);  // 'video/webm'
+    console.log('Blob 크기:', videoBlob.size);  // Blob의 크기
+
+
     const formData = new FormData();
     formData.append('file', videoBlob, 'recordedVideo.webm');
   
@@ -156,28 +162,30 @@ const RealTestPage = () => {
         method: 'POST',
         body: formData
       });
-
-      console.log('response :: ',response);
+  
+      console.log('response :: ', response);
   
       if (response.ok) {
-        const resultData = await response.text();
-
-        console.log('resultData :: ',resultData); // 빈 배열... 왜 ?
-
+        const resultData = await response.json();
+  
+        console.log('resultData :: ', resultData); // 빈 배열... 왜?
+  
         setLoadingMessage(""); // 모달 숨기기
         if (videoType === 'second') {
           alert('영상이 성공적으로 제출되었습니다!');
           navigate('/RealTestResult', { state: { response: resultData } });
         }
       } else {
+        setLoadingMessage(""); // 모달 숨기기
         alert('영상 제출 중 문제가 발생했습니다.');
       }
     } catch (error) {
+      setLoadingMessage(""); // 모달 숨기기
       console.error('영상 제출 중 에러 발생:', error);
       alert('영상 제출 중 에러가 발생했습니다.');
     }
   };
-
+  
   return (
     <Container className={styles.container}>
       <h1>실전 테스트</h1>
