@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box, Typography, Paper, Button } from '@mui/material';
-import styles from '../../styles/home/GuideRankging.module.css'; // Import the CSS module
+import styles from '../../styles/home/GuideRankging.module.css';
 
 const GuideRanking = () => {
     const [ranking, setRanking] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1); // Current page state
-    const rowsPerPage = 5; // Limit of rows per page
+    const [currentPage, setCurrentPage] = useState(1);
+    const rowsPerPage = 5;
 
     useEffect(() => {
         const fetchRanking = async () => {
@@ -21,16 +21,13 @@ const GuideRanking = () => {
         fetchRanking();
     }, []);
 
-    // Get the current page's data by slicing the ranking array
     const currentRanking = ranking.slice(
         (currentPage - 1) * rowsPerPage,
         currentPage * rowsPerPage
     );
 
-    // Calculate total number of pages
     const totalPages = Math.ceil(ranking.length / rowsPerPage);
 
-    // Pagination handlers
     const handleNextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
@@ -43,33 +40,43 @@ const GuideRanking = () => {
         }
     };
 
+    const handleFirstPage = () => {
+        setCurrentPage(1);
+    };
+
+    const handleLastPage = () => {
+        setCurrentPage(totalPages);
+    };
+
     return (
-        <Box className={styles.leaderboardContainer}>
-            <Paper className={styles.leaderboardTitle} elevation={3}>
-                <Typography variant="h4" align="center" className={styles.titleText}>
+        <Box className={styles.leaderboardContainer} sx={{ bgcolor: '#ffffff' }}>
+            <Paper className={styles.leaderboardTitle} elevation={3} sx={{ bgcolor: '#5da7f7' }}>
+                <Typography variant="h4" align="center" className={styles.titleText} sx={{ color: '#ffffff', fontWeight: 'bold' }}>
                     LEADERBOARD
                 </Typography>
             </Paper>
             <Box className={styles.leaderboardContent}>
                 {currentRanking.map((guide, index) => {
-                    // Calculate global index based on current page
                     const globalIndex = (currentPage - 1) * rowsPerPage + index;
+                    const isFirstPlace = globalIndex === 0;
 
                     return (
                         <Paper
                             key={guide.id}
-                            className={`${styles.leaderboardItem} ${
-                                globalIndex === 0 ? styles.firstPlaceItem : ''
-                            }`}
+                            className={`${styles.leaderboardItem} ${isFirstPlace ? styles.firstPlaceItem : ''}`}
                             elevation={2}
+                            sx={{
+                                bgcolor: isFirstPlace ? '#57af7a' : '#ffffff',
+                                color: isFirstPlace ? '#ffffff' : '#000000',
+                            }}
                         >
-                            <Box className={styles.rankingNumber}>
+                            <Box className={styles.rankingNumber} sx={{ bgcolor: '#0095ff', color: '#ffffff' }}>
                                 {globalIndex + 1}
                             </Box>
                             <Box className={styles.rankingInfo}>
-                                <Typography variant="h6">
+                                <Typography variant="h6" sx={{ color: 'inherit' }}>
                                     {guide.name}
-                                    {globalIndex === 0 && (
+                                    {isFirstPlace && (
                                         <img
                                             src="https://github.com/malunaridev/Challenges-iCodeThis/blob/master/4-leaderboard/assets/gold-medal.png?raw=true"
                                             alt="Gold Medal"
@@ -77,7 +84,7 @@ const GuideRanking = () => {
                                         />
                                     )}
                                 </Typography>
-                                <Typography variant="body2">
+                                <Typography variant="body2" sx={{ color: 'inherit' }}>
                                     게시물 수: {guide.postCount}
                                 </Typography>
                             </Box>
@@ -87,9 +94,18 @@ const GuideRanking = () => {
             </Box>
             <Box className={styles.paginationButtons}>
                 <Button
+                    onClick={handleFirstPage}
+                    disabled={currentPage === 1}
+                    className={styles.paginationButton}
+                    sx={{ bgcolor: '#ffffff', color: '#000000', '&:disabled': { bgcolor: '#ffffff' } }}
+                >
+                    &lt;&lt;
+                </Button>
+                <Button
                     onClick={handlePreviousPage}
                     disabled={currentPage === 1}
                     className={styles.paginationButton}
+                    sx={{ bgcolor: '#5c5be5', color: '#ffffff', '&:disabled': { bgcolor: '#b3b3b3' } }}
                 >
                     &lt;Prev
                 </Button>
@@ -97,8 +113,17 @@ const GuideRanking = () => {
                     onClick={handleNextPage}
                     disabled={currentPage === totalPages}
                     className={styles.paginationButton}
+                    sx={{ bgcolor: '#5c5be5', color: '#ffffff', '&:disabled': { bgcolor: '#b3b3b3' } }}
                 >
                     Next&gt;
+                </Button>
+                <Button
+                    onClick={handleLastPage}
+                    disabled={currentPage === totalPages}
+                    className={styles.paginationButton}
+                    sx={{ bgcolor: '#ffffff', color: '#000000', '&:disabled': { bgcolor: '#ffffff' } }}
+                >
+                    &gt;&gt;
                 </Button>
             </Box>
         </Box>
