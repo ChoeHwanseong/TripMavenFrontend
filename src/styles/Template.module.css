@@ -6,7 +6,8 @@
 .layout {
     max-width: 1440px;
     min-width: 1440px;
-    width: 106%;
+    width: 100%;
+    position: relative;
 
 }
 

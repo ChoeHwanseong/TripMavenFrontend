@@ -391,7 +391,7 @@ const Header = () => {
                     <div className={styles.navFrame}>
                         <div className={styles.navItems}>
                             <button className={styles.navButton} onClick={() => { handleClick('/home') }}>Home</button>
-                            <button className={styles.navButton} onClick={() => { handleClick('/aiservice') }}>AI 서비스</button>
+                            <button className={styles.navButton} onClick={() => { handleClick('/aipage') }}>AI 서비스</button>
                             <div className={styles.dropdown}>
                                 <button className={styles.dropdownButton}>
                                     마이 페이지

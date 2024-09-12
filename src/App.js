@@ -83,6 +83,7 @@ import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckCo
 import PronunciationTest1 from './pages/aiservicepage/PronunciationTest';
 import { newsCrawling } from './utils/PythonServerAPI';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
+import CombinedPage from './pages/aiservicepage/AIPage';
 
 
 
@@ -178,6 +179,8 @@ function App() {
         <Route path='/analysisresult' element={<AnalysisResult/>}/>
         <Route path='/result' element={<Result/>}/>
         <Route path='/pronunciation/*' element={<PronunciationRoutes />}/> {/*  URL이 /pronunciation 로 시작하는 애들은 PronunciationRoutes여기서 처리해주세요~ */}
+        <Route path='/pronunciation/*' element={<PronunciationRoutes />}/>
+        <Route path='/aipage' element={<CombinedPage/>}/>
         
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>
