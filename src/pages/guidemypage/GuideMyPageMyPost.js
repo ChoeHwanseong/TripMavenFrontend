@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper } from '@mui/material';
-import { postGetByEmail, postsAllGet } from '../../utils/postData';
+import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper, Pagination } from '@mui/material';
+import { postGetByEmail } from '../../utils/postData';
 import { fetchedData } from '../../utils/memberData';
 
 const GuideMyPageMyPost = () => {
   const [posts, setPosts] = useState(null);
-  const  membersId  = localStorage.getItem('membersId');
+  const [page, setPage] = useState(1);
+  const [rowsPerPage] = useState(10);
+  const membersId = localStorage.getItem('membersId');
   const navigate = useNavigate();
 
   useEffect(() => {
-
     console.log('id: ', membersId)
 
     // 회원 이메일로 상품 조회 >> 내 게시글 관리
@@ -19,27 +20,31 @@ const GuideMyPageMyPost = () => {
         const fetchData = await fetchedData(localStorage.getItem('membersId'));
         const postData = await postGetByEmail(fetchData.email);
         setPosts(postData);
-
-        console.log('posts: ',posts);
+        console.log('posts: ', postData);
       } catch (error) {
         console.error('에러났당', error);
       }
     };
 
     getData();
-    console.log('내 게시글 : ',posts);
-
-  }, []);
-
-
+  }, [membersId]);
 
   const handleClick = (post) => {
     navigate(`/guidePostDetails/${post.id}`, { state: post });
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
   if (!posts) {
-    return <div>로딩중</div>; 
+    return <div>로딩중</div>;
   }
+
+  // Pagination
+  const indexOfLastRow = page * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = posts.slice(indexOfFirstRow, indexOfLastRow);
 
   return (
     <Box sx={{ maxWidth: 1200, p: 3, mt: 3 }}>
@@ -70,7 +75,7 @@ const GuideMyPageMyPost = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {posts.map((post, index) => (
+            {currentRows.map((post, index) => (
               <TableRow
                 key={index}
                 hover
@@ -95,9 +100,12 @@ const GuideMyPageMyPost = () => {
       </TableContainer>
 
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <Button disabled>{'<'}</Button>
-        <Typography sx={{ mx: 2 }}>1</Typography>
-        <Button>{'>'}</Button>
+        <Pagination
+          count={Math.ceil(posts.length / rowsPerPage)}
+          page={page}
+          onChange={handleChangePage}
+          color="primary"
+        />
       </Box>
     </Box>
   );

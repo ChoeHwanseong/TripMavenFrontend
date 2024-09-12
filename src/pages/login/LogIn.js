@@ -32,12 +32,12 @@ const Login = () => {
 
             // 로그인 성공 시 처리
             if (response) {
-
                 window.location.href = '/home'; // 예시: 홈으로 리다이렉트
             } else {
                 alert('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
             }
         } catch (error) {
+            alert('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
             console.error('로그인 요청 중 오류 발생:', error);
         }
 

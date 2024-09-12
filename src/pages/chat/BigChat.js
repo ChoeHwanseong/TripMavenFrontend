@@ -6,6 +6,8 @@ import ChattingRoom from './ChattingRoom';
 import { chattingListYourData, getMessages } from '../../utils/chatData';
 import { submitMessage } from '../../utils/chatData';
 
+
+
 function BigChat() {
   const { id } = useParams(); //url파라미터로 받은 채팅방 id
   const [client, setClient] = useState(null);
@@ -15,30 +17,29 @@ function BigChat() {
   const [selectedUser, setSelectedUser] = useState(null);
   const location = useLocation();
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
+  
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  //채팅방 목록 데이터 가져와서 상태에 저장하는 함수
+  const getData = async () => {
+    try {
+      const fetchedData = await chattingListYourData(localStorage.getItem("membersId"));
+      setData(fetchedData);  // 가져온 데이터를 상태에 저장
+      return fetchedData;
+    } catch (error) {
+      console.error('에러났당', error);
+    }
+  };
+
   useEffect(() => {
-    console.log('id',id);
-    console.log(new Date().toISOString());
-
-    const getData = async () => {
-      try {
-        const fetchedData = await chattingListYourData(localStorage.getItem("membersId"));
-        setData(fetchedData);  // 가져온 데이터를 상태에 저장
-        return fetchedData;
-      } catch (error) {
-        console.error('에러났당', error);
-      }
-    };
-
     //마운트시 엠큐티티 클라이언트 객체 없으면 생성
-    const func = async ()=>{
+    const setMQTT = async ()=>{
       if (!client) {
         const list_ = await getData();
-        console.log(list_);
 
         // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
         const mqttClient = mqtt.connect('ws://121.133.84.38:1884'); // MQTT 브로커에 연결
@@ -55,16 +56,20 @@ function BigChat() {
         //메시지 수신 설정
         mqttClient.on('message', (topic, message) => {
           console.log('Received message:', message.toString());
+          const parsedMessage = JSON.parse(message.toString());
+          const { text, sender, timestamp } = parsedMessage;
+          console.log(list_);
+          console.log(topic);
+          console.log(sender);
           try {
-            if(location.pathname.includes(topic)){
-              const parsedMessage = JSON.parse(message.toString());
-              const { text, sender, timestamp } = parsedMessage;
-
+            if(list_.find(ele=>ele.chattingRoom.id == topic && ele.member.id == sender)){
+              console.log('들어왔당');
               // 중복 메시지 방지
+              /*
               if (chatMessages.some(msg => msg.text === text && msg.time === new Date(timestamp).toLocaleTimeString())) {
                 return;
               }
-
+              */
               setChatMessages((prevMessages) => [
                 ...prevMessages,
                 {
@@ -101,7 +106,7 @@ function BigChat() {
       }
     }
 
-    func();
+    setMQTT();
 
     // 컴포넌트 언마운트 시 클라이언트 종료
     return () => {
@@ -109,7 +114,7 @@ function BigChat() {
         client.end();
       }
     };
-  }, []);
+  }, [location.pathname]);
 
   useEffect(()=>{
     scrollToBottom();
@@ -142,6 +147,7 @@ function BigChat() {
     if (text) {
       sendMessage(text);
       input.value = '';
+      inputRef.current.focus();
     }
   };
 
@@ -154,7 +160,7 @@ function BigChat() {
   const fetchChatMessages = async (chattingRoomId) => {
     try {
       const response = await getMessages(chattingRoomId); 
-      console.log('Fetched messages response:', response);  // 더 구체적으로 확인하기 위한 로그
+      //console.log('Fetched messages response:', response);  // 더 구체적으로 확인하기 위한 로그
       if (response) {
         setChatMessages(response); 
       } else {
@@ -174,7 +180,7 @@ function BigChat() {
         <h2 className={styles.chatName}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
       </div>
 
-      <div className={styles.chatMessages} ref={messagesEndRef}>
+      <div className={styles.chatMessages}>
         {chatMessages.map((msg, index) => (
           <div className={styles.messageNTime} key={index}>
             <div
@@ -195,6 +201,7 @@ function BigChat() {
             </span>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
         <div className={styles.chatInputSection}>
@@ -204,6 +211,7 @@ function BigChat() {
             id="chatInput"
             placeholder="입력해주세요"
             onKeyDown={handleKeyDown}
+            ref={inputRef}
           />
              <button className={styles.sendButton} onClick={handleSendClick}>
             <img src="../images/sendbutton.png" alt="Send" />

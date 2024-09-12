@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar, Pagination } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { csAllget } from '../../utils/csData';
 
 const AdminAsk = () => {
-
-  const [inquiry, setInquiries] = useState([]);
+  const [inquiries, setInquiries] = useState([]);
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [rowsPerPage] = useState(10);
 
   useEffect(() => {
     const getCSData = async () => {
@@ -34,6 +35,15 @@ const AdminAsk = () => {
     navigate(`/adminAskDetailsView/${inquiry.id}`);
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Pagination
+  const indexOfLastRow = page * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = inquiries.slice(indexOfFirstRow, indexOfLastRow);
+
   return (
     <Box sx={{ maxWidth: 1200, p: 3, mt: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
@@ -59,7 +69,7 @@ const AdminAsk = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {inquiry.map((inquiry, index) => (
+            {currentRows.map((inquiry, index) => (
               <TableRow
                 key={index}
                 hover
@@ -83,6 +93,15 @@ const AdminAsk = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+        <Pagination
+          count={Math.ceil(inquiries.length / rowsPerPage)}
+          page={page}
+          onChange={handleChangePage}
+          color="primary"
+        />
+      </Box>
     </Box>
   );
 };

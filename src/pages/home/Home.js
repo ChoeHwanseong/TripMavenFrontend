@@ -31,10 +31,6 @@ const Home = () => {
     setWeatherSelectedRegion(region);
   };
 
-  const handleAIServiceClick = () => {
-    navigate('/aiservice');
-  };
-
   return (
     <div className={styles.headerimg}>
       <Box sx={{ maxWidth: '1200px', mx: 'auto', mt: 10, p: 3 }}>
@@ -132,7 +128,7 @@ const Home = () => {
               </Typography>
               <Button
                 variant="contained"
-                onClick={() => navigate('/aiservice')}
+                onClick={() => navigate('/aipage')}
                 className={styles.aiButton}
                 style={{mb:4}}
               >

@@ -32,10 +32,12 @@ const CombinedPage = () => {
   return (
     <div>
       {/* AIServiceInfo 섹션 */}
+      
       <div className={aiInfoStyles.container}>
         <div className={aiInfoStyles.title}>
           <img src="../../../images/TripMavenLogo.png" alt="TripMaven Logo" /> 의 AI는 당신의 여행 가이드 실력을<br /> 한 단계 업그레이드합니다!
         </div>
+        {/*  원래꺼
         <div className={aiInfoStyles.features}>
           <div className={aiInfoStyles.feature}>
             <img src="../../../images/STTimg.png" alt="음성인식 기술" className={aiInfoStyles.featureImage} />
@@ -50,6 +52,16 @@ const CombinedPage = () => {
             <p className={aiInfoStyles.featureTitle}>멀티모달 기술</p>
           </div>
         </div>
+         */}
+        <div className={aiInfoStyles.infoContainer}>
+          <div className={aiInfoStyles.sttContainer}>
+            <img src="../../../images/STT.png" alt='STT 음성 인식 기술' className={aiInfoStyles.sttImage}/>
+          </div>
+          <div className={aiInfoStyles.nlpContainer}>
+            <img src="../../../images/NLP.png" alt='STT 음성 인식 기술' className={aiInfoStyles.nlpImage}/>
+          </div>
+        </div>
+
         <h3 className={aiInfoStyles.description}>
           TripMaven의 AI는 말과 행동, 시선, 표정을 분석할 수 있고 나만을 위한 맞춤형 퀴즈도 제작해줍니다.<br />
           여행지 소개, 고객 응대 등 다양한 스킬을 평가받고 항상시켜 보세요.
