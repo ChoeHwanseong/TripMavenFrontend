@@ -224,11 +224,11 @@ const DeviceCheckComponent = () => {
   };
 
   const handleTestButtonClick = () => {
-    if (!isTestPassed) {
-      setTestButtonWarning("장치 테스트 통과 후 눌러주세요.");
-    } else {
+    // if (!isTestPassed) {
+    //   setTestButtonWarning("장치 테스트 통과 후 눌러주세요.");
+    // } else {
       navigate('/realTestPage'); // 실전 테스트 페이지로 이동
-    }
+    //}
   };
 
   return (

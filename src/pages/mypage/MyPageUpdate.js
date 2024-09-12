@@ -1,15 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Avatar, Grid } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import defaultImage from '../../images/default_profile.png';
 import { fetchedData, updateProfile } from '../../utils/memberData';
 import { postPut } from '../../utils/postData';
+import styles from '../../styles/mypage/MyProfile.module.css';
+import { TemplateContext } from '../../context/TemplateContext';
 
 const MypageUpdate = () => {
   const [profileData, setProfileData] = useState(null);
   const [certificateFileName, setCertificateFileName] = useState('');
   const membersId= localStorage.getItem('membersId');
   const navigate = useNavigate();
+  const template = useContext(TemplateContext);
 
   // 기존 데이타 뿌려주기.
   useEffect(() => {
@@ -115,167 +119,114 @@ const MypageUpdate = () => {
   }
 
   return (
-    <Box sx={{ p: 7 }}>
-      <Typography style={{ fontSize: '35px', fontWeight: 'bold' }} gutterBottom>프로필 수정</Typography>
-      <form>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={2}>
-            <Avatar
-              src="../../../images/defaultimage.png"
-              alt="프로필 이미지"
-              sx={{ width: 100, height: 100, mb: 2.5, ml: 0.6 }}
-            />
-            <Button
-              sx={{ backgroundColor: '#0066ff', height: .13, '&:hover': { backgroundColor: '#0056b3' }, }}
-              variant="contained"
-              component="label"
-              startIcon={<CloudUploadIcon />}
-            >
-              파일 찾기
-              <input type="file" hidden />
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={10}>
-            <TextField
-              fullWidth
-              label="닉네임"
-              id="name"
-              name="name"
-              value={profileData.name || ''}
-              onChange={newName}
-              margin="normal"
-              inputRef={nameRef}
-    
-            />
-            <TextField
-              fullWidth
-              label="이메일"
-              id="email"
-              name="email"
-              value={profileData.email || ''}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <TextField
-              fullWidth
-              label="전화번호"
-              id="telNumber"
-              name="telNumber"
-              value={profileData.telNumber || ''}
-              onChange={newTelNumber}
-              margin="normal"
-              inputRef={telNumberRef}
-            />
-            <TextField
-              sx={{ width: 0.88 }}
-              label="주소"
-              id="address"
-              name="address"
-              value={profileData.address || ''}
-              onChange={newAddress}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-              inputRef={addressRef}
-            />
-            <Button
-              sx={{
-                mt: 1.9, ml: 1, color: '#000000',
-                border: 1, backgroundColor: '#f1f1f1',
-                justifyContent:'flex-end',
-                height: .17, '&:hover': { backgroundColor: '#DEDEDE' },
-              }}
-              variant="contained"
-              component="label"
-            >
-              주소 찾기
-              <input type="button" hidden />
-            </Button>
-          </Grid>
-        </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="성별"
-              id="gender"
-              name="gender"
-              value={profileData.gender || ''}
-              onChange={newGender}
-              margin="normal"
-              inputRef={genderRef}
-            />
-            <TextField
-              fullWidth
-              label="생년월일"
-              id="birthday"
-              name="birthday"
-              value={profileData.birthday || ''}
-              onChange={newBirthday}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-              inputRef={birthdayRef}
-            />
-            <TextField
-              sx={{ width: 0.72 }}
-              label="자격증"
-              id="certificate"
-              name="certificate"
-              value={certificateFileName || profileData.certificate || ''}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <Button
-              sx={{ mt: 2, ml: 2, backgroundColor: '#0066ff', height: .23, '&:hover': { backgroundColor: '#0056b3' }, }}
-              variant="contained"
-              component="label"
-              startIcon={<CloudUploadIcon />}
-            >
-              파일 찾기
-              <input type="file" hidden onChange={handleFileChange} />
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="자기소개"
-              id="about"
-              name="about"
-              value={profileData.about || ''}
-              onChange={newIntroduce}
-              margin="normal"
-              multiline
-              rows={8}
-              inputRef={introduceRef}
-            />
-          </Grid>
-        </Grid>
-        <Box display="flex" justifyContent="flex-end">
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px',
-              '&:hover': { backgroundColor: '#0056b3' },
-            }}
-            onClick={handleProfile}
-          >
-            수정 하기
-          </Button>
-       
+    <Box className={styles.container}>
+      <Box className={styles.content}>
+        <Typography variant="h4" fontWeight="bold" gutterBottom>프로필</Typography>
+
+        {/* 프로필 사진 및 이름 */}
+        <Box className={styles.profileSection}>
+          <Avatar
+            alt={template.memberInfo.profile || 'Profile Picture'}
+            src={template.memberInfo.profile || defaultImage}
+            className={styles.avatar}
+          />
+          <Typography variant="h5" fontWeight="bold">
+            {template.memberInfo.name || '이름 없음'}
+          </Typography>
         </Box>
-      </form>
-    </Box>
+
+        {/* 프로필 이미지 아래에 텍스트 박스들 배치 */}
+        <Box className={styles.texts}>
+          <Box className={styles.formGroup}>
+            <TextField
+              required
+              id="filled-required"
+              label="EMAIL"
+              variant="filled"
+              fullWidth
+              InputProps={{ readOnly: true }}
+              value={template.memberInfo.email}
+            />
+            <TextField
+              label="PHONE-NUMBER"
+              variant="filled"
+              fullWidth
+              InputProps={{ readOnly: true }}
+              value={template.memberInfo.telNumber || "전화번호를 기입해주세요."}
+            />
+
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <TextField
+                label="GENDER"
+                variant="filled"
+                InputProps={{ readOnly: true }}
+                fullWidth
+                value={template.memberInfo.gender || "성별를 기입해주세요."}
+              />
+              <TextField
+                label="BIRTHDAY"
+                variant="filled"
+                fullWidth
+                InputProps={{ readOnly: true }}
+                value={template.memberInfo.birthday || "생년월일을 기입해주세요."}
+              />
+            </Box>
+
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <TextField
+                sx={{ width: 1 }}
+                label="주소"
+                name="address"
+                variant="filled"
+                value={template.memberInfo.address || '주소를 기입주세요.'}
+                margin="normal"
+                InputProps={{ readOnly: true }}
+              />
+            </Box>
+
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <TextField
+                label="자격증"
+                id="certificate"
+                name="certificate"
+                value={template.memberInfo.guidelicense || "자격증 정보가 없습니다."}
+                margin="normal"
+                variant="filled"
+                fullWidth
+                InputProps={{ readOnly: true }}
+              />
+            </Box>
+
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="자기소개"
+                variant="filled"
+                id="about"
+                name="about"
+                value={template.memberInfo.introduce || "자기소개를 기입해주세요."}
+                margin="normal"
+                multiline
+                InputProps={{ readOnly: true }}
+                rows={8}
+              />
+            </Grid>
+          </Box>
+          <Box sx={{ display: "flex", justifyContent: "center", width: '100%' }}>
+            <Button
+              onClick={() => { navigate(`/mypageprofile/${template.memberInfo.id}`) }}
+              variant="contained"
+              sx={{
+                mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px',
+                '&:hover': { backgroundColor: '#0056b3' },
+              }}     >
+              수정 하기
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+    </Box >
   );
 };
 
 export default MypageUpdate;
-
-

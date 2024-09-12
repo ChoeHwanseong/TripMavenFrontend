@@ -162,7 +162,6 @@ const PronunciationTest = () => {
         else {
             navigate(`/pronunciation/${sequenceNumber+1}`);  
         }
-         
         // 5번으로 가면 결과창!
     };
 
