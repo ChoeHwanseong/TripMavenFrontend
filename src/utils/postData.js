@@ -36,6 +36,14 @@ export const postsCityGet = (city, page) => {
       return res.data;
   })
 }
+
+// 상품 전체검색 색인으로 검색(20개씩 얻어오기)
+export const postsSearchWordGet = (searchword, page) => {
+  return axios.get(baseUrl+`/search/${searchword}?page=${page}`).then(res =>{
+      return res.data;
+  })
+}
+
 // 상품 수정
 export const postPut = (updateData) => {
   console.log('postData의 updateData: ',updateData);

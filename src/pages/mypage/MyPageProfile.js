@@ -33,7 +33,7 @@ const MypageProfile = () => {
             className={styles.avatar}
           />
           <Typography variant="h5" fontWeight="bold">
-            {template.memberInfo.name || '이름 없음'}
+            {template.memberInfo.email || '아이디 없음'}
           </Typography>
         </Box>
 
@@ -43,12 +43,13 @@ const MypageProfile = () => {
             <TextField
               required
               id="filled-required"
-              label="EMAIL"
+              label="name"
               variant="filled"
               fullWidth
               InputProps={{ readOnly: true }}
-              value={template.memberInfo.email}
+              value={template.memberInfo.name}
             />
+            
             <TextField
               label="PHONE-NUMBER"
               variant="filled"

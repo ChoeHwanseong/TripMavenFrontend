@@ -1,127 +1,52 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Button, TextField, Typography, Avatar, Grid } from '@mui/material';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, Button, TextField, Typography, Avatar, Grid, CircularProgress } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import defaultImage from '../../images/default_profile.png';
-import { fetchedData, updateProfile } from '../../utils/memberData';
-import { postPut } from '../../utils/postData';
+import { fetchedData } from '../../utils/memberData';
 import styles from '../../styles/mypage/MyProfile.module.css';
+import  defaultImage  from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
+
 
 const MypageUpdate = () => {
   const [profileData, setProfileData] = useState(null);
-  const [certificateFileName, setCertificateFileName] = useState('');
-  const membersId= localStorage.getItem('membersId');
-  const navigate = useNavigate();
   const template = useContext(TemplateContext);
 
-  // 기존 데이타 뿌려주기.
+  const navigate = useNavigate();
+
   useEffect(() => {
     const getData = async () => {
       try {
-        const fetchData = await fetchedData(membersId);
+        const fetchData = await fetchedData(template.memberInfo.id);
         setProfileData(fetchData);
+        console.log('마이프로필: ',profileData)
       } catch (error) {
         console.error('에러났당', error);
       }
     };
-
     getData();
-  }, [membersId]);
+  },[]);
 
-
-  
-
-//const profileRef = useRef(null);
-  const nameRef = useRef(null);
-
-  const telNumberRef = useRef(null);
-  const addressRef = useRef(null);
-
-  const genderRef = useRef(null);
-  const birthdayRef = useRef(null);
-//const guidelicenseRef = useRef(null);
-  
-  const introduceRef = useRef(null);
-
-
-    // 수정된 값 저장
-    const newName = async () =>{
-      setProfileData({...profileData,name:nameRef.current.value})
-    };
-    const newTelNumber = async () =>{
-      setProfileData({...profileData,telNumber:telNumberRef.current.value})
-    };
-    const newAddress = async () =>{
-      setProfileData({...profileData,address:addressRef.current.value})
-    };
-    const newGender = async () =>{
-      setProfileData({...profileData,gender:genderRef.current.value})
-    };
-    const newBirthday = async () =>{
-      setProfileData({...profileData,birthday:birthdayRef.current.value})
-    }; 
-    const newIntroduce = async () =>{
-      setProfileData({...profileData,introduce:introduceRef.current.value})
-    };
-  
-  
-  
-  // 프로필 수정
-  const handleProfile = async() => {
-    try {
-        const updateData = { name: nameRef.current.value,
-                            telNumber : telNumberRef.current.value,
-                            address : addressRef.current.value,
-                            gender : genderRef.current.value,
-                            birthday  : birthdayRef.current.value,
-                            introduce : introduceRef.current.value,
-                            id : membersId
-                          };
-        console.log('updateData: ',updateData);
-        console.log('updateData.membersId: ',updateData.id);
-        await updateProfile(updateData.id,updateData);
-        //alert('프로필이 성공적으로 수정되었습니다.');
-        navigate(`/mypageprofile/${membersId}`);
-
-    }  catch (error) {
-        console.error('프로필 수정 중 오류 발생:', error);
-        alert('프로필 수정에 실패했습니다. 다시 시도해주세요.');
-        }
-
+  const handleUpdate = (e) => {
+    const { name, value } = e.target;
+    setProfileData({
+      ...profileData,
+      [name]: value,
+    });
   };
-
-
-
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setCertificateFileName(file.name);
-    }
-  };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const profileupdate = await updateProfile(id, profileData);
-  //     setProfileData(profileupdate);
-  //     alert('프로필이 성공적으로 수정되었습니다.');
-  //     navigate(`/mypageprofile/2`);
-  //   } catch (error) {
-  //     console.error('프로필 수정 중 오류 발생:', error);
-  //     alert('프로필 수정에 실패했습니다. 다시 시도해주세요.');
-  //   }
-  // };
 
   if (!profileData) {
-    return <Typography variant="h6">로딩중</Typography>;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (
     <Box className={styles.container}>
       <Box className={styles.content}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>프로필</Typography>
+        <Typography variant="h4" fontWeight="bold" gutterBottom>프로필 <small>수정</small></Typography>
 
         {/* 프로필 사진 및 이름 */}
         <Box className={styles.profileSection}>
@@ -131,7 +56,7 @@ const MypageUpdate = () => {
             className={styles.avatar}
           />
           <Typography variant="h5" fontWeight="bold">
-            {template.memberInfo.name || '이름 없음'}
+            {template.memberInfo.email || '아이디 없음'}
           </Typography>
         </Box>
 
@@ -141,60 +66,79 @@ const MypageUpdate = () => {
             <TextField
               required
               id="filled-required"
-              label="EMAIL"
+              label="name"
               variant="filled"
               fullWidth
               InputProps={{ readOnly: true }}
-              value={template.memberInfo.email}
+              value={template.memberInfo.name}
             />
             <TextField
               label="PHONE-NUMBER"
               variant="filled"
               fullWidth
-              InputProps={{ readOnly: true }}
-              value={template.memberInfo.telNumber || "전화번호를 기입해주세요."}
+              value={profileData.telNumber || ''}
             />
 
             <Box sx={{ display: 'flex', gap: 2 }}>
               <TextField
                 label="GENDER"
                 variant="filled"
-                InputProps={{ readOnly: true }}
                 fullWidth
-                value={template.memberInfo.gender || "성별를 기입해주세요."}
+                value={profileData.gender || ''}
               />
               <TextField
                 label="BIRTHDAY"
                 variant="filled"
                 fullWidth
-                InputProps={{ readOnly: true }}
-                value={template.memberInfo.birthday || "생년월일을 기입해주세요."}
+                value={profileData.birthday || ''}
               />
             </Box>
 
             <Box sx={{ display: 'flex', gap: 2 }}>
               <TextField
-                sx={{ width: 1 }}
+                sx={{ width: 0.883 }}
                 label="주소"
                 name="address"
                 variant="filled"
-                value={template.memberInfo.address || '주소를 기입주세요.'}
+                value={profileData.address || '주소를 넣어주세요.'}
+                onChange={handleUpdate}
                 margin="normal"
                 InputProps={{ readOnly: true }}
               />
+              <Button
+                sx={{
+                  mt: 1.9, ml: 1, color: '#000000',
+                  border: 1, backgroundColor: '#f1f1f1',
+                  justifyContent: 'flex-end',
+                  height: .16, '&:hover': { backgroundColor: '#DEDEDE' },
+                }}
+                variant="contained"
+                component="label"> 주소찾기
+                <input type="button" hidden />
+              </Button>
             </Box>
 
             <Box sx={{ display: 'flex', gap: 2 }}>
               <TextField
+                sx={{ width: 0.72 }}
                 label="자격증"
                 id="certificate"
                 name="certificate"
-                value={template.memberInfo.guidelicense || "자격증 정보가 없습니다."}
+                value={template.memberInfo.guidelicense || template.memberInfo.guidelicense || ''}
                 margin="normal"
                 variant="filled"
                 fullWidth
                 InputProps={{ readOnly: true }}
               />
+              <Button
+                sx={{ mt: 2, ml: 2, backgroundColor: '#0066ff', height: .23, '&:hover': { backgroundColor: '#0056b3' } }}
+                variant="contained"
+                component="label"
+                startIcon={<CloudUploadIcon />}
+              >
+                파일 찾기
+                <input type="file" hidden onChange={{}} />
+              </Button>
             </Box>
 
             <Grid item xs={12} md={6}>
@@ -204,28 +148,30 @@ const MypageUpdate = () => {
                 variant="filled"
                 id="about"
                 name="about"
-                value={template.memberInfo.introduce || "자기소개를 기입해주세요."}
+                value={profileData.introduce || ''}
+                onChange={handleUpdate}
                 margin="normal"
                 multiline
-                InputProps={{ readOnly: true }}
                 rows={8}
               />
             </Grid>
           </Box>
-          <Box sx={{ display: "flex", justifyContent: "center", width: '100%' }}>
-            <Button
-              onClick={() => { navigate(`/mypageprofile/${template.memberInfo.id}`) }}
-              variant="contained"
-              sx={{
-                mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px',
-                '&:hover': { backgroundColor: '#0056b3' },
-              }}     >
-              수정 하기
-            </Button>
-          </Box>
         </Box>
+
+        <Box display="flex" justifyContent="flex-end">
+          <Button
+            onClick={() => { navigate(`/mypageprofile/${template.memberInfo.id}`) }}
+            variant="contained"
+            sx={{
+              mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px',
+              '&:hover': { backgroundColor: '#0056b3' },
+            }}
+          >
+            수정 완료
+          </Button>
+        </Box> 
       </Box>
-    </Box >
+    </Box>
   );
 };
 

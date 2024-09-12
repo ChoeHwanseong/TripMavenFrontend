@@ -15,9 +15,7 @@ import AdminReport from './pages/adminmypage/AdminReport';
 import AdminProfile from './pages/adminmypage/AdminProfile';
 import TermsService from './pages/infopage/TermsService';
 import RegisterGuide from './pages/registerguidepage/RegisterGuide';
-//import GuideMyPageLike from './pages/guidemypage/guidemypagelike/guideMyPageLike';
 import GuideMyPageMyPost from './pages/guidemypage/GuideMyPageMyPost';
-import GuideMyPageMyPostDetails from './pages/guidemypage/GuideMyPageMyPostDetails';
 import GuideMyPageAIService from './pages/guidemypage/guidemypageaiservice/GuideMyPageAIService';
 import Landing from './pages/landing/Landing';
 import ProductBoard from './pages/productPage/ProductBoard';
@@ -32,10 +30,7 @@ import UserLike from './pages/usermypage/UserLike';
 
 
 
-
-
 import MemberList from './pages/adminmypage/MemberList';
-import GuideAskUpdate from './pages/guidemypage/GuideAskUpdate';
 import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuidePost from './pages/guidemypage/GuidePost';
 import SiteIntroduction from './pages/infopage/SiteInfo';
@@ -50,7 +45,6 @@ import AskDetails from './pages/askpage/Askdetails';
 import AskDetailsView from './pages/askpage/AskDetailsView';
 import AskUpdate from './pages/askpage/AskUpdate';
 import ReviewDetails from './pages/usermypage/UserReviewDetails';
-import GuideUpdatePost from './pages/guidemypage/GuideUpdatePost';
 import MypageUpdate from './pages/mypage/MyPageUpdate';
 import FindID1 from './pages/login/FindId1';
 import FindPassword1 from './pages/login/FindPassword1';
@@ -73,7 +67,6 @@ import RealTest1 from './pages/aiservicepage/RealTest1';
 import PostDetails from './pages/productPage/PostDetails';
 import RealTestPage from './pages/aiservicepage/RealTestPage'
 import RealTestResult from './pages/aiservicepage/RealTestResult'
-import Reviews from './pages/guidemypage/guidepost/ReviewList';
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
@@ -93,7 +86,7 @@ function App() {
         <Route path="/home" element={<Home/>}/>
         <Route element={<MyPageTemplate/>}>
 
-          {/* ADMIN */}
+          {/* ADMIN */} 
           <Route path='/adminreport' element={<AdminReport/>}/>
           <Route path='/adminprofile' element={<AdminProfile/>}/>
           <Route path='/adminask' element={<AdminAsk/>}/>
