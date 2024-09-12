@@ -84,7 +84,7 @@ const KoreaWeatherMap = ({ selectedRegion, setSelectedRegion }) => {
   }, []);
 
   useEffect(()=>{
-    console.log(selectedRegion);
+    //console.log(selectedRegion);
     selectedRegion && setHoveredRegion(weatherData[changeRegionName[selectedRegion.name]]); 
   },[selectedRegion])
 

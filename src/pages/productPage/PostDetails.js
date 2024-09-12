@@ -118,16 +118,18 @@ const PostDetails = () => {
   };
 
   const handleClick = async () => {
+
     try {
       const myId = localStorage.getItem("membersId"); 
       const yourId = data.member.id; 
       const roomId = await chattingRoomData(myId, yourId);
-      
-      navigate(`/bigChat/${roomId}`);
+     
+      navigate(`/bigChat/${data.id}`);
 
     } catch (error) {
       console.error('Error fetching or creating chat room:', error);
     }
+  
   };
 
   if (!data) {

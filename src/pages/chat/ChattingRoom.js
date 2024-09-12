@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../../styles/chat/BigChat.module.css';
-import { chattingRoomData, chattingListData } from '../../utils/chatData';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import mqtt from 'mqtt';
+import { getMessages } from '../../utils/chatData';
 
-function ChattingRoom({ setSelectedUser, data, client, setChatMessages}) {
+function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages}) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
 
@@ -19,6 +19,22 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages}) {
     setHoveredRow(null);
   }
 
+  /*
+  const fetchChatMessages = async (chattingRoomId) => {
+    try {
+      const response = await getMessages(chattingRoomId); 
+      console.log('Fetched messages response:', response);  // 더 구체적으로 확인하기 위한 로그
+      if (response) {
+        setChatMessages(response); 
+      } else {
+        console.log('No messages received');
+      }
+    } catch (error) {
+      console.error('메시지 불러오기 에러:', error);
+    }
+  };
+  */
+
   const handleClick = (joinChatting) => {
     if (client && joinChatting.chattingRoom) {
       client.subscribe(`${joinChatting.chattingRoom.id}`, (err) => {
@@ -29,10 +45,15 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages}) {
         }
       });
       setSelectedUser(joinChatting);
+      fetchChatMessages(joinChatting.chattingRoom.id);
       setChatMessages([]);
+      
     }
+    navigate(`/bigchat/${joinChatting.chattingRoom.id}`);
   };
 
+
+  
 
   return (
 
