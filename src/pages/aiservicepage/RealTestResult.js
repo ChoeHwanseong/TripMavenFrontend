@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/aiservicepage/RealTestResult.module.css';
 import bgVideo from '../../videos/BG-video.mp4';
+import axios from 'axios';
 
 const PlayIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -27,7 +28,7 @@ const ForwardIcon = () => (
   </svg>
 );
 
-const RealTestResult = () => {
+const RealTestResult = ( {response} ) => {
   const questions = [
     "우도의 경관을 해변에서 즐길 수 있는 주요 액티비티는 무엇인가요?",
     "투어 중 한 관광객이 갑자기 화장실을 급히 가고 싶다고 말합니다. 어떻게 안내하실 건가요?",
@@ -38,6 +39,40 @@ const RealTestResult = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const videoRef = useRef(null);
   const navigate = useNavigate(); // React Router의 useNavigate 훅 사용
+
+
+  const [result, setResult] = useState(null);
+  const [eyeGraph, setEyeGraph] = useState(null);
+  const [mouthGraph, setMouthGraph] = useState(null);
+  const [cheekbonesGraph, setCheekbonesGraph] = useState(null);
+  const [browGraph, setBrowGraph] = useState(null);
+  const [nasolabialFoldsGraph, setNasolabialFoldsGraph] = useState(null);
+
+  useEffect(() => {
+    const getResults = async () => {
+
+
+
+        const data = response.data;
+        console.log('data: ', data);
+        setResult(data);
+
+        // base64로 인코딩된 그래프 이미지 설정
+        setEyeGraph(`data:image/png;base64,${data.graphs.eye_bar_graph}`);
+        setMouthGraph(`data:image/png;base64,${data.graphs.mouth_graph}`);
+        setCheekbonesGraph(`data:image/png;base64,${data.graphs.cheekbones_graph}`);
+        setBrowGraph(`data:image/png;base64,${data.graphs.brow_graph}`);
+        setNasolabialFoldsGraph(`data:image/png;base64,${data.graphs.nasolabial_folds_graph}`);
+    
+    };
+
+    if (response) {
+      getResults();
+    }
+  }, [response]);
+
+
+
 
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
@@ -75,6 +110,54 @@ const RealTestResult = () => {
     <div className={styles.container}>
       <h1>실전 테스트 분석결과</h1>
       <div className={styles.aiAssessment}>
+
+
+      {result && (
+                <div>
+                    <h2>Analysis Result:</h2>
+                    <pre>{JSON.stringify(result, null, 2)}</pre>
+
+                    {eyeGraph && (
+                        <div>
+                            <h3>Eye Blink Graph</h3>
+                            <img src={eyeGraph} alt="Eye Blink Graph" />
+                        </div>
+                    )}
+                    {mouthGraph && (
+                        <div>
+                            <h3>Mouth Movement Graph</h3>
+                            <img src={mouthGraph} alt="Mouth Movement Graph" />
+                        </div>
+                    )}
+                    {cheekbonesGraph && (
+                        <div>
+                            <h3>Cheekbones Movement Graph</h3>
+                            <img src={cheekbonesGraph} alt="Cheekbones Movement Graph" />
+                        </div>
+                    )}
+                    {browGraph && (
+                        <div>
+                            <h3>Brow Movement Graph</h3>
+                            <img src={browGraph} alt="Brow Movement Graph" />
+                        </div>
+                    )}
+                    {nasolabialFoldsGraph && (
+                        <div>
+                            <h3>Nasolabial Folds Movement Graph</h3>
+                            <img src={nasolabialFoldsGraph} alt="Nasolabial Folds Movement Graph" />
+                        </div>
+                    )}
+                </div>
+            )}
+
+
+
+
+
+
+
+
+
         <div className={styles.question}>
           <span>Q: "{questions[currentQuestionIndex]}"</span>
         </div>

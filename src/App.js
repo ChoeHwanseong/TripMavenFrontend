@@ -83,6 +83,7 @@ import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckCo
 import PronunciationTest1 from './pages/aiservicepage/PronunciationTest';
 import { newsCrawling } from './utils/PythonServerAPI';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
+import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
 
 
 
@@ -154,6 +155,9 @@ function App() {
           <Route path='/askupdate/:id' element={<AskUpdate/>}/>
 
         </Route>
+
+        <Route path='/videoAppUpload' element={<VideoAppUpload/>}/>
+        
         
         <Route path='/aiservice' element={<AIService/>}/>
         <Route path="/cs" element={<CSBoard/>}/>
