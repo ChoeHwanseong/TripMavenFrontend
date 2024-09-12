@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar, Button, Modal } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar, Button, Modal, Pagination } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { fetchData } from '../../utils/memberData';
 import GuideRegistration from '../registerguidepage/RegisterGuide';
@@ -22,12 +22,16 @@ const MemberList = () => {
   const [data, setData] = useState([]);
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const getData = async () => {
       try {
         const fetchedData = await fetchData();
         setData(fetchedData);
+        setTotalPages(Math.ceil(fetchedData.length / itemsPerPage));
       }
       catch (error) {console.error('에러났당', error);}
     };
@@ -47,6 +51,10 @@ const MemberList = () => {
     navigate(`/mypageprofile/${user.id}`);
   };
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
   //모달관련 스테이트, 함수
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -62,6 +70,8 @@ const MemberList = () => {
     setOpen(false);
     setSelectedUserId(null);
   };
+
+  const paginatedData = data.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return <>
     <Box sx={{ maxWidth: 1200, p: 3,mt: 3 }}>
@@ -90,7 +100,7 @@ const MemberList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((user, index) => (
+            {paginatedData.map((user, index) => (
               <TableRow
                 key={index}
                 hover
@@ -111,8 +121,8 @@ const MemberList = () => {
 
                 <TableCell>{user.telNumber}</TableCell>
                 <TableCell>{user.address}</TableCell>
-                <TableCell>{user.createdAt.split('T')[0]}</TableCell> {/* 시간까지 나옴, 스플릿으로 앞부분만 뿌려주기 */}
-                <TableCell align="center">{(user.guidelicense && user.role=='USER') ? (<Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={()=>handleOpen(user.id)}>인증 요청</Button>) : '무'}</TableCell> {/* 자격증 디폴트값 '무', false면 '유' */}
+                <TableCell>{user.createdAt.split('T')[0]}</TableCell>
+                <TableCell align="center">{(user.guidelicense && user.role=='USER') ? (<Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={()=>handleOpen(user.id)}>인증 요청</Button>) : '무'}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -120,9 +130,15 @@ const MemberList = () => {
       </TableContainer>
 
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 3 }}>
-        <Button>{'<'}</Button>
-        <Typography sx={{ mx: 2 }}>1</Typography>
-        <Button>{'>'}</Button>
+        <Pagination 
+          count={totalPages} 
+          page={page} 
+          onChange={handlePageChange}
+          showFirstButton 
+          showLastButton
+          siblingCount={1}
+          boundaryCount={1}
+        />
       </Box>
     </Box>
 
