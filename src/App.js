@@ -79,6 +79,7 @@ import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckCo
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
 import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
 import CombinedPage from './pages/aiservicepage/AIPage';
+import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
 
 
 
@@ -193,10 +194,10 @@ function App() {
         <Route path='/recordcheck' element={<DeviceCheckComponent/>}/>
         <Route path='/test' element={<DeviceCheckComponent2/>}/>
         
-        <Route path='/realTestPage' element={<RealTestPage />}/>
+        <Route path='/realTestPage/:id' element={<RealTestPage />}/>
         <Route path='/realTestResult' element={<RealTestResult />}/>
-
-        
+        <Route path='/productComponent' element={<ProductComponent />}/>
+  
 
       </Route>
     </Routes>

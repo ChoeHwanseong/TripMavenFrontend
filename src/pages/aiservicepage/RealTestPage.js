@@ -9,7 +9,8 @@ const RealTestPage = () => {
   const webcamRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const recognitionRef = useRef(null);
-  const [recordedChunks, setRecordedChunks] = useState([]);
+  const [recordedChunksFirst, setRecordedChunksFirst] = useState([]); // 첫 번째 영상
+  const [recordedChunksSecond, setRecordedChunksSecond] = useState([]); // 두 번째 영상
   const [videoDevices, setVideoDevices] = useState([]);
   const [audioDevices, setAudioDevices] = useState([]);
   const [selectedVideoDevice, setSelectedVideoDevice] = useState(null);
@@ -81,7 +82,11 @@ const RealTestPage = () => {
 
       mediaRecorderRef.current.ondataavailable = (event) => {
         if (event.data.size > 0) {
-          setRecordedChunks((prev) => [...prev, event.data]);
+          if (isFirstQuestion) {
+            setRecordedChunksFirst((prev) => [...prev, event.data]);
+          } else {
+            setRecordedChunksSecond((prev) => [...prev, event.data]);
+          }
         }
       };
 
@@ -111,47 +116,58 @@ const RealTestPage = () => {
 
   const handleButtonClick = () => {
     if (recordingStatus === "녹화하기") {
+      // 영상 녹화를 시작
       setRecordingStatus("녹화 중지");
       startRecording();
     } else if (recordingStatus === "녹화 중지") {
+      // 영상 녹화를 중지하고 서버로 전송
       stopRecording();
+      setLoadingMessage("영상 전송 중"); // 모달 메시지 설정
+      uploadVideo(isFirstQuestion ? 'first' : 'second'); // 첫 번째 또는 두 번째 영상 전송
+    
       if (isFirstQuestion) {
         setRecordingStatus("다음 문제");
       } else {
         setRecordingStatus("결과 보기");
       }
     } else if (recordingStatus === "다음 문제") {
-      setLoadingMessage("영상 저장 중");
-      setTimeout(() => {
-        uploadVideo(); // 첫 번째 영상 전송
-        setIsFirstQuestion(false);
-        setCurrentQuestionIndex(Math.floor(Math.random() * questions.length));
-        setTranscript("");
-        setRecordingStatus("녹화하기");
-        setLoadingMessage("");
-      }, 500); // 잠시 지연 후 모달 숨기기
+      // 두 번째 질문으로 변경 및 상태 업데이트
+      setIsFirstQuestion(false);
+      setCurrentQuestionIndex(Math.floor(Math.random() * questions.length));
+      setTranscript("");
+      setRecordedChunksFirst([]); // 첫 번째 영상 녹화 데이터 초기화
+      setRecordingStatus("녹화하기");
+      setLoadingMessage(""); // 모달 메시지 숨기기
     } else if (recordingStatus === "결과 보기") {
+      // 두 번째 영상 전송 및 결과 페이지 이동
       setLoadingMessage("영상 전송 중");
-      uploadVideo(); // 두 번째 영상 전송
+      uploadVideo('second'); // 두 번째 영상 전송
     }
   };
 
-  const uploadVideo = async () => {
+  const uploadVideo = async (videoType) => {
+    const recordedChunks = videoType === 'first' ? recordedChunksFirst : recordedChunksSecond;
     const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
     const formData = new FormData();
     formData.append('file', videoBlob, 'recordedVideo.webm');
-
+  
     try {
       const response = await fetch('http://localhost:8282/face/', {
         method: 'POST',
         body: formData
       });
 
+      console.log('response :: ',response);
+  
       if (response.ok) {
-        const resultData = await response.json();
-        alert('영상이 성공적으로 제출되었습니다!');
-        if (recordingStatus === "결과 보기") {
-          navigate('/RealTestResult', { state: { response } });
+        const resultData = await response.text();
+
+        console.log('resultData :: ',resultData); // 빈 배열... 왜 ?
+
+        setLoadingMessage(""); // 모달 숨기기
+        if (videoType === 'second') {
+          alert('영상이 성공적으로 제출되었습니다!');
+          navigate('/RealTestResult', { state: { response: resultData } });
         }
       } else {
         alert('영상 제출 중 문제가 발생했습니다.');
@@ -184,50 +200,51 @@ const RealTestPage = () => {
       <div className={styles.controls}>
         <div className={styles.selectContainer}>
           <Select
-            value={selectedVideoDevice?.deviceId || ''}
-            displayEmpty
-            onChange={(e) => setSelectedVideoDevice(videoDevices.find((d) => d.deviceId === e.target.value))}
-            className={styles.selectControl}
-          >
-            <MenuItem value="">웹캠을 선택하세요</MenuItem>
-            {videoDevices.map((device) => (
-              <MenuItem key={device.deviceId} value={device.deviceId}>
-                {device.label}
-              </MenuItem>
-            ))}
-          </Select>
-          <Select
-            value={selectedAudioDevice?.deviceId || ''}
-            displayEmpty
-            onChange={(e) => setSelectedAudioDevice(audioDevices.find((d) => d.deviceId === e.target.value))}
-            className={styles.selectControl}
-          >
-            <MenuItem value="">마이크를 선택하세요</MenuItem>
-            {audioDevices.map((device) => (
-              <MenuItem key={device.deviceId} value={device.deviceId}>
-                {device.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleButtonClick}
-          className={styles.controlButton}
-        >
-          {recordingStatus}
-        </Button>
-      </div>
-      {loadingMessage && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <Typography variant="h6">{loadingMessage}</Typography>
-          </div>
-        </div>
-      )}
-    </Container>
-  );
-};
-
-export default RealTestPage;
+                        value={selectedVideoDevice?.deviceId || ''}
+                        displayEmpty
+                        onChange={(e) => setSelectedVideoDevice(videoDevices.find((d) => d.deviceId === e.target.value))}
+                        className={styles.selectControl}
+                      >
+                        <MenuItem value="">웹캠을 선택하세요</MenuItem>
+                        {videoDevices.map((device) => (
+                          <MenuItem key={device.deviceId} value={device.deviceId}>
+                            {device.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      <Select
+                        value={selectedAudioDevice?.deviceId || ''}
+                        displayEmpty
+                        onChange={(e) => setSelectedAudioDevice(audioDevices.find((d) => d.deviceId === e.target.value))}
+                        className={styles.selectControl}
+                      >
+                        <MenuItem value="">마이크를 선택하세요</MenuItem>
+                        {audioDevices.map((device) => (
+                          <MenuItem key={device.deviceId} value={device.deviceId}>
+                            {device.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </div>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleButtonClick}
+                      className={styles.controlButton}
+                    >
+                      {recordingStatus}
+                    </Button>
+                  </div>
+                  {loadingMessage && (
+                    <div className={styles.modal}>
+                      <div className={styles.modalContent}>
+                        <Typography variant="h6">{loadingMessage}</Typography>
+                      </div>
+                    </div>
+                  )}
+                </Container>
+              );
+            };
+            
+            export default RealTestPage;
+            

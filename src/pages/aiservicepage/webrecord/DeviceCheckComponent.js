@@ -25,10 +25,14 @@ const DeviceCheckComponent = () => {
   const [successMessage, setSuccessMessage] = useState(""); // 테스트 통과 메시지 저장
   const [failureReason, setFailureReason] = useState(""); // 실패 원인 저장
   const [testButtonWarning, setTestButtonWarning] = useState(""); // 실전 테스트 버튼 클릭 시 경고 메시지
+
   const navigate = useNavigate();
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false); // 모달 상태
+  const [selectedPost, setSelectedPost] = useState(null); // 선택된 게시글 저장
 
   let audioContext, analyser, microphone;
 
+  
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices()
       .then((devices) => {
@@ -227,7 +231,7 @@ const DeviceCheckComponent = () => {
     // if (!isTestPassed) {
     //   setTestButtonWarning("장치 테스트 통과 후 눌러주세요.");
     // } else {
-      navigate('/realTestPage'); // 실전 테스트 페이지로 이동
+      navigate('/productComponent'); // 실전 테스트 페이지로 이동
     //}
   };
 
