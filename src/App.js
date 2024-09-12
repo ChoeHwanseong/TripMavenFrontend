@@ -82,6 +82,7 @@ import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckCo
 import PronunciationTest1 from './pages/aiservicepage/PronunciationTest';
 import { newsCrawling } from './utils/PythonServerAPI';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
+import CombinedPage from './pages/aiservicepage/AIPage';
 
 
 
@@ -176,6 +177,7 @@ function App() {
         <Route path='/analysisresult' element={<AnalysisResult/>}/>
         <Route path='/result' element={<Result/>}/>
         <Route path='/pronunciation/*' element={<PronunciationRoutes />}/>
+        <Route path='/aipage' element={<CombinedPage/>}/>
         
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>

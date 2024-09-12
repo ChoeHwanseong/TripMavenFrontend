@@ -32,7 +32,8 @@
 }
 
 .title {
-    font-size: 24px;
+    font-size: 26px;
+    font-weight: bold;
     margin-bottom: 20px;
 }
 
@@ -44,7 +45,8 @@
 }
 
 .scoreCircle {
-    margin-right: 40px;
+    margin: 0 auto;
+    margin-top: 20px;
 }
 
 .graphSection {
@@ -74,5 +76,13 @@
 }
 
 .viewQuestionsButton {
-background-color: #e7f0fa;
+    color: #ffffff;
+    padding: 5px;
+    width: 170px;
+    height: 45px;
+    margin: 0 auto;
+    margin-top: 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0066ff;
 }
