@@ -97,45 +97,44 @@ const Home = () => {
         </div>
 
         {/* AI 소개 섹션 */}
-        <Box sx={{
-          background: '#ffffff',
-          p: 3,
-          borderRadius: 2,
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          border: '1px solid #f1f1f1',
-          mb: '45px'
-        }}>
-          <Typography variant="h4" fontWeight="bold" mb={3}/>
-          <Grid container spacing={3} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <Card>
-                <CardMedia
-                  component="img"
-                  height="300"
-                  image="/images/aiRobot.png"
+        <Box className={styles.aiSection}>
+          <div className={styles.waveContainer}>
+            <svg className={styles.waves} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
+              viewBox="0 24 150 28" preserveAspectRatio="none" shapeRendering="auto">
+              <defs>
+                <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+              </defs>
+              <g className={styles.parallax}>
+                <use xlinkHref="#gentle-wave" x="48" y="0" fill="rgba(0,102,255,0.7)" />
+                <use xlinkHref="#gentle-wave" x="48" y="3" fill="rgba(0,102,255,0.5)" />
+                <use xlinkHref="#gentle-wave" x="48" y="5" fill="rgba(0,102,255,0.3)" />
+                <use xlinkHref="#gentle-wave" x="48" y="7" fill="rgba(0,102,255,0.1)" />
+              </g>
+            </svg>
+          </div>
+          <Grid container spacing={2} alignItems="center" className={styles.aiContent}>
+            <Grid item xs={12} md={4}>
+              <div className={styles.aiImageContainer}>
+                <img
+                  src="/images/aiRobot.png"
                   alt="AI Travel Planner"
+                  className={styles.aiImage}
                 />
-              </Card>
+              </div>
             </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="h6" gutterBottom>
+            <Grid item xs={12} md={8}>
+              <Typography variant="h6" className={styles.aiTitle}>
                 AI가 당신의 완벽한 가이드를 서포트합니다!
               </Typography>
-              <Typography variant="body1" paragraph>
-                우리의 AI 서비스는 당신의 가이드 능력에 맞는 최적의 서비스르 제공합니다. 
+              <Typography variant="body2" className={styles.aiDescription}>
+                우리의 AI는 당신의 가이드 능력에 맞는 최적의 서비스를 제공합니다.
                 재밌는 퀴즈, 실전 테스트까지 - AI와 함께 특별한 경험을 체험하세요.
               </Typography>
               <Button
                 variant="contained"
-                onClick={handleAIServiceClick}
-                sx={{
-                  fontSize: '16px',
-                  fontWeight: 'bold',
-                  color: '#ffffff',
-                  backgroundColor: '#0066ff',
-                  borderRadius: 2,
-                  '&:hover': { backgroundColor: '#0056b3' }
-                }}
+                onClick={() => navigate('/aiservice')}
+                className={styles.aiButton}
+                style={{mb:4}}
               >
                 AI 서비스 체험하기
               </Button>
