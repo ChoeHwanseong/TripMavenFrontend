@@ -7,7 +7,6 @@
 }
 
 .headerimg {
-  /*background-image: url("../../../public/images/HomeHeader.jpg");*/
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 50% -600px;
@@ -28,9 +27,7 @@
   100% {
     background-image: url("../../../public/images/HomeHeader.jpg");
   }
-
 }
-
 
 .searchBar {
   display: flex;
@@ -152,4 +149,36 @@
 .infoList li {
   margin-bottom: 8px;
   color: #333;
+}
+
+.aiSection {
+  margin-bottom: 40px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.aiImage {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.aiButton {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #0066ff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.aiButton:hover {
+  background-color: #0056b3;
 }
