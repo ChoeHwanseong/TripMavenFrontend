@@ -51,13 +51,14 @@ export const fetchFiles = async (productboardId) => {
 // 1개 파일 가져오기 
 export const fetchFile = async (filename,productboardId) => {
   try {
+    console.log('파일이므리: ',filename);
     const response = await axios.get(`${baseUrl}/upload/${productboardId}/${filename}`, {
        responseType: 'blob'
     });
     
-    console.log(response.data)
+    console.log('파일이르미 응답: ',response.data)
     // Blob 데이터를 Blob URL로 변환하여 반환
-    const blobUrl = URL.createObjectURL(response.data);
+    let blobUrl = URL.createObjectURL(response.data);
     console.log('blobUrl: ', blobUrl);
     return blobUrl;
   } catch (error) {
@@ -69,6 +70,7 @@ export const fetchFile = async (filename,productboardId) => {
 // 파일 가져오기(가이드 인증용 파일 이름으로 가져오기, guidelicense)
 export const fetchLicenseFile = async (filename) => {
   try {
+      console.log('파일 이름: ',filename);
       const response = await axios.get(`${baseUrl}/downloadlicense/${filename}`, {
         responseType: 'blob' // 서버에서 Blob으로 파일 데이터를 받아옴
       });

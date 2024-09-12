@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Box, Button, Grid, Typography, Card, CardMedia, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import KoreaWeatherMap from './KoreaWeather';
 import RegionEventInfo from './RegionEvent';
-import DetailedWeatherMap from './DetailedWeatherMap';  // 새로 추가된 import
+import GuideRankings from './GuideRanking';
+import DetailedWeatherMap from './DetailedWeatherMap';
 import styles from '../../styles/home/Home.module.css';
 import { useFormik } from 'formik';
 
@@ -28,7 +28,11 @@ const Home = () => {
 
   const handleEventRegionChange = (region) => {
     setEventSelectedRegion(region);
-    setWeatherSelectedRegion(region); // 이벤트 지역 변경 시 날씨 지도도 업데이트
+    setWeatherSelectedRegion(region);
+  };
+
+  const handleAIServiceClick = () => {
+    navigate('/aiservice');
   };
 
   return (
@@ -92,6 +96,52 @@ const Home = () => {
           </Box>
         </div>
 
+        {/* AI 소개 섹션 */}
+        <Box className={styles.aiSection}>
+          <div className={styles.waveContainer}>
+            <svg className={styles.waves} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
+              viewBox="0 24 150 28" preserveAspectRatio="none" shapeRendering="auto">
+              <defs>
+                <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+              </defs>
+              <g className={styles.parallax}>
+                <use xlinkHref="#gentle-wave" x="48" y="0" fill="rgba(0,102,255,0.7)" />
+                <use xlinkHref="#gentle-wave" x="48" y="3" fill="rgba(0,102,255,0.5)" />
+                <use xlinkHref="#gentle-wave" x="48" y="5" fill="rgba(0,102,255,0.3)" />
+                <use xlinkHref="#gentle-wave" x="48" y="7" fill="rgba(0,102,255,0.1)" />
+              </g>
+            </svg>
+          </div>
+          <Grid container spacing={2} alignItems="center" className={styles.aiContent}>
+            <Grid item xs={12} md={4}>
+              <div className={styles.aiImageContainer}>
+                <img
+                  src="/images/aiRobot.png"
+                  alt="AI Travel Planner"
+                  className={styles.aiImage}
+                />
+              </div>
+            </Grid>
+            <Grid item xs={12} md={8}>
+              <Typography variant="h6" className={styles.aiTitle}>
+                AI가 당신의 완벽한 가이드를 서포트합니다!
+              </Typography>
+              <Typography variant="body2" className={styles.aiDescription}>
+                우리의 AI는 당신의 가이드 능력에 맞는 최적의 서비스를 제공합니다.
+                재밌는 퀴즈, 실전 테스트까지 - AI와 함께 특별한 경험을 체험하세요.
+              </Typography>
+              <Button
+                variant="contained"
+                onClick={() => navigate('/aiservice')}
+                className={styles.aiButton}
+                style={{mb:4}}
+              >
+                AI 서비스 체험하기
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+
         {/* 정보 섹션 */}
         <Grid container spacing={5}>
           <Grid item xs={12} md={6}>
@@ -137,18 +187,13 @@ const Home = () => {
               border: '1px solid #f1f1f1',
               height: '100%'
             }}>
-              <Typography variant="h6" fontWeight="bold" gutterBottom>기상 정보</Typography>
-              <KoreaWeatherMap
-                width="100%"
-                height="400px"
-                selectedRegion={weatherSelectedRegion}
-                setSelectedRegion={setWeatherSelectedRegion}
-              />
+              <Typography variant="h6" fontWeight="bold" gutterBottom>가이드 순위</Typography>
+              <GuideRankings /> 
             </Box>
           </Grid>
         </Grid>
 
-        {/* 상세 날씨 정보 (새로 추가된 섹션) */}
+        {/* 상세 날씨 정보 */}
         <Box sx={{
           background: '#ffffff',
           p: 3,

@@ -138,16 +138,22 @@
 .blur{
   overflow: hidden;
 }
+/*
 
 .wrapper{
   position: relative;
-}
+} */
 
 .blurOverlay{
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
+  height: 50px; /* 블러가 적용되는 높이 설정 */
+/*  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255) 90%);
+  backdrop-filter: blur(8px); /* 블러 강도 조정 */
+  /*pointer-events: none; /* 클릭이 블러 오버레이를 통과하여 아래 요소에 전달되도록 설정 */
+
   height: 100px; /* 블러가 적용되는 높이 설정 */
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255) 90%);
   backdrop-filter: blur(0.3px); /* 블러 강도 조정 */
@@ -215,4 +221,16 @@ background-color: #fff;
 
 .container {
   margin-top: 20px; /* Adjust the value as needed */
+}
+
+/* ButtonStyles.module.css */
+.buttonContainer {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%; /* 전체 너비를 사용하여 왼쪽 정렬 */
+}
+
+.outlinedButton {
+  margin-right: 16px; /* 버튼 오른쪽에 마진 추가 */
+  justify-content: flex-start;
 }
