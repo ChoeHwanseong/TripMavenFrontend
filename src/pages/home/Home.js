@@ -35,7 +35,7 @@ const Home = () => {
     <div className={styles.headerimg}>
       <Box sx={{ maxWidth: '1200px', mx: 'auto', mt: 10, p: 3 }}>
         
-{킹*/}
+{/*킹*/}
         <Grid container spacing={5}>
           <Grid item xs={12} md={6}>
             <Box sx={{
