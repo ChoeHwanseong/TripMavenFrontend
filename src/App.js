@@ -77,12 +77,9 @@ import Reviews from './pages/guidemypage/guidepost/ReviewList';
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
-<<<<<<< HEAD
 import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
-=======
 import CombinedPage from './pages/aiservicepage/AIPage';
 
->>>>>>> 35955fe0b9fff8b0558c52d6df26517b78556729
 
 
 

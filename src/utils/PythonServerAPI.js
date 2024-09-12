@@ -48,7 +48,6 @@ export const newsCrawling = async()=>{
   }
 }
 
-<<<<<<< HEAD
 //영상 전송 분석(얼굴 표정)
 export const videoFace = async(formData)=>{
   try {
@@ -65,7 +64,6 @@ export const videoFace = async(formData)=>{
       return { success: false, error: error.message };
   }
 }
-=======
 
 //음성+텍스트 평가
 //voice 음성데이터, gender , text
@@ -103,4 +101,3 @@ export const evaluatePronunciation = async (formData) => {
     }
 };
 
->>>>>>> 35955fe0b9fff8b0558c52d6df26517b78556729
