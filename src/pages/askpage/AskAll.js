@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper } from '@mui/material';
+import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper, Pagination } from '@mui/material';
 import { csAllget } from '../../utils/csData';
 
 const AskAll = () => {
-  const [inquiry, setInquiries] = useState([]);
+  const [inquiries, setInquiries] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const itemsPerPage = 10;
   const membersId = localStorage.getItem('membersId');
   const navigate = useNavigate();
 
@@ -13,6 +16,7 @@ const AskAll = () => {
       try {
         const fetchedData = await csAllget();
         setInquiries(fetchedData);
+        setTotalPages(Math.ceil(fetchedData.length / itemsPerPage));
       } catch (error) {
         console.error('에러났당', error);
       }
@@ -24,20 +28,30 @@ const AskAll = () => {
     navigate(`/askdetailsview/${inquiry.id}`);
   };
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
+  const paginatedInquiries = inquiries.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+
   return (
     <Box sx={{ maxWidth: 1200, mx: 'auto', p: 3.5 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m:3 }}>
-        <Typography 
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m: 3 }}>
+        <Typography
           style={{fontWeight:'bold',marginLeft:'-15px'}}
-          variant="h4">문의 내역</Typography>
-        <Button 
-          variant="contained" 
-          sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }} 
-          onClick={() => navigate(`/askdetails/${membersId}`)}>
+          variant="h4"
+        >
+          문의 내역
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}
+          onClick={() => navigate(`/askdetails/${membersId}`)}
+        >
           문의 하기
         </Button>
       </Box>
-            
+      
       <TableContainer component={Paper}>
         <Table>
           <TableHead sx={{backgroundColor:'#f9f9f9'}}>
@@ -49,7 +63,7 @@ const AskAll = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {inquiry.map((inquiry, index) => (
+            {paginatedInquiries.map((inquiry, index) => (
               <TableRow
                 key={index}
                 hover
@@ -66,10 +80,16 @@ const AskAll = () => {
         </Table>
       </TableContainer>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <Button disabled>{'<'}</Button>
-        <Typography sx={{ mx: 2 }}>1</Typography>
-        <Button>{'>'}</Button>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 3 }}>
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={handlePageChange}
+          showFirstButton
+          showLastButton
+          siblingCount={1}
+          boundaryCount={1}
+        />
       </Box>
     </Box>
   );
