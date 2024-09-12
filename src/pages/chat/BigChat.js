@@ -174,7 +174,7 @@ function BigChat() {
         <h2 className={styles.chatName}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
       </div>
 
-      <div className={styles.chatMessages} ref={messagesEndRef}>
+      <div className={styles.chatMessages}>
         {chatMessages.map((msg, index) => (
           <div className={styles.messageNTime} key={index}>
             <div
@@ -195,6 +195,7 @@ function BigChat() {
             </span>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
         <div className={styles.chatInputSection}>

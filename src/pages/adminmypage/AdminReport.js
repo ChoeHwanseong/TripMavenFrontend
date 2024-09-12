@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar, Pagination } from '@mui/material';
 import { reportfetchAllData } from '../../utils/reportfetchData';
 
 const AdminReport = () => {
-  const [inquiry, setInquiries] = useState([]);
+  const [inquiries, setInquiries] = useState([]);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage] = useState(10);
 
   useEffect(() => {
     const getReportData = async () => {
@@ -17,6 +19,15 @@ const AdminReport = () => {
 
     getReportData();
   }, []);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Pagination
+  const indexOfLastRow = page * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = inquiries.slice(indexOfFirstRow, indexOfLastRow);
 
   return (
     <Box sx={{ maxWidth: 1200, p: 3, mt: 3 }}>
@@ -43,7 +54,7 @@ const AdminReport = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {inquiry.map((inquiry, index) => (
+            {currentRows.map((inquiry, index) => (
               <TableRow key={index}>
                 <TableCell>{inquiry.member.id}</TableCell>
                 <TableCell>{inquiry.member.name}</TableCell>
@@ -62,6 +73,15 @@ const AdminReport = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+        <Pagination
+          count={Math.ceil(inquiries.length / rowsPerPage)}
+          page={page}
+          onChange={handleChangePage}
+          color="primary"
+        />
+      </Box>
     </Box>
   );
 };

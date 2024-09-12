@@ -7,7 +7,6 @@
 }
 
 .headerimg {
-  /*background-image: url("../../../public/images/HomeHeader.jpg");*/
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 50% -600px;
@@ -28,9 +27,7 @@
   100% {
     background-image: url("../../../public/images/HomeHeader.jpg");
   }
-
 }
-
 
 .searchBar {
   display: flex;
@@ -152,4 +149,93 @@
 .infoList li {
   margin-bottom: 8px;
   color: #333;
+}
+
+.aiSection {
+  position: relative;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f1f1f1;
+  margin-bottom: 2rem;
+  overflow: hidden;
+  max-height: 300px;
+}
+
+.waveContainer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  z-index: 1;
+}
+
+.waves {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+}
+
+.parallax > use {
+  animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+}
+.parallax > use:nth-child(1) { animation-delay: -2s; animation-duration: 7s; }
+.parallax > use:nth-child(2) { animation-delay: -3s; animation-duration: 10s; }
+.parallax > use:nth-child(3) { animation-delay: -4s; animation-duration: 13s; }
+.parallax > use:nth-child(4) { animation-delay: -5s; animation-duration: 20s; }
+
+@keyframes move-forever {
+  0% { transform: translate3d(-90px,0,0); }
+  100% { transform: translate3d(85px,0,0); }
+}
+
+.aiContent {
+  position: relative;
+  z-index: 2;
+}
+
+.aiImageContainer {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+}
+
+.aiImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.aiTitle {
+  color: #ffffff;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  margin-bottom: 0.5rem;
+}
+
+.aiDescription {
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  color: #ffffff;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.aiButton {
+  font-size: 0.9rem !important;
+  font-weight: bold !important;
+  color: #0066ff !important;
+  background-color: #ffffff !important;
+  border-radius: 2rem !important;
+  padding: 0.5rem 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.aiButton:hover {
+  background-color: #f0f0f0 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
 }
