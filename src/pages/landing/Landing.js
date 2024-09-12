@@ -18,6 +18,7 @@ import koreamap from '../../images/Event.png';
 import santoriniView from '../../images/travel.jpg';
 import scrollTopGif from '../../images/scroll-top.gif';
 import bgVideo from '../../videos/BG-video.mp4';
+import { logout } from '../../utils/memberData';
 
 const TravelLandingPage = () => {
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
@@ -25,7 +26,13 @@ const TravelLandingPage = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showPage, setShowPage] = useState(true);
   const navigate = useNavigate();
-
+  //로그아웃 함수
+  const handleLogout = () => {
+    logout().then(res => {
+      localStorage.clear();
+      navigate('/home');
+    })
+  }
   useEffect(() => {
     const handleScroll = () => {
       setIsNavbarShrunk(window.scrollY > 100);
@@ -91,7 +98,11 @@ const TravelLandingPage = () => {
               <li className={styles.navItem}><a className={styles.navLink} href="#about" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>About</a></li>
               <li className={styles.navItem}><a className={styles.navLink} href="#features" onClick={(e) => { e.preventDefault(); scrollToSection('features'); }}>Features</a></li>
               <li className={styles.navItem}><a className={styles.navLink} href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>Contact</a></li>
-              <li className={styles.navItem}><a className={styles.navLink} href="/login">Login</a></li>
+              {!localStorage.getItem("token") ?
+                <li className={styles.navItem}><a className={styles.navLink} href="/login">Login</a></li>
+                :
+                <li className={styles.navItem}><a className={styles.navLink} onClick={handleLogout} href="/home">Logout</a></li>
+              }
             </ul>
           </div>
         </nav>
@@ -108,7 +119,7 @@ const TravelLandingPage = () => {
                 <img src={Logo} alt="Travel logo" className={styles.logo} />
                 <h1 className={styles.heroTitle}>TRIPMAVEN</h1>
                 <h2 className={styles.heroSubtitle}>프리랜서 여행 가이드의 완벽한 파트너,<br />
-                TripMaven을 경험하세요.</h2>
+                  TripMaven을 경험하세요.</h2>
                 <button className={styles.btn} onClick={handleStartClick}>
                   <span className={styles.btnText}>시작하기</span>
                 </button>
@@ -134,8 +145,8 @@ const TravelLandingPage = () => {
               <div className={`${styles.container} ${styles.flexContainer}`}>
                 <div className={styles.flexHalf}>
                   <h2 className={styles.sectionTitle}>고객을 위하여</h2>
-                  <p className={styles.sectionText}>지역만 검색하면 날씨와 행사들을 한눈에 찾아볼 수 있습니다.<br/>
-                  고객들께서 여러분이 가고자 하는곳에 어디든 가이드가 있습니다 </p>
+                  <p className={styles.sectionText}>지역만 검색하면 날씨와 행사들을 한눈에 찾아볼 수 있습니다.<br />
+                    고객들께서 여러분이 가고자 하는곳에 어디든 가이드가 있습니다 </p>
                 </div>
                 <div className={`${styles.flexHalf} ${styles.imageWrapper}`}>
                   <img src={koreamap} alt="Tropical beach" className={styles.sectionImage} />
@@ -150,8 +161,8 @@ const TravelLandingPage = () => {
                   TripMaven의 주기능
                 </h2>
                 <p className={styles.sectionSubtitle}>
-                  저희는 행동, 시선, 표정을 평가하여 가이드 여러분의 능력을 향상시켜줍니다<br/>
-                  여행지 소개, 고객 응대 등을 평가받고 향상시켜 보세요!         
+                  저희는 행동, 시선, 표정을 평가하여 가이드 여러분의 능력을 향상시켜줍니다<br />
+                  여행지 소개, 고객 응대 등을 평가받고 향상시켜 보세요!
                 </p>
                 <div className={styles.featuresContainer}>
                   {[
@@ -198,7 +209,7 @@ const TravelLandingPage = () => {
           </div>
         </div>
         <Footer />
-        
+
         {showScrollTop && (
           <button className={styles.scrollTopButton} onClick={scrollToTop}>
             <img src={scrollTopGif} alt="Scroll to top" className={styles.scrollTopIcon} />
