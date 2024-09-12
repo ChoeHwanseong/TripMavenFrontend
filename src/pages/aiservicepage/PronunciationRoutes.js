@@ -4,6 +4,7 @@ import MICTest from "./MICTest";
 import { newsCrawling } from "../../utils/PythonServerAPI";
 import { useEffect } from "react";
 import { PronunContext } from "../../context/PronunContext";
+import PronunciationResult from "./PronunciationResult";
 
 export default function PronunciationRoutes() {
     let newsHeadLine = []
@@ -26,6 +27,7 @@ export default function PronunciationRoutes() {
             <Routes>
                 <Route path="" element={<MICTest />} /> {/*URL이 /pronunciation 라면 마이크 테스트 */}
                 <Route path="/:sequence" element={<PronunciationTest />} /> {/* URL이 /pronunciation/시퀀스면 라면 발음 테스트 */}
+                <Route path='/result' element={<PronunciationResult/>}/>
                 <Route path="*" element={<Navigate to="" replace={true} />} /> {/*URL이 /pronunciation/시퀀스 이외의 URL은 URL이 /pronunciation로 */}
             </Routes>
         </PronunContext.Provider>

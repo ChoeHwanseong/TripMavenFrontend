@@ -22,6 +22,87 @@
 }
 
 /* 프로필 및 폼 스타일 */
+
+
+.header {
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.navButton {
+  margin: 0 10px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+}
+
+.navButton:hover,
+.dropdownButton:hover {
+  color: #0066ff;
+}
+
+.sidebarTitle {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menuItem {
+  margin-bottom: 10px;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.menuItem:hover {
+  color: #0066ff;
+}
+
+.mainContent {
+  flex-grow: 1;
+}
+
+.titlecotainer {
+  display: flex;
+}
+
+.title {
+  font-size: 2em;
+  margin-bottom: 20px;
+  margin-right: 30px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttoncontainer {
+  margin-top: 15px;
+}
+
+.passwdButton {
+  color: #0066ff;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  margin-right: 815px;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  text-decoration: underline;
+}
+
 .profileSection {
   display: flex;
   flex-direction: column;

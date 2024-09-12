@@ -7,22 +7,22 @@ import moment from 'moment';
 
 // GeoJSON 파일들을 import 합니다
 import seoulGeo from '../../data/Seoul.geojson';
-import busanGeo from '../../data/busan.geojson';
-import daeguGeo from '../../data/daegu.geojson';
-import incheonGeo from '../../data/incheon.geojson';
-import gwangjuGeo from '../../data/gwangju.geojson';
-import daejeonGeo from '../../data/daejeon.geojson';
-import ulsanGeo from '../../data/ulsan.geojson';
-import sejongGeo from '../../data/sejong.geojson';
-import gyeonggiGeo from '../../data/gyeonggi.geojson';
-import gangwonGeo from '../../data/Gangwon.geojson';
-import chungbukGeo from '../../data/chungbuk.geojson';
-import chungnamGeo from '../../data/chungnam.geojson';
-import jeonbukGeo from '../../data/jeonbuk.geojson';
-import jeonnamGeo from '../../data/jeonnam.geojson';
-import gyeongbukGeo from '../../data/gyeongbuk.geojson';
-import gyeongnamGeo from '../../data/gyeongnam.geojson';
-import jejuGeo from '../../data/jeju.geojson';
+import busanGeo from '../../data/BuSan.geojson';
+import daeguGeo from '../../data/DaeGu.geojson';
+import incheonGeo from '../../data/InCheon.geojson';
+import gwangjuGeo from '../../data/GwangJu.geojson';
+import daejeonGeo from '../../data/DaeJeon.geojson';
+import ulsanGeo from '../../data/UlSan.geojson';
+import sejongGeo from '../../data/SeJong.geojson';
+import gyeonggiGeo from '../../data/GyeongGi.geojson';
+import gangwonGeo from '../../data/GangWon.geojson';
+import chungbukGeo from '../../data/ChungBuk.geojson';
+import chungnamGeo from '../../data/ChungNam.geojson';
+import jeonbukGeo from '../../data/JeonBuk.geojson';
+import jeonnamGeo from '../../data/JeonNam.geojson';
+import gyeongbukGeo from '../../data/GyeongBuk.geojson';
+import gyeongnamGeo from '../../data/GyeongNam.geojson';
+import jejuGeo from '../../data/JeJu.geojson';
 
 const API_KEY = '48c33cc2626bc56bc2e94df1221b05b1';
 
@@ -46,7 +46,7 @@ const cityNameMapping = {
   '제주특별자치도': 'Jeju City,KR'
 };
 
-// 서울 구 정보
+//서울 정보
 const seoulDistricts = {
   '서울특별시 종로구': 'Jongno-gu,Seoul,KR',
   '서울특별시 중구': 'Jung-gu,Seoul,KR',
@@ -75,7 +75,7 @@ const seoulDistricts = {
   '서울특별시 강동구': 'Gangdong-gu,Seoul,KR'
 };
 
-// 부산 구 정보
+//부산 정보
 const busanDistricts = {
   '부산광역시 중구': 'Jung District,KR',
   '부산광역시 서구': 'Seo District,KR',
@@ -95,10 +95,99 @@ const busanDistricts = {
   '부산광역시 기장군': 'Gijang,KR'
 };
 
+//강원 정보
+const gangwonDistricts = {
+  '강원특별자치도 춘천시': 'Chuncheon, KR',
+  '강원특별자치도 원주시': 'Wonju, KR',
+  '강원특별자치도 강릉시': 'Gangneung, KR',
+  '강원특별자치도 동해시': 'Wonju, KR',
+  '강원특별자치도 태백시': "T'aebaek, KR",
+  '강원특별자치도 속초시': 'Sokcho, KR',
+  '강원특별자치도 삼척시': 'Wonju, KR',
+  '강원특별자치도 홍천군': 'Hongcheon-gun, KR',
+  '강원특별자치도 횡성군': 'Hoengseong-gun, KR',
+  '강원특별자치도 영월군': 'Yeongwol-gun, KR',
+  '강원특별자치도 평창군': 'Pyeongchang-gun, KR',
+  '강원특별자치도 정선군': 'Jeongseon-gun, KR',
+  '강원특별자치도 철원군': 'Cheorwon-gun, KR',
+  '강원특별자치도 화천군': 'Hwacheon-gun, KR',
+  '강원특별자치도 양구군': 'Yanggu-gun, KR',
+  '강원특별자치도 인제군': 'Inje-gun, KR',
+  '강원특별자치도 고성군': 'Goseong-gun, KR',
+  '강원특별자치도 양양군': 'Yangyang-gun, KR'
+};
+
+//인천 정보
+const incheonDistricts = {
+  '인천광역시 중구': 'Jung-gu, KR',
+  '인천광역시 동구': 'Dong-gu, KR',
+  '인천광역시 미추홀구': 'Nam-gu,KR',
+  '인천광역시 연수구': 'Yeonsu-gu,KR',
+  '인천광역시 남동구': 'Namdong-gu,KR',
+  '인천광역시 부평구': 'Bupyeong-gu,KR',
+  '인천광역시 계양구': 'Gyeyang-gu,KR',
+  '인천광역시 서구': 'Seo-gu,KR',
+  '인천광역시 강화군': 'Ganghwa-gun,KR',
+  '인천광역시 옹진군': 'Ongjin, KP'
+};
+
+//광주 정보
+const gwangjuDistricts = {
+  '광주광역시 동구': 'Gwangju, KR',
+  '광주광역시 서구': 'Jeonju, KR',
+  '광주광역시 남구': 'Gwangju, KR',
+  '광주광역시 북구': 'Jeonju, KR',
+  '광주광역시 광산구': 'Gwangju, KR'
+};
+
+//대구 정보
+const daeguDistricts = {
+  '대구광역시 중구': 'Jung-gu, KR',
+  '대구광역시 동구': 'Dong District, KR',
+  '대구광역시 서구': 'Seo District, KR',
+  '대구광역시 남구': 'namgu, KR',
+  '대구광역시 북구': 'Buk District, KR',
+  '대구광역시 수성구': 'Daegu, KR',
+  '대구광역시 달서구': 'Daegu, KR',
+  '대구광역시 달성군': 'Daegu, KR'
+};
+
+//대전 정보
+const daejeonDistricts = {
+  '대전광역시 동구': 'Dong-gu, KR',
+  '대전광역시 중구': 'Jung-gu, KR',
+  '대전광역시 서구': 'Seo-gu, KR',
+  '대전광역시 유성구': 'Yuseong-gu, KR',
+  '대전광역시 대덕구': 'Daedeok-gu, KR'
+};
+
+//울산 정보
+
+//세종 정보
+const sejongCity = {
+  '세종특별자치시': 'Sejong, KR'
+};
+
+//경기 정보
+
+//충북 정보
+
+//충남 정보
+
+//전북 정보
+
+//전남 정보
+
+//경북 정보
+
+//경남 정보
+
+//제주 정보
+
 const regionSettings = {
   '서울특별시': { scale: 49000, center: [126.9895, 37.5651], geoData: seoulGeo },
   '부산광역시': { scale: 36000, center: [129.0756, 35.1996], geoData: busanGeo },
-  '대구광역시': { scale: 34000, center: [128.6014, 35.8154], geoData: daeguGeo },
+  '대구광역시': { scale: 18000, center: [128.6014, 35.9954], geoData: daeguGeo },
   '인천광역시': { scale: 20000, center: [126.5232, 37.4963], geoData: incheonGeo },
   '광주광역시': { scale: 55000, center: [126.8516, 35.1601], geoData: gwangjuGeo },
   '대전광역시': { scale: 45000, center: [127.3845, 36.3504], geoData: daejeonGeo },
@@ -106,7 +195,7 @@ const regionSettings = {
   '세종특별자치시': { scale: 40000, center: [127.2894, 36.5700], geoData: sejongGeo },
   '경기도': { scale: 10000, center: [127.0096, 37.6150], geoData: gyeonggiGeo },
   '강원도': { scale: 8000, center: [128.2000, 37.8000], geoData: gangwonGeo },
-  '충청북도': { scale: 10000, center: [127.7000, 36.7000], geoData: chungbukGeo },
+  '충청북도': { scale: 10000, center: [127.9000, 36.7000], geoData: chungbukGeo },
   '충청남도': { scale: 12000, center: [126.8000, 36.5500], geoData: chungnamGeo },
   '전라북도': { scale: 12000, center: [127.1500, 35.7200], geoData: jeonbukGeo },
   '전라남도': { scale: 7500, center: [126.7500, 34.7600], geoData: jeonnamGeo },
@@ -179,7 +268,17 @@ const DetailedWeatherMap = ({ selectedRegion: externalSelectedRegion }) => {
       fetchWeatherData(seoulDistricts[districtName]);
     } else if (selectedRegion === '부산광역시' && busanDistricts[districtName]) {
       fetchWeatherData(busanDistricts[districtName]);
-    }
+    } else if (selectedRegion === '인천광역시' && incheonDistricts[districtName]) {
+      fetchWeatherData(incheonDistricts[districtName]);
+    } else if (selectedRegion === '강원도' && gangwonDistricts[districtName]) {
+      fetchWeatherData(gangwonDistricts[districtName]);
+    } else if (selectedRegion === '광주광역시' && gwangjuDistricts[districtName]) {
+      fetchWeatherData(gwangjuDistricts[districtName]);
+    } else if (selectedRegion === '대구광역시' && daeguDistricts[districtName]) {
+      fetchWeatherData(daeguDistricts[districtName]);
+    } else if (selectedRegion === '대전광역시' && daejeonDistricts[districtName]) {
+      fetchWeatherData(daejeonDistricts[districtName]);
+    } 
   }, [selectedRegion]);
 
   const CustomTooltip = ({ active, payload, label }) => {

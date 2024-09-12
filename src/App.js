@@ -13,7 +13,6 @@ import UserReview from './pages/usermypage/UserReview';
 import AdminAsk from './pages/adminmypage/AdminAsk';
 import AdminReport from './pages/adminmypage/AdminReport';
 import AdminProfile from './pages/adminmypage/AdminProfile';
-import AIService from './pages/aiservicepage/AIService';
 import TermsService from './pages/infopage/TermsService';
 import RegisterGuide from './pages/registerguidepage/RegisterGuide';
 //import GuideMyPageLike from './pages/guidemypage/guidemypagelike/guideMyPageLike';
@@ -60,7 +59,7 @@ import FindPassword3 from './pages/login/FindPassword3';
 import FindID2 from './pages/login/FindId2';
 import PasswordChangeForm from './pages/login/PasswordChangeForm';
 import ChattingRoom from './pages/chat/ChattingRoom';
-import AiServiceInfo from './pages/aiservicepage/AIServiceInfo';
+
 import DeviceCheckComponent from './pages/aiservicepage/webrecord/DeviceCheckComponent';
 import WebcamRecorder from './pages/aiservicepage/webrecord/WebcamRecorder';
 import LoginSuccess from './pages/login/LogInSuccess';
@@ -70,20 +69,20 @@ import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
 import QuizForm2 from './pages/aiservicepage/QuizForm2';
 import QuizTutorial from './pages/aiservicepage/QuizTutorial';
 import PronunciationTestTutorial from './pages/aiservicepage/PronunciationTestTutorial';
-import MICTest from './pages/aiservicepage/MICTest';
 import RealTest1 from './pages/aiservicepage/RealTest1';
-import PronunciationTest from './pages/aiservicepage/PronunciationTest';
 import PostDetails from './pages/productPage/PostDetails';
 import RealTestPage from './pages/aiservicepage/RealTestPage'
 import RealTestResult from './pages/aiservicepage/RealTestResult'
 import Reviews from './pages/guidemypage/guidepost/ReviewList';
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
-import Result from './pages/aiservicepage/Result';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
-import PronunciationTest1 from './pages/aiservicepage/PronunciationTest';
-import { newsCrawling } from './utils/PythonServerAPI';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
+<<<<<<< HEAD
 import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
+=======
+import CombinedPage from './pages/aiservicepage/AIPage';
+
+>>>>>>> 35955fe0b9fff8b0558c52d6df26517b78556729
 
 
 
@@ -159,7 +158,6 @@ function App() {
         <Route path='/videoAppUpload' element={<VideoAppUpload/>}/>
         
         
-        <Route path='/aiservice' element={<AIService/>}/>
         <Route path="/cs" element={<CSBoard/>}/>
         <Route path="/siteinfo" element={<SiteIntroduction/>}/>
         <Route path="/faq" element={<FAQ/>}/>
@@ -172,7 +170,7 @@ function App() {
         <Route path='/findpassword2' element={<FindPassword2/>}/>
         <Route path='/findpassword3' element={<FindPassword3/>}/>
         <Route path='/passwordchange' element={<PasswordChangeForm/>}/>
-        <Route path='/aiserviceinfo' element={<AiServiceInfo/>}/>
+        
         {/* <Route path='/precautionspage1' element={<PrecautionsPage1/>}/> */}
         <Route path='/precautionspage1' element={<PrecautionsPage1/>}/>
         <Route path='/quizform2' element={<QuizForm2/>}/>
@@ -180,8 +178,8 @@ function App() {
         <Route path='/pronunciationtesttutorial' element={<PronunciationTestTutorial/>}/>
         <Route path='/realtest1' element={<RealTest1 />}/>
         <Route path='/analysisresult' element={<AnalysisResult/>}/>
-        <Route path='/result' element={<Result/>}/>
         <Route path='/pronunciation/*' element={<PronunciationRoutes />}/> {/*  URL이 /pronunciation 로 시작하는 애들은 PronunciationRoutes여기서 처리해주세요~ */}
+        <Route path='/aipage' element={<CombinedPage/>}/>
         
 
         <Route path='/registerguide' element={<RegisterGuide/>}/>

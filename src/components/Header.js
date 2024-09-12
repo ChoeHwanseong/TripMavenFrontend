@@ -162,7 +162,7 @@ const NotificationComponent = ({notifications, setNotifications}) => {
                                     <Typography variant="body2" style={{fontWeight: 'bold', color: 'red'}}>{notification.type=='chat' && notification.content.length}</Typography>
                                     */}
                                     {notification.type=='chat' && (
-                                        <span class="badge rounded-pill bg-danger" style={{fontSize:'11px'}}>{notification.type=='chat' && notification.content.length}</span>
+                                        <span className="badge rounded-pill bg-danger" style={{fontSize:'11px'}}>{notification.type=='chat' && notification.content.length}</span>
                                     )}
                                 </Box>
                             </NotificationItem>
@@ -313,11 +313,12 @@ const Header = () => {
     //상품목록 페이지 벗어날때 검색창 비우기
     //url변경시 리렌더링 되게?
     useEffect(() => {
-        //console.log(location.pathname);
-        if(mqttClientList.length==0){ //mqtt연결 리스트가 비어있을 경우에만(마운트시)
-            const chatList = getChattingList();
-            setMqttClientList(chatList); //mqtt연결 리스트 상태
-            getNoti(1); //알림 상태
+        if(localStorage.getItem('token')){
+            if(mqttClientList.length==0){ //mqtt연결 리스트가 비어있을 경우에만(마운트시)
+                const chatList = getChattingList();
+                setMqttClientList(chatList); //mqtt연결 리스트 상태
+                getNoti(1); //알림 상태
+            }
         }
 
         //상품페이지 벗어날때 검색창 검색어 초기화
@@ -390,7 +391,7 @@ const Header = () => {
                     <div className={styles.navFrame}>
                         <div className={styles.navItems}>
                             <button className={styles.navButton} onClick={() => { handleClick('/home') }}>Home</button>
-                            <button className={styles.navButton} onClick={() => { handleClick('/aiservice') }}>AI 서비스</button>
+                            <button className={styles.navButton} onClick={() => { handleClick('/aipage') }}>AI 서비스</button>
                             <div className={styles.dropdown}>
                                 <button className={styles.dropdownButton}>
                                     마이 페이지

@@ -48,6 +48,7 @@ export const newsCrawling = async()=>{
   }
 }
 
+<<<<<<< HEAD
 //영상 전송 분석(얼굴 표정)
 export const videoFace = async(formData)=>{
   try {
@@ -64,3 +65,42 @@ export const videoFace = async(formData)=>{
       return { success: false, error: error.message };
   }
 }
+=======
+
+//음성+텍스트 평가
+//voice 음성데이터, gender , text
+export const evaluateVoiceAndText = async (formData) => {
+  try {
+      const response = await axios.post(`${baseUrl}/analysis`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('서버 응답:', response.data);
+      return { success: true, data: response.data };
+    }
+    catch (error) {
+      console.error('업로드 중 오류 발생:', error);
+      return { success: false, error: error.message };
+    }
+};
+
+//발음 평가
+//voice 음성데이터, text
+export const evaluatePronunciation = async (formData) => {
+  try {
+      const response = await axios.post(`${baseUrl}/pron`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('서버 응답:', response.data);
+      return { success: true, data: response.data };
+    }
+    catch (error) {
+      console.error('업로드 중 오류 발생:', error);
+      return { success: false, error: error.message };
+    }
+};
+
+>>>>>>> 35955fe0b9fff8b0558c52d6df26517b78556729

@@ -3,7 +3,7 @@
 .container {
     display: flex;
     justify-content: space-between;
-    height: 100vh;
+    height: 70vh;
     background-color: #fff;
     padding-right: 0;
     border-left: #ddd solid 1px;

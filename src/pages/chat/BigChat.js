@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import mqtt from 'mqtt';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import styles from '../../styles/chat/BigChat.module.css';
 import ChattingRoom from './ChattingRoom';
 import { chattingListYourData, getMessages } from '../../utils/chatData';
@@ -13,6 +13,12 @@ function BigChat() {
   const [chatMessages, setChatMessages] = useState([]);
   const [data, setData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const location = useLocation();
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     console.log('id',id);
@@ -50,23 +56,24 @@ function BigChat() {
         mqttClient.on('message', (topic, message) => {
           console.log('Received message:', message.toString());
           try {
-            const parsedMessage = JSON.parse(message.toString());
-            const { text, sender, timestamp } = parsedMessage;
+            if(location.pathname.includes(topic)){
+              const parsedMessage = JSON.parse(message.toString());
+              const { text, sender, timestamp } = parsedMessage;
 
-            // 중복 메시지 방지
-            if (chatMessages.some(msg => msg.text === text && msg.time === new Date(timestamp).toLocaleTimeString())) {
-              return;
+              // 중복 메시지 방지
+              if (chatMessages.some(msg => msg.text === text && msg.time === new Date(timestamp).toLocaleTimeString())) {
+                return;
+              }
+
+              setChatMessages((prevMessages) => [
+                ...prevMessages,
+                {
+                  sender: sender,
+                  text,
+                  timestamp: new Date(timestamp).toISOString(),
+                },
+              ]);
             }
-
-            setChatMessages((prevMessages) => [
-              ...prevMessages,
-              {
-                sender: sender,
-                text,
-                timestamp: new Date(timestamp).toISOString(),
-              },
-            ]);
-            
           } catch (error) {
             console.error('Error parsing message:', error);
           }
@@ -84,6 +91,7 @@ function BigChat() {
                 }
                 setSelectedUser(joinchat);
               });
+              fetchChatMessages(joinchat.chattingRoom.id);
             }
           }
         }
@@ -101,7 +109,11 @@ function BigChat() {
         client.end();
       }
     };
-  }, [id]);
+  }, []);
+
+  useEffect(()=>{
+    scrollToBottom();
+  },[chatMessages]);
 
   //메시지 보내기 설정
   const sendMessage = async (text) => {
@@ -138,17 +150,31 @@ function BigChat() {
       handleSendClick();
     }
   };
+
+  const fetchChatMessages = async (chattingRoomId) => {
+    try {
+      const response = await getMessages(chattingRoomId); 
+      console.log('Fetched messages response:', response);  // 더 구체적으로 확인하기 위한 로그
+      if (response) {
+        setChatMessages(response); 
+      } else {
+        console.log('No messages received');
+      }
+    } catch (error) {
+      console.error('메시지 불러오기 에러:', error);
+    }
+  };
   
   return (
     <div className={styles.container}>
-    <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages}/>
+    <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages}/>
 
     <div className={styles.chatSection}>
       <div className={styles.chatHeader}>
         <h2 className={styles.chatName}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
       </div>
 
-      <div className={styles.chatMessages} id='chatMessages'>
+      <div className={styles.chatMessages}>
         {chatMessages.map((msg, index) => (
           <div className={styles.messageNTime} key={index}>
             <div
@@ -169,6 +195,7 @@ function BigChat() {
             </span>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
         <div className={styles.chatInputSection}>
