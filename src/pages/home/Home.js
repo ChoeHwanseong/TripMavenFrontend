@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Box, Button, Grid, Typography, Card, CardMedia, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import KoreaWeatherMap from './KoreaWeather';
 import RegionEventInfo from './RegionEvent';
+import GuideRankings from './GuideRanking';
 import DetailedWeatherMap from './DetailedWeatherMap';  // 새로 추가된 import
 import styles from '../../styles/home/Home.module.css';
 import { useFormik } from 'formik';
@@ -35,64 +35,7 @@ const Home = () => {
     <div className={styles.headerimg}>
       <Box sx={{ maxWidth: '1200px', mx: 'auto', mt: 10, p: 3 }}>
         
-        {/* 인기 여행지 */}
-        <div>
-          <Box sx={{
-            background: '#ffffff',
-            pl: 3, pt: 3, pr: 3,
-            borderRadius: 2,
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-            border: '1px solid #f1f1f1',
-            mb: '45px', height: '353px'
-          }}>
-            <Box sx={{ mb: 7 }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-                <Typography variant="h4" fontWeight="bold">인기 여행지</Typography>
-                <Button
-                  variant="contained"
-                  sx={{
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                    color: '#ffffff',
-                    backgroundColor: '#0066ff',
-                    borderRadius: 2,
-                    '&:hover': { backgroundColor: '#0056b3' }
-                  }}
-                  onClick={() => navigate('/product?keyword=')}
-                >
-                  모두보기
-                </Button>
-              </Box>
-              <Grid container spacing={3}>
-                {['부산', '제주', '서울', '강릉', '가평'].map((city, index) => (
-                  <Grid item xs={12} sm={6} md={4} lg={2.4} key={index}>
-                    <Card
-                      onClick={() => handleCityClick(city)}
-                      sx={{
-                        borderRadius: 3,
-                        cursor: 'pointer',
-                        transition: 'transform 0.2s ease',
-                        '&:hover': { transform: 'scale(1.05)' }
-                      }}
-                    >
-                      <CardMedia
-                        component="img"
-                        height="160"
-                        image={`/images/mainpage/${index + 1}.png`}
-                        alt={city}
-                      />
-                      <CardContent>
-                        <Typography variant="h6" align="center" fontWeight="bold">{city}</Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-          </Box>
-        </div>
-
-        {/* 정보 섹션 */}
+{킹*/}
         <Grid container spacing={5}>
           <Grid item xs={12} md={6}>
             <Box sx={{
@@ -137,18 +80,13 @@ const Home = () => {
               border: '1px solid #f1f1f1',
               height: '100%'
             }}>
-              <Typography variant="h6" fontWeight="bold" gutterBottom>기상 정보</Typography>
-              <KoreaWeatherMap
-                width="100%"
-                height="400px"
-                selectedRegion={weatherSelectedRegion}
-                setSelectedRegion={setWeatherSelectedRegion}
-              />
+              <Typography variant="h6" fontWeight="bold" gutterBottom/>
+              <GuideRankings /> 
             </Box>
           </Grid>
         </Grid>
 
-        {/* 상세 날씨 정보 (새로 추가된 섹션) */}
+        {/* 상세 날씨 정보  */}
         <Box sx={{
           background: '#ffffff',
           p: 3,
