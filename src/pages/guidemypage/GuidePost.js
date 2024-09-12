@@ -16,21 +16,21 @@ const GuidePost = () => {
     const navigate = useNavigate();
     const membersId = localStorage.getItem('membersId');
 
-    const [files, setFiles] = useState([]); 
-    const [fileNames, setFileNames] = useState([]); 
-    const [fileURLs, setFileURLs] = useState([]); 
-    const [nights, setNights] = useState(''); 
-    const [days, setDays] = useState(''); 
-    const [errors, setErrors] = useState({}); 
-    const [editorContent, setEditorContent] = useState(''); 
+    const [files, setFiles] = useState([]);
+    const [fileNames, setFileNames] = useState([]);
+    const [fileURLs, setFileURLs] = useState([]);
+    const [nights, setNights] = useState('');
+    const [days, setDays] = useState('');
+    const [errors, setErrors] = useState({});
+    const [editorContent, setEditorContent] = useState('');
 
     const [hotel, setHotel] = useState('');
-    const [addresses, setAddresses] = useState([]); 
+    const [addresses, setAddresses] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState('');
 
     const titleRef = useRef(null);
     const hashtagRef = useRef(null);
-    const dayRef = useRef({ value: '' }); 
+    const dayRef = useRef({ value: '' });
     const cityRef = useRef(null);
     const hotelRef = useRef(null);
     const hotelAdRef = useRef(null);
@@ -49,35 +49,35 @@ const GuidePost = () => {
 
     const modules = {
         toolbar: [
-          [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-          [{ size: [] }],
-          ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-          [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-          ['link', 'image', 'video'],
-          ['clean'], 
+            [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+            [{ size: [] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+            ['link', 'image', 'video'],
+            ['clean'],
         ],
-      };
-    
-      const formats = [
+    };
+
+    const formats = [
         'header', 'font', 'size',
         'bold', 'italic', 'underline', 'strike', 'blockquote',
         'list', 'bullet', 'indent',
         'link', 'image', 'video',
-      ];
+    ];
 
     // 파일
     const handleFileChange = (event) => {
         const selectedFiles = Array.from(event.target.files);
-    
+
         if (selectedFiles.length > 3) {
             alert("최대 3개의 파일만 선택할 수 있습니다.");
             return;
         }
-    
+
         setFiles(selectedFiles);
         setFileNames(selectedFiles.map(file => file.name));
         const urls = selectedFiles.map(file => URL.createObjectURL(file));
-        setFileURLs(urls);   
+        setFileURLs(urls);
     };
 
     // 호텔명으로 호텔주소에 값 넣기
@@ -86,11 +86,11 @@ const GuidePost = () => {
             console.log('버튼 클릭 시, hotel : ', hotel);
             const response = await getHotelAd(hotel);
             console.log('response', response);
-  
+
             setAddresses(response);
             if (response.length > 0) {
-              setSelectedAddress(response[0].road_address_name || response[0].address_name); 
-              hotelAdRef.current.value = response[0].road_address_name || response[0].address_name; 
+                setSelectedAddress(response[0].road_address_name || response[0].address_name);
+                hotelAdRef.current.value = response[0].road_address_name || response[0].address_name;
             }
         } catch (error) {
             console.error('Error fetching hotel address:', error);
@@ -113,14 +113,28 @@ const GuidePost = () => {
         const titleValue = titleRef.current?.value;
         if (!titleValue) {
             newErrors.title = "제목을 입력해주세요. 최대 20자까지 제한합니다.";
+            titleRef.current.focus();
         } else if (titleValue.length > 20) {
             newErrors.title = "제목은 최대 20자까지 입력 가능합니다.";
+            titleRef.current.focus();
         }
-        if (!hashtagRef.current?.value) newErrors.hashtag = "해시태그를 입력해주세요.";
-        if (!files.length) newErrors.files = "최소 1개의 이미지를 업로드해주세요.";
-        if (!nights || !days) newErrors.dayPeriod = "박과 일 수를 입력해주세요.";
-        if (!cityRef.current?.value) newErrors.city = "여행도시를 입력해주세요.";
-        if (!editorContent || editorContent.trim() === '') newErrors.content = "내용을 입력해주세요."; 
+        if (!hashtagRef.current?.value) {
+            newErrors.hashtag = "해시태그를 입력해주세요.";
+            hashtagRef.current.focus();
+        }
+        if (!files.length) {
+            newErrors.files = "최소 1개의 이미지를 업로드해주세요.";
+            hashtagRef.current.focus();
+        }
+        if (!nights || !days) {
+            newErrors.dayPeriod = "박과 일 수를 입력해주세요.";          
+        }
+        if (!cityRef.current?.value) {
+            newErrors.city = "여행도시를 입력해주세요.";
+        }
+        if (!editorContent || editorContent.trim() === '') {
+            newErrors.content = "내용을 입력해주세요.";    
+        }
         return newErrors;
     };
 
@@ -132,15 +146,15 @@ const GuidePost = () => {
                 setErrors(validationErrors);
                 return;
             }
-    
+
             const formData = new FormData();
             files.forEach(file => {
-                formData.append('files', file); 
+                formData.append('files', file);
             });
-    
+
             const fileUploadResponse = await filesPost(formData);
             console.log('fileUploadResponse:', fileUploadResponse);
-    
+
             if (!fileUploadResponse.success) {
                 alert('파일 업로드에 실패했습니다.');
                 return;
@@ -148,7 +162,7 @@ const GuidePost = () => {
 
             const fileNamesString = files.map(file => file.name).join(',');
 
-            const createData = { 
+            const createData = {
                 title: titleRef.current?.value || '',
                 hashtag: hashtagRef.current?.value || '',
                 files: fileNamesString,
@@ -177,10 +191,10 @@ const GuidePost = () => {
             <Divider />
 
             <Box sx={{ p: 3, mt: 4 }}>
-                <Typography 
-                    variant="h6" 
-                    gutterBottom 
-                    sx={{ 
+                <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{
                         color: '#1976d2',
                         display: 'flex',
                         alignItems: 'center',
@@ -189,26 +203,26 @@ const GuidePost = () => {
                     <EmojiObjectsIcon sx={{ mr: 1 }} />
                     대표 내용
                 </Typography>
-                <TextField 
-                    fullWidth 
-                    label="제목" 
-                    margin="normal" 
-                    inputRef={titleRef} 
-                    error={!!errors.title} 
+                <TextField
+                    fullWidth
+                    label="제목"
+                    margin="normal"
+                    inputRef={titleRef}
+                    error={!!errors.title}
                     helperText={errors.title}
                 />
-                <TextField 
-                    fullWidth 
-                    label="해시태그" 
-                    margin="normal" 
-                    inputRef={hashtagRef} 
-                    error={!!errors.hashtag} 
+                <TextField
+                    fullWidth
+                    label="해시태그"
+                    margin="normal"
+                    inputRef={hashtagRef}
+                    error={!!errors.hashtag}
                     helperText={errors.hashtag}
                 />
-                <Button 
-                    variant="contained" 
-                    color="primary" 
-                    component="label" 
+                <Button
+                    variant="contained"
+                    color="primary"
+                    component="label"
                     sx={{ mt: 2 }}
                 >
                     대표 이미지 업로드 (최대 3개)
@@ -232,10 +246,10 @@ const GuidePost = () => {
             <Divider />
 
             <Box sx={{ p: 3, mt: 4 }}>
-                <Typography 
-                    variant="h6" 
-                    gutterBottom 
-                    sx={{ 
+                <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{
                         color: '#1976d2',
                         display: 'flex',
                         alignItems: 'center',
@@ -245,40 +259,40 @@ const GuidePost = () => {
                     여행 주요 일정
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 2 }}>
-                    <TextField 
-                        label="박" 
-                        type="number" 
-                        value={nights} 
-                        onChange={(e) => setNights(e.target.value)} 
-                        sx={{ width: '48%' }} 
-                        error={!!errors.dayPeriod} 
+                    <TextField
+                        label="박"
+                        type="number"
+                        value={nights}
+                        onChange={(e) => setNights(e.target.value)}
+                        sx={{ width: '48%' }}
+                        error={!!errors.dayPeriod}
                     />
-                    <TextField 
-                        label="일" 
-                        type="number" 
-                        value={days} 
-                        onChange={(e) => setDays(e.target.value)} 
-                        sx={{ width: '48%' }} 
-                        error={!!errors.dayPeriod} 
+                    <TextField
+                        label="일"
+                        type="number"
+                        value={days}
+                        onChange={(e) => setDays(e.target.value)}
+                        sx={{ width: '48%' }}
+                        error={!!errors.dayPeriod}
                     />
                 </Box>
                 {errors.dayPeriod && <Typography color="error">{errors.dayPeriod}</Typography>}
-                <TextField 
-                    fullWidth 
-                    label="여행도시" 
-                    margin="normal" 
-                    inputRef={cityRef} 
-                    error={!!errors.city} 
+                <TextField
+                    fullWidth
+                    label="여행도시"
+                    margin="normal"
+                    inputRef={cityRef}
+                    error={!!errors.city}
                     helperText={errors.city}
                 />
             </Box>
             <Divider />
 
             <Box sx={{ p: 3, mt: 4 }}>
-                <Typography 
-                    variant="h6" 
-                    gutterBottom 
-                    sx={{ 
+                <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{
                         color: '#1976d2',
                         display: 'flex',
                         alignItems: 'center',
@@ -287,12 +301,12 @@ const GuidePost = () => {
                     <BeachAccessIcon sx={{ mr: 1 }} />
                     테마 소개
                 </Typography>
-                {errors.content && <Typography color="error" sx={{ 
+                {errors.content && <Typography color="error" sx={{
 
-}}>{errors.content}</Typography>}
-                <ReactQuill 
-                    theme="snow" 
-                    placeholder="내용을 입력하세요..." 
+                }}>{errors.content}</Typography>}
+                <ReactQuill
+                    theme="snow"
+                    placeholder="내용을 입력하세요..."
                     value={editorContent}
                     onChange={setEditorContent}
                     modules={modules}
@@ -304,10 +318,10 @@ const GuidePost = () => {
             <Divider />
 
             <Box sx={{ p: 3, mt: 4 }}>
-                <Typography 
-                    variant="h6" 
-                    gutterBottom 
-                    sx={{ 
+                <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{
                         color: '#1976d2',
                         display: 'flex',
                         alignItems: 'center',
@@ -316,17 +330,17 @@ const GuidePost = () => {
                     <HotelIcon sx={{ mr: 1 }} />
                     호텔 정보
                 </Typography>
-                <TextField 
-                    fullWidth 
-                    label="호텔" 
-                    margin="normal" 
-                    inputRef={hotelRef} 
-                    onChange={(e) => setHotel(e.target.value)} 
+                <TextField
+                    fullWidth
+                    label="호텔"
+                    margin="normal"
+                    inputRef={hotelRef}
+                    onChange={(e) => setHotel(e.target.value)}
                 />
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2}}>
-                    <Button 
-                        variant="contained" 
-                        color="primary" 
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
                         onClick={handleSearch}
                     >
                         주소 검색
@@ -349,10 +363,10 @@ const GuidePost = () => {
                         </FormControl>
                     )}
                 </Box>
-                <TextField 
-                    fullWidth 
-                    label="호텔 주소" 
-                    margin="normal" 
+                <TextField
+                    fullWidth
+                    label="호텔 주소"
+                    margin="normal"
                     inputRef={hotelAdRef}
                     value={selectedAddress}
                     onChange={(e) => setSelectedAddress(e.target.value)}
@@ -362,7 +376,7 @@ const GuidePost = () => {
 
             <Box sx={{ p: 3 }}>
                 <Typography variant="subtitle2">호텔 위치</Typography>
-                <KakaoMap address={selectedAddress}/>
+                <KakaoMap address={selectedAddress} />
             </Box>
 
             <Divider />

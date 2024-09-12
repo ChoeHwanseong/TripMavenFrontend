@@ -58,7 +58,7 @@ const Home = () => {
                     borderRadius: 2,
                     '&:hover': { backgroundColor: '#0056b3' }
                   }}
-                  onClick={() => navigate('/product')}
+                  onClick={() => navigate('/product?keyword=')}
                 >
                   모두보기
                 </Button>

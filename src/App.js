@@ -30,8 +30,6 @@ import UserLike from './pages/usermypage/UserLike';
 
 
 
-
-
 import MemberList from './pages/adminmypage/MemberList';
 import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuidePost from './pages/guidemypage/GuidePost';
@@ -88,7 +86,7 @@ function App() {
         <Route path="/home" element={<Home/>}/>
         <Route element={<MyPageTemplate/>}>
 
-          {/* ADMIN */}
+          {/* ADMIN */} 
           <Route path='/adminreport' element={<AdminReport/>}/>
           <Route path='/adminprofile' element={<AdminProfile/>}/>
           <Route path='/adminask' element={<AdminAsk/>}/>
