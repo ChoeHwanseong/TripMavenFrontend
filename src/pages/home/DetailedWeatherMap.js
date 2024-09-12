@@ -9,7 +9,7 @@ import moment from 'moment';
 import seoulGeo from '../../data/Seoul.geojson';
 import busanGeo from '../../data/busan.geojson';
 import daeguGeo from '../../data/daegu.geojson';
-import incheonGeo from '../../data/incheon.geojson';
+import incheonGeo from '../../data/Incheon.geojson';
 import gwangjuGeo from '../../data/gwangju.geojson';
 import daejeonGeo from '../../data/daejeon.geojson';
 import ulsanGeo from '../../data/ulsan.geojson';
@@ -46,7 +46,7 @@ const cityNameMapping = {
   '제주특별자치도': 'Jeju City,KR'
 };
 
-// 서울 구 정보
+// 서울 정보
 const seoulDistricts = {
   '서울특별시 종로구': 'Jongno-gu,Seoul,KR',
   '서울특별시 중구': 'Jung-gu,Seoul,KR',
@@ -75,7 +75,7 @@ const seoulDistricts = {
   '서울특별시 강동구': 'Gangdong-gu,Seoul,KR'
 };
 
-// 부산 구 정보
+// 부산 정보
 const busanDistricts = {
   '부산광역시 중구': 'Jung District,KR',
   '부산광역시 서구': 'Seo District,KR',
@@ -94,6 +94,70 @@ const busanDistricts = {
   '부산광역시 사상구': 'Sasang District,KR',
   '부산광역시 기장군': 'Gijang,KR'
 };
+
+//강원 정보
+const gangwonDistricts = {
+  '강원특별자치도 춘천시': 'Chuncheon, KR',
+  '강원특별자치도 원주시': 'Wonju, KR',
+  '강원특별자치도 강릉시': 'Gangneung, KR',
+  '강원특별자치도 동해시': 'Wonju, KR',
+  '강원특별자치도 태백시': "T'aebaek, KR",
+  '강원특별자치도 속초시': 'Sokcho, KR',
+  '강원특별자치도 삼척시': 'Wonju, KR',
+  '강원특별자치도 홍천군': 'Hongcheon-gun, KR',
+  '강원특별자치도 횡성군': 'Hoengseong-gun, KR',
+  '강원특별자치도 영월군': 'Yeongwol-gun, KR',
+  '강원특별자치도 평창군': 'Pyeongchang-gun, KR',
+  '강원특별자치도 정선군': 'Jeongseon-gun, KR',
+  '강원특별자치도 철원군': 'Cheorwon-gun, KR',
+  '강원특별자치도 화천군': 'Hwacheon-gun, KR',
+  '강원특별자치도 양구군': 'Yanggu-gun, KR',
+  '강원특별자치도 인제군': 'Inje-gun, KR',
+  '강원특별자치도 고성군': 'Goseong-gun, KR',
+  '강원특별자치도 양양군': 'Yangyang-gun, KR'
+};
+
+//인천 정보
+const incheonDistricts = {
+  '인천광역시 중구': 'Jung-gu, KR',
+  '인천광역시 동구': 'Dong-gu, KR',
+  '인천광역시 미추홀구': 'Nam-gu,KR',
+  '인천광역시 연수구': 'Yeonsu-gu,KR',
+  '인천광역시 남동구': 'Namdong-gu,KR',
+  '인천광역시 부평구': 'Bupyeong-gu,KR',
+  '인천광역시 계양구': 'Gyeyang-gu,KR',
+  '인천광역시 서구': 'Seo-gu,KR',
+  '인천광역시 강화군': 'Ganghwa-gun,KR',
+  '인천광역시 옹진군': 'Ongjin, KP'
+};
+
+//광주 정보
+
+//대구 정보
+
+//대전 정보
+
+//울산 정보
+
+//세종 정보
+
+//경기 정보
+
+//강원 정보
+
+//충북 정보
+
+//충남 정보
+
+//전북 정보
+
+//전남 정보
+
+//경북 정보
+
+//경남 정보
+
+//제주 정보
 
 const regionSettings = {
   '서울특별시': { scale: 49000, center: [126.9895, 37.5651], geoData: seoulGeo },
@@ -179,6 +243,10 @@ const DetailedWeatherMap = ({ selectedRegion: externalSelectedRegion }) => {
       fetchWeatherData(seoulDistricts[districtName]);
     } else if (selectedRegion === '부산광역시' && busanDistricts[districtName]) {
       fetchWeatherData(busanDistricts[districtName]);
+    } else if (selectedRegion === '인천광역시' && incheonDistricts[districtName]) {
+      fetchWeatherData(incheonDistricts[districtName]);
+    } else if (selectedRegion === '강원도' && gangwonDistricts[districtName]) {
+      fetchWeatherData(gangwonDistricts[districtName]);
     }
   }, [selectedRegion]);
 
@@ -303,7 +371,7 @@ const DetailedWeatherMap = ({ selectedRegion: externalSelectedRegion }) => {
                   />
                   <YAxis 
                     yAxisId="left"
-                    // YAxis에 대한 추가 prop 설정 (필요한 경우)
+                    // YAxis에 대한 추가 prop 설정 (필요한 경우) 콘솔에서 경고가 심해서 바꿀 예정
                     orientation="left"
                     domain={['auto', 'auto']}
                   />
