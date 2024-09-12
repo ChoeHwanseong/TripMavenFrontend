@@ -58,12 +58,13 @@ function BigChat() {
           console.log('Received message:', message.toString());
           const parsedMessage = JSON.parse(message.toString());
           const { text, sender, timestamp } = parsedMessage;
-          console.log(list_);
-          console.log(topic);
-          console.log(sender);
+          // console.log('list_',list_);
+          // console.log('topic',topic);
+          // console.log('sender',sender);
+          // console.log('id',id);
           try {
-            if(list_.find(ele=>ele.chattingRoom.id == topic && ele.member.id == sender)){
-              console.log('들어왔당');
+            if(list_.find(ele=>ele.chattingRoom.id == topic && (ele.member.id == sender || localStorage.getItem('membersId')==sender))){
+              //console.log('들어왔당');
               // 중복 메시지 방지
               /*
               if (chatMessages.some(msg => msg.text === text && msg.time === new Date(timestamp).toLocaleTimeString())) {
@@ -114,7 +115,7 @@ function BigChat() {
         client.end();
       }
     };
-  }, [location.pathname]);
+  }, []);
 
   useEffect(()=>{
     scrollToBottom();
