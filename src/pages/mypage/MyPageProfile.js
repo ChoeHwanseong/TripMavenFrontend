@@ -15,8 +15,8 @@ const MypageProfile = () => {
     if (confirmed) {
       // 회원 탈퇴 로직
       deleteProfile(template.memberInfo.id);
-      logout();
-      navigate("/");
+      alert("탈퇴가 완료되었습니다.")
+      navigate('/');
     }
   };
 

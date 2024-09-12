@@ -131,6 +131,8 @@ export const deleteProfile = async (id) => {
   try {
     console.log('id', id);
     const res = await axios.put(`/spring/members/delete/${id}`);
+    logout();
+    localStorage.clear();
     return res.data;
   } catch (error) {
     console.error('회원 탈퇴 중 에러났당', error);

@@ -18,10 +18,6 @@ const LoginSuccess = () => {
             window.localStorage.setItem("role", role);
             window.localStorage.setItem("membersId", membersId);
             window.localStorage.setItem("refresh", refresh);
-            window.localStorage.setItem("loginType",loginType);
-            //authStore.setIsAdmin(isAdmin === 'true');
-            //authStore.checkLoggedIn();
-
             // 원하는 페이지로 리다이렉트합니다.
             navigate('/home');
         }
