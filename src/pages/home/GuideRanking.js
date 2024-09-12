@@ -40,6 +40,14 @@ const GuideRanking = () => {
         }
     };
 
+    const handleFirstPage = () => {
+        setCurrentPage(1);
+    };
+
+    const handleLastPage = () => {
+        setCurrentPage(totalPages);
+    };
+
     return (
         <Box className={styles.leaderboardContainer} sx={{ bgcolor: '#ffffff' }}>
             <Paper className={styles.leaderboardTitle} elevation={3} sx={{ bgcolor: '#5da7f7' }}>
@@ -86,6 +94,14 @@ const GuideRanking = () => {
             </Box>
             <Box className={styles.paginationButtons}>
                 <Button
+                    onClick={handleFirstPage}
+                    disabled={currentPage === 1}
+                    className={styles.paginationButton}
+                    sx={{ bgcolor: '#ffffff', color: '#000000', '&:disabled': { bgcolor: '#ffffff' } }}
+                >
+                    &lt;&lt;
+                </Button>
+                <Button
                     onClick={handlePreviousPage}
                     disabled={currentPage === 1}
                     className={styles.paginationButton}
@@ -100,6 +116,14 @@ const GuideRanking = () => {
                     sx={{ bgcolor: '#5c5be5', color: '#ffffff', '&:disabled': { bgcolor: '#b3b3b3' } }}
                 >
                     Next&gt;
+                </Button>
+                <Button
+                    onClick={handleLastPage}
+                    disabled={currentPage === totalPages}
+                    className={styles.paginationButton}
+                    sx={{ bgcolor: '#ffffff', color: '#000000', '&:disabled': { bgcolor: '#ffffff' } }}
+                >
+                    &gt;&gt;
                 </Button>
             </Box>
         </Box>
