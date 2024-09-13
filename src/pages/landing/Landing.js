@@ -3,10 +3,9 @@ import { CSSTransition } from 'react-transition-group';
 import styles from '../../styles/landing/Landing.module.css';
 import Footer from '../../components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faRobot, faCompass, faMapMarkedAlt, faChartLine, faBullhorn, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 // Import images
-import Logo from '../../images/jellyfish.gif';
 import locationGif from '../../images/Location.gif';
 import envelopeGif from '../../images/Envelope.gif';
 import telephoneGif from '../../images/Telephone.gif';
@@ -17,7 +16,6 @@ import beachWithBoats from '../../images/trip.jpg';
 import koreamap from '../../images/Event.png';
 import santoriniView from '../../images/travel.jpg';
 import scrollTopGif from '../../images/scroll-top.gif';
-import bgVideo from '../../videos/BG-video.mp4';
 import { logout } from '../../utils/memberData';
 
 const TravelLandingPage = () => {
@@ -26,13 +24,14 @@ const TravelLandingPage = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showPage, setShowPage] = useState(true);
   const navigate = useNavigate();
-  //로그아웃 함수
+
   const handleLogout = () => {
     logout().then(res => {
       localStorage.clear();
       navigate('/home');
     })
   }
+
   useEffect(() => {
     const handleScroll = () => {
       setIsNavbarShrunk(window.scrollY > 100);
@@ -47,6 +46,13 @@ const TravelLandingPage = () => {
 
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
+
+    const elements = document.querySelectorAll(`.${styles.fadeIn}`);
+    elements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add(styles.visible);
+      }, 200 * index);
+    });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -72,7 +78,7 @@ const TravelLandingPage = () => {
 
   const handleStartClick = () => {
     setShowPage(false);
-    setTimeout(() => navigate('/home'), 300); // 300ms is the transition time
+    setTimeout(() => navigate('/home'), 300);
   };
 
   return (
@@ -109,20 +115,40 @@ const TravelLandingPage = () => {
 
         <div className={styles.contentWrapper}>
           <div className={styles.travelPage}>
-            {/* Hero Section */}
             <div className={styles.heroSection}>
-              <div className={styles.videoOverlay}></div>
-              <video autoPlay loop muted className={styles.heroVideo}>
-                <source src={bgVideo} type="video/mp4" />
-              </video>
-              <div className={styles.heroContent}>
-                <img src={Logo} alt="Travel logo" className={styles.logo} />
-                <h1 className={styles.heroTitle}>TRIPMAVEN</h1>
-                <h2 className={styles.heroSubtitle}>프리랜서 여행 가이드의 완벽한 파트너,<br />
-                  TripMaven을 경험하세요.</h2>
-                <button className={styles.btn} onClick={handleStartClick}>
-                  <span className={styles.btnText}>시작하기</span>
-                </button>
+            <div className={styles.heroTitle}>
+              <h1 className={styles.glowTitle}>
+                <span className={`${styles.glowLetter} ${styles.glowLeft}`} style={{animationDelay: '0s'}}>T</span>
+                <span className={`${styles.glowLetter} ${styles.glowRight}`} style={{animationDelay: '0.2s'}}>R</span>
+                <span className={`${styles.glowLetter} ${styles.glowLeft}`} style={{animationDelay: '0.4s'}}>I</span>
+                <span className={`${styles.glowLetter} ${styles.glowRight}`} style={{animationDelay: '0.6s'}}>P</span>
+                <span className={`${styles.glowLetter} ${styles.glowRight}`} style={{animationDelay: '1s'}}>M</span>
+                <span className={`${styles.glowLetter} ${styles.glowLeft}`} style={{animationDelay: '1.2s'}}>A</span>
+                <span className={`${styles.glowLetter} ${styles.glowRight}`} style={{animationDelay: '1.4s'}}>V</span>
+                <span className={`${styles.glowLetter} ${styles.glowLeft}`} style={{animationDelay: '1.6s'}}>E</span>
+                <span className={`${styles.glowLetter} ${styles.glowRight}`} style={{animationDelay: '1.8s'}}>N</span>
+              </h1>
+            </div>
+              <div className={`${styles.heroLeft} ${styles.fadeIn}`}>
+                <h1 className={`${styles.heroTitle} ${styles.heroTitleLeft}`}>관광객을 위한 서비스</h1>
+                <ul className={`${styles.heroList} ${styles.heroListLeft}`}>
+                  <li><FontAwesomeIcon icon={faRobot} /> AI 챗봇으로 스마트한 정보 획득</li>
+                  <li><FontAwesomeIcon icon={faCompass} /> 다양한 가이드 상품 비교 및 선택</li>
+                  <li><FontAwesomeIcon icon={faMapMarkedAlt} /> 맞춤형 지역 정보로 여행 계획 수립</li>
+                </ul>
+              </div>
+              <div className={`${styles.heroRight} ${styles.fadeIn}`}>
+                <h1 className={`${styles.heroTitle} ${styles.heroTitleRight}`}>가이드를 위한 플랫폼</h1>
+                <ul className={`${styles.heroList} ${styles.heroListRight}`}>
+                  <li><FontAwesomeIcon icon={faChartLine} /> AI 기반 맞춤형 능력 향상 피드백</li>
+                  <li><FontAwesomeIcon icon={faBullhorn} /> 실시간 AI 상품 평가 및 홍보 지원</li>
+                  <li><FontAwesomeIcon icon={faUserPlus} /> 간편한 가이드 등록 및 상품 등록</li>
+                </ul>
+              </div>
+              <div className={styles.heroButtonWrapper}>
+                <a href="#" className={`${styles.btn2} ${styles.fadeIn}`} onClick={(e) => { e.preventDefault(); handleStartClick(); }}>
+                  <span>시작하기</span>
+                </a>
               </div>
             </div>
 
