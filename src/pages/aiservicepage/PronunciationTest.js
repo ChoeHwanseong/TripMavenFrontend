@@ -156,7 +156,12 @@ const PronunciationTest = () => {
             navigate(`/pronunciation/${sequenceNumber+1}`);
         }
             */
-        navigate(`/pronunciation/${sequenceNumber+1}`);   
+        if (sequenceNumber === 5) {
+            navigate(`/pronunciation/result`);
+        }
+        else {
+            navigate(`/pronunciation/${sequenceNumber+1}`);  
+        }
         // 5번으로 가면 결과창!
     };
 
@@ -269,7 +274,7 @@ const PronunciationTest = () => {
             )}
             <Stack display="flex" justifyContent="center" direction="row" spacing={3} sx={{ mt: '25px' }}>
                 <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }} onClick={handlePronunciationTest}>
-                    다음 문장으로 가기
+                    {sequenceNumber === 5 ? '결과 보러가기' : '다음 문장으로 가기'} 
                 </Button>
             </Stack>
         </Container >

@@ -13,12 +13,9 @@ import UserReview from './pages/usermypage/UserReview';
 import AdminAsk from './pages/adminmypage/AdminAsk';
 import AdminReport from './pages/adminmypage/AdminReport';
 import AdminProfile from './pages/adminmypage/AdminProfile';
-import AIService from './pages/aiservicepage/AIService';
 import TermsService from './pages/infopage/TermsService';
 import RegisterGuide from './pages/registerguidepage/RegisterGuide';
-//import GuideMyPageLike from './pages/guidemypage/guidemypagelike/guideMyPageLike';
 import GuideMyPageMyPost from './pages/guidemypage/GuideMyPageMyPost';
-import GuideMyPageMyPostDetails from './pages/guidemypage/GuideMyPageMyPostDetails';
 import GuideMyPageAIService from './pages/guidemypage/guidemypageaiservice/GuideMyPageAIService';
 import Landing from './pages/landing/Landing';
 import ProductBoard from './pages/productPage/ProductBoard';
@@ -33,10 +30,7 @@ import UserLike from './pages/usermypage/UserLike';
 
 
 
-
-
 import MemberList from './pages/adminmypage/MemberList';
-import GuideAskUpdate from './pages/guidemypage/GuideAskUpdate';
 import GuideAsk from './pages/guidemypage/GuideAsk';
 import GuidePost from './pages/guidemypage/GuidePost';
 import SiteIntroduction from './pages/infopage/SiteInfo';
@@ -51,7 +45,6 @@ import AskDetails from './pages/askpage/Askdetails';
 import AskDetailsView from './pages/askpage/AskDetailsView';
 import AskUpdate from './pages/askpage/AskUpdate';
 import ReviewDetails from './pages/usermypage/UserReviewDetails';
-import GuideUpdatePost from './pages/guidemypage/GuideUpdatePost';
 import MypageUpdate from './pages/mypage/MyPageUpdate';
 import FindID1 from './pages/login/FindId1';
 import FindPassword1 from './pages/login/FindPassword1';
@@ -60,7 +53,7 @@ import FindPassword3 from './pages/login/FindPassword3';
 import FindID2 from './pages/login/FindId2';
 import PasswordChangeForm from './pages/login/PasswordChangeForm';
 import ChattingRoom from './pages/chat/ChattingRoom';
-import AiServiceInfo from './pages/aiservicepage/AIServiceInfo';
+
 import DeviceCheckComponent from './pages/aiservicepage/webrecord/DeviceCheckComponent';
 import WebcamRecorder from './pages/aiservicepage/webrecord/WebcamRecorder';
 import LoginSuccess from './pages/login/LogInSuccess';
@@ -70,20 +63,17 @@ import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
 import QuizForm2 from './pages/aiservicepage/QuizForm2';
 import QuizTutorial from './pages/aiservicepage/QuizTutorial';
 import PronunciationTestTutorial from './pages/aiservicepage/PronunciationTestTutorial';
-import MICTest from './pages/aiservicepage/MICTest';
 import RealTest1 from './pages/aiservicepage/RealTest1';
-import PronunciationTest from './pages/aiservicepage/PronunciationTest';
 import PostDetails from './pages/productPage/PostDetails';
 import RealTestPage from './pages/aiservicepage/RealTestPage'
 import RealTestResult from './pages/aiservicepage/RealTestResult'
-import Reviews from './pages/guidemypage/guidepost/ReviewList';
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
-import Result from './pages/aiservicepage/Result';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
-import PronunciationTest1 from './pages/aiservicepage/PronunciationTest';
-import { newsCrawling } from './utils/PythonServerAPI';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
+import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
 import CombinedPage from './pages/aiservicepage/AIPage';
+import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
+
 
 
 
@@ -96,7 +86,7 @@ function App() {
         <Route path="/home" element={<Home/>}/>
         <Route element={<MyPageTemplate/>}>
 
-          {/* ADMIN */}
+          {/* ADMIN */} 
           <Route path='/adminreport' element={<AdminReport/>}/>
           <Route path='/adminprofile' element={<AdminProfile/>}/>
           <Route path='/adminask' element={<AdminAsk/>}/>
@@ -155,8 +145,10 @@ function App() {
           <Route path='/askupdate/:id' element={<AskUpdate/>}/>
 
         </Route>
+
+        <Route path='/videoAppUpload' element={<VideoAppUpload/>}/>
         
-        <Route path='/aiservice' element={<AIService/>}/>
+        
         <Route path="/cs" element={<CSBoard/>}/>
         <Route path="/siteinfo" element={<SiteIntroduction/>}/>
         <Route path="/faq" element={<FAQ/>}/>
@@ -169,7 +161,7 @@ function App() {
         <Route path='/findpassword2' element={<FindPassword2/>}/>
         <Route path='/findpassword3' element={<FindPassword3/>}/>
         <Route path='/passwordchange' element={<PasswordChangeForm/>}/>
-        <Route path='/aiserviceinfo' element={<AiServiceInfo/>}/>
+        
         {/* <Route path='/precautionspage1' element={<PrecautionsPage1/>}/> */}
         <Route path='/precautionspage1' element={<PrecautionsPage1/>}/>
         <Route path='/quizform2' element={<QuizForm2/>}/>
@@ -177,9 +169,7 @@ function App() {
         <Route path='/pronunciationtesttutorial' element={<PronunciationTestTutorial/>}/>
         <Route path='/realtest1' element={<RealTest1 />}/>
         <Route path='/analysisresult' element={<AnalysisResult/>}/>
-        <Route path='/result' element={<Result/>}/>
         <Route path='/pronunciation/*' element={<PronunciationRoutes />}/> {/*  URL이 /pronunciation 로 시작하는 애들은 PronunciationRoutes여기서 처리해주세요~ */}
-        <Route path='/pronunciation/*' element={<PronunciationRoutes />}/>
         <Route path='/aipage' element={<CombinedPage/>}/>
         
 
@@ -197,10 +187,10 @@ function App() {
         <Route path='/recordcheck' element={<DeviceCheckComponent/>}/>
         <Route path='/test' element={<DeviceCheckComponent2/>}/>
         
-        <Route path='/realTestPage' element={<RealTestPage />}/>
+        <Route path='/realTestPage/:id' element={<RealTestPage />}/>
         <Route path='/realTestResult' element={<RealTestResult />}/>
-
-        
+        <Route path='/productComponent' element={<ProductComponent />}/>
+  
 
       </Route>
     </Routes>
