@@ -102,7 +102,7 @@ const RealTestPage = () => {
   };
 
   const uploadVideo = async (videoType) => {
-    const videoBlob = getBlob(videoType);
+    const videoBlob = getBlob();
 
     const formData = new FormData();
     formData.append('file', videoBlob, 'recordedVideo.webm');
@@ -111,7 +111,7 @@ const RealTestPage = () => {
     console.log('formData: ',formData);
 
     try {
-      const response = await fetch('http://localhost:8282/face/', {
+      const response = await fetch('/python/face/', {
         method: 'POST',
         body: formData
       });

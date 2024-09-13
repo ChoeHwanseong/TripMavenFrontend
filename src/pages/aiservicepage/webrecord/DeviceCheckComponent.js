@@ -25,7 +25,7 @@ const DeviceCheckComponent = () => {
   const [successMessage, setSuccessMessage] = useState(""); // 테스트 통과 메시지 저장
   const [failureReason, setFailureReason] = useState(""); // 실패 원인 저장
   const [testButtonWarning, setTestButtonWarning] = useState(""); // 실전 테스트 버튼 클릭 시 경고 메시지
-
+  const recognitionRef = useRef(null);
   const navigate = useNavigate();
   const [isProductModalOpen, setIsProductModalOpen] = useState(false); // 모달 상태
   const [selectedPost, setSelectedPost] = useState(null); // 선택된 게시글 저장
@@ -117,7 +117,7 @@ const DeviceCheckComponent = () => {
         const checkMicActivity = () => {
           analyser.getByteFrequencyData(dataArray);
           const volume = dataArray.reduce((a, b) => a + b) / bufferLength;
-          console.log(`마이크 볼륨: ${volume}`); // 볼륨 로그로 확인
+         // console.log(`마이크 볼륨: ${volume}`); // 볼륨 로그로 확인
 
           // 볼륨 값 기준을 조정하여 인식 감도 향상
           if (volume > 5) { // 기존 10에서 5로 감도 하향 조정
