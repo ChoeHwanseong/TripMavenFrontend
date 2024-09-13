@@ -5,17 +5,15 @@ import { Button, Container, MenuItem, Select, Typography } from '@mui/material';
 import styles from '../../styles/aiservicepage/RealTestPage.module.css';
 import useMediaRecorder from './webrecord/useModiaRecorder';
 
-
 const RealTestPage = () => {
   const navigate = useNavigate();
   const webcamRef = useRef(null);
-  const recognitionRef = useRef(null);
   const [videoDevices, setVideoDevices] = useState([]);
   const [audioDevices, setAudioDevices] = useState([]);
   const [selectedVideoDevice, setSelectedVideoDevice] = useState(null);
   const [selectedAudioDevice, setSelectedAudioDevice] = useState(null);
-  const [isVideoConnected, setIsVideoConnected] = useState(true);
-  const [isAudioConnected, setIsAudioConnected] = useState(true);
+  const [isVideoConnected, setIsVideoConnected] = useState(false); // 웹캠 연결 상태
+  const [isAudioConnected, setIsAudioConnected] = useState(false); // 마이크 연결 상태
   const [transcript, setTranscript] = useState("");
   const [recordingStatus, setRecordingStatus] = useState("녹화하기");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -34,7 +32,9 @@ const RealTestPage = () => {
 
   const firstQuestion = "본인의 여행 상품에 대해 1분안에 말하시오";
 
+  // 미디어 장치 탐색 및 웹캠과 마이크 연결
   useEffect(() => {
+    // 미디어 장치 탐색
     navigator.mediaDevices.enumerateDevices()
       .then((devices) => {
         const videoInputs = devices.filter((d) => d.kind === 'videoinput');
@@ -45,24 +45,26 @@ const RealTestPage = () => {
         setSelectedAudioDevice(audioInputs[0] || null);
         setIsVideoConnected(videoInputs.length > 0);
         setIsAudioConnected(audioInputs.length > 0);
+        console.log('Video Devices:', videoInputs); // 디버깅 로그
+        console.log('Audio Devices:', audioInputs); // 디버깅 로그
       })
-      .catch((error) => console.error('Error getting device information:', error));
+      .catch((error) => console.error('장치 정보를 가져오는 중 에러 발생:', error));
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognitionRef.current = new SpeechRecognition();
-    recognitionRef.current.continuous = true;
-    recognitionRef.current.interimResults = false;
-    recognitionRef.current.lang = 'ko-KR';
-
-    recognitionRef.current.onresult = (event) => {
-      let finalTranscript = '';
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        if (event.results[i].isFinal) {
-          finalTranscript += event.results[i][0].transcript + ' ';
+    // 웹캠과 마이크 연결
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        if (webcamRef.current) {
+          webcamRef.current.srcObject = stream; // 웹캠 비디오 스트림 연결
         }
-      }
-      setTranscript(prevTranscript => prevTranscript + finalTranscript);
-    };
+        setIsVideoConnected(true);
+        setIsAudioConnected(true);
+        console.log('권한 요청 성공: 스트림 연결됨');
+      })
+      .catch((error) => {
+        console.error('웹캠과 마이크 접근 중 에러 발생:', error);
+        setIsVideoConnected(false);
+        setIsAudioConnected(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -107,18 +109,14 @@ const RealTestPage = () => {
     const formData = new FormData();
     formData.append('file', videoBlob, 'recordedVideo.webm');
 
-    console.log('videoBlob: ',videoBlob);
-    console.log('formData: ',formData);
-
     try {
-      const response = await fetch('http://localhost:8282/face/', {
+      const response = await fetch('http://localhost:8282/python/face/', {
         method: 'POST',
         body: formData
       });
 
       if (response.ok) {
         const resultData = await response.json();
-
         setLoadingMessage("");
         if (videoType === 'second') {
           alert('영상이 성공적으로 제출되었습니다!');
@@ -143,7 +141,11 @@ const RealTestPage = () => {
       <div className={styles.testContainer}>
         <div className={styles.videoBox}>
           {isVideoConnected ? (
-            <Webcam ref={webcamRef} audio={true} className={styles.video} />
+            <Webcam
+              ref={webcamRef}
+              audio={true}
+              style={{ width: '100%', height: '100%', display: 'block' }}
+            />
           ) : (
             <Typography variant="body2" color="error" align="center">
               * 웹캠이 연결되지 않았습니다.
@@ -154,6 +156,7 @@ const RealTestPage = () => {
           <p>{transcript}</p>
         </div>
       </div>
+
       <div className={styles.controls}>
         <div className={styles.selectContainer}>
           <Select
@@ -192,6 +195,7 @@ const RealTestPage = () => {
           {recordingStatus}
         </Button>
       </div>
+
       {loadingMessage && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
