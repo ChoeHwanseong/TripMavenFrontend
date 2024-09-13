@@ -4,7 +4,7 @@ import styles from '../../styles/productPage/ProductBoard.module.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import { postsAllGet, postsCityGet, postsKeywordGet } from '../../utils/postData';
+import { postsAllGet, postsCityGet, postsSearchWordGet } from '../../utils/postData';
 import YouTubeSearch from '../guidemypage/YouTubeSearch';
 import { fetchFiles } from '../../utils/fileData';
 import { Button, Rating } from '@mui/material';
@@ -34,8 +34,8 @@ const ProductBoard = () => {
         let results;
         if (city) results = await postsCityGet(city, page); // 페이지도 넘기기
         else if (keyword === '') results = await postsAllGet(page); // 페이지도 넘기기(keyword 없을 땐 전체 검색)
-        else results = await postsKeywordGet(keyword, page); // 페이지도 넘기기
-        console.log('검색 결과:', results);
+        else results = await postsSearchWordGet(keyword, page); // 페이지도 넘기기
+        //console.log('검색 결과:', results);
         setLoading(false);
 
         // Fetch the first file URL for each product
@@ -185,7 +185,7 @@ const ProductBoard = () => {
 
             <div className="App">
                 <h1 className={styles.youtubeHeading}>YouTube Video Search</h1>
-                <YouTubeSearch keyword={keyword} city={city} />
+                <YouTubeSearch keyword={keyword} city={city}/>
             </div>
         </div>
     );
