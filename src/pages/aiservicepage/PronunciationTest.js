@@ -109,20 +109,18 @@ const PronunciationTest = () => {
     // 오디오 서버로 전송
     const handleSendAudio = () => {
         if (!audioBlob) {
-        alert('녹음된 파일이 없습니다.');
-        return;
+            alert('녹음된 파일이 없습니다.');
+            return;
         }
-
+        const text = newsHeadLine[sequenceNumber - 1].replace(/[^가-힣a-zA-Z]/g, '')
         const formData = new FormData();
         formData.append('voice', audioBlob, 'recordedAudio.wav'); // 오디오 데이터를 FormData에 추가
-        formData.append('text', transcript);
+        formData.append('text', text);
 
 
         // 서버로 Axios를 사용하여 전송
         axios.post('/python/pron', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
+            headers: {'Content-Type': 'multipart/form-data'}
         })
         .then((response) => {
             alert('오디오 전송 성공!');
