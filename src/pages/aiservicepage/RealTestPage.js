@@ -7,8 +7,8 @@ import useMediaRecorder from './webrecord/useModiaRecorder';
 import { createEvaluation } from '../../utils/AiData';
 
 const RealTestPage = () => {
-  const member_id= localStorage.getItem('memberId');
-  const { productboard_id } = useParams();
+  const memberId= localStorage.getItem('memberId');
+  const { productboardId } = useParams();
 
   const navigate = useNavigate();
   const webcamRef = useRef(null);
@@ -131,8 +131,27 @@ const RealTestPage = () => {
         const resultData = await response.json();
         setLoadingMessage("");
 
+        console.log('resultData: ',resultData);
+
         // Spring 서버로 결과 전송
-        const evaluationResponse = await createEvaluation(resultData, member_id, productboard_id);
+        const evaluationResponse = await createEvaluation({
+          member_id: memberId,
+          productboard_id: productboardId,
+          score: resultData.score,
+          pronunciation: resultData.pronunciation,
+          tone: resultData.tone,
+          fillerwords: resultData.fillerwords,
+          formal_speak: resultData.formal_speak,
+          question_speak: resultData.question_speak,
+          text: resultData.text,
+          weight: resultData.weight,
+          cheek: resultData.cheek,
+          mouth: resultData.mouth,
+          brow: resultData.brow,
+          eye: resultData.eye,
+          nasolabial: resultData.nasolabial
+        });;
+
         console.log('Spring 서버 응답:', evaluationResponse);
 
         if (videoType === 'second') {
