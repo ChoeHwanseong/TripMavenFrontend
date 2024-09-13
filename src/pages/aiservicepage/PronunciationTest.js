@@ -67,7 +67,7 @@ const PronunciationTest = () => {
             setTestMessage(''); // 이전 테스트 메시지 초기화
             setIsRecognitionDone(false); // 음성 인식 완료 상태 초기화
             lastFinalTranscriptRef.current = ''; // 마지막 최종 자막 초기화
-            accumulatedTranscriptRef.current = ''; // 누적된 자막 초기화
+            accumulatedTranscriptRef.current = ''; // 누적된 자막 초기화    
 
             navigator.mediaDevices.getUserMedia({
                 audio: { deviceId: selectedAudioDevice?.deviceId }

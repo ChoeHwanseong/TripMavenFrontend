@@ -73,6 +73,7 @@ import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
 import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
 import CombinedPage from './pages/aiservicepage/AIPage';
 import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
+import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
 
 
 
@@ -190,8 +191,11 @@ function App() {
         <Route path='/realTestPage/:id' element={<RealTestPage />}/>
         <Route path='/realTestResult' element={<RealTestResult />}/>
         <Route path='/productComponent' element={<ProductComponent />}/>
-  
 
+
+
+        <Route path='/juwontest' element={<ScreenRecorderApp />}/>
+        
       </Route>
     </Routes>
   </>
