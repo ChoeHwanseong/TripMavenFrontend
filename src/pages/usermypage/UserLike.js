@@ -51,6 +51,7 @@ const UserLike = () => {
     // Limit the content to 30 characters
     const truncatedContent = plainTextContent.slice(0, 500);
 
+    setHasMore(false);
       return {
       id: likey.id,
       title: likey.productBoard.title,
