@@ -9,7 +9,6 @@ import moment from 'moment';
 import seoulGeo from '../../data/Seoul.geojson';
 import busanGeo from '../../data/busan.geojson';
 import daeguGeo from '../../data/daegu.geojson';
-import incheonGeo from '../../data/Incheon.geojson';
 import gwangjuGeo from '../../data/gwangju.geojson';
 import daejeonGeo from '../../data/daejeon.geojson';
 import ulsanGeo from '../../data/ulsan.geojson';
@@ -163,7 +162,7 @@ const regionSettings = {
   '서울특별시': { scale: 49000, center: [126.9895, 37.5651], geoData: seoulGeo },
   '부산광역시': { scale: 36000, center: [129.0756, 35.1996], geoData: busanGeo },
   '대구광역시': { scale: 34000, center: [128.6014, 35.8154], geoData: daeguGeo },
-  '인천광역시': { scale: 20000, center: [126.5232, 37.4963], geoData: incheonGeo },
+
   '광주광역시': { scale: 55000, center: [126.8516, 35.1601], geoData: gwangjuGeo },
   '대전광역시': { scale: 45000, center: [127.3845, 36.3504], geoData: daejeonGeo },
   '울산광역시': { scale: 31000, center: [129.2514, 35.5584], geoData: ulsanGeo },
