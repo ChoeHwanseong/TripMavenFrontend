@@ -2,6 +2,9 @@ import axios from 'axios';
 
 const baseUrl = "/python"
 
+// 서버 요청에 대한 타임아웃을 설정합니다.
+const TIMEOUT = 60000; // 60초
+
 // ocr
 export const ocr = async (formData) => {
     try {
@@ -73,6 +76,7 @@ export const evaluateVoiceAndText = async (formData) => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+        timeout: TIMEOUT, // 타임아웃 설정
       });
       console.log('서버 응답:', response.data);
       return { success: true, data: response.data };
@@ -91,6 +95,7 @@ export const evaluatePronunciation = async (formData) => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+        timeout: TIMEOUT, // 타임아웃 설정
       });
       console.log('서버 응답:', response.data);
       return { success: true, data: response.data };
