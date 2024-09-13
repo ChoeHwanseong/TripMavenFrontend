@@ -1,12 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Container, MenuItem, Select, Typography } from '@mui/material';
 import styles from '../../styles/aiservicepage/RealTestPage.module.css';
 import useMediaRecorder from './webrecord/useModiaRecorder';
+import { createEvaluation } from '../../utils/AiData';
 
 
 const RealTestPage = () => {
+  const member_id= localStorage.getItem('memberId');
+  const { productboard_id } = useParams();
+
   const navigate = useNavigate();
   const webcamRef = useRef(null);
   const recognitionRef = useRef(null);
@@ -102,7 +106,10 @@ const RealTestPage = () => {
   };
 
   const uploadVideo = async (videoType) => {
-    const videoBlob = getBlob();
+
+    console.log('uploadVideo 에 보내는 비디오: ',videoType);
+
+    const videoBlob = getBlob(videoType);
 
     const formData = new FormData();
     formData.append('file', videoBlob, 'recordedVideo.webm');
@@ -116,10 +123,19 @@ const RealTestPage = () => {
         body: formData
       });
 
+      console.log('response: ',response);
+      console.log('response.text: ',response.text);
+      console.log('response.json: ',response.json);
+
+
       if (response.ok) {
         const resultData = await response.json();
-
         setLoadingMessage("");
+
+        // Spring 서버로 결과 전송
+        const evaluationResponse = await createEvaluation(resultData, member_id, productboard_id);
+        console.log('Spring 서버 응답:', evaluationResponse);
+
         if (videoType === 'second') {
           alert('영상이 성공적으로 제출되었습니다!');
           navigate('/RealTestResult', { state: { response: resultData } });
