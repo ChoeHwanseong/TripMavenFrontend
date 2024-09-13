@@ -3,8 +3,11 @@ import { Box, Button, Container, Grid, MenuItem, Select, Typography, IconButton 
 import Stack from '@mui/material/Stack';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PronunContext } from '../../context/PronunContext';
+import axios from 'axios';
 
 const PronunciationTest = () => {
+    const navigate = useNavigate();
+    const timerRef = useRef(null); // 타이머 인스턴스 참조
     const [isMicActive, setIsMicActive] = useState(false); // 마이크가 활성화되었는지 여부
     const [transcript, setTranscript] = useState(''); // 자막 상태
     const [audioDevices, setAudioDevices] = useState([]);
@@ -15,13 +18,15 @@ const PronunciationTest = () => {
     const [testMessage, setTestMessage] = useState(''); // 테스트 메시지 상태
     const [isRecognitionDone, setIsRecognitionDone] = useState(false); // 음성 인식 완료 여부
     const recognitionRef = useRef(null); // SpeechRecognition 인스턴스 참조
-    const timerRef = useRef(null); // 타이머 인스턴스 참조
     const lastFinalTranscriptRef = useRef(''); // 마지막으로 인식된 최종 자막을 저장
     const accumulatedTranscriptRef = useRef(''); // 모든 최종 자막을 저장하는 참조
-    const navigate = useNavigate();
     const { newsHeadLine } = useContext(PronunContext);
     const { sequence } = useParams();
     const sequenceNumber = parseInt(sequence, 10);
+
+    const mediaRecorderRef = useRef(null);
+    const audioChunks = useRef([]);
+    const [audioBlob, setAudioBlob] = useState(null); // 녹음된 오디오 데이터를 저장
     
     
     useEffect(() => {
@@ -53,7 +58,8 @@ const PronunciationTest = () => {
             setIsMicActive(false); // 마이크 비활성화
             setIsAudioPlaying(false); // 음성 중지 상태로 전환
             setTestMessage('음성 기록이 중단되었습니다.'); // 중단 메시지 표시
-        } else {
+        }
+        else {
             setTranscript(''); // 자막 초기화
             setIsMicActive(true); // 음성 인식 중 상태
             setTimer(10); // 타이머 초기화
@@ -66,20 +72,66 @@ const PronunciationTest = () => {
             navigator.mediaDevices.getUserMedia({
                 audio: { deviceId: selectedAudioDevice?.deviceId }
             })
-                .then((stream) => {
-                    const audioRef = new Audio();
-                    audioRef.srcObject = stream;
-                    audioRef.play();
-                    setIsAudioPlaying(true);
+            .then( stream => {
+                /*
+                const audioRef = new Audio();
+                audioRef.srcObject = stream;
+                audioRef.play();
+                */
+                mediaRecorderRef.current = new MediaRecorder(stream);
+                mediaRecorderRef.current.ondataavailable = (event) => {
+                    audioChunks.current.push(event.data);
+                };
 
-                    startSpeechRecognition(); // 음성 인식 시작
-                    startTimer(); // 타이머 시작
-                })
-                .catch((error) => {
-                    console.error('Error getting user media:', error);
-                    setMicError(true); // 마이크 접근 실패 시 에러 상태로 설정
-                });
+                mediaRecorderRef.current.onstop = () => {
+                    const audioBlob = new Blob(audioChunks.current, { type: 'audio/wav' });
+                    setAudioBlob(audioBlob); // 오디오 데이터를 Blob으로 저장
+                    audioChunks.current = []; // 저장 후 초기화
+                    setIsRecognitionDone(true);
+                };
+
+                mediaRecorderRef.current.start();
+                setTestMessage('녹음이 시작되었습니다.');
+            })
+            .catch((error) => {
+                console.error('Error accessing microphone:', error);
+                setMicError(true);
+            });
+
+            setIsAudioPlaying(true);
+            startSpeechRecognition(); // 음성 인식 시작
+            startTimer(); // 타이머 시작
         }
+
+    };
+
+
+    // 오디오 서버로 전송
+    const handleSendAudio = () => {
+        if (!audioBlob) {
+        alert('녹음된 파일이 없습니다.');
+        return;
+        }
+
+        const formData = new FormData();
+        formData.append('voice', audioBlob, 'recordedAudio.wav'); // 오디오 데이터를 FormData에 추가
+        formData.append('text', transcript);
+
+
+        // 서버로 Axios를 사용하여 전송
+        axios.post('/python/pron', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+        })
+        .then((response) => {
+            alert('오디오 전송 성공!');
+            console.log('서버 응답:', response.data);
+        })
+        .catch((error) => {
+            console.error('오디오 전송 중 에러 발생:', error);
+            alert('오디오 전송 실패!');
+        });
     };
 
     const startSpeechRecognition = () => {
@@ -275,6 +327,10 @@ const PronunciationTest = () => {
             <Stack display="flex" justifyContent="center" direction="row" spacing={3} sx={{ mt: '25px' }}>
                 <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }} onClick={handlePronunciationTest}>
                     {sequenceNumber === 5 ? '결과 보러가기' : '다음 문장으로 가기'} 
+                </Button>
+
+                <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }} onClick={handleSendAudio}>
+                    {'보내기'} 
                 </Button>
             </Stack>
         </Container >

@@ -14,7 +14,6 @@ import ForumIcon from '@mui/icons-material/Forum';
 import ImageSlider from '../guidemypage/guidepost/ImageSlider';
 import ProfileCardModal from '../guidemypage/GuideProfileModal';
 import { chattingRoomData } from '../../utils/chatData';
-import { text } from '@fortawesome/fontawesome-svg-core';
 
 const PostDetails = () => {
   const navigate = useNavigate();
