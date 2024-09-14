@@ -139,7 +139,7 @@ const Signup = () => {
         }
         if (isValid) {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
-            if(activeStep ==2 ) setAddressObj(prev => ({ ...prev, detailAddress: detailAddressRef.current.value }));
+            if (activeStep == 2) setAddressObj(prev => ({ ...prev, detailAddress: detailAddressRef.current.value }));
         }
         else alert('항목을 모두 입력해주세요.');
 
@@ -168,7 +168,7 @@ const Signup = () => {
                 interCity: region.value,
                 gender: gender.value,
                 birthday: birthday.value,
-                address: `${addressObj.areaAddress} ${addressObj.townAddress} ${addressObj.detailAddress}`,
+                address: `${addressObj.areaAddress} ${addressObj.townAddress}: ${addressObj.detailAddress}`,
                 loginType: 'local'
             };
             SignUp(form)
@@ -217,7 +217,7 @@ const Signup = () => {
 
     const DaumPost = () => {
         const open = useDaumPostcodePopup(postcodeScriptUrl);
-        
+
 
         const handleComplete = (data) => {
             let fullAddress = data.address;
@@ -241,7 +241,7 @@ const Signup = () => {
 
         const handleClick = () => {
             open({ onComplete: handleComplete });
-        };    
+        };
 
         return (
             <>
@@ -260,7 +260,7 @@ const Signup = () => {
                     type="text"
                     id="detailAddress"
                     name="detailAddress"
-                    onBlur={()=>{if(detailAddressRef.current.value!='')setAddressObj(prev => ({ ...prev, detailAddress: detailAddressRef.current.value }))}}                  
+                    onBlur={() => { if (detailAddressRef.current.value != '') setAddressObj(prev => ({ ...prev, detailAddress: detailAddressRef.current.value })) }}
                     placeholder="상세주소를 입력하세요"
                     className={styles.detailAddressInput}
                     ref={detailAddressRef} // 참조 연결

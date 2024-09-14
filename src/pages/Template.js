@@ -24,7 +24,6 @@ export default function Template() {
                 setMemberInfo(memberData);
             }
         };
-
         getMember();
     },[]);
 
