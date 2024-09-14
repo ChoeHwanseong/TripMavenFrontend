@@ -48,7 +48,7 @@ const MemberList = () => {
   }
 
   const handleClick = (user) => {
-    navigate(`/mypageprofile/${user.id}`);
+    navigate(`/mypage/${user.id}`);
   };
 
   const handlePageChange = (event, value) => {

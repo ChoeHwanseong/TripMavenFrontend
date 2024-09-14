@@ -24,14 +24,13 @@ import OrderPopup from './pages/payment/PaymentProc';
 import PaymentConfirmation from './pages/payment/PaymentConfirm';
 import BigChat from './pages/chat/BigChat';
 import MyPageTemplate from './pages/mypage/MyPageTemplate';
-import MypageProfile from './pages/mypage/MyPageProfile';
 import UserLike from './pages/usermypage/UserLike';
 
 
 
 
 import MemberList from './pages/adminmypage/MemberList';
-import GuideAsk from './pages/guidemypage/GuideAsk';
+import GuideAsk from './pages/mypage/PrivateAsk';
 import GuidePost from './pages/guidemypage/GuidePost';
 import SiteIntroduction from './pages/infopage/SiteInfo';
 import FAQ from './pages/csboard/FAQ';
@@ -45,7 +44,6 @@ import AskDetails from './pages/askpage/Askdetails';
 import AskDetailsView from './pages/askpage/AskDetailsView';
 import AskUpdate from './pages/askpage/AskUpdate';
 import ReviewDetails from './pages/usermypage/UserReviewDetails';
-import MypageUpdate from './pages/mypage/MyPageUpdate';
 import FindID1 from './pages/login/FindId1';
 import FindPassword1 from './pages/login/FindPassword1';
 import FindPassword2 from './pages/login/FindPassword2';
@@ -74,6 +72,7 @@ import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
 import CombinedPage from './pages/aiservicepage/AIPage';
 import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
 import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
+import MyPageRoutes from './pages/mypage/MyPageRoutes';
 
 
 
@@ -101,7 +100,7 @@ function App() {
   
           {/*<Route path='/guideask' element={<GuideAsk/>}/>*/}
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService/>}/>
-          <Route path="/guideAsk" element={<GuideAsk />} />
+          <Route path="/guideAsk" element={<GuideAsk />} /> {/*수정중*/}
         
            <Route path='/guidePost/:id' element={<GuidePost/>}/>
           
@@ -133,8 +132,7 @@ function App() {
           
 
           {/* MYPAGE */}
-          <Route path="/mypageprofile/:id" element={<MypageProfile />} />
-          <Route path="/mypageUpdate/:id" element={<MypageUpdate />} />
+          <Route path='/mypage/*' element={<MyPageRoutes/>}/>
 
           {/*<Route path="/guideAsk" element={<GuideAsk />} />*/}
           {/*<Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />*/}

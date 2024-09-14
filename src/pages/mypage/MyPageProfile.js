@@ -98,7 +98,7 @@ const MypageProfile = () => {
               sx={{ mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px', '&:hover': { backgroundColor: '#0056b3' }, }}>
               삭제 하기
             </Button>
-            <Button onClick={() => { navigate(`/mypageUpdate/${template.memberInfo.id}`) }} variant="contained"
+            <Button onClick={() => { navigate(`/mypage/update/${template.memberInfo.id}`) }} variant="contained"
               sx={{ mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px', '&:hover': { backgroundColor: '#0056b3' }, }}>
               수정 하기
             </Button>

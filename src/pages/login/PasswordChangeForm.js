@@ -8,7 +8,7 @@ const PasswordChangeForm = () => {
   const membersId= localStorage.getItem('membersId');
 
   const handleClick = () => {
-    navigate(`/mypageprofile/${membersId}`);
+    navigate(`/mypage/${membersId}`);
   };
 
   return (

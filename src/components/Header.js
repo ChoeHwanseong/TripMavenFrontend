@@ -414,7 +414,7 @@ const Header = () => {
                                 <div className={styles.dropdownContent}>
                                     {menuList && menuList.map((item, index) => {
                                         if (item.name) {
-                                            return <a key={index}><button className={styles.navButton1} onClick={() => { handleClick(item.path.includes('mypageprofile')?`${item.path}/${localStorage.getItem('membersId')}`:item.path) }}>{item.name}</button></a>
+                                            return <a key={index}><button className={styles.navButton1} onClick={() => { handleClick(item.path.includes('mypage')?`${item.path}/${localStorage.getItem('membersId')}`:item.path) }}>{item.name}</button></a>
                                         }
                                     })}
                                 </div>

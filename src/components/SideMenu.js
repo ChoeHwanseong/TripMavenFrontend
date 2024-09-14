@@ -109,7 +109,7 @@ const SideMenu = () => {
                                 <li key={index} className={`${styles.sidebarItem} ${isActive ? styles.active : ''}`}>
                                     <button
                                         className={styles.navButton}
-                                        onClick={() => handleClick(item.path.includes('mypageprofile')?`${item.path}/${localStorage.getItem('membersId')}`:item.path) }
+                                        onClick={() => handleClick(item.path.includes('mypage')?`${item.path}/${localStorage.getItem('membersId')}`:item.path) }
                                     >
                                         <span className={styles.icon}>{getIcon(item.name)}</span>
                                         <span className={styles.label}>{item.name}</span>

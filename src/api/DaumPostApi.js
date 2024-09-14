@@ -10,11 +10,11 @@ export const splitByFirstColon = (str) => {
     const firstCommaIndex = str.indexOf(':');
     // ','가 없을 경우 원래 문자열을 반환합니다.
     if (firstCommaIndex === -1) {
-        return [str, ''];
+        return [str.trim(), ''];
     }
     // 첫 번째 ','를 기준으로 문자열을 두 부분으로 나눕니다.
-    const part1 = str.substring(0, firstCommaIndex); //첫부분이 1번째 인덱스
-    const part2 = str.substring(firstCommaIndex + 1); //뒷부분이 0번쨰 인덱스
+    const part1 = str.substring(0, firstCommaIndex).trim(); //첫부분이 1번째 인덱스
+    const part2 = str.substring(firstCommaIndex + 1).trim(); //뒷부분이 0번쨰 인덱스
     return [part2, part1];
 }
 

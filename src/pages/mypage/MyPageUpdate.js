@@ -14,14 +14,13 @@ const MypageUpdate = () => {
   const [townAddress, setTownAddress] = useState(town);
   const [areaAddress, setAreaAddress] = useState(area);
 
-  console.log("areaAddress",areaAddress)
   // 각 텍스트 필드와 파일 입력에 대한 ref 생성
   const nameRef = useRef(template.memberInfo.name);
   const telNumberRef = useRef(template.memberInfo.telNumber);
   const genderRef = useRef(template.memberInfo.gender);
   const birthdayRef = useRef(template.memberInfo.birthday);
   const introduceRef = useRef(template.memberInfo.introduce);
-  const profileImageRef = useRef(template.memberInfo.profile); // 이미지 파일 입력 ref
+  const profileImageRef = useRef(template.memberInfo.profile); 
   const interCityRef = useRef(template.memberInfo.interCity)
 
   if (!template.memberInfo) {
@@ -35,11 +34,16 @@ const MypageUpdate = () => {
   const previewImage = () => {
     const input = profileImageRef.current;
     const file = input.files && input.files[0];
+    
     if (file) {
       if (file.type.startsWith('image/')) {
-        // URL.createObjectURL()을 사용하여 파일의 임시 URL을 생성합니다.
-        const imageUrl = URL.createObjectURL(file);
-        setProfileImage(imageUrl);
+        // FileReader를 사용하여 파일을 Base64로 변환
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          // Base64 인코딩된 결과를 상태에 저장
+          setProfileImage(reader.result);
+        };
+        reader.readAsDataURL(file);
       } else {
         alert('이미지 파일만 업로드할 수 있습니다.');
       }
@@ -64,7 +68,7 @@ const MypageUpdate = () => {
     updateProfile(template.memberInfo.id, updateData)
       .then(() => {
         alert('변경이 완료되었습니다.');
-        window.location.href = `http://localhost:58337/mypageprofile/${template.memberInfo.id}`;
+        window.location.href = `http://localhost:58337/mypage/${template.memberInfo.id}`;
       })
       .catch(() => alert('변경이 실패되었습니다.'));
   };
