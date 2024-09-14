@@ -7,6 +7,7 @@ const useMediaRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);
 
   const startRecording = (stream) => {
+
     mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm' });
 
     mediaRecorderRef.current.ondataavailable = (event) => {

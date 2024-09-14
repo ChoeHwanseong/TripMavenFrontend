@@ -1,11 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Container, MenuItem, Select, Typography } from '@mui/material';
 import styles from '../../styles/aiservicepage/RealTestPage.module.css';
 import useMediaRecorder from './webrecord/useModiaRecorder';
+import { createEvaluation } from '../../utils/AiData';
 
 const RealTestPage = () => {
+  const memberId= localStorage.getItem('memberId');
+  const { productboardId } = useParams();
+
   const navigate = useNavigate();
   const webcamRef = useRef(null);
   const [videoDevices, setVideoDevices] = useState([]);
@@ -104,7 +108,10 @@ const RealTestPage = () => {
   };
 
   const uploadVideo = async (videoType) => {
-    const videoBlob = getBlob();
+
+    console.log('uploadVideo 에 보내는 비디오: ',videoType);
+
+    const videoBlob = getBlob(videoType);
 
     const formData = new FormData();
     formData.append('file', videoBlob, 'recordedVideo.webm');
@@ -115,9 +122,38 @@ const RealTestPage = () => {
         body: formData
       });
 
+      console.log('response: ',response);
+      console.log('response.text: ',response.text);
+      console.log('response.json: ',response.json);
+
+
       if (response.ok) {
         const resultData = await response.json();
         setLoadingMessage("");
+
+        console.log('resultData: ',resultData);
+
+        // Spring 서버로 결과 전송
+        const evaluationResponse = await createEvaluation({
+          member_id: memberId,
+          productboard_id: productboardId,
+          score: resultData.score,
+          pronunciation: resultData.pronunciation,
+          tone: resultData.tone,
+          fillerwords: resultData.fillerwords,
+          formal_speak: resultData.formal_speak,
+          question_speak: resultData.question_speak,
+          text: resultData.text,
+          weight: resultData.weight,
+          cheek: resultData.cheek,
+          mouth: resultData.mouth,
+          brow: resultData.brow,
+          eye: resultData.eye,
+          nasolabial: resultData.nasolabial
+        });;
+
+        console.log('Spring 서버 응답:', evaluationResponse);
+
         if (videoType === 'second') {
           alert('영상이 성공적으로 제출되었습니다!');
           navigate('/RealTestResult', { state: { response: resultData } });
