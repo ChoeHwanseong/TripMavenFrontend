@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../../styles/usermypage/UserReview.module.css';
+import styles from '../../../styles/usermypage/UserReview.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { reviewGet } from '../../utils/reviewData';
-import { postGetByEmail } from '../../utils/postData';
-import { fetchedData } from '../../utils/memberData';
+import { reviewGet } from '../../../utils/reviewData';
+import { postGetByEmail } from '../../../utils/postData';
+import { fetchedData } from '../../../utils/memberData';
 
 
 const UserReview = () => {

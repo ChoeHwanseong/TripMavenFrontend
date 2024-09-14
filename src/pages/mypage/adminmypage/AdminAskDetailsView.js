@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Button } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { csGet } from '../../utils/csData';
+import { csGet } from '../../../utils/csData';
 
 const AdminAskDetailsView = () => {
 

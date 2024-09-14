@@ -1,24 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar, Pagination } from '@mui/material';
-import { reportfetchAllData } from '../../utils/reportfetchData';
+import { useNavigate } from 'react-router-dom';
+import { csAllget } from '../../../utils/csData';
 
-const AdminReport = () => {
+const AdminAsk = () => {
   const [inquiries, setInquiries] = useState([]);
+  const [hoveredRow, setHoveredRow] = useState(null);
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [rowsPerPage] = useState(10);
 
   useEffect(() => {
-    const getReportData = async () => {
+    const getCSData = async () => {
       try {
-        const fetchedData = await reportfetchAllData();
+        const fetchedData = await csAllget();
         setInquiries(fetchedData);
       } catch (error) {
         console.error('에러났당', error);
       }
     };
 
-    getReportData();
+    getCSData();
   }, []);
+
+  const handleMouseEnter = (index) => {
+    setHoveredRow(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredRow(null);
+  };
+
+  const handleClick = (inquiry) => {
+    navigate(`/adminAskDetailsView/${inquiry.id}`);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -31,9 +46,9 @@ const AdminReport = () => {
 
   return (
     <Box sx={{ maxWidth: 1200, p: 3, mt: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" fontWeight="bold">
-          신고 내역
+          1:1 문의 내역
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Avatar src="../../../images/defaultimage.png" sx={{ width: 32, height: 32, mr: 2 }} />
@@ -41,33 +56,38 @@ const AdminReport = () => {
         </Box>
       </Box>
 
-      <TableContainer component={Paper} >
+      <TableContainer component={Paper}>
         <Table>
-          <TableHead sx={{ backgroundColor: '#f9f9f9' }}>
+          <TableHead sx={{backgroundColor:'#f9f9f9'}}>
             <TableRow>
               <TableCell>작성번호</TableCell>
-              <TableCell>신고자</TableCell>
-              <TableCell>신고 대상자</TableCell>
-              <TableCell>신고 내용</TableCell>
+              <TableCell>아이디</TableCell>
+              <TableCell>분류</TableCell>
+              <TableCell>제목</TableCell>
               <TableCell>작성일</TableCell>
               <TableCell>처리상태</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {currentRows.map((inquiry, index) => (
-              <TableRow key={index}>
-                <TableCell>{inquiry.member.id}</TableCell>
+              <TableRow
+                key={index}
+                hover
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => handleClick(inquiry)}
+                sx={{
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s',
+                  backgroundColor: hoveredRow === index ? '#D0F0FF' : 'inherit',
+                }}
+              >
+                <TableCell>{inquiry.id}</TableCell>
                 <TableCell>{inquiry.member.name}</TableCell>
-                <TableCell>{inquiry.productBoard.member.name}</TableCell>
-                <TableCell>
-                  {inquiry.attitude && '불친절한 태도 '}
-                  {inquiry.information && '부정확한 정보 '}
-                  {inquiry.disgust && '혐오발언 '}
-                  {inquiry.offensive && '공격적인 언어 '}
-                  {inquiry.noShow && '예약 불이행 '}
-                </TableCell>
+                <TableCell>{inquiry.member.role ? '고객' : '가이드'}</TableCell>
+                <TableCell>{inquiry.title}</TableCell>
                 <TableCell>{inquiry.createdAt.split('T')[0]}</TableCell>
-                <TableCell>{inquiry.isactive ? '처리 중' : '처리 완료'}</TableCell>
+                <TableCell>{inquiry.isActive ? '완료' : '미완료'}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -86,4 +106,4 @@ const AdminReport = () => {
   );
 };
 
-export default AdminReport;
+export default AdminAsk;

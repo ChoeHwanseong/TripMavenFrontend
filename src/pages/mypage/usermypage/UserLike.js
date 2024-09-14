@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../../styles/usermypage/UserLike.module.css';
+import styles from '../../../styles/usermypage/UserLike.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
-import { getLikey } from '../../utils/postData';
-import { fetchFiles } from '../../utils/fileData';
+import { getLikey } from '../../../utils/postData';
+import { fetchFiles } from '../../../utils/fileData';
 
 const UserLike = () => {
   const navigate = useNavigate();

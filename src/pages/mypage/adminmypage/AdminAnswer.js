@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableRow, Paper, TextField, Button, Grid } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { csAnswerPut, csGet } from '../../utils/csData';
+import { csAnswerPut, csGet } from '../../../utils/csData';
 
 const AdminAnswer = () => {
     const { id } = useParams();

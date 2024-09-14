@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar, Button, Modal, Pagination } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { fetchData } from '../../utils/memberData';
-import GuideRegistration from '../registerguidepage/RegisterGuide';
+import { fetchData } from '../../../utils/memberData';
+import GuideRegistration from '../../registerguidepage/RegisterGuide';
 
 const style = {
   position: 'absolute',

@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Rating } from '@mui/material';  // Material-UI Rating 컴포넌트 사용
-import { reviewPost } from '../../utils/reviewData';
-import { postGetById } from '../../utils/postData';
+import { reviewPost } from '../../../utils/reviewData';
+import { postGetById } from '../../../utils/postData';
 import { Box, Typography, Divider } from '@mui/material';  // Material-UI 컴포넌트 사용
 import AssignmentIcon from '@mui/icons-material/Assignment';  // 리뷰 작성 아이콘
 import InfoIcon from '@mui/icons-material/Info';  // 상품명 아이콘
-import styles from '../../styles/usermypage/UserReviewDetails.module.css'; // CSS 모듈
+import styles from '../../../styles/usermypage/UserReviewDetails.module.css'; // CSS 모듈
 
 const ReviewDetails = () => {
     const navigate = useNavigate();
