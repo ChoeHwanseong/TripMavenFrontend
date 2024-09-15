@@ -547,7 +547,7 @@ const DetailedWeatherMap = ({ selectedRegion: externalSelectedRegion }) => {
               <Typography variant="subtitle1" gutterBottom>4일간 기상 예보</Typography>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={forecast}>
-                  <XAxis 
+                  <XAxis
                     dataKey="time" 
                     angle={0}
                     textAnchor="end"
