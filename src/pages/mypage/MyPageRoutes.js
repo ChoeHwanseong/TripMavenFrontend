@@ -9,6 +9,7 @@ import MemberList from "./adminmypage/MemberList";
 import AdminAskDetailsView from "./adminmypage/AdminAskDetailsView";
 import AdminAnswer from "./adminmypage/AdminAnswer";
 import PostDetails from "../productPage/PostDetails";
+import RoleBasedRoute from "../../components/RoleBasedRoute";
 
 
 export default function MyPageRoutes() {
@@ -16,18 +17,21 @@ export default function MyPageRoutes() {
     return <>
         <PronunContext.Provider value={{}}>
             <Routes>
-                <Route path="/:id" element={<MypageProfile />} />
-                <Route path="/privateAsk" element={<PrivateAsk />} />
-                <Route path="/update/:id" element={<MypageUpdate />} />
-                {/* ADMIN */}
-                <Route path='/admin/report' element={<AdminReport />} />
-                <Route path='/admin/ask' element={<AdminAsk />} />
-                <Route path='/admin/memberlist' element={<MemberList />} />
-                <Route path='/admin/AskDetailsView/:id' element={<AdminAskDetailsView />} />
-                <Route path='/admin/Answer/:id' element={<AdminAnswer />} />
+                <Route path="/:id" element={<RoleBasedRoute element={<MypageProfile />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
+                <Route path="/privateAsk" element={<RoleBasedRoute element={<PrivateAsk />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
+                <Route path="/update/:id" element={<RoleBasedRoute element={<MypageUpdate />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
 
                 {/* GUIDE */}
-                <Route path='/guide/PostDetails/:id' element={<PostDetails />} />
+                <Route path='/guide/PostDetails/:id' element={<RoleBasedRoute element={<PostDetails />} requiredRole={["GUIDE", "ADMIN"]} />} />
+
+                {/* ADMIN */}
+                <Route path='/admin/report' element={<RoleBasedRoute element={<AdminReport />} requiredRole={["ADMIN"]} />} />
+                <Route path='/admin/ask' element={<RoleBasedRoute element={<AdminAsk />} requiredRole={["ADMIN"]} />} />
+                <Route path='/admin/memberlist' element={<RoleBasedRoute element={<MemberList />} requiredRole={["ADMIN"]} />} />
+                <Route path='/admin/AskDetailsView/:id' element={<RoleBasedRoute element={<AdminAskDetailsView />} requiredRole={["ADMIN"]} />} />
+                <Route path='/admin/Answer/:id' element={<RoleBasedRoute element={<AdminAnswer />} requiredRole={["ADMIN"]} />} />
+
+
                 <Route path="*" element={<Navigate to="/" replace={true} />} />
             </Routes>
         </PronunContext.Provider>
