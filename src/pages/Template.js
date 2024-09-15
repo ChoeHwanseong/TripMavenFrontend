@@ -11,7 +11,7 @@ import { fetchedData } from "../utils/memberData";
 //레이아웃용 컴포넌트
 export default function Template() {
     //개발 편의성을 위해 하드코딩한 것임. 나중에는 로그인한 회원 role로 넣기
-    const [role, setRole] = useState('USER');
+    const [role, setRole] = useState('');
     
     //로그인한 사용자 정보
     const [memberInfo, setMemberInfo] = useState({});
