@@ -21,7 +21,8 @@ export const postGetByEmail = (email) => {
 // 상품 전체 얻어오기(20개씩 얻어오기)
 export const postsAllGet = (page) => {
   return axios.get(baseUrl + `/all/${page}`).then(res =>{
-      return res.data;
+      console.log(res)
+      return res.data.content;
   })
 }
 // 상품 제목 내용 검색(20개씩 얻어오기)
