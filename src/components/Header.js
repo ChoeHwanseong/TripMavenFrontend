@@ -76,14 +76,6 @@ const NotificationComponent = ({ notifications, setNotifications }) => {
     //알림 펼치기 여부 상태
     const [showNotifications, setShowNotifications] = useState(false);
 
-    /*
-    const [notifications, setNotifications] = useState([
-        { id: 1, title: "새로운 알림", message: "내 게시물에 답변이 달렸습니다" },
-        { id: 2, title: "새로운 메시지", message: "관리자로부터 새로운 메세지가 도착했습니다" },
-        { id: 3, title: "승인 알림", message: "가이드 등록이 승인되었습니다" }
-    ]);
-    */
-
     //알림 펼치기
     const handleClick = () => {
         setShowNotifications(!showNotifications);
@@ -91,14 +83,16 @@ const NotificationComponent = ({ notifications, setNotifications }) => {
 
     //알림 내용 눌렀을때
     const handleNotificationClick = (noti) => {
+        const temp = {...noti};
+        console.log(noti.id);
         //누른 알림 상태리스트에서 삭제
         setNotifications(prevNotifications =>
-            prevNotifications.filter(notification => notification.id !== noti.id)
+            prevNotifications.filter(notification => notification.id !== temp.id)
         );
         //알림테이블에서 읽음처리로 수정하기
-        readNotification(noti.content[0]);
+        readNotification(temp.content[0]);
         setShowNotifications(false);
-        navigate(noti.link);
+        navigate(temp.link);
     };
 
     const getNotiCount = () => {
@@ -146,7 +140,7 @@ const NotificationComponent = ({ notifications, setNotifications }) => {
                 <NotificationPopup style={{ width: "200px" }}>
                     {notificationCount > 0 ? (
                         notifications.map((notification) => {
-                            console.log(new Date(notification.createAt));
+                            //console.log(notification);
                             return (
                                 <NotificationItem
                                     key={notification.id}

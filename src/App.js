@@ -90,9 +90,10 @@ function App() {
           {/*<Route path='/userask' element={<UserAsk/>}/>*/}
           <Route path='/userlike' element={<UserLike />} />
           {/*<Route path='/useraskpage' element={<UserAskPage/>}/>*/}
-          <Route path='/bigChat' element={<BigChat />} />
+          {/* 
+          <Route path='/bigChat' element={<BigChat />} />*/}
           {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
-          <Route path='/bigChat/:id' element={<BigChat />} />
+          <Route path='/bigchat/:id' element={<BigChat />} />
           <Route path='/chattingRoom' element={<ChattingRoom />} />
           <Route path='/askdetailsview/:id' element={<AskDetailsView />} />
           <Route path='/askall' element={<AskAll />} />

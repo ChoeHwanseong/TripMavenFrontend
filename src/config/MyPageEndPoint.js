@@ -12,7 +12,7 @@ export const menuData = {
         { name: "내 정보 관리", path: `/mypage/${localStorage.getItem('membersId')}` },
         { name: "내 게시물 관리", path: "/guidemypost" },
         { name: "1:1문의 내역", path: "/askall" },
-        { name: "채팅방", path: "/bigchat" },
+        { name: "채팅방", path: "/bigchat/0" },
         { name: "AI 서비스", path: "/guidemypageaiservice" },
         {path: "/guidemypagemypostdetails" }, //내 게시물 상세보기는 메뉴 내용엔 없음
         {path: "/privateAsk" },
@@ -25,7 +25,7 @@ export const menuData = {
         { name: "이용후기", path: "/userreview" },
         { name: "1:1문의 내역", path: "/askall" },
         { name: "찜 목록", path: "/userlike" },
-        { name: "채팅방", path: "/bigchat" },
+        { name: "채팅방", path: "/bigchat/0" },
         {path: "/useraskpage"},
         {path: "/askdetails"},
         {path: "/askdetailsview"}
