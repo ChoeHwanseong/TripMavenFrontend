@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import styles from '../../styles/chat/BigChat.module.css';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { chattingRoomData } from '../../utils/chatData';
 
-function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages, chatMessages, loading }) {
+function ChattingRoom({ setSelectedUser, data, client, fetchChatMessages, chatMessages}) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
 
@@ -16,18 +15,29 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
     setHoveredRow(null);
   };
 
-  // 특정 채팅방의 가장 최신 메시지 시간 찾기
+  // 최근 메시지 시간 뿌리기
   const getLastMessageTime = (chatMessages, chattingRoomId) => {
-    const messagesInRoom = chatMessages.filter(msg => msg.chattingRoomId === chattingRoomId);
+    const messageTime = chatMessages[chattingRoomId] || [];
 
-    if (messagesInRoom.length === 0) 
-      return null;
-  
-    const lastMessage = messagesInRoom.reduce((latest, current) => {
+    if (messageTime.length === 0) {
+      return ''; // 메시지가 없으면 빈 문자열 반환
+    }
+
+    const lastMessage = messageTime.reduce((latest, current) => {
       return new Date(latest.timestamp) > new Date(current.timestamp) ? latest : current;
     });
-  
-    return lastMessage.timestamp;
+
+    // 마지막 메시지의 날짜
+    const lastMessageDate = new Date(lastMessage.timestamp);
+    const now = new Date();
+
+    // 마지막 메시지의 날짜가 오늘이면 시간만 반환
+    if (lastMessageDate.toDateString() === now.toDateString()) {
+      return lastMessageDate.toLocaleTimeString(); // 시간만 반환
+    } else {
+      // 어제 또는 그 이전이면 날짜와 시간 모두 반환
+      return lastMessageDate.toLocaleDateString() + ' ' + lastMessageDate.toLocaleTimeString(); // 날짜와 시간 모두 반환
+    }
   };
 
   const handleClick = (joinChatting) => {
@@ -39,9 +49,9 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
           console.error('Subscription error:', err);
         }
       });
-      setSelectedUser(joinChatting);
+
       fetchChatMessages(joinChatting.chattingRoom.id);
-      setChatMessages([]);
+      setSelectedUser(joinChatting);
     }
     navigate(`/bigchat/${joinChatting.chattingRoom.id}`);
   };
@@ -85,8 +95,8 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
               <div className={styles.chatInfo}>
                 <span className={styles.chatName}>{joinChatting.member.name}</span>
                 <span className={styles.chatTime}>
-                <span>
-                  {lastMessageTime}
+                  <span>
+                    {lastMessageTime ? lastMessageTime : '...'}
                   </span>
                 </span>
               </div>
