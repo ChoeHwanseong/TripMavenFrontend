@@ -234,6 +234,7 @@ function BigChat() {
           ))}
           <div ref={messagesEndRef} />
         </div>
+       
 
         <div className={styles.chatInputSection}>
           <input
@@ -242,7 +243,7 @@ function BigChat() {
             id="chatInput"
             placeholder="입력해주세요"
             onKeyDown={handleKeyDown}
-            ref={inputRef}
+            ref={inputRef} 
           />
           <button className={styles.sendButton} onClick={handleSendClick}>
             <img src="../images/sendbutton.png" alt="Send" />
