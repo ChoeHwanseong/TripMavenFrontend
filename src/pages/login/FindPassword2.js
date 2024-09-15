@@ -13,7 +13,7 @@ const FindPassword2 = () => {
       <div className={styles.section}>
         <label className={styles.radioLabel}>
           <input type="radio" name="method" defaultChecked />
-          회원정보에 등록한 휴대전화로 인증
+          회원정보에 등록한 이메일로 인증
         </label>
         <p className={styles.description}>
           회원정보에 등록한 휴대전화 번호와 휴대전화 번호가 같아야, 인증번호를 받을 수 있습니다.

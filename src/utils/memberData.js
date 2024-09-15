@@ -92,9 +92,6 @@ export const logout = async () => {
     });
 }
 
-
-
-
 //가이드 등록.
 export const toGuide = async (form) => {
   await axios.post('http://localhost:9099/toGuide', form, {
@@ -112,7 +109,6 @@ export const toGuide = async (form) => {
     })
 
 }
-
 
 export const updateProfile = async (id, updatedData) => {
   try {
@@ -139,3 +135,5 @@ export const deleteProfile = async (id) => {
     throw error;
   }
 };
+
+
