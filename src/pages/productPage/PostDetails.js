@@ -11,7 +11,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fetchFiles } from '../../utils/fileData';
 
-import ProfileCardModal from '../guidemypage/GuideProfileModal';
+import ProfileCardModal from './GuideProfileModal';
 import { chattingRoomData } from '../../utils/chatData';
 import ImageSlider from '../../api/ImageSlider';
 
@@ -173,7 +173,7 @@ const PostDetails = () => {
         </Box>
 
         <Box className={styles.authorInfo}>
-          <Avatar src={data.member.profileImageUrl || "/path/to/avatar.png"} alt="Author Avatar" sx={{ width: 32, height: 32, mr: 1 }} />
+          <Avatar src={data.member.profile || "/path/to/avatar.png"} alt="Author Avatar" sx={{ width: 32, height: 32, mr: 1 }} />
           <Typography variant="body2" sx={{ mr: 1 }}>{data.member.name}</Typography>
           <Typography variant="body2" color="textSecondary">{data.createdAt.split('T')[0]}</Typography>
         </Box>

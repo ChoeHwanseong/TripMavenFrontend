@@ -126,7 +126,7 @@ const ProductBoard = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
                                 {/* 프로필 이미지 (디폴트 이미지 설정) */}
                                 <img
-                                    src={defaultimg} // 디폴트 프로필 이미지
+                                    src={product.member.profile||defaultimg} // 디폴트 프로필 이미지
                                     alt="profile"
                                     style={{
                                         width: '40px',
