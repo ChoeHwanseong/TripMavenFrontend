@@ -3,7 +3,7 @@ import styles from '../../styles/chat/BigChat.module.css';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-function ChattingRoom({ setSelectedUser, data, client, fetchChatMessages, chatMessages}) {
+function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages, chatMessages}) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
 
@@ -83,7 +83,7 @@ function ChattingRoom({ setSelectedUser, data, client, fetchChatMessages, chatMe
               sx={{
                 cursor: 'pointer',
                 transition: 'background-color 0.3s',
-                backgroundColor: hoveredRow === index ? '#D0F0FF' : 'transparent',
+                backgroundColor: hoveredRow === index ? '#f0f0f0' : 'transparent',
                 color: hoveredRow === index ? 'black' : 'inherit',
               }}
             >
