@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { postsAllGet, postsCityGet, postsSearchWordGet } from '../../utils/postData';
-import YouTubeSearch from './YouTubeSearch';
+import YouTubeSearch from '../../api/YouTubeSearch';
 import { fetchFiles } from '../../utils/fileData';
 import { Button, Rating } from '@mui/material';
 import defaultimg from '../../images/default_profile.png';

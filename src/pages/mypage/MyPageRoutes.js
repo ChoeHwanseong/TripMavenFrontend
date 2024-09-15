@@ -8,6 +8,7 @@ import AdminAsk from "./adminmypage/AdminAsk";
 import MemberList from "./adminmypage/MemberList";
 import AdminAskDetailsView from "./adminmypage/AdminAskDetailsView";
 import AdminAnswer from "./adminmypage/AdminAnswer";
+import PostDetails from "../productPage/PostDetails";
 
 
 export default function MyPageRoutes() {
@@ -22,9 +23,11 @@ export default function MyPageRoutes() {
                 <Route path='/admin/report' element={<AdminReport />} />
                 <Route path='/admin/ask' element={<AdminAsk />} />
                 <Route path='/admin/memberlist' element={<MemberList />} />
-                <Route path='/admin/AskDetailsView/:id' element={<AdminAskDetailsView/>} />
+                <Route path='/admin/AskDetailsView/:id' element={<AdminAskDetailsView />} />
                 <Route path='/admin/Answer/:id' element={<AdminAnswer />} />
 
+                {/* GUIDE */}
+                <Route path='/guide/PostDetails/:id' element={<PostDetails />} />
                 <Route path="*" element={<Navigate to="/" replace={true} />} />
             </Routes>
         </PronunContext.Provider>

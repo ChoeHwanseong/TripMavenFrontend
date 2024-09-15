@@ -41,3 +41,5 @@ npm install react-router-dom@6 이것두
       npm install chart.js react-chartjs-2 --legacy-peer-deps
 
 09/13 npm install @wmik/use-media-recorder --force
+
+09/15 npm install react-modal --legacy-peer-deps

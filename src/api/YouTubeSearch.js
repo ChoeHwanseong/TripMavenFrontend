@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styles from '../../styles/productPage/YouTubeSearch.module.css'; // 스타일링을 위해 CSS 모듈 사용
+import styles from '../styles/api/YouTubeSearch.module.css'; // 스타일링을 위해 CSS 모듈 사용
 
 const YouTubeSearch = ({ keyword, city }) => {
     const [videos, setVideos] = useState([]);

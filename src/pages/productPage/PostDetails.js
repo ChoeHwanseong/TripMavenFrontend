@@ -3,17 +3,17 @@ import { Box, Typography, Button, Avatar } from '@mui/material';
 import styles from '../../styles/guidemypage/GuidePostDetails.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { postDelete, postGetById, postLikey, deleteLikey } from '../../utils/postData';
-import KakaoMap from '../../utils/KakaoMap'; 
+import KakaoMap from '../../utils/KakaoMap';
 import { HotelIcon, TreePalm } from 'lucide-react';
 import ComplaintModal from '../report/ComplaintModal';
 
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fetchFiles } from '../../utils/fileData';
-import ForumIcon from '@mui/icons-material/Forum';
-import ImageSlider from '../guidemypage/guidepost/ImageSlider';
+
 import ProfileCardModal from '../guidemypage/GuideProfileModal';
 import { chattingRoomData } from '../../utils/chatData';
+import ImageSlider from '../../api/ImageSlider';
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -31,13 +31,12 @@ const PostDetails = () => {
 
   // 내용 더보기 버튼
   function onRefButtonClick() {
-    setIsExpanded(!isExpanded);
-    document.getElementById('contentBtn').hidden = true;  
+    setIsExpanded(prev => !prev);
   }
 
   useEffect(() => {
     const getData = async () => {
-      try { 
+      try {
         console.log('포스트 디테일 들어옴');
         const fetchedData = await postGetById(id);
         console.log('fetchedData: ', fetchedData);
@@ -98,14 +97,12 @@ const PostDetails = () => {
   };
 
 
-   // 가이드 프로필 모달
-   const openGuideModal = () => {
-    console.log('가이드 프로필 모달 오픈');
+  // 가이드 프로필 모달
+  const openGuideModal = () => {
     setGuideModalOpen(true);
   };
 
   const closeGuideModal = () => {
-    console.log('가이드 프로필 모달 닫기');
     setGuideModalOpen(false);
   };
 
@@ -119,16 +116,16 @@ const PostDetails = () => {
   const handleClick = async () => {
 
     try {
-      const myId = localStorage.getItem("membersId"); 
-      const yourId = data.member.id; 
+      const myId = localStorage.getItem("membersId");
+      const yourId = data.member.id;
       const roomId = await chattingRoomData(myId, yourId);
-     
+
       navigate(`/bigChat/${data.id}`);
 
     } catch (error) {
       console.error('Error fetching or creating chat room:', error);
     }
-  
+
   };
 
   if (!data) {
@@ -189,7 +186,7 @@ const PostDetails = () => {
                 className={styles.hashtagButton}
                 variant="contained"
                 size="small"
-                onClick={()=>navigate(`/product?keyword=${tag.trim()}`)}
+                onClick={() => navigate(`/product?keyword=${tag.trim()}`)}
               >
                 #{tag.trim()}
               </Button>
@@ -205,12 +202,11 @@ const PostDetails = () => {
       <Box className={styles.symbolsSection} sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', mt: 2 }}>
         <Button
           variant="outlined"
-          color="primary"
-          onClick={handleClick} // 상품 id 넘기기
+          className={styles.outlinedButton}
           sx={{ mr: 'auto' }}
-          startIcon={<ForumIcon />}
+          onClick={() => navigate('/bigchat')}
         >
-          가이드에게 채팅하기
+          <Typography variant="body1">가이드에게 채팅하기</Typography>
         </Button>
 
         <Box className={styles.symbol} sx={{ mr: 2 }}>
@@ -246,7 +242,7 @@ const PostDetails = () => {
               className={`mt-3 overflow-hidden transition ${!isExpanded ? styles.blur : ''}`}
               style={{
                 maxHeight: isExpanded ? 'none' : '400px'
-              }}/>
+              }} />
             <div className={`${!isExpanded ? styles.blurOverlay : ''}`}></div>
           </Typography>
         </Box>
@@ -257,11 +253,13 @@ const PostDetails = () => {
             className={styles.actionButtons}
             variant="contained"
             onClick={onRefButtonClick}
-          >상품 설명 더 보기</Button>
+          >
+            {isExpanded ? '상품 설명 접기' : '상품 설명 더 보기'}
+          </Button>
         </Box>
 
-        <img src="../../images/WebTestPageLine.png" alt="Line Image" 
-            style={{ width: '100%', height: '1px', marginTop:'20px' }}/>
+        <img src="../../images/WebTestPageLine.png" alt="Line Image"
+          style={{ width: '100%', height: '1px', marginTop: '20px' }} />
 
         <Box className={styles.mapSection}>
           <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
@@ -276,7 +274,7 @@ const PostDetails = () => {
             <Typography variant="body2" color="textSecondary" sx={{ marginBottom: 2 }}>
               {data.hotelAd}
             </Typography>
-            <KakaoMap address={data.hotelAd == null ? data.hotel : data.hotelAd} />
+            <KakaoMap address={data.hotelAd == null ? data.hotel : data.hotelAd}/>
           </div>
         </Box>
       </Box>
@@ -303,25 +301,25 @@ const PostDetails = () => {
           </>
         )}
 
-{keyword ? (
-  <Button
-    className={styles.actionButton}
-    variant="outlined"
-    color="primary"
-    onClick={() => navigate(`/product?keyword=${keyword}`)}
-  >
-    목록
-  </Button>
-) : (
-  <Button
-    className={styles.actionButton}
-    variant="outlined"
-    color="primary"
-    onClick={() => navigate(-1)} // 이전 페이지로 이동
-  >
-    목록
-  </Button>
-)}
+        {keyword ? (
+          <Button
+            className={styles.actionButton}
+            variant="outlined"
+            color="primary"
+            onClick={() => navigate(`/product?keyword=${keyword}`)}
+          >
+            목록
+          </Button>
+        ) : (
+          <Button
+            className={styles.actionButton}
+            variant="outlined"
+            color="primary"
+            onClick={() => navigate(-1)} // 이전 페이지로 이동
+          >
+            목록
+          </Button>
+        )}
 
       </Box>
     </Box>
