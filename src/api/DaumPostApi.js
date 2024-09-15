@@ -2,12 +2,12 @@ import { Button } from "@mui/material";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import { postcodeScriptUrl } from "react-daum-postcode/lib/loadPostcode";
 
-export const splitByFirstColon = (str) => {
+export const splitByblank = (str) => {
     if (!str) {
         return ['', ''];
     }
     // 문자열의 첫 번째 ','의 인덱스를 찾습니다.
-    const firstCommaIndex = str.indexOf(':');
+    const firstCommaIndex = str.indexOf('　');
     // ','가 없을 경우 원래 문자열을 반환합니다.
     if (firstCommaIndex === -1) {
         return [str.trim(), ''];

@@ -98,7 +98,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
   useEffect(() => {
     const mountFunc = async () => {
       await fetchRegions();
-      console.log(memberInfo);
+      //console.log(memberInfo);
       const changedRegionName = changeRegionKorName[memberInfo.interCity] //회원 관심지역 한글 이름
       const select = selectbox.current;
       if (select) {
@@ -132,7 +132,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
   useEffect(() => {
     if (selectedRegion) {
       fetchEvents(selectedRegion.code);
-      console.log(selectedRegion);
+      //console.log(selectedRegion);
     } else {
       setEvents([]);
     }

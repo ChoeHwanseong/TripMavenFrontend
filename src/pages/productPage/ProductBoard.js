@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { postsAllGet, postsCityGet, postsSearchWordGet } from '../../utils/postData';
-import YouTubeSearch from './YouTubeSearch';
+import YouTubeSearch from '../../api/YouTubeSearch';
 import { fetchFiles } from '../../utils/fileData';
 import { Button, Rating } from '@mui/material';
 import defaultimg from '../../images/default_profile.png';
@@ -126,7 +126,7 @@ const ProductBoard = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
                                 {/* 프로필 이미지 (디폴트 이미지 설정) */}
                                 <img
-                                    src={defaultimg} // 디폴트 프로필 이미지
+                                    src={product.member.profile||defaultimg} // 디폴트 프로필 이미지
                                     alt="profile"
                                     style={{
                                         width: '40px',

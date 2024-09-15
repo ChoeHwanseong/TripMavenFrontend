@@ -226,7 +226,7 @@ const GuidePost = () => {
                     sx={{ mt: 2 }}
                 >
                     대표 이미지 업로드 (최대 3개)
-                    <input type="file" hidden onChange={handleFileChange} multiple />
+                    <input type="file" hidden onChange={handleFileChange} multiple accept=".jpg,.jpeg,.png,.gif,.bmp"/>
                 </Button>
                 {errors.files && <Typography color="error">{errors.files}</Typography>}
 

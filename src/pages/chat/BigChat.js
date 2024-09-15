@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import mqtt from 'mqtt';
 import { useLocation, useParams } from 'react-router-dom';
 import styles from '../../styles/chat/BigChat.module.css';
 import ChattingRoom from './ChattingRoom';
 import { chattingListYourData, getMessages } from '../../utils/chatData';
 import { submitMessage } from '../../utils/chatData';
+import { TemplateContext } from '../../context/TemplateContext';
 
 function BigChat() {
   const { id } = useParams(); // URL 파라미터로 받은 채팅방 ID
@@ -16,7 +17,7 @@ function BigChat() {
   const location = useLocation();
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
-  
+  const template = useContext(TemplateContext);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -80,19 +81,19 @@ function BigChat() {
           const { text, sender, timestamp } = parsedMessage;
 
           try {
-              setChatMessages((prevMessages) => ({
-                ...prevMessages,
-                [topic]: [
-                  ...(prevMessages[topic] || []),
-                  {
-                    sender: sender,
-                    text,
-                    timestamp: new Date(timestamp).toISOString(),
-                    chattingRoomId: topic
-                  },
-                ]
-              }));
-            
+            setChatMessages((prevMessages) => ({
+              ...prevMessages,
+              [topic]: [
+                ...(prevMessages[topic] || []),
+                {
+                  sender: sender,
+                  text,
+                  timestamp: new Date(timestamp).toISOString(),
+                  chattingRoomId: topic
+                },
+              ]
+            }));
+
           } catch (error) {
             console.error('Error parsing message:', error);
           }
@@ -141,9 +142,9 @@ function BigChat() {
         sender: localStorage.getItem('membersId'),
         timestamp: new Date(),
       });
-      
+
       client.publish(`${selectedUser.chattingRoom.id}`, message);
-      
+
       try {
         await submitMessage(selectedUser.chattingRoom.id, text, localStorage.getItem('membersId'));
         console.log('메시지 저장됨');
@@ -176,13 +177,13 @@ function BigChat() {
     try {
       setLoading(true); // 메시지를 불러오는 동안 로딩 상태로 설정
       const response = await getMessages(chattingRoomId);
-      
+
       if (response) {
         const messageTime = response.map(msg => ({
           ...msg,
           chattingRoomId  // 각 메시지에 chattingRoomId 필드 추가
         }));
-  
+
         setChatMessages(prevMessages => ({
           ...prevMessages,
           [chattingRoomId]: messageTime,
@@ -196,7 +197,7 @@ function BigChat() {
       setLoading(false);
     }
   };
-  
+
   return (
     <div className={styles.pageBorder}>
     <div className={styles.container}>
@@ -214,7 +215,10 @@ function BigChat() {
                 className={`${styles.message} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}
               >
                 <img
-                  src={msg.sender.toString() === localStorage.getItem('membersId') ? "../images/defaultimage.png" : "../images/choehwanseong.png"}
+                  src={
+                    msg.sender.toString() === localStorage.getItem('membersId') ?
+                      template.memberInfo.profile ? template.memberInfo.profile : "../images/defaultimage.png" : //보내는 사람
+                      selectedUser.member.profile ? selectedUser.member.profile : "../images/choehwanseong.png"} //받는 사람
                   alt="profile"
                   className={styles.profileImage}
                 />
@@ -243,7 +247,7 @@ function BigChat() {
           <button className={styles.sendButton} onClick={handleSendClick}>
             <img src="../images/sendbutton.png" alt="Send" />
           </button>
-          <button className={styles.attachmentButton}><img src="../images/filebutton.png"/></button>
+          <button className={styles.attachmentButton}><img src="../images/filebutton.png" /></button>
         </div>
       </div>
     </div>

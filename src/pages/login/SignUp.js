@@ -3,16 +3,15 @@ import styles from '../../styles/login/SignUp.module.css';
 import { findMemberbyEmail, SignUp } from '../../utils/memberData';
 import { useLocation } from 'react-router-dom';
 import useValid from './useValid';
-import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { styled } from '@mui/material/styles';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import Check from '@mui/icons-material/Check';
+import DaumPost from '../../api/DaumPostApi';
 
 const steps = ['기본 정보', '추가 정보', '가입 정보'];
-const postcodeScriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
 
 // Custom Stepper styles
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
@@ -78,8 +77,9 @@ const Signup = () => {
     const query = new URLSearchParams(location.search);
 
     const [activeStep, setActiveStep] = useState(0);
-    const [addressObj, setAddressObj] = useState({ areaAddress: '', townAddress: '', detailAddress: '' });
-
+    const [townAddress, setTownAddress] = useState('');
+    const [areaAddress, setAreaAddress] = useState('');
+    const [townAddressError, setTownAddressError] = useState('');
     // Form validations
     const email = useValid('', (value) =>
         !value ? '이메일을 입력하세요' : !/\S+@\S+\.\S+/.test(value) ? '유효한 이메일 주소를 입력하세요' : ''
@@ -94,10 +94,6 @@ const Signup = () => {
     const region = useValid('', (value) => !value ? '관심 지역을 선택하세요' : '');
     const gender = useValid('', (value) => !value ? '성별을 선택하세요' : '');
     const birthday = useValid('', (value) => !value ? '생년월일을 입력하세요' : '');
-    const address = useValid(addressObj, (value) =>
-        !value.areaAddress || !value.townAddress ? '주소를 입력하세요' : ''
-    );
-    const detailAddressRef = useRef(null); // 상세주소 입력 필드에 대한 참조 생성
     const handleNext = () => {
         let isValid = true;
 
@@ -136,10 +132,13 @@ const Signup = () => {
                 birthday.setError('생년월일을 입력하세요');
                 isValid = false;
             }
+            if(townAddress == ''){
+                setTownAddressError('주소를 입력하세요.');
+                isValid = false;
+            }
         }
         if (isValid) {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
-            if (activeStep == 2) setAddressObj(prev => ({ ...prev, detailAddress: detailAddressRef.current.value }));
         }
         else alert('항목을 모두 입력해주세요.');
 
@@ -159,7 +158,7 @@ const Signup = () => {
             !region.error &&
             !gender.error &&
             !birthday.error &&
-            !address.error
+            !townAddressError
         ) {
             const form = {
                 email: email.value,
@@ -168,7 +167,7 @@ const Signup = () => {
                 interCity: region.value,
                 gender: gender.value,
                 birthday: birthday.value,
-                address: `${addressObj.areaAddress} ${addressObj.townAddress}: ${addressObj.detailAddress}`,
+                address: `${areaAddress} 　 ${townAddress}`,
                 loginType: 'local'
             };
             SignUp(form)
@@ -214,60 +213,6 @@ const Signup = () => {
         }
         if (getEmail) getData();
     }, []);
-
-    const DaumPost = () => {
-        const open = useDaumPostcodePopup(postcodeScriptUrl);
-
-
-        const handleComplete = (data) => {
-            let fullAddress = data.address;
-            let extraAddress = '';
-            let localAddress = data.sido + ' ' + data.sigungu;
-            if (data.addressType === 'R') {
-                if (data.bname !== '') {
-                    extraAddress += data.bname;
-                }
-                if (data.buildingName !== '') {
-                    extraAddress += (extraAddress !== '' ? `, ${extraAddress}` : extraAddress);
-                }
-                fullAddress = fullAddress.replace(localAddress, '');
-                setAddressObj((prev) => ({
-                    ...prev,
-                    areaAddress: localAddress,
-                    townAddress: fullAddress + (extraAddress !== '' ? ` (${extraAddress})` : '')
-                }));
-            }
-        };
-
-        const handleClick = () => {
-            open({ onComplete: handleComplete });
-        };
-
-        return (
-            <>
-                <div className={styles.inputWithButton}>
-                    <input
-                        type="text"
-                        id="address"
-                        name="address"
-                        value={`${addressObj.areaAddress} ${addressObj.townAddress}`}
-                        readOnly
-                        placeholder="주소를 입력하세요"
-                    />
-                    <button type="button" onClick={handleClick} className={styles.searchButton2}>주소찾기</button>
-                </div>
-                <input
-                    type="text"
-                    id="detailAddress"
-                    name="detailAddress"
-                    onBlur={() => { if (detailAddressRef.current.value != '') setAddressObj(prev => ({ ...prev, detailAddress: detailAddressRef.current.value })) }}
-                    placeholder="상세주소를 입력하세요"
-                    className={styles.detailAddressInput}
-                    ref={detailAddressRef} // 참조 연결
-                />
-            </>
-        );
-    };
 
     const renderStepContent = (step) => {
         switch (step) {
@@ -386,8 +331,27 @@ const Signup = () => {
                         </div>
                         <div className={styles.inputGroup}>
                             <label htmlFor="address">주소</label>
-                            <DaumPost />
-                            {address.error && <p className={styles.error}>{address.error}</p>}
+                            <div className={styles.inputWithButton}>
+                                <input
+                                    type="text"
+                                    id="address"
+                                    name="address"
+                                    value={areaAddress}
+                                    readOnly
+                                    placeholder="주소를 입력하세요"
+                                />
+                                <DaumPost setAreaAddress={setAreaAddress} />
+                            </div>
+                            <input
+                                type="text"
+                                id="detailAddress"
+                                name="detailAddress"
+                                placeholder="상세주소를 입력하세요"
+                                className={styles.detailAddressInput}
+                                value={townAddress}
+                                onChange={(e)=>setTownAddress(e.target.value)}
+                            />
+                            {townAddressError && <p className={styles.error}>{townAddressError}</p>}
                         </div>
                     </>
                 );
@@ -400,7 +364,7 @@ const Signup = () => {
                         <p>관심 지역: {region.value}</p>
                         <p>성별: {gender.value}</p>
                         <p>생년월일: {birthday.value}</p>
-                        <p>주소: {`${addressObj.areaAddress} ${addressObj.townAddress} ${addressObj.detailAddress}`}</p>
+                        <p>주소: {`${areaAddress} 　 ${townAddress}`}</p>
                     </div>
                 );
             default:

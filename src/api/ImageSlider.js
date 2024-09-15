@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../../../styles/guidemypage/giudePost/ImageSlider.module.css';
+import styles from '../styles/api/ImageSlider.module.css';
+import ImagePreview from './ImagePreview';
 
 export default function ImageSlider({ fileUrls }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  
   useEffect(() => {
-    console.log('fileUrls이미지슬라이더: ', fileUrls);
+    //console.log('fileUrls이미지슬라이더: ', fileUrls);
     setCurrentIndex(0); // fileUrls가 변경될 때 슬라이드를 초기화
   }, [fileUrls]);
 
@@ -33,7 +34,8 @@ export default function ImageSlider({ fileUrls }) {
           >
             {fileUrls.map((fileUrl, index) => (
               <div key={index} className={styles.slide}>
-                <img src={fileUrl} alt={`업로드된 파일 ${index + 1}`} />
+                {/* <img src={fileUrl} alt={`업로드된 파일 ${index + 1}`}  /> */}
+                <ImagePreview imageUrl={fileUrl} alt={`업로드된 파일 ${index + 1}`}/>
               </div>
             ))}
           </div>
@@ -51,10 +53,12 @@ export default function ImageSlider({ fileUrls }) {
           >
             &#10095;
           </button>
+
         </>
       ) : (
         <p>이미지가 없습니다.</p>
       )}
+
     </div>
   );
 }
