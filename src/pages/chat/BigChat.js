@@ -199,12 +199,13 @@ function BigChat() {
   };
 
   return (
+    <div className={styles.pageBorder}>
     <div className={styles.container}>
       <ChattingRoom setSelectedUser={setSelectedUser} loading={loading} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages} chatMessages={chatMessages} />
 
       <div className={styles.chatSection}>
         <div className={styles.chatHeader}>
-          <h2 className={styles.chatName}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
+          <h2 className={styles.chatName2}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
         </div>
 
         <div className={styles.chatMessages}>
@@ -249,6 +250,7 @@ function BigChat() {
           <button className={styles.attachmentButton}><img src="../images/filebutton.png" /></button>
         </div>
       </div>
+    </div>
     </div>
   );
 }

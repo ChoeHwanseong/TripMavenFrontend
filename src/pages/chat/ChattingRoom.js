@@ -57,6 +57,7 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
   };
 
   return (
+
     <div className={styles.messagesSection}>
       <div className={styles.header}>
         <h2 className={styles.messagesTitle}>Messages</h2>
@@ -105,6 +106,7 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
         })}
       </div>
     </div>
+
   );
 }
 
