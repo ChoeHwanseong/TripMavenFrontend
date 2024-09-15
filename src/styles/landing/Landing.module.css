@@ -41,134 +41,219 @@
 }
 
 .heroSection {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100vh;
   position: relative;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
+  background-color: #f0f8ff;
 }
 
-.heroImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.glowTitle {
+  color: rgb(75, 54, 233);
+  font-size: 8rem;
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  letter-spacing: 50px;
+  font-weight: bold;
 }
 
-.heroContent {
+.glowLetter {
+  display: inline-block;
+  position: relative;
+  opacity: 0;
+  letter-spacing: 0;
+}
+
+.glowLeft {
+  animation: glowLeft 2s forwards;
+}
+
+.glowRight {
+  animation: glowRight 2s forwards;
+}
+
+@keyframes glowLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+    text-shadow: none;
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(0);
+    text-shadow: -2px 0 15px #d8bcf7;
+  }
+  100% {
+    opacity: 1;
+    text-shadow: -2px 0 30px #d6b2fc, -2px 0 60px #d5b1fb;
+  }
+}
+
+@keyframes glowRight {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+    text-shadow: none;
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(0);
+    text-shadow: 2px 0 15px #fdc5f4;
+  }
+  100% {
+    opacity: 1;
+    text-shadow: 2px 0 30px #f9b7ee, 2px 0 60px #f7cbf0;
+  }
+}
+
+/* 기존 .heroTitle 스타일 유지 */
+.heroTitle {
   position: absolute;
-  inset: 0;
+  top: 25%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 10;
+}
+
+.heroLeft, .heroRight {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  padding: 4rem;
-  z-index: 3;
-}
-
-.logo {
-  width: 150px;
-  margin-bottom: 2rem;
-}
-
-.heroTitle {
-  font-size: 7rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
-  background: linear-gradient(to bottom, rgba(0, 0, 255, 1), rgba(86, 86, 236, 0.814), rgba(243, 228, 228, 0.5));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.heroSubtitle {
-  color: rgb(39, 43, 245);
-  font-size: 1.6rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
-  line-height: 1.2;
+  align-items: center;
+  padding: 2rem;
   text-align: center;
-  text-shadow: 
-    -1px -1px 0 #fff,  
-     1px -1px 0 #fff,
-    -1px  1px 0 #fff,
-     1px  1px 0 #fff,
-    -2px -2px 0 #fff,
-     2px -2px 0 #fff,
-    -2px  2px 0 #fff,
-     2px  2px 0 #fff;
-}
-
-.heroVideo {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-}
-
-.videoOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.2); 
-  z-index: -1;
-}
-
-.heroVideo,
-.videoOverlay {
-  filter: blur(2px);
-}
-
-.btn {
-  background-color: gray;
-  color: #ffffff;
-  padding: 1rem 2rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  border: 2px solid #ffffff;
-  cursor: pointer;
-  font-size: 1.25rem;
   position: relative;
   overflow: hidden;
   z-index: 1;
-  transition: color 0.3s ease-in-out;
 }
 
-.btnLarge {
-  font-size: 1.5rem;
-  padding: 1.25rem 2.5rem;
+.heroButtonWrapper {
+  position: absolute;
+  left: 50%;
+  bottom: 10%;
+  transform: translateX(-50%);
+  z-index: 3;
 }
 
-.btn::after {
+.heroLeft::before, .heroRight::before {
   content: '';
   position: absolute;
-  display: block;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 100%;
-  background: #ffffff;
-  z-index: -1;
-  transition: width 150ms ease-in-out;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.2;
+  z-index: 1;
 }
 
-.btn:hover {
-  color: #5cabfa;
+.heroLeft::before {
+  background-image: url('../../images/traveler.jpg');
 }
 
-.btn:hover::after {
-  width: 110%;
+.heroRight::before {
+  background-image: url('../../images/tour guide.jpg');
 }
 
-.btn:active {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+.heroTitleLeft, .heroListLeft {
+  color: #0066cc;
+  position: relative;
+  z-index: 2;
+  bottom: -30%;
+}
+
+.heroTitleRight, .heroListRight {
+  color: #ffffff;
+  position: relative;
+  z-index: 2;
+  bottom: -30%;
+}
+
+.heroLeft {
+  background-color: #e6f2ff;
+}
+
+.heroRight {
+  background-color: #2ca0ee;
+}
+
+.heroTitle {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  font-weight: bolder;
+}
+
+.heroList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.heroList li {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+}
+
+.heroList li svg {
+  margin-right: 0.5rem;
+}
+
+.btn2 {
+  position: relative;
+  padding: 15px 45px;  /* 패딩 감소 */
+  color: #ffffff;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;  /* 글자 간격 조정 */
+  font-size: 1.2em;  /* 폰트 크기 감소 */
+  border: 2px solid transparent;
+  border-radius: 15%;
+  transition: 0.5s;
+  background: linear-gradient(45deg, #959fda, #2576ef);
+}
+
+.btn2:hover {
+  border: 2px solid #fff;
+}
+
+.btn2::before {
+  content: '';
+  position: absolute;
+  inset: 0 4px;  /* 내부 여백 조정 */
+  border-left: 2px solid #fff;
+  border-right: 2px solid #fff;
+  border-radius: 15%;
+  transition: 1s;
+}
+
+.btn2::after {
+  content: '';
+  position: absolute;
+  inset: 4px 0;  /* 내부 여백 조정 */
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  border-radius: 15%;
+  transition: 1s;
+}
+
+.btn2:hover::before {
+  inset: 0px 4px;  /* 호버 시 내부 여백 조정 */
+  transform: rotateY(180deg);
+}
+
+.btn2:hover::after {
+  inset: 4px 0px;  /* 호버 시 내부 여백 조정 */
+  transform: rotateX(180deg);
 }
 
 .section {
@@ -440,13 +525,36 @@
   color: blue;
 }
 
+.fadeIn {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.fadeIn.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @media (max-width: 768px) {
   .flexContainer, .newsContainer, .contactSection {
     flex-direction: column;
   }
+  
+  .glowTitle {
+    font-size: 40px;
+  }
+
+  .heroTitle {
+    top: 5%;
+  }
+
+  .mainTitle {
+    font-size: 2rem;
+  }
 
   .heroTitle, .sectionTitle {
-    font-size: 3rem;
+    font-size: 2rem;
   }
 
   .sectionText, .newsText, .contactText {
@@ -514,5 +622,31 @@
 
   .featuresContainer {
     flex-direction: column;
+  }
+
+  .heroSection {
+    flex-direction: column;
+  }
+
+  .heroButtonWrapper {
+    position: static;
+    margin-top: 2rem;
+  }
+
+  .heroLeft, .heroRight {
+    width: 100%;
+  }
+
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroList {
+    font-size: 1rem;
+  }
+
+  .btn2 {
+    padding: 10px 30px;  /* 모바일에서 더 작게 조정 */
+    font-size: 1em;
   }
 }

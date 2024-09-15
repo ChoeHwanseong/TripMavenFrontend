@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const baseUrl = "http://localhost:9099"
+const baseUrl = "http://192.168.0.108:9099"
 
 // 파일만 전송
 export const filesPost = async (formData) => {
