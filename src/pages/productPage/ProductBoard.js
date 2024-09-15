@@ -83,6 +83,9 @@ const ProductBoard = () => {
 
     return (
         <div className={styles.container}>
+            <div className="App mb-5" >
+                <YouTubeSearch keyword={keyword} city={city}/>
+            </div>
             <div className='d-flex justify-content-between'>
                 <h1 style={{ marginLeft: '40px' }}>{city} 상품 목록</h1>
                 {!city && (keyword !== '' && <h3 style={{ marginLeft: '40px' }}>'{keyword}'에 대한 검색 결과입니다</h3>)}
@@ -183,10 +186,7 @@ const ProductBoard = () => {
                     <h3>검색 결과가 없습니다</h3>}
             </div>
 
-            <div className="App">
-                <h1 className={styles.youtubeHeading}>YouTube Video Search</h1>
-                <YouTubeSearch keyword={keyword} city={city}/>
-            </div>
+            
         </div>
     );
 };
