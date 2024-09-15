@@ -51,12 +51,14 @@
 }
 
 .inputWithButton {
+    
     display: flex;
     align-items: center;
 }
 
 .inputWithButton input {
     flex-grow: 1;
+    width: 10%;
     margin-right: 10px;
 }
 

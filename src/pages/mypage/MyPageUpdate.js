@@ -5,11 +5,11 @@ import { updateProfile } from '../../utils/memberData';
 import styles from '../../styles/mypage/MyProfile.module.css';
 import defaultImage from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
-import DaumPost, { splitByFirstColon} from '../../api/DaumPostApi';
+import DaumPost, { splitByblank} from '../../api/DaumPostApi';
 
 const MypageUpdate = () => {
   const template = useContext(TemplateContext);
-  const [town,area] = splitByFirstColon(template.memberInfo.address);
+  const [town,area] = splitByblank(template.memberInfo.address);
   const [profileImage, setProfileImage] = useState(template.memberInfo.profile); // 프로필 이미지 상태 추가
   const [townAddress, setTownAddress] = useState(town);
   const [areaAddress, setAreaAddress] = useState(area);
@@ -60,7 +60,7 @@ const MypageUpdate = () => {
       'telNumber': telNumberRef.current.value,
       'gender': genderRef.current.value,
       'birthday': birthdayRef.current.value,
-      'address': `${areaAddress} : ${townAddress}`,
+      'address': `${areaAddress} 　 ${townAddress}`,
       'interCity': interCityRef.current.value,
       'profile': profileImage,
       'introduce': introduceRef.current.value,
