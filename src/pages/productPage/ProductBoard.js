@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { postsAllGet, postsCityGet, postsSearchWordGet } from '../../utils/postData';
-import YouTubeSearch from './YouTubeSearch';
+import YouTubeSearch from '../../api/YouTubeSearch';
 import { fetchFiles } from '../../utils/fileData';
 import { Button, Rating } from '@mui/material';
 import defaultimg from '../../images/default_profile.png';
@@ -83,6 +83,9 @@ const ProductBoard = () => {
 
     return (
         <div className={styles.container}>
+            <div className="App mb-5" >
+                <YouTubeSearch keyword={keyword} city={city}/>
+            </div>
             <div className='d-flex justify-content-between'>
                 <h1 style={{ marginLeft: '40px' }}>{city} 상품 목록</h1>
                 {!city && (keyword !== '' && <h3 style={{ marginLeft: '40px' }}>'{keyword}'에 대한 검색 결과입니다</h3>)}
@@ -123,7 +126,7 @@ const ProductBoard = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
                                 {/* 프로필 이미지 (디폴트 이미지 설정) */}
                                 <img
-                                    src={defaultimg} // 디폴트 프로필 이미지
+                                    src={product.member.profile||defaultimg} // 디폴트 프로필 이미지
                                     alt="profile"
                                     style={{
                                         width: '40px',
@@ -183,10 +186,7 @@ const ProductBoard = () => {
                     <h3>검색 결과가 없습니다</h3>}
             </div>
 
-            <div className="App">
-                <h1 className={styles.youtubeHeading}>YouTube Video Search</h1>
-                <YouTubeSearch keyword={keyword} city={city}/>
-            </div>
+            
         </div>
     );
 };

@@ -16,8 +16,7 @@ import ReviewDetails from './pages/mypage/usermypage/UserReviewDetails';
 import GuidePost from './pages/guidemypage/GuidePost';
 import GuideMyPageMyPost from './pages/guidemypage/GuideMyPageMyPost';
 import GuideMyPageAIService from './pages/guidemypage/guidemypageaiservice/GuideMyPageAIService';
-import GuidePostDetails from './pages/guidemypage/GuidePostDetails';
-import GuidePostUpdate from './pages/guidemypage/GuidePostUpdate';
+
 
 import PaymentForm from './pages/payment/Payment';
 import OrderPopup from './pages/payment/PaymentProc';
@@ -62,6 +61,7 @@ import GuideAsk from './pages/guidemypage/GuideAsk';
 
 
 
+
 function App() {
 
   return <>
@@ -69,9 +69,12 @@ function App() {
       <Route path="/" element={<Landing />} />
       <Route element={<Template />}>
         <Route path="/home" element={<Home />} />
-        <Route path='/login/*' element={<LoginRoutes/>}/>
-        
+        <Route path='/login/*' element={<LoginRoutes />} />
+
         <Route element={<MyPageTemplate />}>
+          {/* MYPAGE */}
+          <Route path='/mypage/*' element={<MyPageRoutes />} />
+
           {/* GUIDE */}
           <Route path='/guidemypost' element={<GuideMyPageMyPost />} />
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService />} />
@@ -80,8 +83,7 @@ function App() {
           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
           <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
            */}
-          <Route path='/guidePostDetails/:id' element={<GuidePostDetails />} />
-          <Route path='/guidePostUpdate/:id' element={<GuidePostUpdate />} />
+          
           {/* USER */}
           <Route path='/userreview' element={<UserReview />} />
           <Route path='/reviewdetails/:id' element={<ReviewDetails />} />
@@ -95,8 +97,7 @@ function App() {
           <Route path='/askdetailsview/:id' element={<AskDetailsView />} />
           <Route path='/askall' element={<AskAll />} />
           <Route path='/chattingRoom' element={<ChattingRoom />} />
-          {/* MYPAGE */}
-          <Route path='/mypage/*' element={<MyPageRoutes />} />
+
           {/*<Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />*/}
           <Route path='/guidePost' element={<GuidePost />} />
           <Route path='/askall' element={<AskAll />} />
@@ -108,7 +109,6 @@ function App() {
         <Route path="/cs" element={<CSBoard />} />
         <Route path="/siteinfo" element={<SiteIntroduction />} />
         <Route path="/faq" element={<FAQ />} />
-
 
         <Route path='/precautionspage1' element={<PrecautionsPage1 />} />
         <Route path='/quizform2' element={<QuizForm2 />} />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Button, Rating, Modal, Avatar } from '@mui/material';
-import styles from '../../styles/guidemypage/GuideProfileModal.module.css';
+import styles from '../../styles/productPage/GuideProfileModal.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const ProfileCardModal = ({ isOpen, onClose, guideData }) => {
@@ -18,7 +18,7 @@ const ProfileCardModal = ({ isOpen, onClose, guideData }) => {
         <Box className={styles.modalContent}>
           <Box className={styles.card}>
             <Box className={styles.profile}>
-              <Avatar src={guideData.profileImageUrl || '/path/to/default-avatar.png'} alt="Guide Avatar" className={styles.avatar} />
+              <Avatar src={guideData.profile || '/path/to/default-avatar.png'} alt="Guide Avatar" className={styles.avatar} />
               <Typography variant="h6" className={styles.name}>
                 {guideData.name}
               </Typography>

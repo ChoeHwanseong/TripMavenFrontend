@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styles from '../../styles/productPage/YouTubeSearch.module.css'; // 스타일링을 위해 CSS 모듈 사용
+import styles from '../styles/api/YouTubeSearch.module.css'; // 스타일링을 위해 CSS 모듈 사용
 
 const YouTubeSearch = ({ keyword, city }) => {
     const [videos, setVideos] = useState([]);
@@ -8,11 +8,7 @@ const YouTubeSearch = ({ keyword, city }) => {
     // city와 keyword를 결합하여 검색어 생성
     const keywordTravel = city ? `${city} 여행` : `${keyword} 여행`;
 
-    console.log('city: ', city);
-    console.log('keyword: ', keyword);
-    console.log('keywordTravel: ', keywordTravel);
-    const YOUTUBE_API_KEY =''
-    //const YOUTUBE_API_KEY = ''; // 안먹으면 아래 키 중에 1개 사용
+    const YOUTUBE_API_KEY = ''; // 안먹으면 아래 키 중에 1개 사용
     //const YOUTUBE_API_KEY = 'AIzaSyCZayRJHfttrAoayZKY-owo_6TslcaEduM'; // 규림
     //const YOUTUBE_API_KEY = 'AIzaSyCZPSPkT5rNtWvV6lkmREOGemJkoieQAJk'; // 시은
     //const YOUTUBE_API_KEY = 'AIzaSyAxRvCfzlqgdIOlU3C8SSFLWnJ_a9Dt3NU'//주원

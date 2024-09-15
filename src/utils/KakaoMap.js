@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import markerImageSrc from '../images/mapMark.png'; // Adjust the path as necessary
 
-const KakaoMap = ({ address, latitude = 37.5665, longitude = 126.9780, mapContainerId = 'map', level = 3 }) => {
+const KakaoMap = ({ address, latitude = 37.5665, longitude = 126.9780, mapContainerId = 'map', level = 3  }) => {
   const roadviewContainerRef = useRef(null);
 
   useEffect(() => {
