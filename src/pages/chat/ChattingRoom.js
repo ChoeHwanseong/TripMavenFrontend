@@ -88,7 +88,7 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
               }}
             >
               <img
-                src={joinChatting.member.profileImage ? joinChatting.member.profileImage : "../images/defaultimage.png"}
+                src={joinChatting.member.profile ? joinChatting.member.profile : "../images/defaultimage.png"}
                 alt="profile"
                 className={styles.profileImage}
               />

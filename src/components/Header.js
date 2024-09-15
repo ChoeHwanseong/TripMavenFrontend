@@ -11,7 +11,6 @@ import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
 import { ButtonGroup, Button, IconButton, Badge, Typography, Avatar } from '@mui/material';
 import { logout } from '../utils/memberData';
 import CloseIcon from '@mui/icons-material/Close';
-import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import styled from '@emotion/styled';
 import { chattingListMyData } from "../utils/chatData";
