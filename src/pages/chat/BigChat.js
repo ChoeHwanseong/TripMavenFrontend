@@ -55,13 +55,9 @@ function BigChat() {
 
         //메시지 수신 설정
         mqttClient.on('message', (topic, message) => {
-          console.log('Received message:', message.toString());
           const parsedMessage = JSON.parse(message.toString());
           const { text, sender, timestamp } = parsedMessage;
-          // console.log('list_',list_);
-          // console.log('topic',topic);
-          // console.log('sender',sender);
-          // console.log('id',id);
+
           try {
             if(list_.find(ele=>ele.chattingRoom.id == topic && (ele.member.id == sender || localStorage.getItem('membersId')==sender))){
               //console.log('들어왔당');
@@ -77,6 +73,7 @@ function BigChat() {
                   sender: sender,
                   text,
                   timestamp: new Date(timestamp).toISOString(),
+                  chattingRoomId: topic
                 },
               ]);
             }
@@ -131,6 +128,15 @@ function BigChat() {
       });
       
       client.publish(`${selectedUser.chattingRoom.id}`, message);
+      setChatMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          sender: localStorage.getItem('membersId'),
+          text,
+          timestamp: new Date().toISOString(),
+          chattingRoomId: selectedUser.chattingRoom.id
+        }
+      ]);
 
       try {
         await submitMessage(selectedUser.chattingRoom.id, text, localStorage.getItem('membersId'));
@@ -154,27 +160,38 @@ function BigChat() {
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
+      event.preventDefault();
       handleSendClick();
     }
   };
 
+  const [loading, setLoading] = useState(false);
+
   const fetchChatMessages = async (chattingRoomId) => {
     try {
-      const response = await getMessages(chattingRoomId); 
-      //console.log('Fetched messages response:', response);  // 더 구체적으로 확인하기 위한 로그
+      setLoading(true); // 메시지를 불러오는 동안 로딩 상태로 설정
+      const response = await getMessages(chattingRoomId);
+      
       if (response) {
-        setChatMessages(response); 
+        const messageTime = response.map(msg => ({
+          ...msg,
+          chattingRoomId  // 각 메시지에 chattingRoomId 필드 추가
+        }));
+  
+        setChatMessages(messageTime);
       } else {
         console.log('No messages received');
       }
     } catch (error) {
       console.error('메시지 불러오기 에러:', error);
+    } finally {
+      setLoading(false); // 메시지를 다 불러오면 로딩 상태 해제
     }
   };
   
   return (
     <div className={styles.container}>
-    <ChattingRoom setSelectedUser={setSelectedUser} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages}/>
+    <ChattingRoom setSelectedUser={setSelectedUser} loading={loading} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages} chatMessages={chatMessages}/>
 
     <div className={styles.chatSection}>
       <div className={styles.chatHeader}>
@@ -191,6 +208,7 @@ function BigChat() {
                 src={msg.sender.toString() === localStorage.getItem('membersId') ? "../images/defaultimage.png" : "../images/choehwanseong.png"}
                 alt="profile"
                 className={styles.profileImage}
+
               />
               <div className={styles.messageBubble}>
                 <span>{msg.text}</span>
