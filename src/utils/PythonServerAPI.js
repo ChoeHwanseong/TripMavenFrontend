@@ -3,7 +3,7 @@ import axios from 'axios';
 const baseUrl = "/python"
 
 // 서버 요청에 대한 타임아웃을 설정합니다.
-const TIMEOUT = 60000; // 60초
+const TIMEOUT = 10000; // 20초
 
 // ocr
 export const ocr = async (formData) => {
@@ -78,7 +78,7 @@ export const evaluateVoiceAndText = async (formData) => {
         },
         timeout: TIMEOUT, // 타임아웃 설정
       });
-      console.log('서버 응답:', response.data);
+      //console.log('서버 응답:', response.data);
       return { success: true, data: response.data };
     }
     catch (error) {
@@ -97,7 +97,7 @@ export const evaluatePronunciation = async (formData) => {
         },
         timeout: TIMEOUT, // 타임아웃 설정
       });
-      console.log('서버 응답:', response.data);
+      //console.log('서버 응답:', response.data);
       return { success: true, data: response.data };
     }
     catch (error) {
