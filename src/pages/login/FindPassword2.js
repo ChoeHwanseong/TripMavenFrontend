@@ -46,7 +46,7 @@ const FindPassword2 = () => {
         </p>
       </div>
 
-      <button type="button" className={styles.submitButton} onClick={()=>navigate('/findpassword3')}>다음</button>
+      <button type="button" className={styles.submitButton} onClick={()=>navigate('/login/findpassword3')}>다음</button>
     </div>
   );
 };

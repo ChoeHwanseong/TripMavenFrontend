@@ -1,21 +1,11 @@
 
-import { BrowserRouter as Router, Route, Switch, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import React from 'react';
 import Landing from './pages/landing/Landing';
 import Home from "./pages/home/Home";
 import Template from "./pages/Template";
-
-import Login from "./pages/login/LogIn";
-import LoginSuccess from './pages/login/LogInSuccess';
-import Signup from './pages/login/SignUp';
-import FindID1 from './pages/login/FindId1';
-import FindPassword1 from './pages/login/FindPassword1';
-import FindPassword2 from './pages/login/FindPassword2';
-import FindPassword3 from './pages/login/FindPassword3';
-import FindID2 from './pages/login/FindId2';
-import PasswordChangeForm from './pages/login/PasswordChangeForm';
-
+import LoginRoutes from './pages/login/LoginRoutes';
 import MyPageRoutes from './pages/mypage/MyPageRoutes';
 import MyPageTemplate from './pages/mypage/MyPageTemplate';
 import UserReview from './pages/mypage/usermypage/UserReview';
@@ -23,23 +13,15 @@ import UserReview from './pages/mypage/usermypage/UserReview';
 import UserLike from './pages/mypage/usermypage/UserLike';
 import ReviewDetails from './pages/mypage/usermypage/UserReviewDetails';
 
-import AdminAsk from './pages/mypage/adminmypage/AdminAsk';
-import AdminReport from './pages/mypage/adminmypage/AdminReport';
-import MemberList from './pages/mypage/adminmypage/MemberList';
-import AdminAskDetailsView from './pages/mypage/adminmypage/AdminAskDetailsView';
-import AdminAnswer from './pages/mypage/adminmypage/AdminAnswer';
-
 import GuidePost from './pages/guidemypage/GuidePost';
 import GuideMyPageMyPost from './pages/guidemypage/GuideMyPageMyPost';
 import GuideMyPageAIService from './pages/guidemypage/guidemypageaiservice/GuideMyPageAIService';
 import GuidePostDetails from './pages/guidemypage/GuidePostDetails';
 import GuidePostUpdate from './pages/guidemypage/GuidePostUpdate';
 
-
 import PaymentForm from './pages/payment/Payment';
 import OrderPopup from './pages/payment/PaymentProc';
 import PaymentConfirmation from './pages/payment/PaymentConfirm';
-
 
 import AskAll from './pages/askpage/AskAll';
 import AskDetails from './pages/askpage/Askdetails';
@@ -79,6 +61,7 @@ import GuideAsk from './pages/guidemypage/GuideAsk';
 
 
 
+
 function App() {
 
   return <>
@@ -86,27 +69,25 @@ function App() {
       <Route path="/" element={<Landing />} />
       <Route element={<Template />}>
         <Route path="/home" element={<Home />} />
+        <Route path='/login/*' element={<LoginRoutes/>}/>
+        
         <Route element={<MyPageTemplate />}>
-
           {/* GUIDE */}
           <Route path='/guidemypost' element={<GuideMyPageMyPost />} />
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService />} />
           <Route path="/guideAsk" element={<GuideAsk />} /> {/*수정중*/}
           <Route path='/guidePost/:id' element={<GuidePost />} />
-
           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
           <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
            */}
           <Route path='/guidePostDetails/:id' element={<GuidePostDetails />} />
           <Route path='/guidePostUpdate/:id' element={<GuidePostUpdate />} />
-
           {/* USER */}
           <Route path='/userreview' element={<UserReview />} />
           <Route path='/reviewdetails/:id' element={<ReviewDetails />} />
           {/*<Route path='/userask' element={<UserAsk/>}/>*/}
           <Route path='/userlike' element={<UserLike />} />
           {/*<Route path='/useraskpage' element={<UserAskPage/>}/>*/}
-
           <Route path='/bigChat' element={<BigChat />} />
           {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
           <Route path='/bigChat/:id' element={<BigChat />} />
@@ -114,7 +95,6 @@ function App() {
           <Route path='/askdetailsview/:id' element={<AskDetailsView />} />
           <Route path='/askall' element={<AskAll />} />
           <Route path='/chattingRoom' element={<ChattingRoom />} />
-
           {/* MYPAGE */}
           <Route path='/mypage/*' element={<MyPageRoutes />} />
           {/*<Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />*/}
@@ -124,22 +104,12 @@ function App() {
           <Route path='/askdetailsview/:id' element={<AskDetailsView />} />
           <Route path='/askupdate/:id' element={<AskUpdate />} />
         </Route>
-
         <Route path='/videoAppUpload' element={<VideoAppUpload />} />
         <Route path="/cs" element={<CSBoard />} />
         <Route path="/siteinfo" element={<SiteIntroduction />} />
         <Route path="/faq" element={<FAQ />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/success" element={<LoginSuccess />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/findId1' element={<FindID1 />} />
-        <Route path='/findId2' element={<FindID2 />} />
-        <Route path='/findpassword1' element={<FindPassword1 />} />
-        <Route path='/findpassword2' element={<FindPassword2 />} />
-        <Route path='/findpassword3' element={<FindPassword3 />} />
-        <Route path='/passwordchange' element={<PasswordChangeForm />} />
 
-        {/* <Route path='/precautionspage1' element={<PrecautionsPage1/>}/> */}
+
         <Route path='/precautionspage1' element={<PrecautionsPage1 />} />
         <Route path='/quizform2' element={<QuizForm2 />} />
         <Route path='/quiztutorial' element={<QuizTutorial />} />
