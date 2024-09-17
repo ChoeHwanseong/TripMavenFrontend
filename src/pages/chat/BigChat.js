@@ -35,7 +35,6 @@ function BigChat() {
 
   const fetchChatRoomsMessages = async (chatRooms) => {
     try {
-
       for (let room of chatRooms) {
         const response = await getMessages(room.chattingRoom.id);
         if (response) {
@@ -58,9 +57,8 @@ function BigChat() {
   useEffect(() => {
     // 마운트 시 MQTT 클라이언트 객체 없으면 생성
     const setMQTT = async () => {
+      const list_ = await getData();
       if (!client) {
-        const list_ = await getData();
-
         await fetchChatRoomsMessages(list_);
 
         // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
@@ -100,23 +98,35 @@ function BigChat() {
         });
 
         if (id) {
-          for (let joinchat of list_) {
-            if (joinchat.chattingRoom.id == id) {
+          for (let joinChat of list_) {
+            if (joinChat.chattingRoom.id == id) {
               mqttClient.subscribe(`${id}`, (err) => {
                 if (!err) {
                   console.log(id, 'Subscribed to topic');
                 } else {
                   console.error('Subscription error:', err);
                 }
-                setSelectedUser(joinchat);
+                setSelectedUser(joinChat);
               });
-              fetchChatMessages(joinchat.chattingRoom.id);
+              fetchChatMessages(joinChat.chattingRoom.id);
             }
           }
         }
 
         // 클라이언트를 상태로 설정
         setClient(mqttClient);
+      }
+      else{
+        const joinChat = list_.find(ele => location.pathname.includes(ele.chattingRoom.id));
+        client.subscribe(`${id}`, (err) => {
+          if (!err) {
+            console.log(id, 'Subscribed to topic');
+          } else {
+            console.error('Subscription error:', err);
+          }
+          setSelectedUser(joinChat);
+        });
+        fetchChatMessages(joinChat.chattingRoom.id);
       }
     };
 
@@ -128,7 +138,15 @@ function BigChat() {
         client.end();
       }
     };
-  }, []);
+  }, [location.pathname]);
+
+  /*
+  useEffect(()=>{
+    if(client){
+
+    }
+  },[]);
+  */
 
   useEffect(() => {
     scrollToBottom();
@@ -157,10 +175,14 @@ function BigChat() {
   const handleSendClick = () => {
     const input = document.querySelector("#chatInput");
     const text = input.value.trim();
-    if (text) {
+    if (selectedUser && text) {
       sendMessage(text);
       input.value = '';
       inputRef.current.focus();
+    }
+    else{
+      alert('채팅방을 선택하세요');
+      input.value = '';
     }
   };
 

@@ -83,16 +83,15 @@ const NotificationComponent = ({ notifications, setNotifications }) => {
 
     //알림 내용 눌렀을때
     const handleNotificationClick = (noti) => {
-        const temp = {...noti};
-        console.log(noti.id);
+        //console.log(noti);
         //누른 알림 상태리스트에서 삭제
         setNotifications(prevNotifications =>
-            prevNotifications.filter(notification => notification.id !== temp.id)
+            prevNotifications.filter(notification => notification.id !== noti.id)
         );
         //알림테이블에서 읽음처리로 수정하기
-        readNotification(temp.content[0]);
+        readNotification(noti.content[0]);
         setShowNotifications(false);
-        navigate(temp.link);
+        navigate(noti.link);
     };
 
     const getNotiCount = () => {
@@ -194,6 +193,7 @@ const Header = () => {
     let menuList = menuData[role]; //사용자 role에 따라 메뉴 변경
     const [mqttClientList, setMqttClientList] = useState([]); //mqtt 객체 리스트 상태
     const [notifications, setNotifications] = useState([]); //알림 리스트 상태
+    const [waitingNotification, setWaitingNotification] = useState({}); //받은 메세지
     const template = useContext(TemplateContext);
 
     //로그아웃 함수
@@ -252,10 +252,20 @@ const Header = () => {
                         //자신 메세지 제외
                         if (sender == localStorage.getItem('membersId')) return;
 
-                        //받은 메세지 디비 저장 메소드(이걸 왜 여기에서???? 보낼때하면 되잖아)
+                        //알림 리스트에 올라가기 전에 잠깐 저장용
+                        setWaitingNotification({
+                            'memberId': localStorage.getItem('membersId'),
+                            'content': text,
+                            'createAt': timestamp,
+                            'type': 'chat',
+                            'link': `/bigchat/${topic}`,
+                            'senderId': `${sender}`
+                        });
+
 
                         //알림 테이블에 추가하는 함수(memberId, content, type, link)
                         //현재 채팅방에 들어가있으면 알림테이블에 추가하지 않는다
+                        /*
                         if (location.pathname.includes('bigchat') &&
                             location.pathname.includes(`${topic}`)) return;
                         else {
@@ -273,6 +283,7 @@ const Header = () => {
                             const notiList = await getNoti(); //알림 테이블 불러오기
                             setNotifications(notiList);
                         }
+                        */
                     } catch (error) { console.error('Error parsing message:', error); }
                 });
             }
@@ -304,6 +315,19 @@ const Header = () => {
         return notiStateList;
     };
 
+    const urlCheck = async ()=>{
+        if(waitingNotification.link){
+            if (location.pathname.includes('bigchat') && 
+                location.pathname === waitingNotification.link) return;
+            else {
+                const postedData = await postNotification(waitingNotification); //알림테이블(DB)에 추가하기
+                //받은 메세지 알림 리스트 상태에 추가(dto 그대로 받기)
+                const notiList = await getNoti(); //알림 테이블 불러오기
+                setNotifications(notiList);
+            }
+        }
+    };
+
     //마운트시 모든 채팅방 mqtt 연결(처음엔 이게 맞음)
     //상품목록 페이지 벗어날때 검색창 비우기
     //url변경시 리렌더링 되게?
@@ -321,7 +345,7 @@ const Header = () => {
             setSearchKeyword('');
         }
 
-        //채팅방 들어갔을때 알림 제거용
+        //채팅방 들어갔을때 알림 제거용(알림 눌러서 아님)
         if (location.pathname.includes('bigchat')) {
             //채팅방 url이랑 알림 링크랑 비교해서 들어왓으면 알림 제거
             for (let noti of notifications) {
@@ -334,6 +358,12 @@ const Header = () => {
             }
         }
     }, [location.pathname]);
+
+    //채팅알림 url로 따져서 올릴지 말지 판단
+    //즉, 현재 채팅방에 들어가있으면 알림테이블에 추가하지 않는다
+    useEffect(()=>{
+        urlCheck();
+    },[waitingNotification])
 
     const handleChange = (event) => {
         setSearchKeyword(event.target.value);
