@@ -204,7 +204,7 @@ const PostDetails = () => {
           variant="outlined"
           className={styles.outlinedButton}
           sx={{ mr: 'auto' }}
-          onClick={() => navigate('/bigchat')}
+          onClick={handleClick}
         >
           <Typography variant="body1">가이드에게 채팅하기</Typography>
         </Button>
