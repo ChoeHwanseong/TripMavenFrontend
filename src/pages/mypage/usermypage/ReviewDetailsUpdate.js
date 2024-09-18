@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Rating } from '@mui/material';
-import { reviewGetByReviewId, reviewPutByReviewId } from '../../../utils/reviewData';
+import { reviewDelete, reviewGetByReviewId, reviewPutByReviewId } from '../../../utils/reviewData';
 import { Box, Typography, Divider } from '@mui/material';
 import AssignmentIcon from '@mui/icons-material/Assignment'; // 리뷰 작성 아이콘
 import InfoIcon from '@mui/icons-material/Info'; // 상품명 아이콘
@@ -84,6 +84,16 @@ const ReviewDetailsUpdate = () => {
     }
   };
 
+  const deleteData = async () => {
+    window.confirm('작성하신 리뷰를 삭제하시겠습니까?');
+    if(window.confirm) {
+        // 아직 삭제 안함.
+        await reviewDelete(id);
+        alert('작성하신 리뷰가 삭제되었습니다.')
+        navigate('/userreview');
+    }
+  };
+
   return (
     <div className={styles.container}>
       {/* 좌측 상단에 "REVIEW 수정" */}
@@ -155,6 +165,9 @@ const ReviewDetailsUpdate = () => {
 
         <button type="button" className={styles.submitButton} onClick={handleData}>
           수정 완료
+        </button>
+        <button type="button" className={`${styles.submitButton} ${styles.deleteButton}`} onClick={deleteData}>
+         리뷰 삭제
         </button>
       </Box>
     </div>

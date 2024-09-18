@@ -48,3 +48,13 @@ export const reviewPutByReviewId = (id,updateData) => {
         return res.data;
     })
   }
+  
+// 리뷰 삭제
+export const reviewDelete = (id) => {
+    console.log('리뷰 axios 넘어간 id: ', id);
+    return axios.delete(`${baseUrl}/${id}`).then(res => {
+        return res.data;
+    }).catch(err => {
+        console.error('Error fetching reviews:', err);
+    });
+}
