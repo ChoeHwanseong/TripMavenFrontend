@@ -131,20 +131,39 @@ export default function ScreenRecorderApp() {
     return file;
   };
 
+  //블롭 객체를 base64 인코딩
+  const blobToBase64 = (blob) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result.split(',')[1]; // Base64 인코딩된 부분만 반환
+        resolve(base64String);
+      };
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(blob); // Blob을 읽어서 Base64 인코딩
+    });
+  };
+
   const handleClick = async () => {
     //음성 인식할 시간 기다려 주기
     const wavFile = convertBlobToFile(mediaBlob, 'output.wav'); //wav 파일로 변환
+    const base64Encoded = blobToBase64(mediaBlob).then((base64String) => { //base64 인코딩하기
+      return base64String;
+    }).catch((error) => {
+      console.error('Blob to Base64 인코딩 중 오류 발생:', error);
+    });
+    console.log(base64Encoded);
     console.log('녹음한 파일 wav로 변환:', wavFile);
     console.log('input으로 선택한 파일:', selectedFile);
 
 
-    const formDataForPron = new FormData();
-    formDataForPron.append('voice', wavFile);
-    formDataForPron.append('text', '쉬는시간');
+    const formDataForPron = new FormData();    
+    formDataForPron.append('voice', base64Encoded);
+    formDataForPron.append('text', '안녕하세요');
 
     const formDataForVoiceAndText = new FormData();
-    formDataForVoiceAndText.append('voice', wavFile);
-    formDataForVoiceAndText.append('text', '쉬는시간'); //텍스트 데이터에 영어 노노. 한국어 분석이라 오류남
+    formDataForVoiceAndText.append('voice', selectedFile);
+    formDataForVoiceAndText.append('text', '안녕하세요'); //텍스트 데이터에 영어 노노. 한국어 분석이라 오류남
     formDataForVoiceAndText.append('gender', memberInfo.gender == 'male' ? '0' : '1');
 
     const pronResponse = await evaluatePronunciation(formDataForPron);

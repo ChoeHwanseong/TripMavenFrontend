@@ -6,6 +6,7 @@ import ChattingRoom from './ChattingRoom';
 import { chattingListYourData, getMessages } from '../../utils/chatData';
 import { submitMessage } from '../../utils/chatData';
 import { TemplateContext } from '../../context/TemplateContext';
+import { ElevatorSharp } from '@mui/icons-material';
 
 function BigChat() {
   const { id } = useParams(); // URL 파라미터로 받은 채팅방 ID
@@ -58,79 +59,82 @@ function BigChat() {
     // 마운트 시 MQTT 클라이언트 객체 없으면 생성
     const setMQTT = async () => {
       const list_ = await getData();
-      if (!client) {
-        await fetchChatRoomsMessages(list_);
+      await fetchChatRoomsMessages(list_);
 
-        // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
-        const mqttClient = mqtt.connect('ws://121.133.84.38:1884'); // MQTT 브로커에 연결
+      // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
+      const mqttClient = mqtt.connect('ws://121.133.84.38:1884',{
+        reconnectPeriod: 1000,
+      }); // MQTT 브로커에 연결
 
-        mqttClient.on('connect', () => {
-          console.log('Connected to MQTT broker');
-          setIsConnected(true);
-        });
+      mqttClient.on('connect', () => {
+        console.log('Connected to MQTT broker');
+        setIsConnected(true);
+      });
 
-        mqttClient.on('error', (err) => {
-          console.error('Connection error:', err);
-        });
+      mqttClient.on('error', (err) => {
+        console.error('Connection error:', err);
+      });
 
-        // 메시지 수신 설정
-        mqttClient.on('message', (topic, message) => {
-          const parsedMessage = JSON.parse(message.toString());
-          const { text, sender, timestamp } = parsedMessage;
+      // 메시지 수신 설정
+      mqttClient.on('message', (topic, message) => {
+        const parsedMessage = JSON.parse(message.toString());
+        const { text, sender, timestamp } = parsedMessage;
 
-          try {
-            setChatMessages((prevMessages) => ({
-              ...prevMessages,
-              [topic]: [
-                ...(prevMessages[topic] || []),
-                {
-                  sender: sender,
-                  text,
-                  timestamp: new Date(timestamp).toISOString(),
-                  chattingRoomId: topic
-                },
-              ]
-            }));
+        try {
+          setChatMessages((prevMessages) => ({
+            ...prevMessages,
+            [topic]: [
+              ...(prevMessages[topic] || []),
+              {
+                sender: sender,
+                text,
+                timestamp: new Date(timestamp).toISOString(),
+                chattingRoomId: topic
+              },
+            ]
+          }));
 
-          } catch (error) {
-            console.error('Error parsing message:', error);
-          }
-        });
+        } catch (error) {
+          console.error('Error parsing message:', error);
+        }
+      });
 
-        if (id) {
-          for (let joinChat of list_) {
-            if (joinChat.chattingRoom.id == id) {
-              mqttClient.subscribe(`${id}`, (err) => {
-                if (!err) {
-                  console.log(id, 'Subscribed to topic');
-                } else {
-                  console.error('Subscription error:', err);
-                }
-                setSelectedUser(joinChat);
-              });
-              fetchChatMessages(joinChat.chattingRoom.id);
-            }
+      if (id) {
+        for (let joinChat of list_) {
+          if (joinChat.chattingRoom.id == id) {
+            mqttClient.subscribe(`${id}`, (err) => {
+              if (!err) {
+                console.log(id, 'Subscribed to topic');
+              } else {
+                console.error('Subscription error:', err);
+              }
+              setSelectedUser(joinChat);
+            });
+            fetchChatMessages(joinChat.chattingRoom.id);
           }
         }
+      }
 
-        // 클라이언트를 상태로 설정
-        setClient(mqttClient);
-      }
-      else{
-        const joinChat = list_.find(ele => location.pathname.includes(ele.chattingRoom.id));
-        client.subscribe(`${id}`, (err) => {
-          if (!err) {
-            console.log(id, 'Subscribed to topic');
-          } else {
-            console.error('Subscription error:', err);
-          }
-          setSelectedUser(joinChat);
-        });
-        fetchChatMessages(joinChat.chattingRoom.id);
-      }
+      // 클라이언트를 상태로 설정
+      setClient(mqttClient);      
     };
 
     setMQTT();
+    
+      // console.log('클라이언트 있따');
+      // const joinChat = list_.find(ele => location.pathname.includes(`${ele.chattingRoom.id}`));
+      // //console.log(id);
+      // if(client){
+      //   client.subscribe(id, (err) => {
+      //     if (!err) {
+      //       console.log(id, 'Subscribed to topic');
+      //     } else {
+      //       console.error('Subscription error:', err);
+      //     }
+      //   });
+      //   setSelectedUser(joinChat);
+      //   fetchChatMessages(joinChat.chattingRoom.id);
+    
 
     // 컴포넌트 언마운트 시 클라이언트 종료
     return () => {
@@ -223,7 +227,7 @@ function BigChat() {
   return (
     <div className={styles.pageBorder}>
     <div className={styles.container}>
-      <ChattingRoom setSelectedUser={setSelectedUser} loading={loading} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages} chatMessages={chatMessages} />
+      <ChattingRoom setSelectedUser={setSelectedUser} loading={loading} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages} chatMessages={chatMessages} id={id} />
 
       <div className={styles.chatSection}>
         <div className={styles.chatHeader}>
