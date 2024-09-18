@@ -12,6 +12,12 @@ export const postGetById = (id) => {
       return res.data;
   })
 }
+// 회원id로 상품 조회
+export const postGetBymemberId = (memberId) => {
+  return axios.get(baseUrl + `/memberid/${memberId}`).then(res =>{
+      return res.data;
+  })
+}
 // 회원 이메일로 상품 조회
 export const postGetByEmail = (email) => {
   return axios.get(baseUrl + `/member/${email}`).then(res =>{

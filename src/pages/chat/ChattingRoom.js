@@ -64,7 +64,7 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
 
     <div className={styles.messagesSection}>
       <div className={styles.header}>
-        <h2 className={styles.messagesTitle}>Messages</h2>
+        <h2 className={styles.messagesTitle}>TripTalk</h2>
         <div className={styles.searchNewChat}>
           <input
             type="text"

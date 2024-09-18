@@ -36,6 +36,7 @@ function DaumPost({setAreaAddress}) {
             //지역주소 제외 전체주소 치환
             fullAddress = fullAddress.replace(localAddress, '');
             //조건 판단 완료 후 지역 주소 및 상세주소 state 수정
+
             setAreaAddress(`${localAddress} ${fullAddress} ${extraAddress}`);
             //주소 검색이 완료된 후 결과를 매개변수로 전달            
         }

@@ -1,5 +1,10 @@
 /* CSS 파일: ChatPage.css */
 
+.uploadedImage {
+  max-width: 300px; 
+  max-height: 300px; 
+  object-fit: contain; 
+}
 .container {
     display: flex;
     justify-content: space-between;
@@ -33,18 +38,22 @@
     font-size: 18px;
     font-weight: bold;
     margin-right: 8px;
-    padding-top: 15px;
+    margin-left: 15px;
+    padding-top: 30px;
     align-items: center;
   }
   
   .searchNewChat {
     display: flex;
     align-items: center;
+    padding-top: 10px;
   }
   
   .searchInput {
     width: 260px;
     padding: 5px;
+    padding-top: 8px;
+    padding-left: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
   }
@@ -96,7 +105,7 @@
   }
   .chatName2 {
     font-weight: bold;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     padding-left: 10px;
   }
   .infoButton {
@@ -118,17 +127,17 @@
   
   .chatHeader {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     border: 3px solid #e6e6e6;
     border-radius: 10px;
-    padding-top: 25px;
-    padding-bottom: 5px;
+    padding-top: 15px;
+    padding-bottom: 0px;
     padding-left: 10px;
     margin-top: 10px;
     margin-right: 18px;
     margin-bottom: 20px;
-    background-color: #d3d3d3;
+    background-color: #576169;
 
   }
   
@@ -136,7 +145,7 @@
     flex-grow: 1;
     overflow-y: auto;
     border: 3px solid #e6e6e6;
-    background-color: #bfd6e9;
+    background-color: #BACEE0;
     border-radius: 10px;
     z-index: 0;
     padding: 10px;
@@ -146,7 +155,7 @@
 
   /* 스크롤바 전체 영역 설정 */
   .chatMessages::-webkit-scrollbar {
-    width: 12px; /* 스크롤바의 너비 */
+    width: 10px; /* 스크롤바의 너비 */
   
   }
 
@@ -154,7 +163,6 @@
   .chatMessages::-webkit-scrollbar-thumb {
     background-color: #aaa9a9; /* 스크롤바 막대의 배경 색상 */
     border-radius: 10px; /* 스크롤바 막대의 모서리 둥글게 설정 */
-    border: 3px solid rgba(235, 235, 235, 0.788); /* 스크롤바 막대의 테두리 설정 */
   }
 
   .message {
@@ -165,6 +173,7 @@
   
   .message.sent {
     flex-direction: row-reverse;
+    margin-left: 200px;
   }
   
   .messageNTime{
@@ -183,7 +192,7 @@
   }
   
   .message.sent .messageBubble {
-    background-color: #ffe345;
+    background-color: #FFEB33;
     color: rgb(0, 0, 0);
   }
   
@@ -196,19 +205,21 @@
 
   .messageTime.sent {
     text-align: end;
-    margin-right: 20px;
+    margin-right: 10px;
     margin-top: -10px;
   }
   
   .chatInputSection {
     display: flex;
     align-items: center;
-    padding: 10px;
-    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 3px;
+    margin-right: 11px;
   }
   
   .chatInput {
-    flex-grow: 1;
+    flex-grow: 0.97;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 20px;
@@ -230,11 +241,11 @@
   
   .attachmentButton {
     background-color: #fff;
-    border: none;
+    border: 1px solid #BACEE0;
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    margin-left: 10px;
+    margin-right: 10px;
     display: flex;
     justify-content: center;
     align-items: center;

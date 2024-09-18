@@ -2,19 +2,22 @@ import React, { useState, useEffect } from 'react';
 import styles from '../../../styles/guidemypage/giudePost/ReviewList.module.css';
 import { Avatar } from '@mui/material';
 import { Star, StarHalf, StarBorder } from '@mui/icons-material';
-import { reviewGet } from '../../../utils/reviewData';
+import { reviewGet, reviewGetByProductId } from '../../../utils/reviewData';
 
 const ReviewList = ({ id }) => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
+
+    console.log('ReviewList id: ',id);
+
     const getReviews = async () => {
       try {
-        const reviewData = await reviewGet(id);
-        console.log('Fetched review data: ', reviewData);
-        setReviews(reviewData); // 리뷰 데이터를 배열로 설정
+        const reviewData = await reviewGetByProductId(id);
+        console.log('상품id 로 리뷰 조회: ', reviewData);
+        setReviews(reviewData);
       } catch (error) {
-        console.error('Error fetching reviews:', error);
+        console.error('상품id 로 리뷰 조회 중 에러:', error);
       }
     };
 
@@ -55,13 +58,13 @@ const ReviewList = ({ id }) => {
       {reviews.length > 0 ? (
         reviews.map((review) => (
           <div key={review.id} className={styles.reviewItem}>
-            <Avatar alt={review.name} src={review.avatar} className={styles.avatar} />
+            <Avatar alt={review.member.profile} src={review.avatar} className={styles.avatar} />
             <div className={styles.reviewDetails}>
-              <div className={styles.reviewerName}>{review.name}</div>
-              <div className={styles.reviewTitle}>{review.reviewTitle}</div>
-              <div className={styles.reviewText}>{review.content}</div>
+              <div className={styles.reviewerName}>{review.member.name}</div>
+              <div className={styles.reviewTitle}>{review.title}</div>
+              <div className={styles.reviewText}>{review.comments}</div>
               <div className={styles.reviewRating}>
-                {renderStars(review.rating)}
+                {renderStars(review.ratingScore)} {review.ratingScore}
               </div>
             </div>
           </div>
