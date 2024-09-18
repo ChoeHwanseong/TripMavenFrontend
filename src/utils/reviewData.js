@@ -10,14 +10,41 @@ export const reviewPost = (createData) => {
     })
 }
 
-// 리뷰 조회 (상품id 로)
-export const reviewGet = (id) => {
-    console.log('리뷰 raxios 넘어간 id: ', id);
-    return axios.get(`${baseUrl}/product/${id}`).then(res => {
-        console.log('res:  ', res);
-        console.log('res:  ', res.data);
+// 리뷰 조회 (회원id 로)
+export const reviewGet = (membersId) => {
+    console.log('리뷰 axios 넘어간 id: ', membersId);
+    return axios.get(`${baseUrl}/member/${membersId}`).then(res => {
         return res.data;
     }).catch(err => {
         console.error('Error fetching reviews:', err);
     });
 }
+
+// 리뷰 조회 (상품id 로)
+export const reviewGetByProductId = (ProductId) => {
+    console.log('리뷰 axios 넘어간 ProductId: ', ProductId);
+    return axios.get(`${baseUrl}/product/${ProductId}`).then(res => {
+        return res.data;
+    }).catch(err => {
+        console.error('Error fetching reviews:', err);
+    });
+}
+
+// 리뷰 조회 (리뷰id 로)
+export const reviewGetByReviewId = (id) => {
+    console.log('리뷰 axios 넘어간 id: ', id);
+    return axios.get(`${baseUrl}/${id}`).then(res => {
+        return res.data;
+    }).catch(err => {
+        console.error('Error fetching reviews:', err);
+    });
+}
+
+// 리뷰 수정
+export const reviewPutByReviewId = (id,updateData) => {
+    console.log('postData의 updateData: ',updateData);
+    console.log('상품번호: ',updateData.id);
+    return axios.put(baseUrl + `/${id}`,updateData).then(res =>{
+        return res.data;
+    })
+  }

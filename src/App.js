@@ -11,7 +11,6 @@ import MyPageTemplate from './pages/mypage/MyPageTemplate';
 import UserReview from './pages/mypage/usermypage/UserReview';
 
 import UserLike from './pages/mypage/usermypage/UserLike';
-import ReviewDetails from './pages/mypage/usermypage/UserReviewDetails';
 
 import GuidePost from './pages/guidemypage/GuidePost';
 import GuideMyPageMyPost from './pages/guidemypage/GuideMyPageMyPost';
@@ -55,6 +54,8 @@ import CombinedPage from './pages/aiservicepage/AIPage';
 import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
 import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
 import GuideAsk from './pages/guidemypage/GuideAsk';
+import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
+import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
 
 
 
@@ -87,6 +88,7 @@ function App() {
           {/* USER */}
           <Route path='/userreview' element={<UserReview />} />
           <Route path='/reviewdetails/:id' element={<ReviewDetails />} />
+          <Route path='/reviewDetailsUpdate/:id' element={<ReviewDetailsUpdate />} />
           {/*<Route path='/userask' element={<UserAsk/>}/>*/}
           <Route path='/userlike' element={<UserLike />} />
           {/*<Route path='/useraskpage' element={<UserAskPage/>}/>*/}

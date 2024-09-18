@@ -14,6 +14,8 @@ import { fetchFiles } from '../../utils/fileData';
 import ProfileCardModal from './GuideProfileModal';
 import { chattingRoomData } from '../../utils/chatData';
 import ImageSlider from '../../api/ImageSlider';
+import { reviewGet } from '../../utils/reviewData';
+import ReviewList from '../guidemypage/guidepost/ReviewList';
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -42,7 +44,6 @@ const PostDetails = () => {
         console.log('fetchedData: ', fetchedData);
         setData(fetchedData);
 
-        // Check if the post is liked by the current member
         const isLikey = fetchedData.likey.find(like => like.member.id == membersId);
         setLiked(isLikey ? true : false);
       } catch (error) {
@@ -59,6 +60,8 @@ const PostDetails = () => {
         console.error('Error fetching data:', error);
       }
     };
+
+
     getData();
     getFiles();
 
@@ -277,6 +280,10 @@ const PostDetails = () => {
             <KakaoMap address={data.hotelAd == null ? data.hotel : data.hotelAd}/>
           </div>
         </Box>
+      </Box>
+
+      <Box className={styles.shadowBox}>
+        <ReviewList id={data.id}/>
       </Box>
 
       <Box className={styles.actions}>

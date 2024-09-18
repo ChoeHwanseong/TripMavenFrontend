@@ -49,8 +49,7 @@ const AskUpdate = () => {
 
         } catch (error) {
             console.error('Error updating answer:', error);
-        }
-    
+        }  
     };
 
  

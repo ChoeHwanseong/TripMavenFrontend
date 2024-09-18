@@ -122,3 +122,12 @@
   color: #555;
   text-align: right;
 }
+
+.reviewRow {
+  cursor: pointer; /* Make the row indicate it's clickable */
+  transition: background-color 0.3s ease; /* Smooth transition for the hover effect */
+}
+
+.reviewRow:hover {
+  background-color: #f0f0f0; /* Change background color on hover */
+}
