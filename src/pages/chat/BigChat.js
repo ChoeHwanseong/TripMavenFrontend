@@ -145,7 +145,7 @@ function BigChat() {
         client.end();
       }
     };
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     scrollToBottom();
@@ -235,8 +235,9 @@ function BigChat() {
   return (
     <div className={styles.pageBorder}>
     <div className={styles.container}>
+      
       <ChattingRoom setSelectedUser={setSelectedUser} loading={loading} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages} chatMessages={chatMessages} id={id} />
-
+        
         <div className={styles.chatSection}>
           <div className={styles.chatHeader}>
             <h2 className={styles.chatName2}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
