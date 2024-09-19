@@ -1,58 +1,88 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../../styles/login/FindPassword2.module.css';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { findMemberbyEmail, sendEmailCode, verifyEmailCode } from '../../utils/memberData'; // 필요한 함수들 import
+import { useNavigate, useLocation } from 'react-router-dom'; // useLocation 훅 추가
+import { findMemberbyEmail, sendEmailCode, verifyEmailCode } from '../../utils/memberData';
 
 const FindPassword2 = () => {
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const email = searchParams.get('email');
-  const id = searchParams.get('id');
+  const queryParams = new URLSearchParams(location.search);
   const [name, setName] = useState('');
-  const [code, setCode] = useState(''); // 인증번호 입력을 위한 상태
-  const [errorMessage, setErrorMessage] = useState('');
+  const [email, setEmail] = useState(queryParams.get('email') || ''); // 쿼리 파라미터에서 이메일 가져오기
+  const [code, setCode] = useState('');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  const [codeErrorMessage, setCodeErrorMessage] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
-  const [isCodeValid, setIsCodeValid] = useState(false); // 인증번호 검증 상태
-  
+  const [isCodeValid, setIsCodeValid] = useState(null);
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [isMemberValid, setIsMemberValid] = useState(true);
+  const [codeInputErrorMessage, setCodeInputErrorMessage] = useState(''); // 인증번호 입력 여부 에러 메시지
+  const [memberId, setMemberId] = useState(''); // Member ID를 저장하기 위한 상태 추가
   const navigate = useNavigate();
 
-  // 이메일 전송 로직
+  useEffect(() => {
+    // 이메일이 URL에서 가져오면 기본적으로는 유효한 상태로 설정
+    if (email) {
+      setIsEmailValid(true);
+    }
+  }, [email]);
+
   const handleSendCode = async () => {
     try {
-      const member = await findMemberbyEmail(email); // 이메일로 회원 정보 확인
+      const member = await findMemberbyEmail(email);
 
-      // DB에서 해당 이메일을 가진 멤버가 없거나, 이름이 일치하지 않는 경우 처리
       if (!member || member.name !== name) {
-        setErrorMessage('이름과 이메일이 일치하지 않습니다.');
+        setEmailErrorMessage('입력하신 회원정보를 찾을 수 없습니다.');
+        setIsMemberValid(false);
         return;
       }
 
-      // 이름과 이메일이 일치하면 코드 전송
       await sendEmailCode(email);
       setIsCodeSent(true);
-      setErrorMessage('');
+      setIsMemberValid(true);
+      setMemberId(member.id); // Member ID를 저장
+      setEmailErrorMessage('');
       alert('인증 코드가 이메일로 전송되었습니다.');
     } catch (error) {
+      setEmailErrorMessage('이메일 전송 중 오류가 발생했습니다.');
       console.error('이메일 전송 중 오류 발생: ', error);
-      setErrorMessage('이메일 전송 중 오류가 발생했습니다.');
     }
   };
 
-  // 인증번호 검증 로직
   const handleVerifyCode = async () => {
     try {
       const isValid = await verifyEmailCode(email, code);
-      if (isValid) {
-        setIsCodeValid(true);
-        setErrorMessage('');
-        alert('인증번호가 일치합니다!');
+      setIsCodeValid(isValid);
+      if (!isValid) {
+        setCodeErrorMessage('인증번호가 일치하지 않습니다.');
       } else {
-        setIsCodeValid(false);
-        setErrorMessage('인증번호가 일치하지 않습니다.');
+        setCodeErrorMessage('');
+        setCodeInputErrorMessage(''); // 성공적으로 인증되었을 때 모든 에러 메시지 제거
       }
     } catch (error) {
       console.error('인증번호 검증 중 오류 발생: ', error);
-      setErrorMessage('인증번호 검증 중 오류가 발생했습니다.');
+      setCodeErrorMessage('인증번호 검증 중 오류가 발생했습니다.');
+    }
+  };
+
+  // 인증번호 입력 시 실시간 유효성 검사
+  useEffect(() => {
+    if (code.length === 6) {
+      handleVerifyCode();  // 인증번호가 6자리일 때 유효성 검사 수행
+    }
+  }, [code]);
+
+  // 다음 버튼 클릭 시 처리
+  const handleNext = async () => {
+    if (!code) {
+      setCodeInputErrorMessage('인증번호를 입력해주세요.');
+    } else {
+      setCodeInputErrorMessage(''); // 인증번호가 입력된 경우 에러 메시지 제거
+      await handleVerifyCode();  // 유효성 검사를 다시 확인
+      if (isCodeValid) {
+        navigate(`/login/findpassword3?email=${email}&id=${memberId}`); // 이메일과 ID를 쿼리 파라미터로 전달
+      } else {
+        setCodeErrorMessage('인증번호가 올바르지 않습니다.');
+      }
     }
   };
 
@@ -68,51 +98,51 @@ const FindPassword2 = () => {
         <form className={styles.form}>
           <div className={styles.formGroup}>
             <label className={styles.label}>이름</label>
-            <input 
-              type="text" 
-              className={styles.input} 
-              placeholder="이름을 입력하세요" 
-              value={name} 
-              onChange={(e) => setName(e.target.value)} 
+            <input
+              type="text"
+              className={styles.input}
+              placeholder="이름을 입력하세요"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div className={styles.formGroup}>
             <label className={styles.label}>이메일</label>
             <div className={styles.inputWithButton}>
-              <input 
-                type="text" 
-                className={styles.inputEmail} 
-                placeholder="이메일을 입력하세요" 
+              <input
+                type="text"
+                className={styles.inputEmail}
+                placeholder="이메일을 입력하세요"
                 value={email}
-                readOnly
+                disabled // 이메일 필드를 수정할 수 없게 설정
               />
-              <button 
-                type="button" 
-                className={styles.codeButton} 
+              <button
+                type="button"
+                className={styles.codeButton}
                 onClick={handleSendCode}
-                disabled={isCodeSent} // 코드 전송 후 버튼 비활성화
+                disabled={isCodeSent || !isEmailValid} // 이메일 유효성 검사 통과하지 않으면 비활성화
               >
                 코드 전송
               </button>
             </div>
+            {/* 이메일 형식 오류 또는 회원 정보 없음 메시지 */}
+            {emailErrorMessage && (
+              <p className={styles.errorMessage}>{emailErrorMessage}</p>
+            )}
           </div>
-          {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
           <div className={styles.formGroup}>
-            <input 
-              type="text" 
-              className={styles.input} 
-              placeholder="인증번호 6자리 숫자 입력" 
+            <input
+              type="text"
+              className={styles.input}
+              placeholder="인증번호 6자리 숫자 입력"
               value={code}
-              onChange={(e) => setCode(e.target.value)} 
+              onChange={(e) => setCode(e.target.value)}
             />
-            <button 
-              type="button" 
-              className={styles.verifyButton} 
-              onClick={handleVerifyCode}
-              disabled={isCodeValid} // 인증이 완료되면 버튼 비활성화
-            >
-              인증번호 확인
-            </button>
+            {/* 인증번호 입력 여부 메시지 */}
+            {codeInputErrorMessage && <p className={styles.errorMessage}>{codeInputErrorMessage}</p>}
+            {/* 인증 결과 메시지 표시 */}
+            {codeErrorMessage && <p className={styles.errorMessage}>{codeErrorMessage}</p>}
+            {isCodeValid === true && <p className={styles.successMessage}>인증번호가 일치합니다.</p>}
           </div>
           <p className={styles.note}>
             인증번호가 오지 않는다면 스팸 메일로 등록되어 있는 것은 아닌지 확인해주세요.
@@ -120,11 +150,10 @@ const FindPassword2 = () => {
         </form>
       </div>
 
-      <button 
-        type="button" 
-        className={styles.submitButton} 
-        onClick={() => navigate(`/login/findpassword3?email=${email}&id=${id}`)}
-        disabled={!isCodeValid} // 인증번호가 일치해야만 버튼 활성화
+      <button
+        type="button"
+        className={styles.submitButton}
+        onClick={handleNext} // 다음 버튼 클릭 시 처리
       >
         다음
       </button>

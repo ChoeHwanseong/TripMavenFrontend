@@ -28,6 +28,7 @@ function BigChat() {
   };
 
 
+
   // 채팅방 목록 데이터 가져와서 상태에 저장하는 함수
   const getData = async () => {
     try {
