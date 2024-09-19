@@ -239,7 +239,31 @@ const Signup = () => {
             const newMember = await findMemberbyEmail(getEmail);
             if (newMember) {
                 alert('회원가입을 진행해주세요.');
+                setActiveStep(1);
                 document.querySelector('#email').setAttribute('readonly', true);
+            }
+            switch (newMember.loginType) {
+                case 'google': //구글에서 회원가입했다면
+                    email.setValue(newMember.email);
+                    name.setValue(newMember.name);
+                    password.setValue(newMember.password);
+                    passwordConfirm.setValue(newMember.password);
+                    setActiveStep(1);
+                    break;
+                case 'naver': //네이버에서 햇다면
+                    email.setValue(newMember.email);
+                    name.setValue(newMember.name);
+                    password.setValue(newMember.password);
+                    passwordConfirm.setValue(newMember.password);
+                    gender.setValue(newMember.gender);
+                    birthday.setValue(newMember.birthday);
+                    break;
+                default: //캌캌오
+                    email.setValue(newMember.email);
+                    name.setValue(newMember.name);
+                    password.setValue(newMember.password);
+                    passwordConfirm.setValue(newMember.password);
+                    gender.setValue(newMember.gender);
             }
         };
         if (getEmail) getData();
@@ -455,7 +479,7 @@ const Signup = () => {
                     </Step>
                 ))}
             </Stepper>
-            <form className={styles.signupForm} onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
+            <form className={styles.signupForm} style={{ marginTop: '20px' }}>
                 {renderStepContent(activeStep)}
                 <div className={styles.buttonGroup}>
                     <button
