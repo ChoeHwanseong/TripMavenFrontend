@@ -8,7 +8,7 @@
 .container {
     display: flex;
     justify-content: space-between;
-    height: 73vh;
+    height: 70vh;
     background-color: #fff;
   }
   
@@ -151,6 +151,7 @@
     padding: 10px;
     padding-right: 0px;
     margin-right: 20px;
+    
   }
 
   /* 스크롤바 전체 영역 설정 */
