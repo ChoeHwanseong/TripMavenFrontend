@@ -24,8 +24,9 @@ function BigChat() {
   const navigate = useNavigate();
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
+  
 
   // 채팅방 목록 데이터 가져와서 상태에 저장하는 함수
   const getData = async () => {
@@ -189,6 +190,7 @@ function BigChat() {
       };
       reader.readAsDataURL(file);
     }
+
   };
 
   const handleSendClick = () => {
