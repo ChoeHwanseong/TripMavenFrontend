@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-//멤버 가져오기
+// 멤버 가져오기
 export const fetchData = async () => {
   try {
     const res = await axios.get('/spring/members');
@@ -12,11 +12,9 @@ export const fetchData = async () => {
   }
 };
 
-//아이디로 멤버 가져오기
+// 아이디로 멤버 가져오기
 export const fetchedData = async (id) => {
   try {
-    //console.log(id) //디버그용
-    //console.log('res: ',res.data) //디버그용
     const res = await axios.get(`/spring/members/id/${id}`);
     return res.data;
   }
@@ -26,7 +24,7 @@ export const fetchedData = async (id) => {
   }
 };
 
-//이메일로 멤버 가져오기
+// 이메일로 멤버 가져오기
 export const findMemberbyEmail = async (email) => {
   try {
     const res = await axios.get(`/spring/members/email/${email}`);
@@ -38,8 +36,7 @@ export const findMemberbyEmail = async (email) => {
   }
 };
 
-//회원가입
-//await axios 꼭 붙이기
+// 회원가입
 export const SignUp = async (form) => {
   await axios.post('/spring/signup', form)
     .then(response => {
@@ -47,29 +44,53 @@ export const SignUp = async (form) => {
       window.location.href = "/login";
     })
     .catch(error => {
-      // 오류가 발생했을 때의 처리
       if (error.code === 'ERR_BAD_REQUEST') alert('중복된 아이디입니다.');
-
-
     });
-  //URL package.json에  "proxy": "http://localhost:9099" 추가후  뒤에 가져올 주소만 적어주기 
 };
 
-//폼로그인!!@!@!@!@!@!@
+// 이메일 코드 전송
+export const sendEmailCode = async (email) => {
+  try {
+    await axios.post('/spring/emails/coderequests', null, {
+      params: { email }
+    });
+    // alert 제거
+  } catch (error) {
+    alert('코드 전송 중 오류가 발생했습니다.');  // 오류 발생 시에만 팝업 유지
+    console.error('Error: ', error.response || error.message);
+  }
+};
+
+// 이메일 인증 확인
+export const verifyEmailCode = async (email, code) => {
+  try {
+    const response = await axios.get('/spring/emails/verifications', {
+      params: { email, code },
+    });
+    console.log(response.data);  // 백엔드에서 오는 응답을 출력하여 확인
+    return response.data === true;  // true/false 반환
+  } catch (error) {
+    console.error(error);  // 에러 발생 시 콘솔에 출력
+    return false;
+  }
+};
+
+
+// 폼 로그인
 export const FormLogin = async (form) => {
   const response = await axios.post('http://localhost:9099/login', form, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
-  })
+  });
 
   const token = response.headers['authorization'] || response.headers['Authorization'];
   if (token) {
     const pureToken = token.split(' ')[1];
     window.localStorage.setItem("token", pureToken);
-    let role = "USER"
-    if (response.data.isAdmin) role = "ADMIN"
-    else if (response.data.isGuide) role = "GUIDE"
+    let role = "USER";
+    if (response.data.isAdmin) role = "ADMIN";
+    else if (response.data.isGuide) role = "GUIDE";
     window.localStorage.setItem("role", role);
     window.localStorage.setItem("membersId", response.data.membersId);
     window.localStorage.setItem("refresh", response.data.refresh);
@@ -77,22 +98,20 @@ export const FormLogin = async (form) => {
   }
 
   return response;
-}
+};
 
-//로그아웃
+// 로그아웃
 export const logout = async () => {
   await axios.post('/spring/logout')
     .then(res => {
-      return res
+      return res;
     })
     .catch(error => {
-      // 오류가 발생했을 때의 처리
       if (error.code === 'ERR_BAD_REQUEST') alert('중복된 아이디입니다.');
-
     });
-}
+};
 
-//가이드 등록.
+// 가이드 등록
 export const toGuide = async (form) => {
   await axios.post('http://localhost:9099/toGuide', form, {
     headers: {
@@ -106,13 +125,12 @@ export const toGuide = async (form) => {
     .catch(error => {
       console.error('에러났당', error);
       throw error;
-    })
+    });
+};
 
-}
-
+// 프로필 업데이트
 export const updateProfile = async (id, updatedData) => {
   try {
-    console.log(updatedData);
     const res = await axios.put(`/spring/members/${id}`, updatedData);
     return res.data;
   } catch (error) {
@@ -121,11 +139,9 @@ export const updateProfile = async (id, updatedData) => {
   }
 };
 
-
 // 회원 탈퇴
 export const deleteProfile = async (id) => {
   try {
-    console.log('id', id);
     const res = await axios.put(`/spring/members/delete/${id}`);
     logout();
     localStorage.clear();
@@ -135,5 +151,3 @@ export const deleteProfile = async (id) => {
     throw error;
   }
 };
-
-
