@@ -200,7 +200,7 @@ const Header = () => {
     const handleLogout = () => {
         logout().then(res => {
             localStorage.clear();
-            window.location.href = `http://localhost:58337/`;
+            window.location.href = `http://localhost:58337/home`;
         })
     }
 
