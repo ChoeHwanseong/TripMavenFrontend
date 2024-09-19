@@ -105,8 +105,9 @@
   }
   .chatName2 {
     font-weight: bold;
-    color: rgb(255, 255, 255);
+    color: rgb(61, 61, 61);
     padding-left: 10px;
+    padding-top: 22px;
   }
   .infoButton {
     border-radius: 10px;
@@ -127,20 +128,32 @@
   
   .chatHeader {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    align-items: center; /* 세로 가운데 정렬 */
+    justify-content: space-between; /* 양쪽 끝에 요소를 배치 */
+    height: 100px; 
     border: 3px solid #e6e6e6;
     border-radius: 10px;
-    padding-top: 15px;
-    padding-bottom: 0px;
-    padding-left: 10px;
+    padding-left: 16px;
     margin-top: 10px;
     margin-right: 18px;
-    margin-bottom: 20px;
-    background-color: #576169;
-
-  }
+    margin-bottom: 10px;
+    background-color: #ffffff;
+}
   
+.sendButton1 {
+  border: 3px solid #e6e6e6;
+  border-radius: 10px;
+  text-align: center;
+  height: 50px; 
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
   .chatMessages {
     flex-grow: 1;
     overflow-y: auto;
@@ -152,6 +165,21 @@
     padding-right: 0px;
     margin-right: 20px;
   }
+
+  .productBoard {
+    border: 3px solid #e6e6e6;
+    border-radius: 10px;
+    width: 300px;
+    height: 50px; 
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer;
+    margin-left: 190px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
 
   /* 스크롤바 전체 영역 설정 */
   .chatMessages::-webkit-scrollbar {
@@ -167,7 +195,6 @@
 
   .message {
     display: flex;
-    align-items: center;
     margin-bottom: 10px;
   }
   
@@ -200,7 +227,6 @@
     font-size: 10px;
     color: #666;
     margin-left: 10px;
-    margin-top: -10px;
   }
 
   .messageTime.sent {
