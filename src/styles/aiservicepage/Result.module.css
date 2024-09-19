@@ -117,4 +117,21 @@
     margin-top: 5px;
     line-height: 1.5;
   }
+
+  .buttonContainer {
+    display: flex;
+    justify-content: center;
+    
+  }
   
+  .button {
+    background-color: #0066ff;
+    border: none;
+    color: #ffffff;
+    padding-inline: 10px;
+    padding-block: 5px;
+    border-radius: 3px;
+    text-align: center;
+
+
+  }

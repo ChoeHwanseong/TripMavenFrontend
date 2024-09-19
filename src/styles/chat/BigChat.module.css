@@ -105,7 +105,8 @@
   }
   .chatName2 {
     font-weight: bold;
-    color: rgb(61, 61, 61);
+    color: rgb(255,255,255);
+    padding-top: 10px;
     padding-left: 10px;
     padding-top: 22px;
   }
@@ -128,16 +129,15 @@
   
   .chatHeader {
     display: flex;
-    align-items: center; /* 세로 가운데 정렬 */
-    justify-content: space-between; /* 양쪽 끝에 요소를 배치 */
-    height: 100px; 
+    justify-content: space-between;
+    align-items: center;
     border: 3px solid #e6e6e6;
     border-radius: 10px;
     padding-left: 16px;
     margin-top: 10px;
     margin-right: 20px;
     margin-bottom: 10px;
-    background-color: #ffffff;
+    background-color: #777777;
 }
   
 .sendButton1 {
@@ -285,3 +285,14 @@
     margin: 10px;
   }
   
+  .reviewButton {
+    background-color: #0066ff;
+    color: white;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 5px;
+    height: 34px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+  }

@@ -5,39 +5,6 @@ const AiPageFlow = () => {
   return (
     <div className={styles.container}>
 
-      {/* 순환형 흐름 섹션
-      <div className={styles.flowContainer}>
-        {/* 단계 1: Guide's Post Creation
-        <div className={`${styles.flowItem} ${styles.step1}`}>
-          <div className={styles.flowTitle} style={{ backgroundColor: '#4da6ff' }}>Guide's Post Creation</div>
-        </div>
-
-       단계 2: Test Opportunity
-        <div className={`${styles.flowItem} ${styles.step2}`}>
-          <div className={styles.flowTitle}>Test Opportunity</div>
-        </div>
-
-        단계 3: AI System and Data Analysis
-        <div className={`${styles.flowItem} ${styles.step3}`}>
-          <div className={styles.flowTitle}>AI System and Data Analysis</div>
-        </div>
-
-       단계 4: Feedback and Evaluation
-        <div className={`${styles.flowItem} ${styles.step4}`}>
-          <div className={styles.flowTitle}>Feedback and Evaluation</div>
-        </div>
-
-         단계 5: Improvement and Retest
-        <div className={`${styles.flowItem} ${styles.step5}`}>
-          <div className={styles.flowTitle}>Improvement and Retest</div>
-        </div>
-
-       중앙의 타이틀 
-        <div className={styles.centerTitle}>
-          <h1>TripMaven</h1>
-        </div>
-      </div> */}
-
       {/* 설명 섹션 */}
       <div className={styles.descriptionSection}>
         <div className={styles.descriptionItem}>
