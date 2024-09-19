@@ -105,7 +105,7 @@
   }
   .chatName2 {
     font-weight: bold;
-    color: rgb(255, 255, 255);
+    color: rgb(255,255,255);
     padding-top: 10px;
     padding-left: 10px;
     padding-top: 22px;
@@ -137,7 +137,7 @@
     margin-top: 10px;
     margin-right: 18px;
     margin-bottom: 10px;
-    background-color: #ffffff;
+    background-color: #777777;
 }
   
 .sendButton1 {
