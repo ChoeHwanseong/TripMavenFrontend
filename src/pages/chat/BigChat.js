@@ -6,6 +6,7 @@ import ChattingRoom from './ChattingRoom';
 import { chattingListYourData, getMessages, submitMessage } from '../../utils/chatData';
 import defaultImage from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
+import { ElevatorSharp } from '@mui/icons-material';
 
 function BigChat() {
   const { id } = useParams(); // URL 파라미터로 받은 채팅방 ID
@@ -22,9 +23,11 @@ function BigChat() {
   const [selectedFile, setSelectedFile] = useState(null); 
   const navigate = useNavigate();
 
+  
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
+  
 
   // 채팅방 목록 데이터 가져와서 상태에 저장하는 함수
   const getData = async () => {
@@ -61,21 +64,22 @@ function BigChat() {
   useEffect(() => {
     // 마운트 시 MQTT 클라이언트 객체 없으면 생성
     const setMQTT = async () => {
-      if (!client) {
-        const list_ = await getData();
-        await fetchChatRoomsMessages(list_);
+      const list_ = await getData();
+      await fetchChatRoomsMessages(list_);
 
-        // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
-        const mqttClient = mqtt.connect('ws://121.133.84.38:1884'); // MQTT 브로커에 연결
+      // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
+      const mqttClient = mqtt.connect('ws://121.133.84.38:1884',{
+        reconnectPeriod: 1000,
+      }); // MQTT 브로커에 연결
 
-        mqttClient.on('connect', () => {
-          console.log('Connected to MQTT broker');
-          setIsConnected(true);
-        });
+      mqttClient.on('connect', () => {
+        console.log('Connected to MQTT broker');
+        setIsConnected(true);
+      });
 
-        mqttClient.on('error', (err) => {
-          console.error('Connection error:', err);
-        });
+      mqttClient.on('error', (err) => {
+        console.error('Connection error:', err);
+      });
 
         // 메시지 수신 설정
         mqttClient.on('message', (topic, message) => {
@@ -101,28 +105,42 @@ function BigChat() {
           }
         });
 
-        if (id) {
-          for (let joinchat of list_) {
-            if (joinchat.chattingRoom.id == id) {
-              mqttClient.subscribe(`${id}`, (err) => {
-                if (!err) {
-                  console.log(id, 'Subscribed to topic');
-                } else {
-                  console.error('Subscription error:', err);
-                }
-                setSelectedUser(joinchat);
-              });
-              fetchChatMessages(joinchat.chattingRoom.id);
-            }
+      if (id) {
+        for (let joinChat of list_) {
+          if (joinChat.chattingRoom.id == id) {
+            mqttClient.subscribe(`${id}`, (err) => {
+              if (!err) {
+                console.log(id, 'Subscribed to topic');
+              } else {
+                console.error('Subscription error:', err);
+              }
+              setSelectedUser(joinChat);
+            });
+            fetchChatMessages(joinChat.chattingRoom.id);
           }
         }
-
-        // 클라이언트를 상태로 설정
-        setClient(mqttClient);
       }
+
+      // 클라이언트를 상태로 설정
+      setClient(mqttClient);      
     };
 
     setMQTT();
+    
+      // console.log('클라이언트 있따');
+      // const joinChat = list_.find(ele => location.pathname.includes(`${ele.chattingRoom.id}`));
+      // //console.log(id);
+      // if(client){
+      //   client.subscribe(id, (err) => {
+      //     if (!err) {
+      //       console.log(id, 'Subscribed to topic');
+      //     } else {
+      //       console.error('Subscription error:', err);
+      //     }
+      //   });
+      //   setSelectedUser(joinChat);
+      //   fetchChatMessages(joinChat.chattingRoom.id);
+    
 
     // 컴포넌트 언마운트 시 클라이언트 종료
     return () => {
@@ -130,7 +148,7 @@ function BigChat() {
         client.end();
       }
     };
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     scrollToBottom();
@@ -220,9 +238,10 @@ function BigChat() {
 
   return (
     <div className={styles.pageBorder}>
-      <div className={styles.container}>
-        <ChattingRoom setSelectedUser={setSelectedUser} loading={loading} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages} chatMessages={chatMessages} />
-
+    <div className={styles.container}>
+      
+      <ChattingRoom setSelectedUser={setSelectedUser} loading={loading} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages} chatMessages={chatMessages} id={id} />
+        
         <div className={styles.chatSection}>
           <div className={styles.chatHeader}>
             <h2 className={styles.chatName2}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>

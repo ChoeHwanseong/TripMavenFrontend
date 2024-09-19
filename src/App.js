@@ -56,6 +56,7 @@ import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
 import GuideAsk from './pages/guidemypage/GuideAsk';
 import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
 import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
+import FaceRecognitionApp from './pages/aiservicepage/webrecord/FaceRecognitionApp';
 
 
 
@@ -141,6 +142,9 @@ function App() {
         <Route path='/productComponent' element={<ProductComponent />} />
 
         <Route path='/juwontest' element={<ScreenRecorderApp />} />
+
+
+        <Route path='/faceRecognitionApp' element={<FaceRecognitionApp />} /> {/* 테스트용 */}
 
       </Route>
     </Routes>

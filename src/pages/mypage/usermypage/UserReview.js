@@ -83,7 +83,7 @@ const UserReview = () => {
 
           <div className={styles.reviewList} >      
 
-{posts.map((post)=>(
+              {posts.map((post)=>(
                 <div className={styles.reviewItem}>
                   <img src={post.image || '../../../images/travel.jpg'} alt="review" className={styles.reviewImage} />
                   <span className={styles.reviewText}>[{post.city} {post.day}] {post.title} {post.hashtag}</span>

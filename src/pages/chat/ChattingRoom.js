@@ -3,7 +3,7 @@ import styles from '../../styles/chat/BigChat.module.css';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages, chatMessages}) {
+function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages, chatMessages, id}) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
 
@@ -41,7 +41,9 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
   };
 
   const handleClick = (joinChatting) => {
+    /*
     if (client && joinChatting.chattingRoom) {
+      client.unsubscribe(`${id}`);
       client.subscribe(`${joinChatting.chattingRoom.id}`, (err) => {
         if (!err) {
           console.log(joinChatting.chattingRoom.id, 'Subscribed to topic');
@@ -53,6 +55,8 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
       fetchChatMessages(joinChatting.chattingRoom.id);
       setSelectedUser(joinChatting);
     }
+  */
+    
     navigate(`/bigchat/${joinChatting.chattingRoom.id}`);
   };
 
