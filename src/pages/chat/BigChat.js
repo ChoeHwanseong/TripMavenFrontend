@@ -26,7 +26,7 @@ function BigChat() {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
-  
+
 
   // 채팅방 목록 데이터 가져와서 상태에 저장하는 함수
   const getData = async () => {
@@ -248,14 +248,12 @@ function BigChat() {
         <div className={styles.chatSection}>
           <div className={styles.chatHeader}>
             <h2 className={styles.chatName2}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
-            {selectedUser && (
-              <>
-              <button className={styles.reviewButton} onClick={() => navigate(`/reviewdetails/${id}`)}>
-                리뷰 작성 </button>
+            <div>
               <button className={styles.reviewButton} onClick={() => navigate(`/postDetails/${id}`)}>
                 게시글 보러가기 </button>
-                </>
-            )}
+              <button className={styles.reviewButton} onClick={() => navigate(`/reviewdetails/${id}`)}>
+                리뷰 작성 </button>
+            </div>
           </div>
 
           <div className={styles.chatMessages}>
