@@ -192,12 +192,12 @@
   list-style-type: none;
   padding: 0;
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 2.5rem;
 }
 
 .heroList li {
   margin-bottom: 1rem;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   line-height: 1.4;
   display: flex;
   align-items: center;
@@ -209,13 +209,13 @@
 
 .btn2 {
   position: relative;
-  padding: 15px 45px;  /* 패딩 감소 */
+  padding: 15px 45px;
   color: #ffffff;
   text-decoration: none;
   display: inline-block;
   text-transform: uppercase;
-  letter-spacing: 0.1em;  /* 글자 간격 조정 */
-  font-size: 1.2em;  /* 폰트 크기 감소 */
+  letter-spacing: 0.1em;
+  font-size: 1.2em;
   border: 2px solid transparent;
   border-radius: 15%;
   transition: 0.5s;
@@ -229,7 +229,7 @@
 .btn2::before {
   content: '';
   position: absolute;
-  inset: 0 4px;  /* 내부 여백 조정 */
+  inset: 0 4px;
   border-left: 2px solid #fff;
   border-right: 2px solid #fff;
   border-radius: 15%;
@@ -239,7 +239,7 @@
 .btn2::after {
   content: '';
   position: absolute;
-  inset: 4px 0;  /* 내부 여백 조정 */
+  inset: 4px 0;
   border-top: 2px solid #fff;
   border-bottom: 2px solid #fff;
   border-radius: 15%;
@@ -247,12 +247,12 @@
 }
 
 .btn2:hover::before {
-  inset: 0px 4px;  /* 호버 시 내부 여백 조정 */
+  inset: 0px 4px;
   transform: rotateY(180deg);
 }
 
 .btn2:hover::after {
-  inset: 4px 0px;  /* 호버 시 내부 여백 조정 */
+  inset: 4px 0px;
   transform: rotateX(180deg);
 }
 
@@ -288,11 +288,12 @@
 }
 
 .sectionText {
-  font-size: 1.5rem;
+  font-size: 2rem;
   margin-bottom: 1.5rem;
   line-height: 1.5;
   margin-left: 20px;
-  color: black;
+  color: rgb(255, 255, 255);
+  position: relative;
 }
 
 .sectionSubtitle {
@@ -305,6 +306,12 @@
 .imageWrapper {
   overflow: hidden;
   border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.imageWrapper:hover {
+  transform: scale(1.05);
 }
 
 .sectionImage {
@@ -536,6 +543,71 @@
   transform: translateY(0);
 }
 
+/* 새로 추가된 스타일 */
+.wordRotator {
+  display: inline-block;
+  position: relative;
+  height: 1.5em;
+  vertical-align: bottom;
+  overflow: hidden;
+  min-width: 80px;
+  padding: 0 5px;
+  background: linear-gradient(to right, #FF6B6B, #69cd4e, #45B7D1, #FFA07A);
+  background-size: 300% 100%;
+  animation: gradientShift 8s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.rotatingWord {
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, color 0.5s ease-in-out;
+  transform: translateY(100%);
+}
+
+.rotatingWord.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 그라데이션 배경 추가 */
+.tealSection {
+  background: linear-gradient(135deg, #92bcf6, #4b7bec);
+}
+
+/* 텍스트 애니메이션 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sectionTitle, .sectionText {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.sectionText {
+  animation-delay: 0.2s;
+}
+
 @media (max-width: 768px) {
   .flexContainer, .newsContainer, .contactSection {
     flex-direction: column;
@@ -646,7 +718,7 @@
   }
 
   .btn2 {
-    padding: 10px 30px;  /* 모바일에서 더 작게 조정 */
+    padding: 10px 30px;
     font-size: 1em;
   }
 }
