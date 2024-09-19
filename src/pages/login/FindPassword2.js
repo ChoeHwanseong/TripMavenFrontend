@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import styles from '../../styles/login/FindPassword2.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { findMemberbyEmail, sendEmailCode, verifyEmailCode } from '../../utils/memberData'; // 필요한 함수들 import
 
 const FindPassword2 = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const email = searchParams.get('email');
+  const id = searchParams.get('id');
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [code, setCode] = useState(''); // 인증번호 입력을 위한 상태
   const [errorMessage, setErrorMessage] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
@@ -80,8 +83,8 @@ const FindPassword2 = () => {
                 type="text" 
                 className={styles.inputEmail} 
                 placeholder="이메일을 입력하세요" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
+                value={email}
+                readOnly
               />
               <button 
                 type="button" 
@@ -120,7 +123,7 @@ const FindPassword2 = () => {
       <button 
         type="button" 
         className={styles.submitButton} 
-        onClick={() => navigate('/login/findpassword3')}
+        onClick={() => navigate(`/login/findpassword3?email=${email}&id=${id}`)}
         disabled={!isCodeValid} // 인증번호가 일치해야만 버튼 활성화
       >
         다음
