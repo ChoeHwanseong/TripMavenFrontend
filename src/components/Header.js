@@ -185,6 +185,7 @@ const jsonData = {
 
 //헤더 컴포넌트
 const Header = () => {
+    
     const location = useLocation();
     const navigate = useNavigate();
     const [searchKeyword, setSearchKeyword] = useState(''); //검색어 상태
@@ -195,7 +196,7 @@ const Header = () => {
     const [notifications, setNotifications] = useState([]); //알림 리스트 상태
     const [waitingNotification, setWaitingNotification] = useState({}); //받은 메세지
     const template = useContext(TemplateContext);
-
+    
     //로그아웃 함수
     const handleLogout = () => {
         logout().then(res => {
@@ -228,12 +229,12 @@ const Header = () => {
 
                 //연결 성공
                 mqttClient.on('connect', () => {
-                    console.log('Connected to MQTT broker:', joinChatting.chattingRoom.id);
+                    //console.log('Connected to MQTT broker:', joinChatting.chattingRoom.id);
                 });
 
                 //연결 실패시
                 mqttClient.on('error', (err) => {
-                    console.error('Connection error:', err);
+                    //console.error('Connection error:', err);
                 });
 
                 //채팅방 subscribe, 즉 토픽(채팅방) 정하기
