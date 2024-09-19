@@ -91,6 +91,9 @@ const PronunciationResult = () => {
                     </div>
                 </div>
             </div>
+            <div className={styles.buttonContainer}>
+                <button className={styles.button}>처음 화면으로 이동</button>
+            </div>
         </div>
     );
 };
