@@ -66,7 +66,7 @@ const CombinedPage = () => {
               style={{ width: '100%', height: 'auto', display: 'block', margin: '0' }} // 인라인 스타일 적용
             />
           </div>
-        </div>]
+        </div>
         <AiPageFlow/>
 
 
