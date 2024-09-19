@@ -4,6 +4,7 @@ import Stack from '@mui/material/Stack';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PronunContext } from '../../context/PronunContext';
 import axios from 'axios';
+import { evaluatePronunciation } from '../../utils/PythonServerAPI';
 
 const PronunciationTest = () => {
     const navigate = useNavigate();
@@ -131,21 +132,24 @@ const PronunciationTest = () => {
     };
 
     // 오디오 서버로 전송
-    const handleSendAudio = () => {
+    const handleSendAudio = async () => {
         if (!audioBlob) {
             alert('녹음된 파일이 없습니다.');
             return;
         }
 
-        const base64Encoded = blobToBase64(audioBlob).then((base64String) => { //base64 인코딩하기
+        const base64Encoded = await blobToBase64(audioBlob).then((base64String) => { //base64 인코딩하기
             return base64String;
         }).catch((error) => {
             console.error('Blob to Base64 인코딩 중 오류 발생:', error);
         });
+        console.log('베이스64인코딩된 음성파일:',base64Encoded);
 
         const file = convertBlobToFile(audioBlob, 'audio.wav');
+        console.log('녹음 파일:',file);
 
         const text = newsHeadLine[sequenceNumber - 1].replace(/[^가-힣a-zA-Z]/g, '')
+        console.log('원래 문장: ',text);
         const formData = new FormData();
         formData.append('voice', file); // 오디오 데이터를 FormData에 추가
         formData.append('text', text);
@@ -166,17 +170,8 @@ const PronunciationTest = () => {
         */
 
         // 서버로 Axios를 사용하여 전송
-        axios.post('/python/pron', formData, {
-            headers: {'Content-Type': 'multipart/form-data'}
-        })
-        .then((response) => {
-            alert('오디오 전송 성공!');
-            console.log('서버 응답:', response.data);
-        })
-        .catch((error) => {
-            console.error('오디오 전송 중 에러 발생:', error);
-            alert('오디오 전송 실패!');
-        });
+        const response = await evaluatePronunciation(formData);
+        console.log(response);
     };
 
     const startSpeechRecognition = () => {

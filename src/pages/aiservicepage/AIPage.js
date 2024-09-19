@@ -7,6 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import QuizTutorial from '../aiservicepage/QuizTutorial'; // QuizTutorial 경로로 변경 필요
 import { Modal } from '@mui/material'; // MUI의 Modal 컴포넌트 추가
 
+import aiPageFlowImage from '../../images/aiPageFlow/dd.png';
+import AiPageFlow from './AiPageFlow';
+
+
 const CombinedPage = () => {
   const navigate = useNavigate();
   const [isQuizModalOpen, setQuizModalOpen] = useState(false); // 모달 상태 추가
@@ -53,14 +57,28 @@ const CombinedPage = () => {
           </div>
         </div>
          */}
+
         <div className={aiInfoStyles.infoContainer}>
+          <div className={aiInfoStyles.sttContainer}>
+            <img 
+              src={aiPageFlowImage} 
+              alt='ai 페이징' 
+              style={{ width: '100%', height: 'auto', display: 'block', margin: '0' }} // 인라인 스타일 적용
+            />
+          </div>
+        </div>
+        <AiPageFlow/>
+
+
+
+        {/* <div className={aiInfoStyles.infoContainer}>
           <div className={aiInfoStyles.sttContainer}>
             <img src="../../../images/STT.png" alt='STT 음성 인식 기술' className={aiInfoStyles.sttImage}/>
           </div>
           <div className={aiInfoStyles.nlpContainer}>
             <img src="../../../images/NLP.png" alt='STT 음성 인식 기술' className={aiInfoStyles.nlpImage}/>
           </div>
-        </div>
+        </div> */}
 
         <h3 className={aiInfoStyles.description}>
           TripMaven의 AI는 말과 행동, 시선, 표정을 분석할 수 있고 나만을 위한 맞춤형 퀴즈도 제작해줍니다.<br />
