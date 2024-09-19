@@ -1,59 +1,153 @@
-import React, { useContext } from 'react';
-import useMediaRecorder from '@wmik/use-media-recorder';
-import { evaluatePronunciation, evaluateVoiceAndText } from '../../utils/PythonServerAPI';
-import { TemplateContext } from '../../context/TemplateContext';
-import { Typography,Box } from '@mui/material';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { Box, Button, Container, Grid, MenuItem, Select, Typography, IconButton } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import { useNavigate, useParams } from 'react-router-dom';
+import { PronunContext } from '../../context/PronunContext';
+import axios from 'axios';
+import { evaluatePronunciation, videoFace } from '../../utils/PythonServerAPI';
+import Webcam from 'react-webcam';
 
-//이것도 화면 아니면 오디오 구현
-function Player({ mediaBlob, audio }) {
-  if (!mediaBlob) {
-    return null;
-  }
+const PronunciationTest = () => {
+  const timerRef = useRef(null); // 타이머 인스턴스 참조
+  const [transcript, setTranscript] = useState(''); // 자막 상태
+  const [audioDevices, setAudioDevices] = useState([]);
+  const [selectedAudioDevice, setSelectedAudioDevice] = useState(null);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [timer, setTimer] = useState(10); // 10초 타이머 초기값
+  const [testMessage, setTestMessage] = useState(''); // 테스트 메시지 상태
+  const [isRecognitionDone, setIsRecognitionDone] = useState(false); // 음성 인식 완료 여부
+  const recognitionRef = useRef(null); // SpeechRecognition 인스턴스 참조
+  const lastFinalTranscriptRef = useRef(''); // 마지막으로 인식된 최종 자막을 저장
+  const accumulatedTranscriptRef = useRef(''); // 모든 최종 자막을 저장하는 참조
+  const { newsHeadLine } = useContext(PronunContext);
+  const mediaRecorderRef = useRef(null);
+  const webcamRef = useRef(null);
+  const videoChunks = useRef([]);
+  const [videoBlob, setVideoBlob] = useState(null); // 녹음된 오디오 데이터를 저장
+  const [isVideoConnected, setIsVideoConnected] = useState(false); // 웹캠 연결 상태
+  const [videoDevices, setVideoDevices] = useState([]);
+  const [selectedVideoDevice, setSelectedVideoDevice] = useState(null);
+  const [isRecording, setIsRecording] = useState(false);
 
-  if (audio) {
-    return <audio src={URL.createObjectURL(mediaBlob)} controls />;
-  }
 
-  return (
-    <video
-      src={URL.createObjectURL(mediaBlob)}
-      width={520}
-      height={480}
-      controls
-    />
-  );
-}
+  useEffect(() => {
+    navigator.mediaDevices.enumerateDevices()
+      .then((devices) => {
+        //모든 장비 가져오기
+        const videoInputs = devices.filter((d) => d.kind === 'videoinput');
+        const audioInputs = devices.filter((d) => d.kind === 'audioinput');
 
+        //모든 명단 스테이트로 저장
+        setVideoDevices(videoInputs);
+        setAudioDevices(audioInputs);
 
-//화면 구현
-function LiveStreamPreview({ stream }) {
-  let videoPreviewRef = React.useRef();
+        //첫번째 장비 선택하기
+        setSelectedVideoDevice(videoInputs[0] || null);
+        setSelectedAudioDevice(audioInputs[0] || null);
 
-  React.useEffect(() => {
-    if (videoPreviewRef.current && stream) {
-      videoPreviewRef.current.srcObject = stream;
+        //연결됐는지 여부
+        setIsVideoConnected(videoInputs.length > 0);
+      })
+      .catch((error) => {
+        console.error('Error getting device information:', error);
+      });
+  }, []);
+
+  const handleStartRecording = () => {
+    if (isRecording) { // 마이크가 활성화된 경우 음성 기록 중지
+      recognitionRef.current.stop(); // 음성 인식 중지
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
+        mediaRecorderRef.current.stop(); // 실제 녹음 중지
+      }
+      setIsRecording(false);
+      clearInterval(timerRef.current); // 타이머 중지
+      setIsAudioPlaying(false); // 음성 중지 상태로 전환
+      setTestMessage('음성 기록이 중단되었습니다.'); // 중단 메시지 표시
+
     }
-  }, [stream]);
+    else {
+      setTranscript(''); // 자막 초기화
+      setTimer(10); // 타이머 초기화
+      setTestMessage(''); // 이전 테스트 메시지 초기화
+      setIsRecognitionDone(false); // 음성 인식 완료 상태 초기화
+      lastFinalTranscriptRef.current = ''; // 마지막 최종 자막 초기화
+      accumulatedTranscriptRef.current = ''; // 누적된 자막 초기화    
 
-  if (!stream) {
-    return null;
-  }
+      navigator.mediaDevices.getUserMedia({
+        audio: {
+          deviceId: selectedAudioDevice?.deviceId,
+          sampleRate: 16000,  // 16kHz 샘플레이트
+        },
+        video: true
+      })
+        .then(stream => {
+          if (webcamRef.current) {
+            webcamRef.current.srcObject = stream; // 웹캠 비디오 스트림 연결
+          }
 
-  return <video ref={videoPreviewRef} width={520} height={480} autoPlay />;
-}
+          mediaRecorderRef.current = new MediaRecorder(stream);
+          mediaRecorderRef.current.ondataavailable = (event) => {
+            videoChunks.current.push(event.data);
+          };
+
+          mediaRecorderRef.current.onstop = () => {
+            const blob = new Blob(videoChunks.current, { type: 'video/mp4' });
+            setVideoBlob(blob); // 비디오 데이터를 Blob으로 저장
+            console.log('오디오 멈춤, 블롭:', blob);
+            videoChunks.current = []; // 저장 후 초기화
+            setIsRecognitionDone(true);
+          };
+
+          mediaRecorderRef.current.start();
+          setIsRecording(true);
+          setTestMessage('녹음이 시작되었습니다.');
+        })
+        .catch((error) => {
+          console.error('Error accessing microphone:', error);
+        });
+
+      setIsAudioPlaying(true);
+      startSpeechRecognition(); // 음성 인식 시작
+      startTimer(); // 타이머 시작
+    }
+  };
+
+  //블롭 객체를 파일로 변환
+  const convertBlobToFile = (blob, fileName) => {
+    const file = new File([blob], fileName, { type: blob.type });
+    return file;
+  };
+
+  // 오디오 서버로 전송
+  const handleSendAudio = async () => {
+    if (!videoBlob) {
+      alert('녹음된 파일이 없습니다.');
+      return;
+    }
+    console.log(videoBlob);
+    const file = convertBlobToFile(videoBlob, 'video.mp4');
+    console.log('녹음 파일:', file);
+
+    const formData = new FormData();
+    formData.append('file', file); // 비디오 데이터를 FormData에 추가
 
 
+    const url = window.URL.createObjectURL(file);
+    // a 태그를 생성하여 다운로드 실행
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'video.mp4'; // 다운로드할 파일명 설정
+    document.body.appendChild(a);
+    a.click(); // 클릭 이벤트 실행 (다운로드 시작)
+    // 다운로드 후 태그와 URL 해제
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url); // 메모리 해제
 
-export default function ScreenRecorderApp() {
-  const recognitionRef = React.useRef(null); // SpeechRecognition 인스턴스 참조
-  const accumulatedTranscriptRef = React.useRef(''); // 모든 최종 자막을 저장하는 참조
-  let recognitionTimeoutRef = React.useRef(null); // 타임아웃 참조
-
-  const { memberInfo } = useContext(TemplateContext);
-  const [transcript, setTranscript] = React.useState(''); // 자막 상태
-  const [isRecording, setIsRecording] = React.useState(false);
-  const [isRecognitionDone, setIsRecognitionDone] = React.useState(false); // 음성 인식 완료 여부
-  const [timer, setTimer] = React.useState(10); // 10초 타이머 초기
+    // 서버로 Axios를 사용하여 전송
+    const response = await videoFace(formData);
+    console.log(response);
+  };
 
   const startSpeechRecognition = () => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -61,7 +155,7 @@ export default function ScreenRecorderApp() {
     recognitionRef.current = recognition; // ref로 인스턴스 참조
     recognition.lang = 'ko-KR'; // 한국어 설정
     recognition.interimResults = false; // 중간 결과를 무시
-    recognition.continuous = true; // 음성 인식 유지용
+    recognition.continuous = true; // 음성 인식을 10초 동안 강제로 유지
 
     recognition.onresult = (event) => {
       for (let i = 0; i < event.results.length; i++) {
@@ -86,184 +180,151 @@ export default function ScreenRecorderApp() {
     };
 
     recognition.start();
-    setIsRecording(true);
 
-    // 10초 후 음성 인식 자동 종료
-    recognitionTimeoutRef.current = setTimeout(() => {
-      stopSpeechRecognition();
-    }, 10000); 
+    // 10초 후 음성 인식 종료
+    setTimeout(() => {
+      recognition.stop();
+      setIsAudioPlaying(false); // 음성 인식 중이 아님
+      setIsRecognitionDone(true); // 음성 인식이 완료됨
+    }, 10000); // 10000ms = 10초
   };
 
-  const stopSpeechRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop(); // 음성 인식 종료
-      setIsRecording(false); // 녹음 중이 아님
-      setIsRecognitionDone(true); // 음성 인식 완료
-    }
-    if (recognitionTimeoutRef.current) {
-      clearTimeout(recognitionTimeoutRef.current); // 타임아웃 취소
-    }
+  const startTimer = () => {
+    timerRef.current = setInterval(() => {
+      setTimer(prevTimer => {
+        if (prevTimer <= 1) {
+          clearInterval(timerRef.current); // 타이머 종료
+          return 0;
+        }
+        return prevTimer - 1;
+      });
+    }, 1000); // 1초마다 타이머 감소
   };
 
-
-  let {
-    error,
-    status,
-
-    mediaBlob,
-    liveStream,
-    getMediaStream,
-
-    startRecording,
-    pauseRecording,
-    resumeRecording,
-    stopRecording
-
-  } = useMediaRecorder({
-    recordScreen: false, //스크린 ㄴㄴ
-    blobOptions: { type: 'audio/wav' }, //wav타입 블롭으로
-    mediaStreamConstraints: { audio: true, video: false } //오디오만 
-  });
-
-  //블롭 객체를 파일로 변환
-  const convertBlobToFile = (blob, fileName) => {
-    const file = new File([blob], fileName, { type: blob.type });
-    return file;
-  };
-
-  //블롭 객체를 base64 인코딩
-  const blobToBase64 = (blob) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result.split(',')[1]; // Base64 인코딩된 부분만 반환
-        resolve(base64String);
-      };
-      reader.onerror = (error) => reject(error);
-      reader.readAsDataURL(blob); // Blob을 읽어서 Base64 인코딩
-    });
-  };
-
-  const handleClick = async () => {
-    //음성 인식할 시간 기다려 주기
-    const wavFile = convertBlobToFile(mediaBlob, 'output.wav'); //wav 파일로 변환
-    const base64Encoded = blobToBase64(mediaBlob).then((base64String) => { //base64 인코딩하기
-      return base64String;
-    }).catch((error) => {
-      console.error('Blob to Base64 인코딩 중 오류 발생:', error);
-    });
-    console.log(base64Encoded);
-    console.log('녹음한 파일 wav로 변환:', wavFile);
-    console.log('input으로 선택한 파일:', selectedFile);
+  useEffect(() => {
+    // 컴포넌트가 언마운트되면 타이머를 정리합니다.
+    return () => {
+      clearInterval(timerRef.current);
+    };
+  }, []);
 
 
-    const formDataForPron = new FormData();    
-    formDataForPron.append('voice', base64Encoded);
-    formDataForPron.append('text', '안녕하세요');
-
-    const formDataForVoiceAndText = new FormData();
-    formDataForVoiceAndText.append('voice', selectedFile);
-    formDataForVoiceAndText.append('text', '안녕하세요'); //텍스트 데이터에 영어 노노. 한국어 분석이라 오류남
-    formDataForVoiceAndText.append('gender', memberInfo.gender == 'male' ? '0' : '1');
-
-    const pronResponse = await evaluatePronunciation(formDataForPron);
-    const VoiceAndTextResponse = await evaluateVoiceAndText(formDataForVoiceAndText);
-
-    console.log('pronResponse:', pronResponse);
-    console.log('VoiceAndTextResponse', VoiceAndTextResponse);
-  };
-
-  //테스트용으로 파일 받아서 보내봤는데 잘되네... 녹음하는건 뭐가 문제냐
-  const [selectedFile, setSelectedFile] = React.useState(null);
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);  // 여러 파일을 선택할 수 있으면 files 배열 사용
-  };
 
   return (
-    <article style={{ marginLeft: '30px' }}>
-      <h1>음성 녹화</h1>
-      <h4>{error ? `${status} ${error.message}` : status}</h4>
-      <input type="file" onChange={handleFileChange} />
-      <LiveStreamPreview stream={liveStream} />
-      <Player mediaBlob={mediaBlob} />
-      
-      <section>
-        <button
-          type="button"
-          onClick={getMediaStream}
-          disabled={status === 'ready'}
-        >
-          Share screen
-        </button>
-        <button
-          type="button"
-          onClick={() => { startRecording(); startSpeechRecognition(); }}
-          disabled={status === 'recording'}
-        >
-          Start recording
-        </button>
-        <button
-          type="button"
-          onClick={() => { stopRecording(); stopSpeechRecognition(); }}
-          disabled={status !== 'recording'}
-        >
-          Stop recording
-        </button>
-      </section>
+    <Container sx={{ mt: '20px', width: '1100px' }}>
 
-      <section style={{ marginTop: '30px' }}>
-        <button
-          type="button"
-          onClick={handleClick}
-          disabled={status === 'recording'}
-        >
-          보내기
-        </button>
-      </section>
+      <Typography variant="h4" gutterBottom align="left" sx={{ mt: '120px', fontWeight: 'bold' }}>
+        발음 테스트
+      </Typography>
+      <img src="../../images/WebTestPageLine.png" alt="Line Image" />
+      <Typography variant="h5" gutterBottom align="center" sx={{ mt: '13px', mb: '13px' }}>
+        버튼을 누르고 아래에 있는 문장을 읽으세요
+      </Typography>
+      <Grid container>
+        <Grid container sx={{ justifyContent: 'center', alignItems: 'center' }}>
+          <Box
+            sx={{
+              width: '500px', height: 370,
+              bgcolor: '#F8F8F8', display: 'flex',
+              alignItems: 'center', justifyContent: 'center',
+              border: '1px solid #000000', borderRadius: '5px',
+              flexDirection: 'column', textAlign: 'center',
+              position: 'relative'
+            }}
+          >
+            {transcript && isRecognitionDone ? (
+              // 음성 인식이 끝났고 자막이 있을 때 자막 유지
+              <>
+                <Typography variant="subtitle1" align="center" sx={{ mt: 2 }}>
+                  {transcript} {/* 음성 인식 결과 표시 */}
+                </Typography>
+              </>
+            ) : (
+              isVideoConnected ? (
+                <Webcam
+                  ref={webcamRef}
+                  audio={true}
+                  style={{ width: '100%', height: '100%', display: 'block' }}
+                />
+              ) : (
+                <>
+                  <img
+                    src='../../images/speakIcon.png'
+                    alt='speak Icon'
+                    style={{
+                      top: '40px',
+                      left: '40px'
+                    }}
+                  />
+                  <Box sx={{ mt: 4, fontSize: '20px' }}>
+                    {''}
+                  </Box>
+                </>
+              )
+            )}
 
-      <Box
-        sx={{
-          width: '500px', height: 370,
-          bgcolor: '#F8F8F8', display: 'flex',
-          alignItems: 'center', justifyContent: 'center',
-          border: '1px solid #000000', borderRadius: '5px',
-          flexDirection: 'column', textAlign: 'center',
-          position: 'relative'
-        }}
-      >
-        {transcript && isRecognitionDone ? (
-          // 음성 인식이 끝났고 자막이 있을 때 자막 유지
-          <>
-            <Typography variant="subtitle1" align="center" sx={{ mt: 2 }}>
-              {transcript} {/* 음성 인식 결과 표시 */}
-            </Typography>
-          </>
-        ) : (
-          isRecording ? (
-            <>
-              <Typography variant="subtitle1" align="center" sx={{ mt: 2 }}>
+          </Box>
+        </Grid>
+      </Grid>
+      {/* 마이크 인식 여부에 따른 상태 메시지 표시 */}
+      <Typography variant="body2" fontSize="1.2em" color={isAudioPlaying ? 'success.main' : 'error'} align="center" sx={{ mt: 4 }}>
+        {isAudioPlaying ? '마이크 작동 중' : '*마이크 인식이 되지 않습니다.'}
+      </Typography>
+      <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <IconButton onClick={handleStartRecording} >
+            <img
+              src='../../images/micIcon.png'
+              style={{ width: '50px', height: '50px', cursor: 'pointer' }}
+              alt="MicIcon"
+            />
+          </IconButton>
+        </Box>
+      </Grid>
 
-                {transcript || "음성을 인식 중입니다..."}<br /> {/* 실시간 음성 인식 결과 표시 */}
-              </Typography>
-              <Typography variant="h6" align="center" sx={{ mt: 2 }}>
-                남은 시간: {timer}초 {/* 타이머 표시 */}
-              </Typography>
-            </>
-          ) : (
-            <>
-              <img
-                src='../../images/speakIcon.png'
-                alt='speak Icon'
-                style={{
-                  top: '40px',
-                  left: '40px'
-                }}
-              />
-            </>
-          )
-        )}
+      <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
+        <Grid item sx={{ width: '400px' }}>
+          <Select
+            value={selectedVideoDevice?.deviceId || ''}
+            displayEmpty
+            onChange={(e) => setSelectedVideoDevice(videoDevices.find((d) => d.deviceId === e.target.value))}
+            sx={{ width: '400px' }}
+          >
+            <MenuItem value="">웹캠을 선택하세요</MenuItem>
+            {videoDevices.map((device) => (
+              <MenuItem key={device.deviceId} value={device.deviceId}>
+                {device.label}
+              </MenuItem>
+            ))}
+          </Select>
+          <Select
+            value={selectedAudioDevice?.deviceId || ''}
+            displayEmpty
+            onChange={(e) => setSelectedAudioDevice(audioDevices.find((d) => d.deviceId === e.target.value))}
+            sx={{ width: '400px' }}
+          >
+            <MenuItem value="">마이크를 선택하세요</MenuItem>
+            {audioDevices.map((device) => (
+              <MenuItem key={device.deviceId} value={device.deviceId}>
+                {device.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </Grid>
+      </Grid>
+      {testMessage && (
+        <Typography fontSize="1.5em" align="center" variant="body2" color="error" sx={{ mt: 2 }}>
+          <span dangerouslySetInnerHTML={{ __html: testMessage }} /> {/* 테스트 메시지 출력 */}
+        </Typography>
+      )}
+      <Stack display="flex" justifyContent="center" direction="row" spacing={3} sx={{ mt: '25px' }}>
 
-      </Box>
-    </article>
+        <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }} onClick={handleSendAudio}>
+          {'보내기'}
+        </Button>
+      </Stack>
+    </Container >
   );
-}
+};
+
+export default PronunciationTest;
