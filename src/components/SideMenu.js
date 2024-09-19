@@ -46,11 +46,15 @@ const SideMenu = () => {
     return (
         <div className={styles.layoutContainer}>
             <div className={styles.sidebar}>
+                {/*
                 <img
                     src="../../images/mypageLogo.png"
                     alt="mypagelogo"
                     className={styles.mypageLogo}
                 />
+                 */}
+                 <h2 className={styles.sidebarTitle}>MyPage</h2>
+                 
                 <ul>
                     {menuItems && menuItems.map((item, index) => {
                         if (item.name) {
@@ -62,7 +66,7 @@ const SideMenu = () => {
                                         onClick={() => handleClick(item.path) }
                                     >
                                         <span className={styles.icon}>{getIcon(item.name)}</span>
-                                        <span className={styles.label}>{item.name}</span>
+                                        <span className={styles.label}>{item.name}<small>  </small></span>
                                     </button>
                                 </li>
                             );
