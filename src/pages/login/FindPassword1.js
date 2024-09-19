@@ -13,7 +13,7 @@ const FindPassword1 = () => {
     try {
       const res = await findMemberbyEmail(emailRef.current.value);
       if (emailRef.current.value === res.email)
-        navigate(`/login/findpassword3?email=${res.email}&id=${res.id}`);
+        navigate(`/login/findpassword2?email=${res.email}&id=${res.id}`);
     } catch (error) {
     }
   }
