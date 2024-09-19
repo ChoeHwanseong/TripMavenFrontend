@@ -9,9 +9,11 @@ const UserLike = () => {
   const navigate = useNavigate();
   const membersId = localStorage.getItem('membersId');
   const [products, setProducts] = useState([]); // 상품 목록을 관리하는 상태 변수
+  const [sortedProducts, setSortedProducts] = useState([]); // 정렬된 상품 목록을 관리하는 상태 변수
   const [loading, setLoading] = useState(true); // 로딩 상태 관리
   const [hasMore, setHasMore] = useState(false); // 더 가져올 데이터가 있는지 여부
-  
+  const [sortOrder, setSortOrder] = useState('latest'); // 정렬 기준 관리
+
   useEffect(() => {
     console.log('membersId: ', membersId);
 
@@ -67,6 +69,18 @@ const UserLike = () => {
     likeyList();
   }, [membersId]);
 
+  // products 또는 sortOrder 변경 시 정렬 처리
+  useEffect(() => {
+    const sorted = [...products].sort((a, b) => {
+      if (sortOrder === 'latest') {
+        return new Date(b.createdAt) - new Date(a.createdAt); // 최근 순
+      } else {
+        return new Date(a.createdAt) - new Date(b.createdAt); // 오래된 순
+      }
+    });
+    setSortedProducts(sorted);
+  }, [sortOrder, products]);
+
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
@@ -74,7 +88,11 @@ const UserLike = () => {
         <img className={styles.likeicon} src="../../../images/likeicon.png" alt="Like Icon" />
       </div>
       <div className={styles.controls}>
-        <select className={styles.sortSelect}>
+        <select 
+          className={styles.sortSelect}
+          value={sortOrder} // select 요소에 현재 정렬 기준 설정
+          onChange={(e) => setSortOrder(e.target.value)} // 선택 변경 시 상태 업데이트
+        >
           <option value="latest">최근 순</option>
           <option value="oldest">오래된 순</option>
         </select>
@@ -91,7 +109,7 @@ const UserLike = () => {
             <p>Loading...</p>
           </div>
         ) : (
-          products.map((product) => {
+          sortedProducts.map((product) => {
             // 리뷰 점수와 개수 계산
             const totalScore = product.reviews.reduce((sum, review) => sum + review.ratingScore, 0);
             const averageScore = product.reviews.length > 0 ? (totalScore / product.reviews.length).toFixed(1) : "0";
