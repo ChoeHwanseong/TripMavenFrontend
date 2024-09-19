@@ -153,11 +153,11 @@
 }
 
 .heroLeft::before {
-  background-image: url('../../images/traveler.jpg');
+  background-image: url('../../images/tourlist.jpg');
 }
 
 .heroRight::before {
-  background-image: url('../../images/tour guide.jpg');
+  background-image: url('../../images/guide.jpg');
 }
 
 .heroTitleLeft, .heroListLeft {

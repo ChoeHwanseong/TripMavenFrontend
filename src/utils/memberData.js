@@ -24,6 +24,7 @@ export const fetchedData = async (id) => {
   }
 };
 
+
 // 이메일로 멤버 가져오기
 export const findMemberbyEmail = async (email) => {
   try {

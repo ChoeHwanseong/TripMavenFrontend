@@ -54,7 +54,11 @@ const MICTest = () => {
             accumulatedTranscriptRef.current = ''; // 누적된 자막 초기화
     
             navigator.mediaDevices.getUserMedia({
-                audio: { deviceId: selectedAudioDevice?.deviceId }
+                audio: { deviceId: selectedAudioDevice?.deviceId,
+                        sampleRate: 48000,  // 48kHz 샘플레이트
+                        sampleSize: 16,     // 16비트 오디오
+                        channelCount: 2,    // 스테레오
+                 }
             })
                 .then((stream) => {
                     const audioRef = new Audio();

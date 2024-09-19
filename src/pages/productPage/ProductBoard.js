@@ -38,7 +38,6 @@ const ProductBoard = () => {
         //console.log('검색 결과:', results);
         setLoading(false);
 
-        // Fetch the first file URL for each product
         const productsWithFiles = await Promise.all(
             results.map(async (product) => {
                 const fileData = await fetchFiles(product.id);
@@ -51,7 +50,6 @@ const ProductBoard = () => {
 
         console.log('productsWithFiles: ', productsWithFiles);
         setProducts(productsWithFiles);
-        console.log('products: ', products);
 
         setPage((prevPage) => prevPage + 1); // 다음 페이지로 설정
         if (results.length < 20) {

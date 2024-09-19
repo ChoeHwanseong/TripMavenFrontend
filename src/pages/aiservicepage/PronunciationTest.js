@@ -54,10 +54,14 @@ const PronunciationTest = () => {
     const handleStartRecording = () => {
         if (isMicActive) { // 마이크가 활성화된 경우 음성 기록 중지
             recognitionRef.current.stop(); // 음성 인식 중지
+            if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
+                mediaRecorderRef.current.stop(); // 실제 녹음 중지
+            }
             clearInterval(timerRef.current); // 타이머 중지
             setIsMicActive(false); // 마이크 비활성화
             setIsAudioPlaying(false); // 음성 중지 상태로 전환
             setTestMessage('음성 기록이 중단되었습니다.'); // 중단 메시지 표시
+            
         }
         else {
             setTranscript(''); // 자막 초기화
@@ -70,7 +74,9 @@ const PronunciationTest = () => {
             accumulatedTranscriptRef.current = ''; // 누적된 자막 초기화    
 
             navigator.mediaDevices.getUserMedia({
-                audio: { deviceId: selectedAudioDevice?.deviceId }
+                audio: { deviceId: selectedAudioDevice?.deviceId,
+                    sampleRate: 16000,  // 16kHz 샘플레이트
+                 }
             })
             .then( stream => {
                 /*
@@ -86,6 +92,7 @@ const PronunciationTest = () => {
                 mediaRecorderRef.current.onstop = () => {
                     const audioBlob = new Blob(audioChunks.current, { type: 'audio/wav' });
                     setAudioBlob(audioBlob); // 오디오 데이터를 Blob으로 저장
+                    console.log('오디오 멈춤, 블롭:', audioBlob);
                     audioChunks.current = []; // 저장 후 초기화
                     setIsRecognitionDone(true);
                 };
@@ -102,9 +109,26 @@ const PronunciationTest = () => {
             startSpeechRecognition(); // 음성 인식 시작
             startTimer(); // 타이머 시작
         }
-
     };
 
+    //블롭 객체를 base64 인코딩
+    const blobToBase64 = (blob) => {
+        return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64String = reader.result.split(',')[1]; // Base64 인코딩된 부분만 반환
+            resolve(base64String);
+        };
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(blob); // Blob을 읽어서 Base64 인코딩
+        });
+    };
+
+    //블롭 객체를 파일로 변환
+    const convertBlobToFile = (blob, fileName) => {
+        const file = new File([blob], fileName, { type: blob.type });
+        return file;
+    };
 
     // 오디오 서버로 전송
     const handleSendAudio = () => {
@@ -112,11 +136,34 @@ const PronunciationTest = () => {
             alert('녹음된 파일이 없습니다.');
             return;
         }
+
+        const base64Encoded = blobToBase64(audioBlob).then((base64String) => { //base64 인코딩하기
+            return base64String;
+        }).catch((error) => {
+            console.error('Blob to Base64 인코딩 중 오류 발생:', error);
+        });
+
+        const file = convertBlobToFile(audioBlob, 'audio.wav');
+
         const text = newsHeadLine[sequenceNumber - 1].replace(/[^가-힣a-zA-Z]/g, '')
         const formData = new FormData();
-        formData.append('voice', audioBlob, 'recordedAudio.wav'); // 오디오 데이터를 FormData에 추가
+        formData.append('voice', file); // 오디오 데이터를 FormData에 추가
         formData.append('text', text);
 
+        /*
+        console.log(audioBlob);
+        const url = window.URL.createObjectURL(audioBlob);
+        // a 태그를 생성하여 다운로드 실행
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'audio.wav'; // 다운로드할 파일명 설정
+        document.body.appendChild(a);
+        a.click(); // 클릭 이벤트 실행 (다운로드 시작)
+        // 다운로드 후 태그와 URL 해제
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url); // 메모리 해제
+        */
 
         // 서버로 Axios를 사용하여 전송
         axios.post('/python/pron', formData, {

@@ -11,6 +11,7 @@ const RealTestPage = () => {
   const { productboardId } = useParams();
 
   const navigate = useNavigate();
+  const webcamStreamRef = useRef(null);
   const webcamRef = useRef(null);
   const [videoDevices, setVideoDevices] = useState([]);
   const [audioDevices, setAudioDevices] = useState([]);
@@ -25,7 +26,7 @@ const RealTestPage = () => {
   const [timeLeft, setTimeLeft] = useState(60);
   const [loadingMessage, setLoadingMessage] = useState("");
 
-  const { startRecording, stopRecording, getBlob, isRecording } = useMediaRecorder();
+  const {startRecording, stopRecording, getBlob, isRecording} = useMediaRecorder();
 
   const questions = [
     "Q: 여행을 하는 중에 컴플레인이 들어 왔을 경우 어떻게 해결을 해야 할까요?",
@@ -56,9 +57,9 @@ const RealTestPage = () => {
 
     // 웹캠과 마이크 연결
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-      .then((stream) => {
-        if (webcamRef.current) {
-          webcamRef.current.srcObject = stream; // 웹캠 비디오 스트림 연결
+      .then(stream => {
+        if (webcamStreamRef.current) {
+          webcamStreamRef.current.srcObject = stream; // 웹캠 비디오 스트림 연결
         }
         setIsVideoConnected(true);
         setIsAudioConnected(true);
@@ -81,9 +82,9 @@ const RealTestPage = () => {
     }
   }, [timeLeft, isFirstQuestion, isRecording]);
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     if (recordingStatus === "녹화하기") {
-      startRecording(webcamRef.current?.stream);
+      startRecording(webcamStreamRef.current.srcObject);
       setRecordingStatus("녹화 중지");
     } else if (recordingStatus === "녹화 중지") {
       stopRecording();
@@ -111,10 +112,13 @@ const RealTestPage = () => {
 
     console.log('uploadVideo 에 보내는 비디오: ',videoType);
 
-    const videoBlob = getBlob(videoType);
+    const videoBlob = getBlob();
+    //const videoFile = new File([blobRef.current], 'recordedVideo.webm', { type: 'video/webm' });
+    //console.log(videoFile);
+    console.log(videoBlob);
 
     const formData = new FormData();
-    formData.append('file', videoBlob, 'recordedVideo.webm');
+    //formData.append('file', videoFile);
 
     try {
       const response = await fetch('/python/face/', {
@@ -178,7 +182,7 @@ const RealTestPage = () => {
         <div className={styles.videoBox}>
           {isVideoConnected ? (
             <Webcam
-              ref={webcamRef}
+              ref={webcamStreamRef}
               audio={true}
               style={{ width: '100%', height: '100%', display: 'block' }}
             />
