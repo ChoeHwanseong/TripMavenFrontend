@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import mqtt from 'mqtt';
-import { useLocation, useParams } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from '../../styles/chat/BigChat.module.css';
 import ChattingRoom from './ChattingRoom';
 import { chattingListYourData, getMessages, submitMessage } from '../../utils/chatData';
@@ -21,6 +21,7 @@ function BigChat() {
   const template = useContext(TemplateContext);
   const profileImageRef = useRef(null); 
   const [selectedFile, setSelectedFile] = useState(null); 
+  const navigate = useNavigate();
 
   
   const scrollToBottom = () => {
@@ -186,6 +187,7 @@ function BigChat() {
       };
       reader.readAsDataURL(file);
     }
+
   };
 
   const handleSendClick = () => {
@@ -243,6 +245,16 @@ function BigChat() {
         <div className={styles.chatSection}>
           <div className={styles.chatHeader}>
             <h2 className={styles.chatName2}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
+            {selectedUser && (
+              <>
+              <div className={styles.productBoard} onClick={() => { navigate('/product') }}>
+                상품
+              </div>
+              <button className={styles.sendButton1} onClick={handleSendClick}>
+                완료
+              </button>
+              </>
+            )}
           </div>
 
           <div className={styles.chatMessages}>
@@ -271,7 +283,7 @@ function BigChat() {
                   </div>
                   <span className={`${styles.messageTime} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}>
                   {(new Date(msg.timestamp).toLocaleDateString() === new Date().toLocaleDateString() ? '' : new Date(msg.timestamp).toLocaleDateString())}
-                  {new Date(msg.timestamp).toLocaleTimeString()}
+                  {new Date(msg.timestamp).toLocaleDateString()}
                 </span>
                 </div>
                 
