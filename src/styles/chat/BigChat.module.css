@@ -57,6 +57,7 @@
   padding-left: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  outline-color: #b8b8b8;
 }
 
 .newChatButton {
@@ -138,7 +139,8 @@
   border-radius: 10px;
   padding-left: 16px;
   margin-top: 10px;
-  margin-right: 18px;
+  margin-right: 20px;
+  margin-left: 2px;
   margin-bottom: 10px;
   background-color: #ffffff;
 }
@@ -216,12 +218,26 @@
 
 .message {
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+}
+
+.messageContent.sent{
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.chatMember{
+  margin-left: 5px;
+  margin-top: 5px;
 }
 
 .message.sent {
   flex-direction: row-reverse;
-  margin-left: 200px;
+  
+  position: relative;
+  display: flex;
+  justify-content: end;
 }
 
 .messageNTime {
@@ -234,14 +250,18 @@
   max-width: 100%;
   padding: 10px;
   border-radius: 20px;
+  margin-left: 3px;
   background-color: #ffffff;
   position: relative;
   z-index: 2;
+  display: inline-block;
 }
 
 .message.sent .messageBubble {
   background-color: #FFEB33;
   color: rgb(0, 0, 0);
+  display: inline-block;
+
 }
 
 .messageTime {
@@ -251,9 +271,9 @@
 }
 
 .messageTime.sent {
-  text-align: end;
   margin-right: 10px;
-  margin-top: -10px;
+  margin-top: 3px;
+  display: block;
 }
 
 .chatInputSection {
@@ -271,6 +291,7 @@
   border: 1px solid #ddd;
   border-radius: 20px;
   margin-right: 10px;
+  outline-color: #b8b8b8;
 }
 
 .sendButton {

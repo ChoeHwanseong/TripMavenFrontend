@@ -7,6 +7,7 @@ import { chattingListYourData, getMessages, submitMessage } from '../../utils/ch
 import defaultImage from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
 import { ElevatorSharp } from '@mui/icons-material';
+import ImageModal from './ImageModal'; // ImageModal 컴포넌트 가져오기
 
 function BigChat() {
   const { id } = useParams(); // URL 파라미터로 받은 채팅방 ID
@@ -22,6 +23,18 @@ function BigChat() {
   const profileImageRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImageUrl, setModalImageUrl] = useState(null);
+
+  const openModal = (imageUrl) => {
+    setModalImageUrl(imageUrl);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalImageUrl(null);
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
@@ -187,6 +200,7 @@ function BigChat() {
       const reader = new FileReader();
       reader.onloadend = () => {
         setSelectedFile(reader.result);
+        sendMessage("",reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -259,33 +273,47 @@ function BigChat() {
           <div className={styles.chatMessages}>
             {(chatMessages[selectedUser?.chattingRoom.id] || []).map((msg, index) => (
               <div className={styles.messageNTime} key={index}>
-                <div
-                  className={`${styles.message} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}
-                >
+              <div
+                className={`${styles.message} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}
+              >
+       
+                <div className={styles.profileAndName}>
                   <img
                     src={
-                      msg.sender.toString() === localStorage.getItem('membersId') ?
-                        template.memberInfo.profile ? template.memberInfo.profile : defaultImage : //보내는 사람
-                        selectedUser.member.profile ? selectedUser.member.profile : defaultImage} //받는 사람
+                      msg.sender.toString() === localStorage.getItem('membersId') 
+                        ? (template.memberInfo.profile ? template.memberInfo.profile : defaultImage)  
+                        : (selectedUser.member.profile ? selectedUser.member.profile : defaultImage) 
+                    }
                     alt="profile"
                     className={styles.profileImage}
                   />
+                  <div className={styles.chatMember}>
+                    {msg.sender.toString() === localStorage.getItem('membersId') ? '' : selectedUser.member.name}
+                  </div>
+                </div>
+            
+                <div className={`${styles.messageContent} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}>
+                  <div>
                   <div className={styles.messageBubble}>
-                    {!msg.text.startsWith('data:image') && <span>{msg.text}</span>}
+                    {!msg.text.startsWith('data:image') && <div className={styles.messageText}>{msg.text}</div>}
                     {msg.text.startsWith('data:image') && (
-                      <img
-                        src={msg.text}
-                        alt="uploaded"
-                        className={styles.uploadedImage}
-                      />
+                      <div className={styles.messageImage} onClick={() => openModal(msg.text)}>
+                        <img
+                          src={msg.text}
+                          alt="uploaded"
+                          className={styles.uploadedImage}
+                        />
+                      </div>
                     )}
                   </div>
+                  </div>
+               
                   <span className={`${styles.messageTime} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}>
                     {(new Date(msg.timestamp).toLocaleDateString() === new Date().toLocaleDateString() ? '' : new Date(msg.timestamp).toLocaleDateString())}
                     {new Date(msg.timestamp).toLocaleTimeString()}
                   </span>
                 </div>
-
+                </div>
               </div>
             ))}
             <div ref={messagesEndRef} />
@@ -320,6 +348,7 @@ function BigChat() {
           </div>
         </div>
       </div>
+      <ImageModal isOpen={isModalOpen} onClose={closeModal} imageUrl={modalImageUrl} />
     </div>
   );
 }
