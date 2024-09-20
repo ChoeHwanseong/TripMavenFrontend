@@ -33,10 +33,10 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
 
     // 마지막 메시지의 날짜가 오늘이면 시간만 반환
     if (lastMessageDate.toDateString() === now.toDateString()) {
-      return lastMessageDate.toLocaleTimeString(); // 시간만 반환
+      return lastMessageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // 시간만 반환
     } else {
       // 어제 또는 그 이전이면 날짜와 시간 모두 반환
-      return lastMessageDate.toLocaleDateString() + ' ' + lastMessageDate.toLocaleTimeString(); // 날짜와 시간 모두 반환
+      return lastMessageDate.toLocaleDateString() + ' ' + lastMessageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // 날짜와 시간 모두 반환
     }
   };
 
