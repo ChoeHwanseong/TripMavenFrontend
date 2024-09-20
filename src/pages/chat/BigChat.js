@@ -23,7 +23,7 @@ function BigChat() {
   const [selectedFile, setSelectedFile] = useState(null); 
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
 
   // 채팅방 목록 데이터 가져와서 상태에 저장하는 함수

@@ -3,8 +3,7 @@ import { Box, Button, Container, Grid, MenuItem, Select, Typography, IconButton 
 import Stack from '@mui/material/Stack';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PronunContext } from '../../context/PronunContext';
-import axios from 'axios';
-import { evaluatePronunciation } from '../../utils/PythonServerAPI';
+import { evaluatePronunciation, evaluateVoiceAndText } from '../../utils/PythonServerAPI';
 
 const PronunciationTest = () => {
     const navigate = useNavigate();
@@ -138,21 +137,35 @@ const PronunciationTest = () => {
             return;
         }
 
-        const base64Encoded = await blobToBase64(audioBlob).then((base64String) => { //base64 인코딩하기
+        //블롭을 base64로 인코딩하기
+        const base64Encoded = await blobToBase64(audioBlob).then((base64String) => { 
             return base64String;
-        }).catch((error) => {
-            console.error('Blob to Base64 인코딩 중 오류 발생:', error);
-        });
-        console.log('베이스64인코딩된 음성파일:',base64Encoded);
+        }).catch((error) => console.error('Blob to Base64 인코딩 중 오류 발생:', error));
+        //console.log('베이스64인코딩된 음성파일:',base64Encoded);
 
-        const file = convertBlobToFile(audioBlob, 'audio.wav');
+
+        //블롭을 wav 파일로 변환하기
+        const file = convertBlobToFile(audioBlob, 'audio2.wav');
         console.log('녹음 파일:',file);
 
+
+        //발음평가에 쓰일 원래 문장
         const text = newsHeadLine[sequenceNumber - 1].replace(/[^가-힣a-zA-Z]/g, '')
-        console.log('원래 문장: ',text);
-        const formData = new FormData();
-        formData.append('voice', file); // 오디오 데이터를 FormData에 추가
-        formData.append('text', text);
+        //console.log('원래 문장: ',text);
+
+
+        //발음평가에 보낼 폼데이터
+        const formDataForPron = new FormData();
+        formDataForPron.append('voice', file); // 오디오 데이터를 FormData에 추가
+        formDataForPron.append('text', text);
+
+
+        //nlp + 목소리톤 분석에 보낼 폼데이터
+        const formDataForNLP = new FormData();
+        formDataForNLP.append('voice', file); // 오디오 데이터를 FormData에 추가
+        formDataForNLP.append('text', text);
+        formDataForNLP.append('gender', '0');
+        formDataForNLP.append('isVoiceTest', '1');
 
         /*
         console.log(audioBlob);
@@ -169,9 +182,13 @@ const PronunciationTest = () => {
         window.URL.revokeObjectURL(url); // 메모리 해제
         */
 
-        // 서버로 Axios를 사용하여 전송
-        const response = await evaluatePronunciation(formData);
-        console.log(response);
+        //발음평가 api
+        // const responsePron = await evaluatePronunciation(formDataForPron);
+        // console.log(responsePron);
+
+        //nlp api
+        const responseNLP = await evaluateVoiceAndText(formDataForNLP);
+        console.log(responseNLP);
     };
 
     const startSpeechRecognition = () => {

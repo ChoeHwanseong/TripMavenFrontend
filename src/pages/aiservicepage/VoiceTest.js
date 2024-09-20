@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Box, Button, Container, Grid, MenuItem, Select, Typography, IconButton } from '@mui/material';
 import Stack from '@mui/material/Stack';
-import { useNavigate, useParams } from 'react-router-dom';
 import { PronunContext } from '../../context/PronunContext';
-import axios from 'axios';
 import { evaluatePronunciation, videoFace } from '../../utils/PythonServerAPI';
 import Webcam from 'react-webcam';
 
@@ -19,7 +17,6 @@ const PronunciationTest = () => {
   const recognitionRef = useRef(null); // SpeechRecognition 인스턴스 참조
   const lastFinalTranscriptRef = useRef(''); // 마지막으로 인식된 최종 자막을 저장
   const accumulatedTranscriptRef = useRef(''); // 모든 최종 자막을 저장하는 참조
-  const { newsHeadLine } = useContext(PronunContext);
   const mediaRecorderRef = useRef(null);
   const webcamRef = useRef(null);
   const videoChunks = useRef([]);
@@ -132,6 +129,7 @@ const PronunciationTest = () => {
     formData.append('file', file); // 비디오 데이터를 FormData에 추가
 
 
+    /*
     const url = window.URL.createObjectURL(file);
     // a 태그를 생성하여 다운로드 실행
     const a = document.createElement('a');
@@ -143,6 +141,7 @@ const PronunciationTest = () => {
     // 다운로드 후 태그와 URL 해제
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url); // 메모리 해제
+    */
 
     // 서버로 Axios를 사용하여 전송
     const response = await videoFace(formData);

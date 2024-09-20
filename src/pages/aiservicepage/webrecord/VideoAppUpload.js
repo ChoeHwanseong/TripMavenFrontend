@@ -25,7 +25,7 @@ const VideoAppUpload = () => {
 
         try {
             console.log('file: ', file);
-            const response = await axios.post('http://localhost:8282/face/', formData, {
+            const response = await axios.post('/python/face/', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
