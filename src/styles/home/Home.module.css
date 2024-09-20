@@ -261,10 +261,10 @@
   transition: all 0.3s ease-in-out;
 }
 
-.serviceTitle {
-  color: rgb(0, 0, 0);
-  font-weight: bolder;
-  margin-bottom: 8px;
+.serviceCard .serviceTitle {
+  color: rgb(0, 0, 0) !important;
+  font-weight: bold !important;
+  margin-bottom: 8px !important;
   transition: opacity 0.3s ease-in-out;
 }
 
@@ -280,7 +280,7 @@
 
 .serviceCard:hover .serviceTitle {
   opacity: 1;
-  color: white;
+  color: white !important;
 }
 
 .serviceCard:hover .serviceDescription {
