@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import mqtt from 'mqtt';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from '../../styles/chat/BigChat.module.css';
 import ChattingRoom from './ChattingRoom';
 import { chattingListYourData, getMessages, submitMessage } from '../../utils/chatData';
@@ -19,12 +19,15 @@ function BigChat() {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const template = useContext(TemplateContext);
-  const profileImageRef = useRef(null); 
-  const [selectedFile, setSelectedFile] = useState(null); 
+  const profileImageRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const navigate = useNavigate();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
+
+
 
   // 채팅방 목록 데이터 가져와서 상태에 저장하는 함수
   const getData = async () => {
@@ -65,7 +68,7 @@ function BigChat() {
       await fetchChatRoomsMessages(list_);
 
       // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
-      const mqttClient = mqtt.connect('ws://121.133.84.38:1884',{
+      const mqttClient = mqtt.connect('ws://121.133.84.38:1884', {
         reconnectPeriod: 1000,
       }); // MQTT 브로커에 연결
 
@@ -78,29 +81,29 @@ function BigChat() {
         console.error('Connection error:', err);
       });
 
-        // 메시지 수신 설정
-        mqttClient.on('message', (topic, message) => {
-          const parsedMessage = JSON.parse(message.toString());
-          const { text, sender, timestamp, file } = parsedMessage; // file 추가
+      // 메시지 수신 설정
+      mqttClient.on('message', (topic, message) => {
+        const parsedMessage = JSON.parse(message.toString());
+        const { text, sender, timestamp, file } = parsedMessage; // file 추가
 
-          try {
-            setChatMessages((prevMessages) => ({
-              ...prevMessages,
-              [topic]: [
-                ...(prevMessages[topic] || []),
-                {
-                  sender: sender,
-                  text,
-                  timestamp: new Date(timestamp).toISOString(),
-                  file, 
-                  chattingRoomId: topic
-                },
-              ]
-            }));
-          } catch (error) {
-            console.error('Error parsing message:', error);
-          }
-        });
+        try {
+          setChatMessages((prevMessages) => ({
+            ...prevMessages,
+            [topic]: [
+              ...(prevMessages[topic] || []),
+              {
+                sender: sender,
+                text,
+                timestamp: new Date(timestamp).toISOString(),
+                file,
+                chattingRoomId: topic
+              },
+            ]
+          }));
+        } catch (error) {
+          console.error('Error parsing message:', error);
+        }
+      });
 
       if (id) {
         for (let joinChat of list_) {
@@ -119,25 +122,25 @@ function BigChat() {
       }
 
       // 클라이언트를 상태로 설정
-      setClient(mqttClient);      
+      setClient(mqttClient);
     };
 
     setMQTT();
-    
-      // console.log('클라이언트 있따');
-      // const joinChat = list_.find(ele => location.pathname.includes(`${ele.chattingRoom.id}`));
-      // //console.log(id);
-      // if(client){
-      //   client.subscribe(id, (err) => {
-      //     if (!err) {
-      //       console.log(id, 'Subscribed to topic');
-      //     } else {
-      //       console.error('Subscription error:', err);
-      //     }
-      //   });
-      //   setSelectedUser(joinChat);
-      //   fetchChatMessages(joinChat.chattingRoom.id);
-    
+
+    // console.log('클라이언트 있따');
+    // const joinChat = list_.find(ele => location.pathname.includes(`${ele.chattingRoom.id}`));
+    // //console.log(id);
+    // if(client){
+    //   client.subscribe(id, (err) => {
+    //     if (!err) {
+    //       console.log(id, 'Subscribed to topic');
+    //     } else {
+    //       console.error('Subscription error:', err);
+    //     }
+    //   });
+    //   setSelectedUser(joinChat);
+    //   fetchChatMessages(joinChat.chattingRoom.id);
+
 
     // 컴포넌트 언마운트 시 클라이언트 종료
     return () => {
@@ -153,13 +156,17 @@ function BigChat() {
 
   // 메시지 보내기 설정
   const sendMessage = async (text, fileBase64) => {
+    if (!selectedUser || !selectedUser.chattingRoom) {
+      alert("채팅방을 선택하세요.");
+      return;
+    }
     if (client && isConnected) {
 
-      const base64 = fileBase64 ? fileBase64.replace('\"','') : '';
+      const base64 = fileBase64 ? fileBase64.replace('\"', '') : '';
       console.log(base64);
-      const text1 = base64?base64:text;
+      const text1 = base64 ? base64 : text;
       const message = {
-        text:text1,
+        text: text1,
         sender: localStorage.getItem('membersId'),
         timestamp: new Date(),
       };
@@ -180,21 +187,22 @@ function BigChat() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedFile(reader.result); 
+        setSelectedFile(reader.result);
       };
       reader.readAsDataURL(file);
     }
+
   };
 
   const handleSendClick = () => {
     const input = document.querySelector("#chatInput");
     const text = input.value.trim();
-    
-    if (text || selectedFile) { 
+
+    if (text || selectedFile) {
       sendMessage(text, selectedFile);
       input.value = '';
       inputRef.current.focus();
-      setSelectedFile(null); 
+      setSelectedFile(null);
     }
   };
 
@@ -234,12 +242,21 @@ function BigChat() {
 
   return (
     <div className={styles.pageBorder}>
-    <div className={styles.container}>
-      <ChattingRoom setSelectedUser={setSelectedUser} loading={loading} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages} chatMessages={chatMessages} id={id} />
+      <div className={styles.container}>
+
+        <ChattingRoom setSelectedUser={setSelectedUser} loading={loading} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages} chatMessages={chatMessages} id={id} />
 
         <div className={styles.chatSection}>
           <div className={styles.chatHeader}>
             <h2 className={styles.chatName2}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
+            {selectedUser && selectedUser.chattingRoom.productBoard.member.id !== template.memberInfo.id && (
+              <div>
+                <button className={styles.reviewButton} onClick={() => navigate(`/reviewdetails/${selectedUser.chattingRoom.productBoard.id}`)}>
+                  리뷰 작성 </button>
+                <button className={styles.reviewButton} onClick={() => navigate(`/postDetails/${selectedUser.chattingRoom.productBoard.id}`)}>
+                  게시글 보러가기 </button>
+              </div>
+            )}
           </div>
 
           <div className={styles.chatMessages}>
@@ -257,21 +274,21 @@ function BigChat() {
                     className={styles.profileImage}
                   />
                   <div className={styles.messageBubble}>
-                  {!msg.text.startsWith('data:image') && <span>{msg.text}</span>}
-                  {msg.text.startsWith('data:image') && (
-                    <img 
-                      src={msg.text} 
-                      alt="uploaded" 
-                      className={styles.uploadedImage}                
-                    />
-                  )}
+                    {!msg.text.startsWith('data:image') && <span>{msg.text}</span>}
+                    {msg.text.startsWith('data:image') && (
+                      <img
+                        src={msg.text}
+                        alt="uploaded"
+                        className={styles.uploadedImage}
+                      />
+                    )}
                   </div>
                   <span className={`${styles.messageTime} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}>
-                  {(new Date(msg.timestamp).toLocaleDateString() === new Date().toLocaleDateString() ? '' : new Date(msg.timestamp).toLocaleDateString())}
-                  {new Date(msg.timestamp).toLocaleTimeString()}
-                </span>
+                    {(new Date(msg.timestamp).toLocaleDateString() === new Date().toLocaleDateString() ? '' : new Date(msg.timestamp).toLocaleDateString())}
+                    {new Date(msg.timestamp).toLocaleTimeString()}
+                  </span>
                 </div>
-                
+
               </div>
             ))}
             <div ref={messagesEndRef} />
@@ -284,17 +301,17 @@ function BigChat() {
               id="chatInput"
               placeholder="입력해주세요"
               onKeyDown={handleKeyDown}
-              ref={inputRef} 
+              ref={inputRef}
             />
 
-            <input 
-              className={styles.attachmentButton} 
-              type="file" 
-              ref={profileImageRef} 
-              onChange={handleFileChange} 
+            <input
+              className={styles.attachmentButton}
+              type="file"
+              ref={profileImageRef}
+              onChange={handleFileChange}
               multiple accept=".jpg,.jpeg,.png,.gif,.bmp"
-              id="fileUpload" 
-              style={{ display: 'none' }} 
+              id="fileUpload"
+              style={{ display: 'none' }}
             />
 
             <label htmlFor="fileUpload" className={styles.attachmentButton}>

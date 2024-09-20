@@ -16,6 +16,8 @@ export default function Template() {
     //로그인한 사용자 정보
     const [memberInfo, setMemberInfo] = useState({});
 
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(()=>{
         const getMember = async ()=>{
             if(localStorage.getItem('token')){
@@ -23,10 +25,17 @@ export default function Template() {
                 setMemberInfo(memberData);
                 setRole(memberData.role);
             }
+            setIsLoading(false);
         };
         getMember();
-    },[]);
+        
+    },[isLoading]);
 
+    if (isLoading) {
+        // 로딩 중일 때 보여줄 UI를 여기에 작성
+        return <div>Loading...</div>;
+    }
+    
     return <>
         <TemplateContext.Provider value={{ role, setRole, memberInfo, setMemberInfo}}>
             <div className={styles.body}>

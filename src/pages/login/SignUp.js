@@ -79,10 +79,10 @@ const Signup = () => {
     const [townAddress, setTownAddress] = useState('');
     const [areaAddress, setAreaAddress] = useState('');
     const [townAddressError, setTownAddressError] = useState('');
-    
-    const [emailCodeSent, setEmailCodeSent] = useState(false); 
-    const [verificationCode, setVerificationCode] = useState(''); 
-    const [codeValid, setCodeValid] = useState(null); 
+
+    const [emailCodeSent, setEmailCodeSent] = useState(false);
+    const [verificationCode, setVerificationCode] = useState('');
+    const [codeValid, setCodeValid] = useState(null);
     const [resendCooldown, setResendCooldown] = useState(false);  // 타이머 상태
     const [timer, setTimer] = useState(60);  // 타이머 값
 
@@ -107,30 +107,39 @@ const Signup = () => {
             return;
         }
 
-        // '코드 재전송'으로 즉시 변경
-        setEmailCodeSent(true);
-        setResendCooldown(true);  // 타이머 시작
-        setTimer(60);  // 타이머를 60초로 초기화
+        setResendCooldown(true);  // 타이머 즉시 시작
+        setTimer(60);  // 타이머를 60초로 설정
+        console.log("타이머 시작.");
 
         try {
+            console.log("이메일 전송 시도");
             await sendEmailCode(email.value);  // 이메일 전송 API 호출
+            setEmailCodeSent(true);  // 이메일 전송 성공 상태 설정
+            console.log("이메일 전송 성공");
         } catch (error) {
-            console.error('이메일 전송 중 오류가 발생했습니다.', error);
+            console.error('이메일 전송 중 오류가 발생했습니다:', error);
+            alert('이메일 전송 중 오류가 발생했습니다. 다시 시도해주세요.');
+
+            // 이메일 전송 실패 시 타이머 중지 및 초기화
+            setResendCooldown(false);
+            setTimer(0);  // 타이머를 0으로 설정
+            console.log("타이머 종료.");
         }
     };
 
-    // 1분 타이머
+    // 타이머 상태 추적
     useEffect(() => {
         let countdown;
-        if (resendCooldown) {
+
+        if (resendCooldown && timer > 0) {
             countdown = setInterval(() => {
                 setTimer((prev) => prev - 1);
             }, 1000);
         }
 
         if (timer === 0) {
-            setResendCooldown(false); // 타이머 종료 후 버튼 활성화
             clearInterval(countdown);
+            setResendCooldown(false);  // 타이머 종료 후 버튼 활성화
         }
 
         return () => clearInterval(countdown);  // 컴포넌트 언마운트 시 타이머 정리
@@ -145,7 +154,7 @@ const Signup = () => {
 
     // 인증 코드 확인 함수
     const handleVerifyCode = async () => {
-        const isValid = await verifyEmailCode(email.value, verificationCode);  // memberData.js에 있는 verifyEmailCode 호출
+        const isValid = await verifyEmailCode(email.value, verificationCode);
         setCodeValid(isValid);
     };
 
@@ -174,11 +183,12 @@ const Signup = () => {
                 isValid = false;
             }
             if (!verificationCode) {
-                setCodeValid(false); 
+                // 인증번호가 입력되지 않았을 경우에만 표시
+                setCodeValid(null);
                 isValid = false;
             }
-            if (codeValid !== true) {
-                isValid = false; 
+            if (codeValid === false) {
+                isValid = false;
             }
         }
 
@@ -229,7 +239,31 @@ const Signup = () => {
             const newMember = await findMemberbyEmail(getEmail);
             if (newMember) {
                 alert('회원가입을 진행해주세요.');
+                setActiveStep(1);
                 document.querySelector('#email').setAttribute('readonly', true);
+            }
+            switch (newMember.loginType) {
+                case 'google': //구글에서 회원가입했다면
+                    email.setValue(newMember.email);
+                    name.setValue(newMember.name);
+                    password.setValue(newMember.password);
+                    passwordConfirm.setValue(newMember.password);
+                    setActiveStep(1);
+                    break;
+                case 'naver': //네이버에서 햇다면
+                    email.setValue(newMember.email);
+                    name.setValue(newMember.name);
+                    password.setValue(newMember.password);
+                    passwordConfirm.setValue(newMember.password);
+                    gender.setValue(newMember.gender);
+                    birthday.setValue(newMember.birthday);
+                    break;
+                default: //캌캌오
+                    email.setValue(newMember.email);
+                    name.setValue(newMember.name);
+                    password.setValue(newMember.password);
+                    passwordConfirm.setValue(newMember.password);
+                    gender.setValue(newMember.gender);
             }
         };
         if (getEmail) getData();
@@ -242,7 +276,7 @@ const Signup = () => {
                     <>
                         <div className={styles.inputGroup}>
                             <label htmlFor="email">이메일</label>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                                 <input
                                     type="email"
                                     id="email"
@@ -252,16 +286,23 @@ const Signup = () => {
                                     placeholder="이메일을 입력하세요"
                                     className={styles.input}
                                 />
-                                <button type="button" className={styles.codeButton} onClick={handleSendCode} disabled={resendCooldown}>
+                                <button
+                                    type="button"
+                                    className={styles.codeButton}
+                                    onClick={handleSendCode}
+                                    disabled={resendCooldown}
+                                >
                                     {emailCodeSent ? '코드 재전송' : '코드 전송'}
                                 </button>
                             </div>
 
-                            {/* 타이머를 버튼 아래에 시간만 표시 */}
+                            {/* 타이머를 버튼 아래 오른쪽 정렬로 표시 */}
                             {resendCooldown && (
-                                <p style={{ fontSize: '0.7em', color: 'gray', marginTop: '5px' }}>
-                                    {formatTimer(timer)}
-                                </p>
+                                <div className={styles.timerContainer}>
+                                    <p className={styles.timerText}>
+                                        {formatTimer(timer)}
+                                    </p>
+                                </div>
                             )}
 
                             {email.error && <p className={styles.error}>{email.error}</p>}
@@ -275,9 +316,14 @@ const Signup = () => {
                                 placeholder="인증번호를 입력하세요"
                                 value={verificationCode}
                                 onChange={(e) => setVerificationCode(e.target.value)}
-                                onBlur={handleVerifyCode}
+                                onBlur={() => {
+                                    if (verificationCode) {
+                                        handleVerifyCode();
+                                    }
+                                }}
                                 className={styles.verificationInput}
                             />
+
                             {codeValid === false && <p className={styles.error}>인증번호가 일치하지 않습니다.</p>}
                             {codeValid === true && <p className={styles.success}>인증번호가 일치합니다.</p>}
                         </div>
@@ -433,7 +479,7 @@ const Signup = () => {
                     </Step>
                 ))}
             </Stepper>
-            <form className={styles.signupForm} onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
+            <form className={styles.signupForm} style={{ marginTop: '20px' }}>
                 {renderStepContent(activeStep)}
                 <div className={styles.buttonGroup}>
                     <button
@@ -459,4 +505,4 @@ const Signup = () => {
     );
 };
 
-export default Signup;
+export default Signup

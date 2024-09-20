@@ -33,6 +33,10 @@ const CombinedPage = () => {
   const handleOpenQuizModal = () => setQuizModalOpen(true);
   const handleCloseQuizModal = () => setQuizModalOpen(false);
 
+  const handleQuizCardClick = () => {
+    handleOpenQuizModal();
+  };
+
   return (
     <div>
       {/* AIServiceInfo 섹션 */}
@@ -76,7 +80,7 @@ const CombinedPage = () => {
             <img src="../../../images/STT.png" alt='STT 음성 인식 기술' className={aiInfoStyles.sttImage}/>
           </div>
           <div className={aiInfoStyles.nlpContainer}>
-            <img src="../../../images/NLP.png" alt='STT 음성 인식 기술' className={aiInfoStyles.nlpImage}/>
+            <img src="../../../images/NLP.png" alt='NLP' className={aiInfoStyles.nlpImage}/>
           </div>
         </div> */}
 
@@ -88,7 +92,7 @@ const CombinedPage = () => {
 
       {/* AIService 섹션 */}
       <div className={aiServiceStyles.container}>
-        <div className={aiServiceStyles.quizcardContainer}>
+        <div className={aiServiceStyles.quizcardContainer} onClick={handleQuizCardClick}>
           <div className={aiServiceStyles.quizcard}>
             <div className={aiServiceStyles.quizContainer}>
               <img src={"../../images/quizImg.png"} alt="Quiz" className={aiServiceStyles.quizImage} />
@@ -102,7 +106,7 @@ const CombinedPage = () => {
               </div>
             </div>
             <div className={aiServiceStyles.arrowContainer}>
-              <button className={aiServiceStyles.arrowButton} onClick={handleOpenQuizModal}>→</button>
+              <button className={aiServiceStyles.arrowButton} onClick={handleOpenQuizModal}><span>→</span></button>
             </div>
           </div>
         </div>
