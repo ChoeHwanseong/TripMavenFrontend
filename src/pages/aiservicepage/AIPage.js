@@ -48,25 +48,9 @@ const CombinedPage = () => {
 
       <div className={aiInfoStyles.container}>
         <div className={aiInfoStyles.title}>
-          <img src="../../../images/TripMavenLogo.png" alt="TripMaven Logo" className={aiInfoStyles.logoImage} /> 의 AI는 당신의 여행 가이드 실력을<br /> 한 단계 업그레이드합니다!
+          <img src="../../../images/TripMavenLogo.png" alt="TripMaven Logo" className={aiInfoStyles.logoImage} /> 
+          의 AI는 당신의 여행 가이드 실력을<br /> 한 단계 업그레이드합니다!
         </div>
-        {/*  원래꺼
-        <div className={aiInfoStyles.features}>
-          <div className={aiInfoStyles.feature}>
-            <img src="../../../images/STTimg.png" alt="음성인식 기술" className={aiInfoStyles.featureImage} />
-            <p className={aiInfoStyles.featureTitle}>음성인식 기술 (STT)</p>
-          </div>
-          <div className={aiInfoStyles.feature}>
-            <img src="../../../images/NLPimg.png" alt="자연어 처리기술" className={aiInfoStyles.featureImage} />
-            <p className={aiInfoStyles.featureTitle}>자연어 처리기술(NLP)</p>
-          </div>
-          <div className={aiInfoStyles.feature}>
-            <img src="../../../images/MultiModalimg.png" alt="멀티모달 기술" className={aiInfoStyles.featureImage} />
-            <p className={aiInfoStyles.featureTitle}>멀티모달 기술</p>
-          </div>
-        </div>
-         */}
-
         <div className={aiInfoStyles.infoContainer}>
           <div className={aiInfoStyles.sttContainer}>
             <img
