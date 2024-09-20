@@ -15,7 +15,7 @@
   display: flex;
   justify-content: space-between;
   height: 70vh;
-  background-color: #fff;
+  background-color: #ffffff;
 }
 
 .sidebar {
@@ -63,7 +63,7 @@
   border: 3px solid #ddd;
   border-radius: 4px;
   outline-color: #b8b8b8;
-  margin-right: 3px;
+  margin-right: 2px;
 }
 
 .newChatButton {
@@ -90,7 +90,8 @@
 .chatList {
   display: flex;
   border: 3px solid #e6e6e6;
-  height: 87%;
+  width: 388px;
+  height: 550px; 
   background-color: #d6d6d62c;
   border-radius: 10px;
   flex-direction: column;
