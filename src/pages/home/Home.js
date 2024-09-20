@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Box, Button, Grid, Typography, Card, CardMedia, CardContent, useMediaQuery  } from '@mui/material';
+import { Box, Button, Grid, Typography, Card, CardMedia, CardContent, useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import RegionEventInfo from './RegionEvent';
@@ -7,6 +7,7 @@ import GuideRankings from './GuideRanking';
 import DetailedWeatherMap from './DetailedWeatherMap';
 import styles from '../../styles/home/Home.module.css';
 import { useFormik } from 'formik';
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -47,6 +48,10 @@ const Home = () => {
   const handleEventRegionChange = (region) => {
     setEventSelectedRegion(region);
     setWeatherSelectedRegion(region);
+  };
+  
+  const handleServiceCardClick = (path) => {
+    navigate(path);
   };
 
   return (
@@ -93,13 +98,13 @@ const Home = () => {
                         '&:hover': { transform: 'scale(1.05)' },
                         display: 'flex',
                         flexDirection: 'column',
-                        height: { xs: '180px', sm: '200px', md: '220px' }, // 반응형 높이 설정
+                        height: { xs: '180px', sm: '200px', md: '220px' },
                       }}
                     >
                       <CardMedia
                         component="img"
                         sx={{
-                          height: '70%', // 카드 높이의 70%를 이미지가 차지
+                          height: '70%',
                           objectFit: 'cover',
                         }}
                         image={city.image}
@@ -110,7 +115,7 @@ const Home = () => {
                         display: 'flex', 
                         alignItems: 'center', 
                         justifyContent: 'center',
-                        padding: '8px', // 패딩 줄임
+                        padding: '8px',
                       }}>
                         <Typography variant="subtitle2" align="center" fontWeight="bold">{city.name}</Typography>
                       </CardContent>
@@ -189,7 +194,7 @@ const Home = () => {
                 display: { xs: 'none', sm: 'block' }, // 작은 화면에서 숨김
               }}>
                 우리의 AI는 당신의 가이드 능력에 맞는 최적의 서비스를 제공합니다.
-                재밌는 퀴즈, 실전 테스트까지 - AI와 함께 특별한 경험을 체험하세요.
+                재밌는 퀴즈, 실전 테스트! <br/> AI와 함께 특별한 경험을 체험하세요.
               </Typography>
               <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-end', sm: 'flex-start' } }}>
                 <Button
@@ -213,16 +218,90 @@ const Home = () => {
             </Grid>
           </Grid>
         </Box>
+		
+        {/* 새로운 서비스 소개 섹션 */}
+        <Box sx={{ my: 6 }}>
+          <Grid container spacing={3}>
+            {/* 채팅방 시스템 */}
+            <Grid item xs={12} md={4}>
+              <Card 
+                className={styles.serviceCard} 
+                style={{
+                  backgroundImage: `url(${process.env.PUBLIC_URL}/images/chatting.png)`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  cursor: 'pointer'
+                }}
+                onClick={() => handleServiceCardClick('/bigchat/:id')}
+              >
+                <CardContent className={styles.serviceCardContent}>
+                  <Typography variant="h6" className={styles.serviceTitle}>
+                    실시간 채팅방
+                  </Typography>
+                  <Typography variant="body2" className={styles.serviceDescription}>
+                    가이드와 실시간으로 소통하며 여행 계획을 세우세요. 언제 어디서나 빠른 응답을 받을 수 있습니다.
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            {/* 이용 후기 */}
+            <Grid item xs={12} md={4}>
+              <Card 
+                className={styles.serviceCard} 
+                style={{
+                  backgroundImage: `url(${process.env.PUBLIC_URL}/images/testimony.png)`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  cursor: 'pointer'
+                }}
+                onClick={() => handleServiceCardClick('/userreview')}
+              >
+                <CardContent className={styles.serviceCardContent}>
+                  <Typography variant="h6" className={styles.serviceTitle}>
+                    이용 후기
+                  </Typography>
+                  <Typography variant="body2" className={styles.serviceDescription}>
+                    다른 고객님들의 생생한 경험을 확인하세요. 실제 이용 후기를 통해 최고의 여행을 계획하세요.
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            {/* 1대1 문의 */}
+            <Grid item xs={12} md={4}>
+              <Card 
+                className={styles.serviceCard} 
+                style={{
+                  backgroundImage: `url(${process.env.PUBLIC_URL}/images/inquiry.png)`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  cursor: 'pointer'
+                }}
+                onClick={() => handleServiceCardClick('/askall')}
+              >
+                <CardContent className={styles.serviceCardContent}>
+                  <Typography variant="h6" className={styles.serviceTitle}>
+                    1대1 문의
+                  </Typography>
+                  <Typography variant="body2" className={styles.serviceDescription}>
+                    개인적인 문의사항이 있으신가요? 우리의 전문 상담원이 친절하게 답변해 드립니다.
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Box>
 
         {/* 정보 섹션 */}
         <Grid container spacing={5}>
           <Grid item xs={12} md={6}>
             <Box sx={{
-              p: 3, borderRadius: 3,
+              p: 2, borderRadius: 3,
               background: '#f9f9f9',
               boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
               border: '1px solid #f1f1f1',
-              height: '100%'
+              height: { xs: '300px', md: '670px' }, // 반응형 높이 설정
             }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="h6" fontWeight="bold">지역 행사</Typography>
@@ -257,7 +336,7 @@ const Home = () => {
               background: '#f9f9f9',
               boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
               border: '1px solid #f1f1f1',
-              height: '100%'
+              height: { xs: '300px', md: '670px' }, // 반응형 높이 설정
             }}>
               <Typography variant="h6" fontWeight="bold" gutterBottom>가이드 순위</Typography>
               <GuideRankings /> 
