@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from '../../styles/chat/BigChat.module.css';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { TemplateContext } from '../../context/TemplateContext';
 
 function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages, chatMessages, id}) {
+  const {notifications, setNotifications, notificationCount} = useContext(TemplateContext);
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
@@ -105,7 +107,13 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
                 className={styles.profileImage}
               />
               <div className={styles.chatInfo}>
-                <span className={styles.chatName}>{joinChatting.member.name}</span>
+                <span>
+                  <span className={styles.chatName}>{joinChatting.member.name}</span>
+                  {notificationCount > 0 && notifications &&
+                  (
+                    <span className="badge rounded-pill bg-danger" style={{ fontSize: '11px' }}>{notifications.find(notification => notification.type=='chat' && joinChatting.member.id==notification.senderId) && notifications.find(notification => notification.type=='chat' && joinChatting.member.id==notification.senderId).content.length}</span>
+                  )}
+                </span>
                 <span className={styles.chatTime}>
                   <span>
                     {lastMessageTime ? lastMessageTime : '...'}

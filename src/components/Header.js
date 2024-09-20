@@ -72,7 +72,7 @@ const convertNotificationType = {
 //알림 컴포넌트
 //헤더 컴포넌트에서 받아올 알림 상태
 const NotificationComponent = () => {
-    const {notifications, setNotifications} = useContext(TemplateContext);
+    const {notifications, setNotifications, notificationCount} = useContext(TemplateContext);
     const navigate = useNavigate();
     //알림 펼치기 여부 상태
     const [showNotifications, setShowNotifications] = useState(false);
@@ -94,18 +94,6 @@ const NotificationComponent = () => {
         setShowNotifications(false);
         navigate(noti.link);
     };
-
-    const getNotiCount = () => {
-        let count = 0;
-        notifications.forEach(noti => {
-            if (noti.type == "chat") count = count + noti.content.length;
-            else count = count + 1;
-        });
-        return count;
-    };
-
-    //알림 개수
-    const notificationCount = getNotiCount();
 
     //알림 모션
     const ringAnimation = notificationCount > 0 ? `

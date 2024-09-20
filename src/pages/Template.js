@@ -158,13 +158,25 @@ export default function Template() {
         urlCheck();
     },[waitingNotification])
 
+    const getNotiCount = () => {
+        let count = 0;
+        notifications.forEach(noti => {
+            if (noti.type == "chat") count = count + noti.content.length;
+            else count = count + 1;
+        });
+        return count;
+    };
+
+    //알림 개수
+    const notificationCount = getNotiCount();
+
     if (isLoading) {
         // 로딩 중일 때 보여줄 UI를 여기에 작성
         return <Loading />;
     }
     
     return <>
-        <TemplateContext.Provider value={{ role, setRole, memberInfo, setMemberInfo, notifications, setNotifications}}>
+        <TemplateContext.Provider value={{ role, setRole, memberInfo, setMemberInfo, notifications, setNotifications, notificationCount}}>
             <div className={styles.body}>
                 <Header />  
                 <div className={styles.layout}>
