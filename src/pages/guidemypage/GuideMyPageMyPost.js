@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper, Pagination } from '@mui/material';
 import { postGetByEmail } from '../../utils/postData';
 import { fetchedData } from '../../utils/memberData';
+import Loading from '../../components/LoadingPage';
 
 const GuideMyPageMyPost = () => {
   const [posts, setPosts] = useState(null);
@@ -38,7 +39,7 @@ const GuideMyPageMyPost = () => {
   };
 
   if (!posts) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
 
   // Pagination
