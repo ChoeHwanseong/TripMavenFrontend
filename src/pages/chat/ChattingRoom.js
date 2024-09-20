@@ -3,10 +3,10 @@ import styles from '../../styles/chat/BigChat.module.css';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages, chatMessages, id }) {
+function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages, chatMessages, id}) {
   const [hoveredRow, setHoveredRow] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태 관리
   const navigate = useNavigate();
+  const [search, setSearch] = useState('');
 
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
@@ -41,6 +41,10 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
     }
   };
 
+  const filteredData = data.filter((joinChatting) => 
+    joinChatting.member.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   const handleClick = (joinChatting) => {
     /*
     if (client && joinChatting.chattingRoom) {
@@ -56,24 +60,21 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
       fetchChatMessages(joinChatting.chattingRoom.id);
       setSelectedUser(joinChatting);
     }
-    */
+  */
+    
     navigate(`/bigchat/${joinChatting.chattingRoom.id}`);
   };
 
-  // 검색어와 일치하는 유저 필터링
-  const SearchData = data.filter((joinChatting) => 
-    joinChatting.member.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
+
     <div className={styles.messagesSection}>
       <div className={styles.header}>
         <h2 className={styles.messagesTitle}>TripTalk</h2>
         <div className={styles.searchNewChat}>
           <input
             type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)} // 검색어 업데이트
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className={styles.searchInput}
             placeholder="검색어를 입력하세요"
           />
@@ -81,45 +82,42 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
       </div>
 
       <div className={styles.chatList}>
-        {SearchData.length > 0 ? (
-          SearchData.map((joinChatting, index) => {
-            const lastMessageTime = getLastMessageTime(chatMessages, joinChatting.chattingRoom.id);
-            
-            return (
-              <Box
-                key={index}
-                className={`${styles.chatItem} ${joinChatting.chattingRoom.id}`}
-                onMouseEnter={() => handleMouseEnter(index)}
-                onMouseLeave={handleMouseLeave}
-                onClick={() => handleClick(joinChatting)}
-                sx={{
-                  cursor: 'pointer',
-                  transition: 'background-color 0.3s',
-                  backgroundColor: hoveredRow === index ? '#f0f0f0' : 'transparent',
-                  color: hoveredRow === index ? 'black' : 'inherit',
-                }}
-              >
-                <img
-                  src={joinChatting.member.profile ? joinChatting.member.profile : "../images/defaultimage.png"}
-                  alt="profile"
-                  className={styles.profileImage}
-                />
-                <div className={styles.chatInfo}>
-                  <span className={styles.chatName}>{joinChatting.member.name}</span>
-                  <span className={styles.chatTime}>
-                    <span>
-                      {lastMessageTime ? lastMessageTime : '...'}
-                    </span>
+        {data.map((joinChatting, index) => {
+          const lastMessageTime = getLastMessageTime(chatMessages, joinChatting.chattingRoom.id);
+          
+          return (
+            <Box
+              key={index}
+              className={`${styles.chatItem} ${joinChatting.chattingRoom.id}`}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
+              onClick={() => handleClick(joinChatting)}
+              sx={{
+                cursor: 'pointer',
+                transition: 'background-color 0.3s',
+                backgroundColor: hoveredRow === index ? '#f0f0f0' : 'transparent',
+                color: hoveredRow === index ? 'black' : 'inherit',
+              }}
+            >
+              <img
+                src={joinChatting.member.profile ? joinChatting.member.profile : "../images/defaultimage.png"}
+                alt="profile"
+                className={styles.profileImage}
+              />
+              <div className={styles.chatInfo}>
+                <span className={styles.chatName}>{joinChatting.member.name}</span>
+                <span className={styles.chatTime}>
+                  <span>
+                    {lastMessageTime ? lastMessageTime : '...'}
                   </span>
-                </div>
-              </Box>
-            );
-          })
-        ) : (
-          <p className={styles.noSearch}>검색 결과가 없습니다</p>
-        )}
+                </span>
+              </div>
+            </Box>
+          );
+        })}
       </div>
     </div>
+
   );
 }
 

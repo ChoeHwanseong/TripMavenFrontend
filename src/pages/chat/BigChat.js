@@ -312,7 +312,9 @@ function BigChat() {
                   </div>
                
                   <span className={`${styles.messageTime} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}>
-                    {(new Date(msg.timestamp).toLocaleDateString() === new Date().toLocaleDateString() ? '' : new Date(msg.timestamp).toLocaleDateString())}
+                    {new Date(msg.timestamp).toLocaleDateString([], { year: undefined }) === new Date().toLocaleDateString() 
+                      ? '' 
+                      : new Date(msg.timestamp).toLocaleDateString([], { year: undefined, month: '2-digit', day: '2-digit' })}
                     {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>

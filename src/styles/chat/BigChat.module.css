@@ -78,6 +78,15 @@
   cursor: pointer;
 }
 
+.unreadCount {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 8px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
 .chatList {
   display: flex;
   border: 3px solid #e6e6e6;
