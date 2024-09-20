@@ -17,22 +17,48 @@ const FindPassword2 = () => {
   const [isMemberValid, setIsMemberValid] = useState(true);
   const [codeInputErrorMessage, setCodeInputErrorMessage] = useState(''); // 인증번호 입력 여부 에러 메시지
   const [memberId, setMemberId] = useState(''); // Member ID를 저장하기 위한 상태 추가
+  const [buttonText, setButtonText] = useState('코드 전송');
+  const [timer, setTimer] = useState(0); // 타이머 상태 추가
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // 버튼 비활성화 상태 추가
   const navigate = useNavigate();
+  let interval = null; // 타이머를 위한 변수
 
   useEffect(() => {
-    // 이메일이 URL에서 가져오면 기본적으로는 유효한 상태로 설정
-    if (email) {
-      setIsEmailValid(true);
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    } else if (timer === 0 && isCodeSent) {
+      setButtonText('코드 재전송');
+      setIsButtonDisabled(false);
+      clearInterval(interval);
     }
-  }, [email]);
+    return () => clearInterval(interval);
+  }, [timer, isCodeSent]);
+
+  const startTimer = () => {
+    setTimer(60); // 타이머 1분 설정
+    setIsButtonDisabled(true); // 타이머가 돌아가는 동안 버튼 비활성화
+  };
+
+  // 타이머를 MM:SS 형식으로 변환하는 함수
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+  };
 
   const handleSendCode = async () => {
+    // 타이머는 코드 전송 버튼을 누르자마자 시작
+    startTimer();
     try {
       const member = await findMemberbyEmail(email);
 
       if (!member || member.name !== name) {
         setEmailErrorMessage('입력하신 회원정보를 찾을 수 없습니다.');
         setIsMemberValid(false);
+        setIsButtonDisabled(false); // 실패 시 버튼 다시 활성화
+        clearInterval(interval); // 타이머 중단
         return;
       }
 
@@ -41,9 +67,14 @@ const FindPassword2 = () => {
       setIsMemberValid(true);
       setMemberId(member.id); // Member ID를 저장
       setEmailErrorMessage('');
+      setButtonText('코드 전송 중...');
       alert('인증 코드가 이메일로 전송되었습니다.');
     } catch (error) {
       setEmailErrorMessage('이메일 전송 중 오류가 발생했습니다.');
+      setIsCodeSent(false); // 실패 시 다시 코드 전송 가능하게 설정
+      setIsButtonDisabled(false); // 타이머 종료
+      clearInterval(interval); // 타이머 중단
+      setTimer(0);
       console.error('이메일 전송 중 오류 발생: ', error);
     }
   };
@@ -120,11 +151,15 @@ const FindPassword2 = () => {
                 type="button"
                 className={styles.codeButton}
                 onClick={handleSendCode}
-                disabled={isCodeSent || !isEmailValid} // 이메일 유효성 검사 통과하지 않으면 비활성화
+                disabled={isButtonDisabled || !isEmailValid} // 버튼 비활성화 및 타이머 동작 중 비활성화
               >
-                코드 전송
+                {buttonText}
               </button>
             </div>
+            {/* 타이머가 돌아갈 때 남은 시간을 버튼 아래에 표시 */}
+            {timer > 0 && (
+              <p className={styles.timer}>{formatTime(timer)}</p>
+            )}
             {/* 이메일 형식 오류 또는 회원 정보 없음 메시지 */}
             {emailErrorMessage && (
               <p className={styles.errorMessage}>{emailErrorMessage}</p>
