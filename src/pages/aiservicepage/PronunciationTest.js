@@ -76,7 +76,7 @@ const PronunciationTest = () => {
             navigator.mediaDevices.getUserMedia({
                 audio: { deviceId: selectedAudioDevice?.deviceId,
                     sampleRate: 16000,  // 16kHz 샘플레이트
-                 }
+                }
             })
             .then( stream => {
                 /*
@@ -84,13 +84,13 @@ const PronunciationTest = () => {
                 audioRef.srcObject = stream;
                 audioRef.play();
                 */
-                mediaRecorderRef.current = new MediaRecorder(stream);
+                mediaRecorderRef.current = new MediaRecorder(stream, {mimeType: 'audio/webm;codecs=opus'});
                 mediaRecorderRef.current.ondataavailable = (event) => {
                     audioChunks.current.push(event.data);
                 };
 
                 mediaRecorderRef.current.onstop = () => {
-                    const audioBlob = new Blob(audioChunks.current, { type: 'audio/wav' });
+                    const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
                     setAudioBlob(audioBlob); // 오디오 데이터를 Blob으로 저장
                     console.log('오디오 멈춤, 블롭:', audioBlob);
                     audioChunks.current = []; // 저장 후 초기화
@@ -145,19 +145,13 @@ const PronunciationTest = () => {
 
 
         //블롭을 wav 파일로 변환하기
-        const file = convertBlobToFile(audioBlob, 'audio2.wav');
+        const file = convertBlobToFile(audioBlob, 'audio2.webm');
         console.log('녹음 파일:',file);
 
 
         //발음평가에 쓰일 원래 문장
         const text = newsHeadLine[sequenceNumber - 1].replace(/[^가-힣a-zA-Z]/g, '')
         //console.log('원래 문장: ',text);
-
-
-        //발음평가에 보낼 폼데이터
-        const formDataForPron = new FormData();
-        formDataForPron.append('voice', file); // 오디오 데이터를 FormData에 추가
-        formDataForPron.append('text', text);
 
 
         //nlp + 목소리톤 분석에 보낼 폼데이터
@@ -167,6 +161,20 @@ const PronunciationTest = () => {
         formDataForNLP.append('gender', '0');
         formDataForNLP.append('isVoiceTest', '1');
 
+
+        //발음평가에 보낼 폼데이터
+        const formDataForPron = new FormData();
+        formDataForPron.append('voice', file); // 오디오 데이터를 FormData에 추가
+        formDataForPron.append('text', text);
+
+        //nlp api
+        const responseNLP = await evaluateVoiceAndText(formDataForNLP);
+        console.log(responseNLP);
+
+        //발음평가 api
+        const responsePron = await evaluatePronunciation(formDataForPron);
+        console.log(responsePron);
+
         /*
         console.log(audioBlob);
         const url = window.URL.createObjectURL(audioBlob);
@@ -174,21 +182,13 @@ const PronunciationTest = () => {
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
-        a.download = 'audio.wav'; // 다운로드할 파일명 설정
+        a.download = 'audio2.webm'; // 다운로드할 파일명 설정
         document.body.appendChild(a);
         a.click(); // 클릭 이벤트 실행 (다운로드 시작)
         // 다운로드 후 태그와 URL 해제
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url); // 메모리 해제
         */
-
-        //발음평가 api
-        // const responsePron = await evaluatePronunciation(formDataForPron);
-        // console.log(responsePron);
-
-        //nlp api
-        const responseNLP = await evaluateVoiceAndText(formDataForNLP);
-        console.log(responseNLP);
     };
 
     const startSpeechRecognition = () => {
