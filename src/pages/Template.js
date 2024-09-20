@@ -28,7 +28,8 @@ export default function Template() {
             setIsLoading(false);
         };
         getMember();
-    },[]);
+        
+    },[isLoading]);
 
     if (isLoading) {
         // 로딩 중일 때 보여줄 UI를 여기에 작성

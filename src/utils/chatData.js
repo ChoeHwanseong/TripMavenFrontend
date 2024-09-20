@@ -1,8 +1,9 @@
 import axios from "axios";
 
-export const chattingRoomData = async (myId, yourId) => {
+export const chattingRoomData = async (myId, yourId,prodId) => {
     try {
-      const res = await axios.get(`/spring/chat/topic/${myId}/${yourId}`);
+      console.log(myId,yourId,prodId)
+      const res = await axios.get(`/spring/chat/topic/${myId}/${yourId}/${prodId}`);
       return res.data;
     }
     catch (error) {
@@ -15,6 +16,7 @@ export const chattingRoomData = async (myId, yourId) => {
 export const chattingListYourData = async (myId) => {
   try {
     const res = await axios.get(`/spring/chat/topic/${myId}`);
+    
     return res.data;
   }
   catch (error) {

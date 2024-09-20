@@ -122,8 +122,8 @@ const PostDetails = () => {
     try {
       const myId = localStorage.getItem("membersId");
       const yourId = data.member.id;
-      const roomId = await chattingRoomData(myId, yourId);
-
+      const roomId = await chattingRoomData(myId, yourId, id);
+      
       navigate(`/bigChat/${data.id}`);
 
     } catch (error) {
