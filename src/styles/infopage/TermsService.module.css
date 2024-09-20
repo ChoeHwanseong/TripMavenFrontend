@@ -5,76 +5,69 @@
   font-family: 'Arial', sans-serif;
   color: #333;
   line-height: 1.8;
-  background-color: #f9f9f9; /* 컨테이너 배경색 추가 */
-  border-radius: 8px; /* 모서리를 둥글게 처리 */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 박스 그림자 추가 */
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .heading {
   font-size: 36px;
   font-weight: bold;
   margin-bottom: 30px;
-  text-align: center; /* 제목을 중앙 정렬 */
-  color: #000000; /* 제목 색상 변경 */
+  text-align: center;
+  color: #000000;
 }
 
 .subheading {
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 15px;
-  color: #004288; /* 부제목 색상 변경 */
+  color: #004288;
 }
 
 .section {
   margin-bottom: 25px;
   padding: 20px;
-  background-color: #ffffff; /* 섹션 배경색 추가 */
-  border-left: 4px solid #0066ff; /* 왼쪽에 강조선 추가 */
-  border-radius: 5px; /* 모서리 둥글게 처리 */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* 섹션에 그림자 추가 */
+  background-color: #ffffff;
+  border-left: 4px solid #0066ff;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .paragraph {
   margin-bottom: 15px;
-  font-weight: normal; /* 본문 글자는 보통 굵기로 */
-  text-indent: 1.5em; /* 문단 들여쓰기 */
-  color: #555; /* 본문 색상 변경 */
+  font-weight: normal;
+  text-indent: 1.5em;
+  color: #555;
 }
 
-ul {
-  list-style: none; /* 기본 리스트 스타일 제거 */
-  padding-left: 0; /* 왼쪽 패딩 제거 */
+.list {
+  list-style: none;
+  padding-left: 0;
 }
 
-ul p {
+.listParagraph {
   font-weight: normal;
   color: #666;
-  margin-left: 2em; /* p 태그 왼쪽 여백 추가 */
+  margin-left: 2em;
 }
 
-li {
+.listItem {
   margin-bottom: 10px;
-  display: flex; /* 아이콘과 텍스트를 나란히 배치 */
+  display: flex;
   align-items: flex-start;
 }
 
-li::before {
-  content: "✔"; /* 리스트 앞에 체크 표시 */
+.listItem::before {
+  content: "✔";
   color: #0066ff;
   font-size: 20px;
   margin-right: 10px;
   line-height: 1.2;
 }
 
-strong {
-  color: #333;
-  font-weight: bold; /* 볼드체 */
-}
-
-p.bold {
+.bold {
   font-weight: bold;
-  margin-left: 38px;
-  margin-bottom: 10px;
 }
 
 @media (max-width: 768px) {
