@@ -1,14 +1,17 @@
-/* SiteIntroduction.module.css */
-
+/* 기존 스타일 유지 */
 .container {
     font-family: 'Arial', sans-serif;
     color: #333;
+    margin: 0 auto;
+    margin-top: -7px;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
 }
 
 .headerImage {
     position: relative;
     width: 100%;
-    height: 500px;
+    height: 600px;
     overflow: hidden;
 }
 
@@ -16,6 +19,9 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    opacity: 0; /* 애니메이션 전 기본 투명도 설정 */
+    transform: translateY(20px); /* 애니메이션 전 기본 위치 설정 */
+    transition: all 1.5s ease; /* 애니메이션 효과 */
 }
 
 .content {
@@ -24,17 +30,22 @@
     margin-top: 80px;
 }
 
-.logoImgage {
-    margin-top: 10px;
-    width: 270px;
-    height: 60px;
-    margin-right: -280px;
+.logoImage {
+    width: 290px;
+    height: 70px;
+    margin-right: -320px;
+    opacity: 0; /* 애니메이션 전 기본 투명도 설정 */
+    transform: translateY(20px); /* 애니메이션 전 기본 위치 설정 */
+    transition: all 1.5s ease; /* 애니메이션 효과 */
 }
 
 .description {
-    font-size: 18px;
-    line-height: 1.5;
+    font-size: 23px;
     font-weight: bold;
+    margin-top: 17px;
+    opacity: 0; /* 애니메이션 전 기본 투명도 설정 */
+    transform: translateY(20px); /* 애니메이션 전 기본 위치 설정 */
+    transition: all 1.5s ease; /* 애니메이션 효과 */
 }
 
 .features {
@@ -52,26 +63,56 @@
 }
 
 .AI_Image {
-    width: 330px;
-    height: 230px;
+    width: 560px;
+    height: 360px;
+    border-radius: 7px;
     margin-left: 120px;
+    position: relative;
+    opacity: 0; /* 애니메이션 전 기본 투명도 설정 */
+    transform: translateX(50px); /* 오른쪽에서 왼쪽으로 이동할 준비 */
+    transition: opacity 1.5s ease, transform 1.5s ease; /* 애니메이션 효과 */
+}
+
+.openAI_Image {
+    width: 560px;
+    height: 360px;
+    border-radius: 7px;
+    margin-left: 120px;
+    position: relative;
+    opacity: 0; /* 애니메이션 전 기본 투명도 설정 */
+    transform: translateX(50px); /* 오른쪽에서 왼쪽으로 이동할 준비 */
+    transition: opacity 1.5s ease, transform 1.5s ease; /* 애니메이션 효과 */
 }
 
 .featureImage {
-    width: 330px;
-    height: 230px;
-    margin-right: 140px;
+    width: 560px;
+    height: 360px;
+    margin-right: 80px;
+    opacity: 0; /* 애니메이션 전 기본 투명도 설정 */
+    transform: translateX(-50px); /* 왼쪽에서 오른쪽으로 이동할 준비 */
+    transition: opacity 1.5s ease, transform 1.5s ease; /* 애니메이션 효과 */
 }
 
 .featureText {
     font-size: 18px;
     line-height: 1.5;
     font-weight: bold;
-    
+    opacity: 0; /* 애니메이션 전 기본 투명도 설정 */
+    transform: translateY(20px); /* 애니메이션 전 기본 위치 설정 */
+    transition: all 1.5s ease; /* 애니메이션 효과 */
 }
 
 .text {
     font-weight: bold;
     font-size: 22px;
     margin-top: 20px;
+    opacity: 0; /* 애니메이션 전 기본 투명도 설정 */
+    transform: translateY(20px); /* 애니메이션 전 기본 위치 설정 */
+    transition: all 1.5s ease; /* 애니메이션 효과 */
+}
+
+/* 보일 때 애니메이션 효과 */
+.visible {
+    opacity: 1; /* 투명도를 1로 변경 */
+    transform: translateX(0); /* 원래 위치로 */
 }

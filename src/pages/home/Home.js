@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Button, Grid, Typography, Card, CardMedia, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import RegionEventInfo from './RegionEvent';
@@ -16,10 +16,10 @@ const Home = () => {
     navigate(`/product?city=${city}`);
   };
 
-  const formik = useFormik({ 
+  const formik = useFormik({
     initialValues: {
       keyword: '',
-      days: '', 
+      days: '',
     },
     onSubmit: (values) => {
       navigate(`/product?keyword=${values.keyword}&days=${values.days}`);
@@ -31,10 +31,28 @@ const Home = () => {
     setWeatherSelectedRegion(region);
   };
 
+  // scrollToTop 함수 구현
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  const handleAiButtonClick = () => {
+    navigate('/aipage');
+    scrollToTop();
+  };
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
+
   return (
     <div className={styles.headerimg}>
       <Box sx={{ maxWidth: '1200px', mx: 'auto', mt: 10, p: 3 }}>
-        
+
         {/* 인기 여행지 */}
         <div>
           <Box sx={{
@@ -128,9 +146,9 @@ const Home = () => {
               </Typography>
               <Button
                 variant="contained"
-                onClick={() => navigate('/aipage')}
+                onClick={handleAiButtonClick}
                 className={styles.aiButton}
-                style={{mb:4}}
+                style={{ mb: 4 }}
               >
                 AI 서비스 체험하기
               </Button>
@@ -184,7 +202,7 @@ const Home = () => {
               height: '100%'
             }}>
               <Typography variant="h6" fontWeight="bold" gutterBottom>가이드 순위</Typography>
-              <GuideRankings /> 
+              <GuideRankings />
             </Box>
           </Grid>
         </Grid>
