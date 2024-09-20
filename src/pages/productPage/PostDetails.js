@@ -16,6 +16,7 @@ import { chattingRoomData } from '../../utils/chatData';
 import ImageSlider from '../../api/ImageSlider';
 import { reviewGet } from '../../utils/reviewData';
 import ReviewList from '../guidemypage/guidepost/ReviewList';
+import Loading from '../../components/LoadingPage';
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -132,7 +133,7 @@ const PostDetails = () => {
   };
 
   if (!data) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
 
   return (

@@ -396,11 +396,11 @@ const Header = () => {
         <header className={styles.header}>
             <div className={styles.headerFrame}>
                 <button className={styles.logoButton} onClick={() => { navigate('/home'); }}>TripMaven</button>
-                <ButtonGroup variant="contained" aria-label="Basic button group">
+                {/*<ButtonGroup variant="contained" aria-label="Basic button group">
                     <Button onClick={() => { setRole('USER') }}>고객</Button>
                     <Button onClick={() => { setRole('GUIDE') }}>가이드</Button>
                     <Button onClick={() => { setRole('ADMIN') }}>관리자</Button>
-                </ButtonGroup>
+                </ButtonGroup>*/}
 
                 <div className={styles.nav}>
                     <div className={styles.inputstyle}>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getLikey, postGetById } from '../../../utils/postData';
 import { fetchFile } from '../../../utils/fileData';
 import { reviewGetByProductId } from '../../../utils/reviewData';
+import Loading from '../../../components/LoadingPage';
 
 const UserLike = () => {
   const navigate = useNavigate();
@@ -105,9 +106,7 @@ const UserLike = () => {
      
       <div className={styles.productList}>
         {loading ? (
-          <div className={styles.loadingIndicator}>
-            <p>Loading...</p>
-          </div>
+          <Loading />
         ) : (
           sortedProducts.map((product) => {
             // 리뷰 점수와 개수 계산
@@ -145,7 +144,7 @@ const UserLike = () => {
         )}
         {/* 로딩 중 텍스트 표시 */}
         <div ref={(ref) => ref} className={styles.loadingIndicator}> 
-          {hasMore && <p>Loading...</p>}
+          {hasMore && <Loading />}
         </div>
       </div>
     </div>
