@@ -11,12 +11,22 @@ const ProfileCardModal = ({ isOpen, onClose, guideData }) => {
             <Box className={styles.modalContent}>
                 <Box className={styles.card}>
                     <Box className={styles.profile}>
-                        <Avatar src={guideData.profile || '/path/to/default-avatar.png'} alt="Guide Avatar" className={styles.avatar} />
+                        <Avatar
+                            src={guideData.profile || '/path/to/default-avatar.png'}
+                            alt="Guide Avatar"
+                            sx={{ width: 120, height: 120, marginRight: '16px' }}  // Avatar 크기 고정 및 간격 추가
+                        />
                         <Box>
-                            <Typography variant="h6" className={styles.name}>
+                            <Typography
+                                variant="h6"
+                                sx={{ fontWeight: 'bold', fontSize: '24px', color: '#333', marginBottom: '8px' }}  // 이름과 아래 한줄 소개 사이의 간격
+                            >
                                 {guideData.name}
                             </Typography>
-                            <Typography variant="body2" className={styles.subtitle}>
+                            <Typography
+                                variant="body2"
+                                sx={{ marginTop: '16px', color: '#666' }}  // 한줄 소개와 이름 사이 간격
+                            >
                                 완벽한 여행의 길잡이, 당신의 특별한 경험을 도와드립니다.
                             </Typography>
                         </Box>

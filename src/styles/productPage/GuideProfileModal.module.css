@@ -22,11 +22,11 @@
 .profile {
   display: flex;
   align-items: center;
-  margin-bottom: 24px; /* 간격을 조금 더 넓게 */
+  margin-bottom: 24px; /* 사진과 이름 사이 간격 */
 }
 
 .avatar {
-  width: 120px; /* 크기 살짝 증가 */
+  width: 120px; /* 프로필 이미지 크기 복구 */
   height: 120px;
   background-color: #e0e0e0;
   border-radius: 50%;
@@ -35,8 +35,9 @@
 
 .name {
   font-weight: bold;
-  font-size: 24px; /* 폰트 크기 증가 */
-  color: #333; /* 더 진한 글자 색 */
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 8px; /* 이름과 한 줄 소개 사이 간격 */
 }
 
 .hashtags {
