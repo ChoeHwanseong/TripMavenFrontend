@@ -10,6 +10,7 @@ import { fetchFiles } from '../../utils/fileData';
 import { Button, Rating } from '@mui/material';
 import defaultimg from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
+import Loading from '../../components/LoadingPage';
 
 const ProductBoard = () => {
     const location = useLocation();
@@ -177,7 +178,7 @@ const ProductBoard = () => {
             <div ref={ref} className={styles.loadingIndicator}>
                 {loading && (
                     <Box>
-                        <CircularProgress />
+                        <Loading />
                     </Box>
                 )}
                 {products.length === 0 &&

@@ -23,6 +23,7 @@ import jeonnamGeo from '../../data/JeonNam.geojson';
 import gyeongbukGeo from '../../data/GyeongBuk.geojson';
 import gyeongnamGeo from '../../data/GyeongNam.geojson';
 import jejuGeo from '../../data/JeJu.geojson';
+import Loading from '../../components/LoadingPage';
 
 const API_KEY = '48c33cc2626bc56bc2e94df1221b05b1';
 
@@ -462,7 +463,7 @@ const DetailedWeatherMap = ({ selectedRegion: externalSelectedRegion }) => {
   }, [selectedRegion]);
 
   if (!memoizedGeoData) {
-    return <Typography>Loading map data...</Typography>;
+    return <Loading />;
   }
 
   return (
@@ -523,7 +524,7 @@ const DetailedWeatherMap = ({ selectedRegion: externalSelectedRegion }) => {
             <Typography variant="body2" sx={{ mt: 1 }}/>
           )}
 
-          {loading && <CircularProgress size={24} sx={{ mt: 2 }} />}
+          {loading}
           {error && <Typography color="error" variant="body2">{error}</Typography>}
 
           {currentWeather && (

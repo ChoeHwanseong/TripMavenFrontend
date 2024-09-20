@@ -57,6 +57,7 @@ import GuideAsk from './pages/guidemypage/GuideAsk';
 import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
 import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
 import FaceRecognitionApp from './pages/aiservicepage/webrecord/FaceRecognitionApp';
+import ImageModal from './pages/chat/ImageModal';
 
 
 

@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import dummyImg from '../../images/dummyImg.png';
 import styles from '../../styles/home/RegionEvent.module.css';
 import { TemplateContext } from '../../context/TemplateContext';
+import Loading from '../../components/LoadingPage';
 
 const API_KEY = 'fxK0NInA37%2B5%2FUmqb3ZtIqKfeJDzlDS9iU9A25kDySbSG2wyyzESFN8pUjf1G3sBAqnKnI0ZkDOCaNC8PDJTxg%3D%3D';
 const BASE_URL = 'https://apis.data.go.kr/B551011/KorService1';
@@ -256,7 +257,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
   
       {loading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100% - 40px)' }}>
-          <CircularProgress />
+          <Loading />
         </Box>
       )}
   
