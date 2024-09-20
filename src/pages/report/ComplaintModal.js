@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from '../../styles/report/ComplaintModal.module.css';
 import { postGetById } from '../../utils/postData';
 import { reportPost } from '../../utils/reportData';
+import Loading from '../../components/LoadingPage';
 
 const ComplaintModal = ({ onClose, onSubmit, id }) => {
 
@@ -85,7 +86,7 @@ const ComplaintModal = ({ onClose, onSubmit, id }) => {
   };
 
   if (!posts || !posts.member) {
-    return <div>Loading...</div>;
+    return <Loading />
   }
 
   return (

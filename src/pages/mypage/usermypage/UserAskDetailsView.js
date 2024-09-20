@@ -3,6 +3,7 @@ import styles from '../../styles/guidemypage/GuideAskDetailsView.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { csfetchData } from '../../utils/csfetchData';
 import { Box } from '@mui/material';
+import Loading from '../../../components/LoadingPage';
 
 const UserAskDetailsView = () => {
 
@@ -25,7 +26,7 @@ const UserAskDetailsView = () => {
     }, [id]);
 
     if (!inquiry) {
-        return <div>로딩중</div>; {/* 이코드 지우면 inquery.id 가져올때 오류발생할수도있음 */ }
+        return <Loading />; {/* 이코드 지우면 inquery.id 가져올때 오류발생할수도있음 */ }
     }
 
     return (

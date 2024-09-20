@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Button, Grid } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { csDelte, csGet } from '../../utils/csData';
+import Loading from '../../components/LoadingPage';
 
 const AskDetailsView = () => {
 
@@ -23,7 +24,7 @@ const AskDetailsView = () => {
     }, [id]);
 
     if (!inquiry) {
-        return <Typography>로딩중</Typography>; // 로딩 중 처리
+        return <Loading />; // 로딩 중 처리
     }
 
     const deleteInquiry = async () => {

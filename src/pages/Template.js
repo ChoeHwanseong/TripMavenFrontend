@@ -6,6 +6,7 @@ import Chat from "./chat/Chat";
 import { useEffect, useState } from "react";
 import { TemplateContext } from "../context/TemplateContext";
 import { fetchedData } from "../utils/memberData";
+import Loading from "../components/LoadingPage";
 
 
 //레이아웃용 컴포넌트
@@ -33,7 +34,7 @@ export default function Template() {
 
     if (isLoading) {
         // 로딩 중일 때 보여줄 UI를 여기에 작성
-        return <div>Loading...</div>;
+        return <Loading />;
     }
     
     return <>
