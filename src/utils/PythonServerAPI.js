@@ -3,7 +3,7 @@ import axios from 'axios';
 const baseUrl = "/python"
 
 // 서버 요청에 대한 타임아웃을 설정합니다.
-const TIMEOUT = 10000; // 20초
+const TIMEOUT = 20000; // 20초
 
 // ocr
 export const ocr = async (formData) => {
