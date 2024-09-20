@@ -26,6 +26,7 @@ function BigChat() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageUrl, setModalImageUrl] = useState(null);
 
+  
   const openModal = (imageUrl) => {
     setModalImageUrl(imageUrl);
     setIsModalOpen(true);
