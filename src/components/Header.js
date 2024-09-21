@@ -8,14 +8,12 @@ import { TemplateContext } from '../context/TemplateContext';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
-import { ButtonGroup, Button, IconButton, Badge, Typography, Avatar } from '@mui/material';
+import { IconButton, Badge, Typography, Avatar } from '@mui/material';
 import { logout } from '../utils/memberData';
 import CloseIcon from '@mui/icons-material/Close';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import styled from '@emotion/styled';
-import { chattingListMyData } from "../utils/chatData";
-import mqtt from 'mqtt';
-import { getNotifications, postNotification, readNotification } from '../utils/NotificationData';
+import {readNotification } from '../utils/NotificationData';
 
 
 const style = {
@@ -160,30 +158,16 @@ const NotificationComponent = () => {
     );
 };
 
-/*
-const jsonData = {
-    'memberId': localStorage.getItem('membersId'),
-    'content': text,
-    'createAt': timestamp,
-    'type': 'chat',
-    'link': `/bigchat/${topic}`,
-    'senderId': sender
-}
-*/
-
-
 //헤더 컴포넌트
 const Header = () => {
     
     const location = useLocation();
     const navigate = useNavigate();
     const [searchKeyword, setSearchKeyword] = useState(''); //검색어 상태
-    const { role, setRole } = useContext(TemplateContext); //사용자 role 상태
+    const { role } = useContext(TemplateContext); //사용자 role 상태
     const [open, setOpen] = useState(false); //가이드 등록 모달 사용여부 상태
     let menuList = menuData[role]; //사용자 role에 따라 메뉴 변경
-    const [mqttClientList, setMqttClientList] = useState([]); //mqtt 객체 리스트 상태
-    const [notifications, setNotifications] = useState([]); //알림 리스트 상태
-    const [waitingNotification, setWaitingNotification] = useState({}); //받은 메세지
+
     const template = useContext(TemplateContext);
     
     //로그아웃 함수
@@ -238,11 +222,6 @@ const Header = () => {
         <header className={styles.header}>
             <div className={styles.headerFrame}>
                 <button className={styles.logoButton} onClick={() => { navigate('/home'); }}>TripMaven</button>
-                {/*<ButtonGroup variant="contained" aria-label="Basic button group">
-                    <Button onClick={() => { setRole('USER') }}>고객</Button>
-                    <Button onClick={() => { setRole('GUIDE') }}>가이드</Button>
-                    <Button onClick={() => { setRole('ADMIN') }}>관리자</Button>
-                </ButtonGroup>*/}
 
                 <div className={styles.nav}>
                     <div className={styles.inputstyle}>

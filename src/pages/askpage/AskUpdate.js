@@ -1,4 +1,4 @@
-import styles from '../../styles/guidemypage/GuideAsk.module.css';
+import styles from '../../styles/askpage/AskPost.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { csGet, csPut } from '../../utils/csData';
@@ -38,7 +38,6 @@ const AskUpdate = () => {
     const newContent = async () =>{
       setInquiry({...inquiry,content:contentRef.current.value})
     };
-
 
 
     const handleData = async() => {
