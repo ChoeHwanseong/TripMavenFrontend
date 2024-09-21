@@ -3,7 +3,7 @@ import { Box, Button, Container, Grid, MenuItem, Select, Typography, IconButton 
 import Stack from '@mui/material/Stack';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PronunContext } from '../../context/PronunContext';
-import { evaluatePronunciation, evaluateVoiceAndText } from '../../utils/PythonServerAPI';
+import {  evaluateVoiceAndText } from '../../utils/PythonServerAPI';
 
 const PronunciationTest = () => {
     const navigate = useNavigate();
@@ -154,26 +154,16 @@ const PronunciationTest = () => {
         //console.log('원래 문장: ',text);
 
 
-        //nlp + 목소리톤 분석에 보낼 폼데이터
-        const formDataForNLP = new FormData();
-        formDataForNLP.append('voice', file); // 오디오 데이터를 FormData에 추가
-        formDataForNLP.append('text', text);
-        formDataForNLP.append('gender', '0');
-        formDataForNLP.append('isVoiceTest', '1');
+        //nlp + 목소리톤 + 말하기속도 + 발음정확도 분석에 보낼 폼데이터
+        const formData = new FormData();
+        formData.append('voice', file); // 오디오 데이터를 FormData에 추가
+        formData.append('text', text);
+        formData.append('gender', '0'); //사용자 성별 넣어줘야함
+        formData.append('isVoiceTest', '1'); //발음테스트시 1로, 영상테스트시 0으로 하면 됨
 
-
-        //발음평가에 보낼 폼데이터
-        const formDataForPron = new FormData();
-        formDataForPron.append('voice', file); // 오디오 데이터를 FormData에 추가
-        formDataForPron.append('text', text);
-
-        //nlp api
-        const responseNLP = await evaluateVoiceAndText(formDataForNLP);
-        console.log(responseNLP);
-
-        //발음평가 api
-        const responsePron = await evaluatePronunciation(formDataForPron);
-        console.log(responsePron);
+        //nlp + 목소리톤 + 말하기속도 + 발음정확도 분석
+        const response = await evaluateVoiceAndText(formData);
+        console.log(response);
 
         /*
         console.log(audioBlob);

@@ -46,13 +46,6 @@ const SideMenu = () => {
     return (
         <div className={styles.layoutContainer}>
             <div className={styles.sidebar}>
-                {/*
-                <img
-                    src="../../images/mypageLogo.png"
-                    alt="mypagelogo"
-                    className={styles.mypageLogo}
-                />
-                 */}
                  <h2 className={styles.sidebarTitle}>MyPage</h2>
                  
                 <ul>
@@ -76,7 +69,6 @@ const SideMenu = () => {
                 </ul>
             </div>
             <div className={styles.mainContent}>
-                {/* Main content goes here */}
             </div>
         </div>
     );

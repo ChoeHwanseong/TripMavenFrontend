@@ -141,21 +141,6 @@ function BigChat() {
 
     setMQTT();
 
-    // console.log('클라이언트 있따');
-    // const joinChat = list_.find(ele => location.pathname.includes(`${ele.chattingRoom.id}`));
-    // //console.log(id);
-    // if(client){
-    //   client.subscribe(id, (err) => {
-    //     if (!err) {
-    //       console.log(id, 'Subscribed to topic');
-    //     } else {
-    //       console.error('Subscription error:', err);
-    //     }
-    //   });
-    //   setSelectedUser(joinChat);
-    //   fetchChatMessages(joinChat.chattingRoom.id);
-
-
     // 컴포넌트 언마운트 시 클라이언트 종료
     return () => {
       if (client) {
@@ -268,7 +253,7 @@ function BigChat() {
               <div>
                 <button className={styles.reviewButton} onClick={() => navigate(`/reviewdetails/${selectedUser.chattingRoom.productBoard.id}`)}>
                   리뷰 작성 </button>
-                <button className={styles.reviewButton} onClick={() => navigate(`/postDetails/${selectedUser.chattingRoom.productBoard.id}`)}>
+                <button className={styles.reviewButton} onClick={() => navigate(`/mypage/postDetails/${selectedUser.chattingRoom.productBoard.id}`)}>
                   게시글 보러가기 </button>
               </div>
             )}

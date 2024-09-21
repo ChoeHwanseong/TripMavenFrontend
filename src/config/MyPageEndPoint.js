@@ -1,5 +1,3 @@
-const membersId= localStorage.getItem('membersId');
-
 export const menuData = {
 
     ADMIN: [
@@ -13,11 +11,7 @@ export const menuData = {
         { name: "내 게시물 관리", path: "/mypage/guide/post" },
         { name: "1:1문의 내역", path: "/mypage/askall" },
         { name: "채팅방", path: "/bigchat/0" },
-        { name: "AI 서비스", path: "/guidemypageaiservice" },
-        {path: "/guidemypagemypostdetails" }, //내 게시물 상세보기는 메뉴 내용엔 없음
-        {path: "/privateAsk" },
-        {path: "/guideaskdetailsview"},
-        {path: "/askPost"},   
+        { name: "AI 서비스", path: "/mypage/guide/aiservice" },
     ],
     USER: [
         { name: "내 정보 관리", path: `/mypage/${localStorage.getItem('membersId')}` },
@@ -25,8 +19,5 @@ export const menuData = {
         { name: "1:1문의 내역", path: "/mypage/askall" },
         { name: "찜 목록", path: "/userlike" },
         { name: "채팅방", path: "/bigchat/0" },
-        {path: "/useraskpage"},
-        {path: "/askPost"},
-        {path: "/mypage/askdetailsview"}
     ]
 };

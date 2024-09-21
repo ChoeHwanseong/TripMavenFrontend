@@ -5,7 +5,6 @@ import { csPost } from '../../utils/csData';
 
 const AskPost = () => {
   const navigate = useNavigate();
-
   const titleRef = useRef(null);
   const contentRef = useRef(null);
   const {id} = useParams();

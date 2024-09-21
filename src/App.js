@@ -9,17 +9,8 @@ import LoginRoutes from './pages/login/LoginRoutes';
 import MyPageRoutes from './pages/mypage/MyPageRoutes';
 import MyPageTemplate from './pages/mypage/MyPageTemplate';
 import UserReview from './pages/mypage/usermypage/UserReview';
-
 import UserLike from './pages/mypage/usermypage/UserLike';
-
 import ProductPost from './pages/productPage/ProductPost';
-import GuideMyPageMyPost from './pages/guidemypage/GuideMyPageMyPost';
-import GuideMyPageAIService from './pages/guidemypage/guidemypageaiservice/GuideMyPageAIService';
-
-
-import PaymentForm from './pages/payment/Payment';
-import OrderPopup from './pages/payment/PaymentProc';
-import PaymentConfirmation from './pages/payment/PaymentConfirm';
 
 import AskPost from './pages/askpage/AskPost';
 import AskUpdate from './pages/askpage/AskUpdate';
@@ -30,10 +21,8 @@ import SiteIntroduction from './pages/infopage/SiteInfo';
 import FAQ from './pages/csboard/FAQ';
 import ComplaintForm from './pages/report/ComplaintForm';
 import ProductBoard from './pages/productPage/ProductBoard';
-
 import BigChat from './pages/chat/BigChat';
 import ChattingRoom from './pages/chat/ChattingRoom';
-
 import DeviceCheckComponent from './pages/aiservicepage/webrecord/DeviceCheckComponent';
 import WebcamRecorder from './pages/aiservicepage/webrecord/WebcamRecorder';
 import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
@@ -51,11 +40,20 @@ import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
 import CombinedPage from './pages/aiservicepage/AIPage';
 import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
 import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
-
 import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
 import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
 import FaceRecognitionApp from './pages/aiservicepage/webrecord/FaceRecognitionApp';
-import GuideMyPageLike from './pages/guidemypage/guidemypagelike/GuideMyPageLike';
+import RoleBasedRoute from './components/RoleBasedRoute';
+
+import NotFoundPage from './pages/error/NotFoundPage';
+import Error403Page from './pages/error/Error403Page';
+import Error500Page from './pages/error/Error500Page';
+import MaintenancePage from './pages/error/MaintenancePage';
+
+
+
+
+
 
 
 function App() {
@@ -70,22 +68,15 @@ function App() {
         <Route element={<MyPageTemplate />}>
           {/* MYPAGE */}
           <Route path='/mypage/*' element={<MyPageRoutes />} />
-          {/* GUIDE */}
-          <Route path='/guidemypost' element={<GuideMyPageMyPost />} />
-          <Route path='/guidemypageaiservice' element={<GuideMyPageAIService />} />
-
-          <Route path='/guidemypagelike' element={<GuideMyPageLike />}/>
-          
           {/* USER */}
-          <Route path='/userreview' element={<UserReview />} />
-          <Route path='/reviewdetails/:id' element={<ReviewDetails />} />
-          <Route path='/reviewDetailsUpdate/:id' element={<ReviewDetailsUpdate />} />
-          <Route path='/userlike' element={<UserLike />} />
-          <Route path='/bigchat/:id' element={<BigChat />} />
-          <Route path='/chattingRoom' element={<ChattingRoom />} />
-
-          <Route path='/askPost/:id' element={<AskPost />} />
-          <Route path='/askupdate/:id' element={<AskUpdate />} />
+          <Route path='/userreview' element={<RoleBasedRoute element={<UserReview />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
+          <Route path='/reviewdetails/:id' element={<RoleBasedRoute element={<ReviewDetails />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
+          <Route path='/reviewDetailsUpdate/:id' element={<RoleBasedRoute element={<ReviewDetailsUpdate />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
+          <Route path='/userlike' element={<RoleBasedRoute element={<UserLike />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
+          <Route path='/bigchat/:id' element={<RoleBasedRoute element={<BigChat />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
+          <Route path='/chattingRoom' element={<RoleBasedRoute element={<ChattingRoom />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
+          <Route path='/askPost/:id' element={<RoleBasedRoute element={<AskPost />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
+          <Route path='/askupdate/:id' element={<RoleBasedRoute element={<AskUpdate />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
 
         </Route>
         <Route path='/productPost/:id' element={<ProductPost />} />
@@ -110,9 +101,6 @@ function App() {
         <Route path='/termsservice' element={<TermsService />} />
         <Route path='/adminreport' element={<ComplaintForm />} />
 
-        <Route path='/paymentproc' element={<OrderPopup />} />
-        <Route path='/payment' element={<PaymentForm />} />
-        <Route path='/paymentconfirm' element={<PaymentConfirmation />} />
         <Route path='/record' element={<WebcamRecorder />} />
         <Route path='/recordcheck' element={<DeviceCheckComponent />} />
         <Route path='/test' element={<DeviceCheckComponent2 />} />
@@ -126,6 +114,10 @@ function App() {
 
         <Route path='/faceRecognitionApp' element={<FaceRecognitionApp />} /> {/* 테스트용 */}
 
+        <Route path='/*' element={<NotFoundPage />} /> {/* 존재하지 않는 모든 경로 */}
+        <Route path='/Error403Page' element={<Error403Page />} />
+        <Route path='/Error500Page' element={<Error500Page />} />
+        <Route path='/MaintenancePage' element={<MaintenancePage />} />
       </Route>
     </Routes>
   </>
