@@ -56,7 +56,8 @@ import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
 import GuideAsk from './pages/guidemypage/GuideAsk';
 import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
 import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
-import FaceRecognitionApp from './pages/aiservicepage/webrecord/FaceRecognitionApp';
+import ResultFirstPage from './pages/aiservicepage/Result/ResultFirstPage';
+import ResultFinalPage from './pages/aiservicepage/Result/ResultFinalPage';
 
 
 
@@ -108,8 +109,11 @@ function App() {
           <Route path='/askdetails/:id' element={<AskDetails />} />
           <Route path='/askdetailsview/:id' element={<AskDetailsView />} />
           <Route path='/askupdate/:id' element={<AskUpdate />} />
+
+          <Route path='/resultFirstPage/:id' element={<ResultFirstPage />} />
+          <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
+        
         </Route>
-        <Route path='/videoAppUpload' element={<VideoAppUpload />} />
         <Route path="/cs" element={<CSBoard />} />
         <Route path="/siteinfo" element={<SiteIntroduction />} />
         <Route path="/faq" element={<FAQ />} />
@@ -138,13 +142,11 @@ function App() {
         <Route path='/test' element={<DeviceCheckComponent2 />} />
 
         <Route path='/realTestPage/:id' element={<RealTestPage />} />
-        <Route path='/realTestResult' element={<RealTestResult />} />
+        <Route path='/realTestResult/:id' element={<RealTestResult />} />
         <Route path='/productComponent' element={<ProductComponent />} />
 
         <Route path='/juwontest' element={<ScreenRecorderApp />} />
-
-
-        <Route path='/faceRecognitionApp' element={<FaceRecognitionApp />} /> {/* 테스트용 */}
+        <Route path='/lgmtest1' element={<VideoAppUpload />} />{/* 테스트 */}
 
       </Route>
     </Routes>

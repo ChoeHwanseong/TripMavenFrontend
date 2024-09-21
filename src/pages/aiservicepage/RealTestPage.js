@@ -5,11 +5,11 @@ import { Button, Container, MenuItem, Select, Typography } from '@mui/material';
 import styles from '../../styles/aiservicepage/RealTestPage.module.css';
 import useMediaRecorder from './webrecord/useModiaRecorder';
 import { createEvaluation } from '../../utils/AiData';
+import axios from 'axios';
 
 const RealTestPage = () => {
-  const memberId= localStorage.getItem('memberId');
-  const { productboardId } = useParams();
-
+  const memberId = localStorage.getItem('membersId');
+  const productboardId  = useParams().id;
   const navigate = useNavigate();
   const webcamStreamRef = useRef(null);
   const webcamRef = useRef(null);
@@ -25,8 +25,7 @@ const RealTestPage = () => {
   const [isFirstQuestion, setIsFirstQuestion] = useState(true);
   const [timeLeft, setTimeLeft] = useState(60);
   const [loadingMessage, setLoadingMessage] = useState("");
-
-  const {startRecording, stopRecording, getBlob, isRecording} = useMediaRecorder();
+  const { startRecording, stopRecording, getBlob, isRecording } = useMediaRecorder();
 
   const questions = [
     "Q: 여행을 하는 중에 컴플레인이 들어 왔을 경우 어떻게 해결을 해야 할까요?",
@@ -37,9 +36,13 @@ const RealTestPage = () => {
 
   const firstQuestion = "본인의 여행 상품에 대해 1분안에 말하시오";
 
-  // 미디어 장치 탐색 및 웹캠과 마이크 연결
+
+
+
   useEffect(() => {
-    // 미디어 장치 탐색
+    console.log('useEffect에서 memberId: ', memberId);
+    console.log('useEffect에서 productboardId: ', productboardId);
+
     navigator.mediaDevices.enumerateDevices()
       .then((devices) => {
         const videoInputs = devices.filter((d) => d.kind === 'videoinput');
@@ -50,12 +53,9 @@ const RealTestPage = () => {
         setSelectedAudioDevice(audioInputs[0] || null);
         setIsVideoConnected(videoInputs.length > 0);
         setIsAudioConnected(audioInputs.length > 0);
-        console.log('Video Devices:', videoInputs); // 디버깅 로그
-        console.log('Audio Devices:', audioInputs); // 디버깅 로그
       })
       .catch((error) => console.error('장치 정보를 가져오는 중 에러 발생:', error));
-
-    // 웹캠과 마이크 연결
+    
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
       .then(stream => {
         if (webcamStreamRef.current) {
@@ -63,7 +63,6 @@ const RealTestPage = () => {
         }
         setIsVideoConnected(true);
         setIsAudioConnected(true);
-        console.log('권한 요청 성공: 스트림 연결됨');
       })
       .catch((error) => {
         console.error('웹캠과 마이크 접근 중 에러 발생:', error);
@@ -78,7 +77,7 @@ const RealTestPage = () => {
       return () => clearTimeout(timer);
     } else if (timeLeft === 0 && isFirstQuestion && isRecording) {
       stopRecording();
-      setRecordingStatus("다음 문제");
+      setRecordingStatus("전송하기");
     }
   }, [timeLeft, isFirstQuestion, isRecording]);
 
@@ -88,9 +87,11 @@ const RealTestPage = () => {
       setRecordingStatus("녹화 중지");
     } else if (recordingStatus === "녹화 중지") {
       stopRecording();
+      setRecordingStatus("전송하기");
+    } else if (recordingStatus === "전송하기") {
       setLoadingMessage("영상 전송 중");
-      uploadVideo(isFirstQuestion ? 'first' : 'second');
-
+      await uploadVideo(isFirstQuestion ? 'first' : 'second');
+      
       if (isFirstQuestion) {
         setRecordingStatus("다음 문제");
       } else {
@@ -103,64 +104,70 @@ const RealTestPage = () => {
       setRecordingStatus("녹화하기");
       setLoadingMessage("");
     } else if (recordingStatus === "결과 보기") {
-      setLoadingMessage("영상 전송 중");
-      uploadVideo('second');
+      navigate('/RealTestResult');
     }
   };
 
+  // 영상 또는 음성 전송 함수
   const uploadVideo = async (videoType) => {
-
-    console.log('uploadVideo 에 보내는 비디오: ',videoType);
-
-    const videoBlob = getBlob();
-    //const videoFile = new File([blobRef.current], 'recordedVideo.webm', { type: 'video/webm' });
-    //console.log(videoFile);
-    console.log(videoBlob);
-
-    const formData = new FormData();
-    //formData.append('file', videoFile);
-
     try {
-      const response = await fetch('/python/face/', {
-        method: 'POST',
-        body: formData
+      // webm 형식을 mp4로 변환하여 Blob 생성
+      const videoBlob = new Blob([getBlob()], { type: 'video/mp4' });
+      const videoFormData = new FormData();
+      videoFormData.append('file', videoBlob, 'video.mp4');
+
+      console.log('videoBlob :', videoBlob);
+
+
+ //// 영상 길이 출력 시작
+       // 비디오 시간을 출력하기 위한 비디오 엘리먼트 생성
+      const videoUrl = URL.createObjectURL(videoBlob);
+      const videoElement = document.createElement('video');
+      videoElement.src = videoUrl;
+
+      // 비디오 메타데이터 로드 후, 영상 길이 출력
+      videoElement.onloadedmetadata = () => {
+        const duration = videoElement.duration;
+        console.log(`전송된 영상의 길이: ${duration}초`);
+        URL.revokeObjectURL(videoUrl); // 메모리 해제
+      };
+ //// 영상 길이 출력 끝
+
+      // 영상 전송
+      const response = await axios.post('http://localhost:8282/face/', videoFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
-      console.log('response: ',response);
-      console.log('response.text: ',response.text);
-      console.log('response.json: ',response.json);
+      console.log('전송디버깅 결과 response :', response);
 
-
-      if (response.ok) {
-        const resultData = await response.json();
+      if (response.status === 200) {
+        const resultData = response.data;
         setLoadingMessage("");
-
-        console.log('resultData: ',resultData);
 
         // Spring 서버로 결과 전송
         const evaluationResponse = await createEvaluation({
-          member_id: memberId,
-          productboard_id: productboardId,
-          score: resultData.score,
-          pronunciation: resultData.pronunciation,
-          tone: resultData.tone,
-          fillerwords: resultData.fillerwords,
-          formal_speak: resultData.formal_speak,
-          question_speak: resultData.question_speak,
-          text: resultData.text,
-          weight: resultData.weight,
-          cheek: resultData.cheek,
-          mouth: resultData.mouth,
-          brow: resultData.brow,
-          eye: resultData.eye,
-          nasolabial: resultData.nasolabial
-        });;
+          score: 50,
+          pronunciation: 50,
+          tone: "높다",
+          fillerwords: 50,
+          formal_speak: 50,
+          question_speak: 50,
+          text: "잘한다",
+          weight: "여러번",
+          cheek: resultData.graphs.cheekbones_graph,
+          mouth: resultData.graphs.mouth_graph,
+          brow: resultData.graphs.brow_graph,
+          eye: resultData.graphs.eye_bar_graph,
+          nasolabial: resultData.graphs.nasolabial_folds_graph
+        },memberId,productboardId);
 
-        console.log('Spring 서버 응답:', evaluationResponse);
+        console.log('evaluationResponse: ',evaluationResponse);
 
         if (videoType === 'second') {
           alert('영상이 성공적으로 제출되었습니다!');
-          navigate('/RealTestResult', { state: { response: resultData } });
+          navigate(`/resultFinalPage/${productboardId}`, { state: { response: resultData } });
         }
       } else {
         setLoadingMessage("");
