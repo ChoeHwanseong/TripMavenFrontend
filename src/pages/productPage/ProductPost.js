@@ -12,7 +12,7 @@ import { getHotelAd, postPost } from '../../utils/postData';
 import { filesPost } from '../../utils/fileData';
 import KakaoMap from '../../utils/KakaoMap';
 
-const GuidePost = () => {
+const ProductPost = () => {
     const navigate = useNavigate();
     const membersId = localStorage.getItem('membersId');
 
@@ -390,4 +390,4 @@ const GuidePost = () => {
     );
 };
 
-export default GuidePost;
+export default ProductPost;

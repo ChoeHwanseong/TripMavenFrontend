@@ -17,8 +17,7 @@ export const menuData = {
         {path: "/guidemypagemypostdetails" }, //내 게시물 상세보기는 메뉴 내용엔 없음
         {path: "/privateAsk" },
         {path: "/guideaskdetailsview"},
-        {path: "/askdetails"},
-        {path: "/askdetailsview"}      
+        {path: "/askPost"},   
     ],
     USER: [
         { name: "내 정보 관리", path: `/mypage/${localStorage.getItem('membersId')}` },
@@ -27,7 +26,7 @@ export const menuData = {
         { name: "찜 목록", path: "/userlike" },
         { name: "채팅방", path: "/bigchat/0" },
         {path: "/useraskpage"},
-        {path: "/askdetails"},
-        {path: "/askdetailsview"}
+        {path: "/askPost"},
+        {path: "/mypage/askdetailsview"}
     ]
 };
