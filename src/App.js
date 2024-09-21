@@ -42,11 +42,8 @@ import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
 import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
 import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
 import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
-import FaceRecognitionApp from './pages/aiservicepage/webrecord/FaceRecognitionApp';
-
-
-
-
+import ResultFinalPage from './pages/aiservicepage/Result/ResultFinalPage';
+import ResultFirstPage from './pages/aiservicepage/Result/ResultFirstPage';
 
 
 
@@ -74,16 +71,15 @@ function App() {
           {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
           <Route path='/bigchat/:id' element={<BigChat />} />
           <Route path='/chattingRoom' element={<ChattingRoom />} />
-          <Route path='/askdetailsview/:id' element={<AskDetailsView />} />
-          <Route path='/askall' element={<AskAll />} />
           <Route path='/chattingRoom' element={<ChattingRoom />} />
 
           {/*<Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />*/}
-          <Route path='/guidePost' element={<GuidePost />} />
-          <Route path='/askall' element={<AskAll />} />
-          <Route path='/askdetails/:id' element={<AskDetails />} />
-          <Route path='/askdetailsview/:id' element={<AskDetailsView />} />
+    
           <Route path='/askupdate/:id' element={<AskUpdate />} />
+
+          {/* 실전 테스트 결과 페이지 라우팅 */}
+          <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
+          <Route path='/resultFirstPage/:id' element={<ResultFirstPage />} />
         </Route>
         <Route path='/videoAppUpload' element={<VideoAppUpload />} />
         <Route path="/cs" element={<CSBoard />} />
@@ -117,10 +113,7 @@ function App() {
         <Route path='/juwontest' element={<ScreenRecorderApp />} />
         <Route path='/lgmtest1' element={<VideoAppUpload />} />{/* 테스트 */}
 
-        <Route path='/*' element={<NotFoundPage />} /> {/* 존재하지 않는 모든 경로 */}
-        <Route path='/Error403Page' element={<Error403Page />} />
-        <Route path='/Error500Page' element={<Error500Page />} />
-        <Route path='/MaintenancePage' element={<MaintenancePage />} />
+        
       </Route>
     </Routes>
   </>
