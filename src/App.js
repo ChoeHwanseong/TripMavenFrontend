@@ -76,10 +76,7 @@ function App() {
           {/*<Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />*/}
     
           <Route path='/askupdate/:id' element={<AskUpdate />} />
-
-          {/* 실전 테스트 결과 페이지 라우팅 */}
-          <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
-          <Route path='/resultFirstPage/:id' element={<ResultFirstPage />} />
+        
         </Route>
         <Route path='/videoAppUpload' element={<VideoAppUpload />} />
         <Route path="/cs" element={<CSBoard />} />
@@ -107,13 +104,16 @@ function App() {
         <Route path='/test' element={<DeviceCheckComponent2 />} />
 
         <Route path='/realTestPage/:id' element={<RealTestPage />} />
-        <Route path='/realTestResult/:id' element={<RealTestResult />} />
+        {/* <Route path='/realTestResult/:id' element={<RealTestResult />} />  미사용(ResultFinalPage 사용)*/}
         <Route path='/productComponent' element={<ProductComponent />} />
 
         <Route path='/juwontest' element={<ScreenRecorderApp />} />
         <Route path='/lgmtest1' element={<VideoAppUpload />} />{/* 테스트 */}
 
-        
+        {/* 실전 테스트 결과 페이지 라우팅 */}
+        <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
+        <Route path='/resultFirstPage/:id' element={<ResultFirstPage />} />
+
       </Route>
     </Routes>
   </>
