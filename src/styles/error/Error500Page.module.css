@@ -2,29 +2,29 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* 상단에 붙이기 위해 변경 */
+  justify-content: center;
   height: 100vh;
   text-align: center;
   background-color: #ffffff;
-  padding-top: 50px; /* 제목을 더 위로 붙이기 위해 패딩 추가 */
 }
 
 .title {
-  font-size: 64px;
-  font-weight: bolder;
-  margin-bottom: 60px;
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .image {
-  width: 600px; 
+  width: 200px; /* 이미지 크기를 적절하게 조정 */
   height: auto;
-  margin-bottom: 50px; /* 이미지와 메시지 사이 간격 */
+  margin-bottom: 20px;
 }
 
 .message {
-  font-size: 24px;
+  font-size: 18px;
   color: #333;
-  margin-bottom: 70px;
+  margin-bottom: 20px;
+  line-height: 1.5; /* 메시지가 여러 줄일 경우 적절한 간격을 줍니다 */
 }
 
 .buttons {
@@ -33,7 +33,7 @@
 }
 
 .button {
-  padding: 10px 20px;
+  padding: 10px 30px; /* 버튼 크기를 맞추기 위해 패딩을 조정 */
   font-size: 16px;
   color: white;
   background-color: #007bff;

@@ -1,4 +1,4 @@
-.errorPage {
+.maintenancePage {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -6,25 +6,26 @@
   height: 100vh;
   text-align: center;
   background-color: #ffffff;
-  padding-top: 50px; /* 제목을 더 위로 붙이기 위해 패딩 추가 */
+  padding-top: 50px; /* 상단과의 간격을 유지하기 위해 약간의 패딩 추가 */
 }
 
 .title {
-  font-size: 64px;
-  font-weight: bolder;
-  margin-bottom: 60px;
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 40px;
 }
 
 .image {
-  width: 600px; 
+  width: 500px; /* 이미지 크기를 적절하게 조정 */
   height: auto;
-  margin-bottom: 50px; /* 이미지와 메시지 사이 간격 */
+  margin-bottom: 40px;
 }
 
 .message {
-  font-size: 24px;
+  font-size: 25px;
   color: #333;
-  margin-bottom: 70px;
+  margin-bottom: 40px;
+  line-height: 1.5; /* 메시지가 여러 줄일 경우 적절한 간격을 줍니다 */
 }
 
 .buttons {
