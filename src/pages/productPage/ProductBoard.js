@@ -92,7 +92,7 @@ const ProductBoard = () => {
                     <Button
                         variant="contained"
                         sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}
-                        onClick={() => navigate(`/guidePost/${memberInfo.id}`)}
+                        onClick={() => navigate(`/productPost/${memberInfo.id}`)}
                     >
                         게시물 등록 하기
                     </Button>

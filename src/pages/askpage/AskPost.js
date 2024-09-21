@@ -1,14 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import styles from '../../styles/askpage/AskDetails.module.css';
+import React, { useRef } from 'react';
+import styles from '../../styles/askpage/AskPost.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { csPost } from '../../utils/csData';
 
-const AskDetails = () => {
+const AskPost = () => {
   const navigate = useNavigate();
 
   const titleRef = useRef(null);
   const contentRef = useRef(null);
-
   const {id} = useParams();
 
   const handelInquiry = async() => {
@@ -17,7 +16,7 @@ const AskDetails = () => {
                             content: contentRef.current.value,
                             members_id: id};
         await csPost(createData);
-        navigate('/askall');
+        navigate('/mypage/askall');
 
     } catch (error) {
         console.error('Error updating answer:', error);
@@ -43,4 +42,4 @@ const AskDetails = () => {
   );
 };
 
-export default AskDetails;
+export default AskPost;

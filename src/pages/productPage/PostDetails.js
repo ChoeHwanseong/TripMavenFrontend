@@ -83,7 +83,7 @@ const PostDetails = () => {
     if (confirmed) {
       try {
         await postDelete(id);
-        navigate('/guidemypost');
+        navigate('/mypage/guide/post');
       } catch (error) {
         console.error('삭제 중 오류 발생:', error);
       }

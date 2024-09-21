@@ -1,4 +1,4 @@
-import styles from '../../styles/guidemypage/GuideAsk.module.css';
+import styles from '../../styles/askpage/AskPost.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { csGet, csPut } from '../../utils/csData';
@@ -40,13 +40,12 @@ const AskUpdate = () => {
     };
 
 
-
     const handleData = async() => {
         try {
             const updatedData = { title:titleRef.current.value,
                                   content:contentRef.current.value}
             await csPut(id, updatedData);
-            navigate('/askall');
+            navigate('/mypage/askall');
 
         } catch (error) {
             console.error('Error updating answer:', error);

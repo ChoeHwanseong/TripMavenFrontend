@@ -56,7 +56,7 @@ const GuideMyPageMyPost = () => {
         <Button
           variant="contained"
           sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}
-          onClick={() => navigate(`/guidePost/${membersId}`)}
+          onClick={() => navigate(`/mypage/guide/post/${membersId}`)}
         >
           게시물 등록 하기
         </Button>

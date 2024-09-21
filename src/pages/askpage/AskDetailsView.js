@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Button, Grid } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { csDelte, csGet } from '../../utils/csData';
 import Loading from '../../components/LoadingPage';
+import { TemplateContext } from '../../context/TemplateContext';
 
 const AskDetailsView = () => {
 
     const { id } = useParams();
     const [inquiry, setInquiry] = useState(null);
     const navigate = useNavigate();
-
+    const { memberInfo } = useContext(TemplateContext);
     useEffect(() => {
         const getCSData = async () => {
             try {
@@ -32,7 +33,7 @@ const AskDetailsView = () => {
         if (confirmed) {
             try {
                 await csDelte(id);
-                navigate('/askall');
+                navigate('/mypage/askall');
             } catch (error) {
                 console.error('삭제 중 오류 발생:', error);
             }
@@ -56,7 +57,7 @@ const AskDetailsView = () => {
                         </TableRow>
                         <TableRow>
                             <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', backgroundColor: '#f9f9f9' }}>아이디</TableCell>
-                            <TableCell sx={{ textAlign: 'center' }}>{inquiry.member.name}</TableCell>
+                            <TableCell sx={{ textAlign: 'center' }}>{inquiry.member.email} (<small>{inquiry.member.name})</small></TableCell>
                             <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', backgroundColor: '#f9f9f9' }}>작성일</TableCell>
                             <TableCell sx={{ textAlign: 'center' }}>{inquiry.createdAt.split('T')[0]}</TableCell>
                         </TableRow>
@@ -79,7 +80,7 @@ const AskDetailsView = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-
+            {memberInfo.role != 'ADMIN' ?
             <Grid container spacing={2} justifyContent="center">
                 <Grid item>
                     <Button variant="contained" sx={{ backgroundColor: '#E72727' }} onClick={deleteInquiry}>
@@ -87,16 +88,26 @@ const AskDetailsView = () => {
                     </Button>
                 </Grid>
                 <Grid item>
-                    <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={() => navigate(`/askupdate/${inquiry.id}`)}>
+                    <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={() => navigate(`/askupdate/${inquiry.id}`,{inquiry})}>
                         수정 하기
                     </Button>
                 </Grid>
                 <Grid item>
-                    <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={() => navigate('/askall')}>
+                    <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={() => navigate('/mypage/askall')}>
                         목록
                     </Button>
                 </Grid>
             </Grid>
+            :
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+                <Button variant="contained" sx={{backgroundColor:'#0066ff','&:hover' : {backgroundColor:'#0056b3'}}}  onClick={() => navigate(`/mypage/admin/answer/${inquiry.id}`)}>
+                    답변 등록 및 수정하기
+                </Button>
+                <Button variant="contained" sx={{backgroundColor:'#0066ff','&:hover' : {backgroundColor:'#0056b3'}}} onClick={() => navigate('/mypage/askall')}>
+                    목록
+                </Button>
+            </Box>
+            }
         </Box>
     );
 };

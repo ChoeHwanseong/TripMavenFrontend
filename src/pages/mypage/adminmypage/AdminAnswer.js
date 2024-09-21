@@ -38,7 +38,7 @@ const AdminAnswer = () => {
         try {
             const updatedData = { comments: answerRef.current.value };
             await csAnswerPut(id, updatedData);
-            navigate('/adminask');
+            navigate('/mypage/askall');
         } catch (error) {
             console.error('에러났당:', error);
         }
