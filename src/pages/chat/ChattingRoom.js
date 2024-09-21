@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from '../../styles/chat/BigChat.module.css';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { TemplateContext } from '../../context/TemplateContext';
 
 function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages, chatMessages, id}) {
+  const {notifications, setNotifications, notificationCount} = useContext(TemplateContext);
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
+  const [search, setSearch] = useState('');
 
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
@@ -33,12 +36,16 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
 
     // 마지막 메시지의 날짜가 오늘이면 시간만 반환
     if (lastMessageDate.toDateString() === now.toDateString()) {
-      return lastMessageDate.toLocaleTimeString(); // 시간만 반환
+      return lastMessageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // 시간만 반환
     } else {
       // 어제 또는 그 이전이면 날짜와 시간 모두 반환
-      return lastMessageDate.toLocaleDateString() + ' ' + lastMessageDate.toLocaleTimeString(); // 날짜와 시간 모두 반환
+      return lastMessageDate.toLocaleDateString() + ' ' + lastMessageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // 날짜와 시간 모두 반환
     }
   };
+
+  const filteredData = data.filter((joinChatting) => 
+    joinChatting.member.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   const handleClick = (joinChatting) => {
     /*
@@ -68,6 +75,8 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
         <div className={styles.searchNewChat}>
           <input
             type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className={styles.searchInput}
             placeholder="검색어를 입력하세요"
           />
@@ -98,7 +107,13 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
                 className={styles.profileImage}
               />
               <div className={styles.chatInfo}>
-                <span className={styles.chatName}>{joinChatting.member.name}</span>
+                <span>
+                  <span className={styles.chatName}>{joinChatting.member.name}</span>
+                  {notificationCount > 0 && notifications &&
+                  (
+                    <span className="badge rounded-pill bg-danger" style={{ fontSize: '11px' }}>{notifications.find(notification => notification.type=='chat' && joinChatting.member.id==notification.senderId) && notifications.find(notification => notification.type=='chat' && joinChatting.member.id==notification.senderId).content.length}</span>
+                  )}
+                </span>
                 <span className={styles.chatTime}>
                   <span>
                     {lastMessageTime ? lastMessageTime : '...'}

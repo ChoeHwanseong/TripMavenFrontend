@@ -8,14 +8,12 @@ import { TemplateContext } from '../context/TemplateContext';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
-import { ButtonGroup, Button, IconButton, Badge, Typography, Avatar } from '@mui/material';
+import { IconButton, Badge, Typography, Avatar } from '@mui/material';
 import { logout } from '../utils/memberData';
 import CloseIcon from '@mui/icons-material/Close';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import styled from '@emotion/styled';
-import { chattingListMyData } from "../utils/chatData";
-import mqtt from 'mqtt';
-import { getNotifications, postNotification, readNotification } from '../utils/NotificationData';
+import {readNotification } from '../utils/NotificationData';
 
 
 const style = {
@@ -71,7 +69,8 @@ const convertNotificationType = {
 
 //알림 컴포넌트
 //헤더 컴포넌트에서 받아올 알림 상태
-const NotificationComponent = ({ notifications, setNotifications }) => {
+const NotificationComponent = () => {
+    const {notifications, setNotifications, notificationCount} = useContext(TemplateContext);
     const navigate = useNavigate();
     //알림 펼치기 여부 상태
     const [showNotifications, setShowNotifications] = useState(false);
@@ -93,18 +92,6 @@ const NotificationComponent = ({ notifications, setNotifications }) => {
         setShowNotifications(false);
         navigate(noti.link);
     };
-
-    const getNotiCount = () => {
-        let count = 0;
-        notifications.forEach(noti => {
-            if (noti.type == "chat") count = count + noti.content.length;
-            else count = count + 1;
-        });
-        return count;
-    };
-
-    //알림 개수
-    const notificationCount = getNotiCount();
 
     //알림 모션
     const ringAnimation = notificationCount > 0 ? `
@@ -171,30 +158,16 @@ const NotificationComponent = ({ notifications, setNotifications }) => {
     );
 };
 
-/*
-const jsonData = {
-    'memberId': localStorage.getItem('membersId'),
-    'content': text,
-    'createAt': timestamp,
-    'type': 'chat',
-    'link': `/bigchat/${topic}`,
-    'senderId': sender
-}
-*/
-
-
 //헤더 컴포넌트
 const Header = () => {
     
     const location = useLocation();
     const navigate = useNavigate();
     const [searchKeyword, setSearchKeyword] = useState(''); //검색어 상태
-    const { role, setRole } = useContext(TemplateContext); //사용자 role 상태
+    const { role } = useContext(TemplateContext); //사용자 role 상태
     const [open, setOpen] = useState(false); //가이드 등록 모달 사용여부 상태
     let menuList = menuData[role]; //사용자 role에 따라 메뉴 변경
-    const [mqttClientList, setMqttClientList] = useState([]); //mqtt 객체 리스트 상태
-    const [notifications, setNotifications] = useState([]); //알림 리스트 상태
-    const [waitingNotification, setWaitingNotification] = useState({}); //받은 메세지
+
     const template = useContext(TemplateContext);
     
     //로그아웃 함수
@@ -211,160 +184,13 @@ const Header = () => {
     };
     const handleClose = () => setOpen(false);
 
-
-    //채팅방 알림을 위한 함수
-    //채팅방 알림을 위해서 상위 컴포넌트에서 채팅방 연결 관리
-    const getChattingList = async () => {
-        if (localStorage.getItem('token')) {
-            //채팅방 리스트 불러오기
-            const chattingList = await chattingListMyData(localStorage.getItem('membersId'));
-            //console.log(chattingList);
-
-            //mqtt 연결 객체 리스트
-            let mqttClients = [];
-
-            for (let joinChatting of chattingList) {
-                //mqtt 연결 객체 생성, 각 객체는 각각의 채팅방 연결이 된다.
-                const mqttClient = mqtt.connect('ws://121.133.84.38:1884');
-
-                //연결 성공
-                mqttClient.on('connect', () => {
-                    //console.log('Connected to MQTT broker:', joinChatting.chattingRoom.id);
-                });
-
-                //연결 실패시
-                mqttClient.on('error', (err) => {
-                    //console.error('Connection error:', err);
-                });
-
-                //채팅방 subscribe, 즉 토픽(채팅방) 정하기
-                mqttClient.subscribe(`${joinChatting.chattingRoom.id}`, (err) => {
-                    if (!err) { console.log('Subscribed to topic', joinChatting.chattingRoom.id); }
-                    else { console.error('Subscription error:', err); }
-                });
-
-                //메시지 수신시 아래 코드 실행
-                mqttClient.on('message', async (topic, message) => {
-                    console.log('Received message:', message.toString());
-                    try {
-                        const parsedMessage = JSON.parse(message.toString());
-                        const { text, sender, timestamp } = parsedMessage;
-
-                        //자신 메세지 제외
-                        if (sender == localStorage.getItem('membersId')) return;
-
-                        //알림 리스트에 올라가기 전에 잠깐 저장용
-                        setWaitingNotification({
-                            'memberId': localStorage.getItem('membersId'),
-                            'content': text,
-                            'createAt': timestamp,
-                            'type': 'chat',
-                            'link': `/bigchat/${topic}`,
-                            'senderId': `${sender}`
-                        });
-
-
-                        //알림 테이블에 추가하는 함수(memberId, content, type, link)
-                        //현재 채팅방에 들어가있으면 알림테이블에 추가하지 않는다
-                        /*
-                        if (location.pathname.includes('bigchat') &&
-                            location.pathname.includes(`${topic}`)) return;
-                        else {
-                            //알림 테이블에 추가
-                            const jsonData = {
-                                'memberId': localStorage.getItem('membersId'),
-                                'content': text,
-                                'createAt': timestamp,
-                                'type': 'chat',
-                                'link': `/bigchat/${topic}`,
-                                'senderId': `${sender}`
-                            }
-                            const postedData = await postNotification(jsonData); //알림테이블에 추가하기
-                            //받은 메세지 알림 리스트 상태에 추가(dto 그대로 받기)
-                            const notiList = await getNoti(); //알림 테이블 불러오기
-                            setNotifications(notiList);
-                        }
-                        */
-                    } catch (error) { console.error('Error parsing message:', error); }
-                });
-            }
-
-            return mqttClients; //각 채팅방 mqtt 연결객체 리스트를 반환
-        }
-    };
-
-    const getNoti = async (type) => {
-        const notificationList = await getNotifications(localStorage.getItem('membersId'));
-        const notiStateList = []; //새로운 리스트 만들기
-        for (let noti of notificationList) { //불러온거
-            if (noti.type == 'chat') { //타입이 채팅이면
-                if (notiStateList.find(ele => ele.senderId == noti.senderId)) { //이미 새로운리스트에 있다면
-                    notiStateList.forEach(ele => {
-                        if (ele.senderId == noti.senderId) {
-                            ele.content.push(noti);
-                            ele.timestamp = noti.timestamp;
-                        }
-                    });
-                }
-                else {
-                    notiStateList.push({ ...noti, content: [noti] });
-                }
-            }
-
-        }
-        type && setNotifications(notiStateList);
-        return notiStateList;
-    };
-
-    const urlCheck = async ()=>{
-        if(waitingNotification.link){
-            if (location.pathname.includes('bigchat') && 
-                location.pathname === waitingNotification.link) return;
-            else {
-                const postedData = await postNotification(waitingNotification); //알림테이블(DB)에 추가하기
-                //받은 메세지 알림 리스트 상태에 추가(dto 그대로 받기)
-                const notiList = await getNoti(); //알림 테이블 불러오기
-                setNotifications(notiList);
-            }
-        }
-    };
-
-    //마운트시 모든 채팅방 mqtt 연결(처음엔 이게 맞음)
     //상품목록 페이지 벗어날때 검색창 비우기
-    //url변경시 리렌더링 되게?
     useEffect(() => {
-        if (localStorage.getItem('token')) {
-            if (mqttClientList.length == 0) { //mqtt연결 리스트가 비어있을 경우에만(마운트시)
-                const chatList = getChattingList();
-                setMqttClientList(chatList); //mqtt연결 리스트 상태
-                getNoti(1); //알림 상태
-            }
-        }
-
         //상품페이지 벗어날때 검색창 검색어 초기화
         if (!location.pathname.includes('/product')) {
             setSearchKeyword('');
         }
-
-        //채팅방 들어갔을때 알림 제거용(알림 눌러서 아님)
-        if (location.pathname.includes('bigchat')) {
-            //채팅방 url이랑 알림 링크랑 비교해서 들어왓으면 알림 제거
-            for (let noti of notifications) {
-                if (noti.link == location.pathname) {
-                    setNotifications(prevNotifications =>
-                        prevNotifications.filter(notification => notification.link !== location.pathname)
-                    );
-                    readNotification(noti.content[0]);
-                }
-            }
-        }
     }, [location.pathname]);
-
-    //채팅알림 url로 따져서 올릴지 말지 판단
-    //즉, 현재 채팅방에 들어가있으면 알림테이블에 추가하지 않는다
-    useEffect(()=>{
-        urlCheck();
-    },[waitingNotification])
 
     const handleChange = (event) => {
         setSearchKeyword(event.target.value);
@@ -396,11 +222,6 @@ const Header = () => {
         <header className={styles.header}>
             <div className={styles.headerFrame}>
                 <button className={styles.logoButton} onClick={() => { navigate('/home'); }}>TripMaven</button>
-                <ButtonGroup variant="contained" aria-label="Basic button group">
-                    <Button onClick={() => { setRole('USER') }}>고객</Button>
-                    <Button onClick={() => { setRole('GUIDE') }}>가이드</Button>
-                    <Button onClick={() => { setRole('ADMIN') }}>관리자</Button>
-                </ButtonGroup>
 
                 <div className={styles.nav}>
                     <div className={styles.inputstyle}>
@@ -453,7 +274,7 @@ const Header = () => {
                                 </div>
                             </div>
                             <button className={styles.navButton} onClick={handleOpen}>가이드 등록</button>
-                            <NotificationComponent notifications={notifications} setNotifications={setNotifications} />
+                            <NotificationComponent/>
                         </div>
 
                         {!localStorage.getItem("token") ?

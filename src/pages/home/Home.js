@@ -217,7 +217,7 @@ const Home = () => {
               <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-end', sm: 'flex-start' } }}>
                 <Button
                   variant="contained"
-                  onClick={() => navigate('/aipage')}
+                  onClick={handleAiButtonClick}
                   className={styles.aiButton}
                   sx={{
                     fontSize: { xs: '0.9rem', sm: '1rem' },
@@ -296,7 +296,7 @@ const Home = () => {
                   backgroundPosition: 'center',
                   cursor: 'pointer'
                 }}
-                onClick={() => handleServiceCardClick('/askall')}
+                onClick={() => handleServiceCardClick('/mypage/askall')}
               >
                 <CardContent className={styles.serviceCardContent}>
                   <Typography variant="h6" className={styles.serviceTitle}>

@@ -10,6 +10,7 @@ import { fetchFiles } from '../../utils/fileData';
 import { Button, Rating } from '@mui/material';
 import defaultimg from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
+import Loading from '../../components/LoadingPage';
 
 const ProductBoard = () => {
     const location = useLocation();
@@ -91,7 +92,7 @@ const ProductBoard = () => {
                     <Button
                         variant="contained"
                         sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}
-                        onClick={() => navigate(`/guidePost/${memberInfo.id}`)}
+                        onClick={() => navigate(`/productPost/${memberInfo.id}`)}
                     >
                         게시물 등록 하기
                     </Button>
@@ -177,7 +178,7 @@ const ProductBoard = () => {
             <div ref={ref} className={styles.loadingIndicator}>
                 {loading && (
                     <Box>
-                        <CircularProgress />
+                        <Loading />
                     </Box>
                 )}
                 {products.length === 0 &&

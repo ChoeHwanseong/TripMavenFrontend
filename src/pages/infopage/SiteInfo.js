@@ -77,14 +77,8 @@ const SiteIntroduction = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.headerImage}>
-        <img
-          src="../../images/siteInfoHeader.jpg"
-          alt="Background"
-          className={`${styles.backgroundImage} ${visibleImages["0"] ? styles.visible : ''}`}
-          data-index="0"
-          ref={(el) => (elementsRef.current[0] = el)}
-        />
+      <div className={styles.headerImage} ref={(el) => (elementsRef.current[0] = el)} data-index="0">
+        <div className={styles.headerImageText}>사이트 소개</div>
       </div>
 
       <div className={styles.content}>
@@ -138,10 +132,9 @@ const SiteIntroduction = () => {
             data-index="6"
             ref={(el) => (elementsRef.current[6] = el)}
           >
-            <span >
-              가이드가 추천하는 여행 상품</span>
-              을 통해 숙소, 식당, 일정 등을<br/>
-            효율적으로 계획하여 불필요한 지출 없이<br/>
+            <span style={{ fontSize: '26px', fontWeight: 'bold', color: '#0066ff' }}>
+              가이드가 추천하는 여행 상품</span>을 통해 <br />
+            숙소, 식당, 일정 등을 효율적으로 계획하여 불필요한 지출 없이<br />
             알찬 여행을 즐길 수 있도록 도와드립니다.
           </p>
         </div>
@@ -152,7 +145,7 @@ const SiteIntroduction = () => {
             data-index="7"
             ref={(el) => (elementsRef.current[7] = el)}
           >
-            OpenAI ChatGPT 기반의 챗봇을 통해 실시간 응답과<br />
+            <span style={{ fontSize: '26px', fontWeight: 'bold', color: '#0066ff' }}>OpenAI ChatGPT 기반의 챗봇</span>을 통해 실시간 응답과<br />
             대화 데이터 분석으로 사용자의 니즈와 행동 패턴을 파악하여<br />
             끊임 없는 대화 경험을 제공합니다.<br />
           </p>
@@ -166,14 +159,16 @@ const SiteIntroduction = () => {
         </div>
 
         <div className={styles.feature}>
-          <p
-            className={`${styles.text} ${visibleImages["9"] ? styles.visible : ''}`}
-            data-index="9"
-            ref={(el) => (elementsRef.current[9] = el)}
-          >
-            최적의 여행 루트로 최고의 트립을 즐기고 싶은 분들을 위해<br />
-            현재 최고 가이드들이 지역별로 여행 상품을 공개합니다.
-          </p>
+          <div className={styles.textContainer}>
+            <p
+              className={`${styles.text} ${visibleImages["9"] ? styles.visible : ''}`}
+              data-index="9"
+              ref={(el) => (elementsRef.current[9] = el)}
+            >
+              최적의 여행 루트로 최고의 트립을 즐기고 싶은 분들을 위해<br />
+              현재 최고 가이드들이 지역별로 여행 상품을 공개합니다.
+            </p>
+          </div>
         </div>
       </div>
     </div>

@@ -12,7 +12,7 @@ import { getHotelAd, postPost } from '../../utils/postData';
 import { filesPost } from '../../utils/fileData';
 import KakaoMap from '../../utils/KakaoMap';
 
-const GuidePost = () => {
+const ProductPost = () => {
     const navigate = useNavigate();
     const membersId = localStorage.getItem('membersId');
 
@@ -176,7 +176,7 @@ const GuidePost = () => {
 
             console.log('createData', createData);
             await postPost(createData);
-            navigate('/guidemypost');
+            navigate('/mypage/guide/post');
         } catch (error) {
             console.error('Error creating post:', error);
         }
@@ -390,4 +390,4 @@ const GuidePost = () => {
     );
 };
 
-export default GuidePost;
+export default ProductPost;
