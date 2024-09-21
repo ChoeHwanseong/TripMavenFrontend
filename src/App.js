@@ -46,6 +46,16 @@ import FaceRecognitionApp from './pages/aiservicepage/webrecord/FaceRecognitionA
 import RoleBasedRoute from './components/RoleBasedRoute';
 
 
+import GuideMyPageLike from './pages/guidemypage/guidemypagelike/GuideMyPageLike';
+import NotFoundPage from './pages/error/NotFoundPage';
+import Error403Page from './pages/error/Error403Page';
+import Error500Page from './pages/error/Error500Page';
+import MaintenancePage from './pages/error/MaintenancePage';
+
+
+
+
+
 
 
 function App() {
@@ -106,6 +116,10 @@ function App() {
 
         <Route path='/faceRecognitionApp' element={<FaceRecognitionApp />} /> {/* 테스트용 */}
 
+        <Route path='/*' element={<NotFoundPage />} /> {/* 존재하지 않는 모든 경로 */}
+        <Route path='/Error403Page' element={<Error403Page />} />
+        <Route path='/Error500Page' element={<Error500Page />} />
+        <Route path='/MaintenancePage' element={<MaintenancePage />} />
       </Route>
     </Routes>
   </>

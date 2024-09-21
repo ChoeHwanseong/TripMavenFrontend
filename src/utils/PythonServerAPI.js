@@ -68,11 +68,11 @@ export const videoFace = async(formData)=>{
   }
 }
 
-//음성+텍스트 평가
+//음성+텍스트 평가(음성 평가는 이걸로 다 함)
 //voice 음성데이터, gender , text
 export const evaluateVoiceAndText = async (formData) => {
   try {
-      const response = await axios.post(`${baseUrl}/analysis`, formData, {
+      const response = await axios.post(`${baseUrl}/voice`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -87,7 +87,7 @@ export const evaluateVoiceAndText = async (formData) => {
     }
 };
 
-//발음 평가
+//발음 평가(이거 쓰지 마셈)
 //voice 음성데이터, text
 export const evaluatePronunciation = async (formData) => {
   try {
