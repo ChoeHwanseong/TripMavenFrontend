@@ -6,22 +6,26 @@ import styles from '../../styles/mypage/MyProfile.module.css';
 import defaultImage from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
 import DaumPost, { splitByblank} from '../../api/DaumPostApi';
+import { useLocation } from 'react-router-dom';
 
 const MypageUpdate = () => {
   const template = useContext(TemplateContext);
-  const [town,area] = splitByblank(template.memberInfo.address);
-  const [profileImage, setProfileImage] = useState(template.memberInfo.profile); // 프로필 이미지 상태 추가
+  const location = useLocation();
+  const { userInfo } = location.state || template.memberInfo;
+  console.log(userInfo)
+  const [town,area] = splitByblank(userInfo.address);
+  const [profileImage, setProfileImage] = useState(userInfo.profile); // 프로필 이미지 상태 추가
   const [townAddress, setTownAddress] = useState(town);
   const [areaAddress, setAreaAddress] = useState(area);
 
   // 각 텍스트 필드와 파일 입력에 대한 ref 생성
-  const nameRef = useRef(template.memberInfo.name);
-  const telNumberRef = useRef(template.memberInfo.telNumber);
-  const genderRef = useRef(template.memberInfo.gender);
-  const birthdayRef = useRef(template.memberInfo.birthday);
-  const introduceRef = useRef(template.memberInfo.introduce);
-  const profileImageRef = useRef(template.memberInfo.profile); 
-  const interCityRef = useRef(template.memberInfo.interCity)
+  const nameRef = useRef(userInfo.name);
+  const telNumberRef = useRef(userInfo.telNumber);
+  const genderRef = useRef(userInfo.gender);
+  const birthdayRef = useRef(userInfo.birthday);
+  const introduceRef = useRef(userInfo.introduce);
+  const profileImageRef = useRef(userInfo.profile); 
+  const interCityRef = useRef(userInfo.interCity)
 
   if (!template.memberInfo) {
     return (
@@ -48,7 +52,7 @@ const MypageUpdate = () => {
         alert('이미지 파일만 업로드할 수 있습니다.');
       }
     } else {
-      setProfileImage(template.memberInfo.profile || defaultImage); // 파일이 선택되지 않은 경우 기본 이미지 설정
+      setProfileImage(userInfo.profile || defaultImage); // 파일이 선택되지 않은 경우 기본 이미지 설정
     }
   };
 
@@ -60,15 +64,15 @@ const MypageUpdate = () => {
       'telNumber': telNumberRef.current.value,
       'gender': genderRef.current.value,
       'birthday': birthdayRef.current.value,
-      'address': `${areaAddress} 　 ${townAddress}`,
+      'address': `${areaAddress}　${townAddress}`,
       'interCity': interCityRef.current.value,
       'profile': profileImage,
       'introduce': introduceRef.current.value,
     }
-    updateProfile(template.memberInfo.id, updateData)
+    updateProfile(userInfo.id, updateData)
       .then(() => {
         alert('변경이 완료되었습니다.');
-        window.location.href = `http://localhost:58337/mypage/${template.memberInfo.id}`;
+        window.location.href = `http://localhost:58337/mypage/${userInfo.id}`;
       })
       .catch(() => alert('변경이 실패되었습니다.'));
   };
@@ -86,29 +90,29 @@ const MypageUpdate = () => {
             <input type="file" hidden ref={profileImageRef} onChange={previewImage} accept="image/*" />
           </Button>
           <Typography variant="h5" fontWeight="bold">
-            {template.memberInfo.email || '아이디 없음'}
+            {userInfo.email || '아이디 없음'}
           </Typography>
         </Box>
         {/* 프로필 이미지 아래에 텍스트 박스들 배치 */}
         <Box className={styles.texts}>
           <Box className={styles.formGroup}>
             <TextField required id="filled-required" label="name" variant="filled" fullWidth
-              inputRef={nameRef} defaultValue={template.memberInfo.name || ''} />
-            <TextField label="PHONE-NUMBER" type="number" variant="filled" fullWidth
-              inputRef={telNumberRef} defaultValue={template.memberInfo.telNumber || ''} />
+              inputRef={nameRef} defaultValue={userInfo.name || ''} />
+            <TextField label="PHONE-NUMBER" type="tel" variant="filled" fullWidth
+              inputRef={telNumberRef} defaultValue={userInfo.telNumber || ''} />
             <Box sx={{ display: 'flex', gap: 2 }}>
               <TextField select label="GENDER" variant="filled" fullWidth
-                inputRef={genderRef} defaultValue={template.memberInfo.gender || ''}>
+                inputRef={genderRef} defaultValue={userInfo.gender || ''}>
                 {/* MenuItem으로 선택지 구성 */}
                 <MenuItem value="male">Male</MenuItem>
                 <MenuItem value="female">Female</MenuItem>
               </TextField>
               <TextField label="BIRTHDAY" type="date" variant="filled" fullWidth
-                inputRef={birthdayRef} defaultValue={template.memberInfo.birthday || ''}
+                inputRef={birthdayRef} defaultValue={userInfo.birthday || ''}
                 InputLabelProps={{ shrink: true, }} />
             </Box>
             <TextField select label="INTERCITY" variant="filled" fullWidth
-              inputRef={interCityRef} defaultValue={template.memberInfo.interCity || ''}>
+              inputRef={interCityRef} defaultValue={userInfo.interCity || ''}>
               {/* MenuItem으로 선택지 구성 */}
               <MenuItem value="">관심 지역을 선택하세요</MenuItem>
               <MenuItem value="seoul">서울</MenuItem>
@@ -140,7 +144,7 @@ const MypageUpdate = () => {
                 value={townAddress} onChange={(e)=>setTownAddress(e.target.value)}/>
             <Grid item xs={12} md={6}>
               <TextField fullWidth label="자기소개" variant="filled" multiline rows={8}
-                inputRef={introduceRef} defaultValue={template.memberInfo.introduce} />
+                inputRef={introduceRef} defaultValue={userInfo.introduce} />
             </Grid>
           </Box>
         </Box>

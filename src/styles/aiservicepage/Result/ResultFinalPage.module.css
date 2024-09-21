@@ -1,0 +1,148 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.mainResult {
+  width: 100%;
+  border: 2px dotted #007bff;
+  border-radius: 10px;
+  position: relative;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.1);
+}
+
+.titleContainer {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  padding: 5px 20px;
+  border: 3px solid #007bff;
+  border-radius: 30px;
+}
+
+.title {
+  color: #007bff;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.resultSection {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.resultBox {
+  width: 100%;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.resultTitle {
+  font-weight: bold;
+  color: white;
+  background-color: #003366;
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.resultTitleKeyword {
+    font-weight: bold;
+    color: white;
+    background-color: #007BFF;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid #ddd;
+  }
+
+.resultTextKeyword {
+    background-color: white;
+    padding: 20px;
+    border-radius: 0 0 10px 10px;
+    height: 150px;
+    border-top: none;
+    border: 3px solid #d1e7fd;
+  }
+
+.resultText {
+  background-color: white;
+  padding: 20px;
+  border-radius: 0 0 10px 10px;
+  height: 150px;
+  border-top: none;
+  border: 3px solid #eaf1ff;
+}
+
+.keywordSection {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.keywordButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #5a69f7;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.testResult {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.testBox {
+  width: 48%;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+
+.testTitle {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  background-color: #ddd;
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+}
+
+.resultContent {
+  margin-bottom: 20px;
+}
+
+.detailButton {
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+}

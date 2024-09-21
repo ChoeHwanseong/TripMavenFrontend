@@ -42,17 +42,8 @@ import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
 import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
 import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
 import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
-import FaceRecognitionApp from './pages/aiservicepage/webrecord/FaceRecognitionApp';
-import RoleBasedRoute from './components/RoleBasedRoute';
-
-import NotFoundPage from './pages/error/NotFoundPage';
-import Error403Page from './pages/error/Error403Page';
-import Error500Page from './pages/error/Error500Page';
-import MaintenancePage from './pages/error/MaintenancePage';
-
-
-
-
+import ResultFinalPage from './pages/aiservicepage/Result/ResultFinalPage';
+import ResultFirstPage from './pages/aiservicepage/Result/ResultFirstPage';
 
 
 
@@ -69,17 +60,27 @@ function App() {
           {/* MYPAGE */}
           <Route path='/mypage/*' element={<MyPageRoutes />} />
           {/* USER */}
-          <Route path='/userreview' element={<RoleBasedRoute element={<UserReview />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
-          <Route path='/reviewdetails/:id' element={<RoleBasedRoute element={<ReviewDetails />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
-          <Route path='/reviewDetailsUpdate/:id' element={<RoleBasedRoute element={<ReviewDetailsUpdate />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
-          <Route path='/userlike' element={<RoleBasedRoute element={<UserLike />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
-          <Route path='/bigchat/:id' element={<RoleBasedRoute element={<BigChat />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
-          <Route path='/chattingRoom' element={<RoleBasedRoute element={<ChattingRoom />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
-          <Route path='/askPost/:id' element={<RoleBasedRoute element={<AskPost />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
-          <Route path='/askupdate/:id' element={<RoleBasedRoute element={<AskUpdate />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
+          <Route path='/userreview' element={<UserReview />} />
+          <Route path='/reviewdetails/:id' element={<ReviewDetails />} />
+          <Route path='/reviewDetailsUpdate/:id' element={<ReviewDetailsUpdate />} />
+          {/*<Route path='/userask' element={<UserAsk/>}/>*/}
+          <Route path='/userlike' element={<UserLike />} />
+          {/*<Route path='/useraskpage' element={<UserAskPage/>}/>*/}
+          {/* 
+          <Route path='/bigChat' element={<BigChat />} />*/}
+          {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
+          <Route path='/bigchat/:id' element={<BigChat />} />
+          <Route path='/chattingRoom' element={<ChattingRoom />} />
+          <Route path='/chattingRoom' element={<ChattingRoom />} />
 
+          {/*<Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />*/}
+    
+          <Route path='/askupdate/:id' element={<AskUpdate />} />
+
+          {/* 실전 테스트 결과 페이지 라우팅 */}
+          <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
+          <Route path='/resultFirstPage/:id' element={<ResultFirstPage />} />
         </Route>
-        <Route path='/productPost/:id' element={<ProductPost />} />
         <Route path='/videoAppUpload' element={<VideoAppUpload />} />
         <Route path="/cs" element={<CSBoard />} />
         <Route path="/siteinfo" element={<SiteIntroduction />} />
@@ -106,18 +107,13 @@ function App() {
         <Route path='/test' element={<DeviceCheckComponent2 />} />
 
         <Route path='/realTestPage/:id' element={<RealTestPage />} />
-        <Route path='/realTestResult' element={<RealTestResult />} />
+        <Route path='/realTestResult/:id' element={<RealTestResult />} />
         <Route path='/productComponent' element={<ProductComponent />} />
 
         <Route path='/juwontest' element={<ScreenRecorderApp />} />
+        <Route path='/lgmtest1' element={<VideoAppUpload />} />{/* 테스트 */}
 
-
-        <Route path='/faceRecognitionApp' element={<FaceRecognitionApp />} /> {/* 테스트용 */}
-
-        <Route path='/*' element={<NotFoundPage />} /> {/* 존재하지 않는 모든 경로 */}
-        <Route path='/Error403Page' element={<Error403Page />} />
-        <Route path='/Error500Page' element={<Error500Page />} />
-        <Route path='/MaintenancePage' element={<MaintenancePage />} />
+        
       </Route>
     </Routes>
   </>

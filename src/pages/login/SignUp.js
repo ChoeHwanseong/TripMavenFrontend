@@ -109,13 +109,13 @@ const Signup = () => {
 
         setResendCooldown(true);  // 타이머 즉시 시작
         setTimer(60);  // 타이머를 60초로 설정
-        console.log("타이머 시작.");
+        //console.log("타이머 시작.");
 
         try {
             console.log("이메일 전송 시도");
             await sendEmailCode(email.value);  // 이메일 전송 API 호출
             setEmailCodeSent(true);  // 이메일 전송 성공 상태 설정
-            console.log("이메일 전송 성공");
+            //console.log("이메일 전송 성공");
         } catch (error) {
             console.error('이메일 전송 중 오류가 발생했습니다:', error);
             alert('이메일 전송 중 오류가 발생했습니다. 다시 시도해주세요.');
@@ -224,7 +224,7 @@ const Signup = () => {
                 interCity: region.value,
                 gender: gender.value,
                 birthday: birthday.value,
-                address: `${areaAddress} 　 ${townAddress}`,
+                address: `${areaAddress}　${townAddress}`,
                 loginType: 'local'
             };
             SignUp(form);  // memberData.js의 SignUp 함수 호출
