@@ -69,9 +69,7 @@ const ProductBoard = () => {
             setHasMore(true);
             await fetchMoreData();
         };
-
         resetAndFetch();
-
     }, [location.search]);
 
     // inView 상태가 변경될 때마다 데이터를 더 가져옴

@@ -10,16 +10,14 @@ import MyPageRoutes from './pages/mypage/MyPageRoutes';
 import MyPageTemplate from './pages/mypage/MyPageTemplate';
 import UserReview from './pages/mypage/usermypage/UserReview';
 import UserLike from './pages/mypage/usermypage/UserLike';
-import ProductPost from './pages/productPage/ProductPost';
 
-import AskPost from './pages/askpage/AskPost';
 import AskUpdate from './pages/askpage/AskUpdate';
 import CSBoard from './pages/csboard/CSBoard';
 import TermsService from './pages/infopage/TermsService';
 import RegisterGuide from './pages/registerguidepage/RegisterGuide';
 import SiteIntroduction from './pages/infopage/SiteInfo';
 import FAQ from './pages/csboard/FAQ';
-import ComplaintForm from './pages/report/ComplaintForm';
+
 import ProductBoard from './pages/productPage/ProductBoard';
 import BigChat from './pages/chat/BigChat';
 import ChattingRoom from './pages/chat/ChattingRoom';
@@ -100,7 +98,6 @@ function App() {
         <Route path='/postDetails/:id' element={<PostDetails />} />
 
         <Route path='/termsservice' element={<TermsService />} />
-        <Route path='/adminreport' element={<ComplaintForm />} />
 
         <Route path='/record' element={<WebcamRecorder />} />
         <Route path='/recordcheck' element={<DeviceCheckComponent />} />

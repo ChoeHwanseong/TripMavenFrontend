@@ -4,7 +4,7 @@ import { postGetById } from '../../utils/postData';
 import { reportPost } from '../../utils/reportData';
 import Loading from '../../components/LoadingPage';
 
-const ComplaintModal = ({ onClose, onSubmit, id }) => {
+const ComplaintModal = ({ onClose, id }) => {
 
   // 평가항목 state
   const [attitude, setAttitude] = useState(null);
@@ -74,7 +74,7 @@ const ComplaintModal = ({ onClose, onSubmit, id }) => {
         comments: additionalComments,
       };
 
-      console.log('complaintData: ', complaintData);
+      //console.log('complaintData: ', complaintData);
 
       await reportPost(complaintData);
 

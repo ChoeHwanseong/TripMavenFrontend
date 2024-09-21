@@ -14,8 +14,9 @@ import { fetchFiles } from '../../utils/fileData';
 import ProfileCardModal from './GuideProfileModal';
 import { chattingRoomData } from '../../utils/chatData';
 import ImageSlider from '../../api/ImageSlider';
-import ReviewList from '../guidemypage/guidepost/ReviewList';
+import ReviewList from './ReviewList';
 import Loading from '../../components/LoadingPage';
+import { findByProductId } from '../../utils/reportData';
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -28,7 +29,8 @@ const PostDetails = () => {
   const { id, keyword } = useParams();
   const contentRef = useRef(null);
   const [isExpanded, setIsExpanded] = useState(false);
-
+  const [isReport, SetIsReport] = useState(false);
+  const [reportdata, SetReportData] = useState([]);
   const membersId = localStorage.getItem('membersId');
 
   // 내용 더보기 버튼
@@ -39,11 +41,10 @@ const PostDetails = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        console.log('포스트 디테일 들어옴');
         const fetchedData = await postGetById(id);
-        console.log('fetchedData: ', fetchedData);
+        const fetchReport = await findByProductId(id);
+        SetReportData(fetchReport);
         setData(fetchedData);
-
         const isLikey = fetchedData.likey.find(like => like.member.id == membersId);
         setLiked(isLikey ? true : false);
       } catch (error) {
@@ -54,18 +55,28 @@ const PostDetails = () => {
     const getFiles = async () => {
       try {
         const fileData = await fetchFiles(id);
-        console.log('fileData: ', fileData);
+        //console.log('fileData: ', fileData);
         setFileUrls(fileData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
-
     getData();
     getFiles();
 
   }, [liked, id, membersId]);
+
+  useEffect(() => {
+    console.log('reportdata: ', reportdata);
+    console.log('isReport: ', isReport);
+    if (reportdata.length > 0) {
+      reportdata.forEach(report => {
+        if (report.member.id == membersId) {
+          SetIsReport(true);
+        }
+      });
+    }
+  }, [reportdata, membersId, isReport]); // reportdata가 변경될 때만 실행
 
   const handleLike = async () => {
     if (!liked) {
@@ -90,6 +101,9 @@ const PostDetails = () => {
   };
 
   const openModal = () => {
+
+    //만약 신고했다면 다시 신고하지 않게 하기
+
     setComplaintId(id);
     setIsModalOpen(true);
   };
@@ -110,19 +124,12 @@ const PostDetails = () => {
   };
 
 
-
-  const handleSubmit = (complaintData) => {
-    console.log('Complaint submitted:', complaintData, 'for id:', complaintId);
-    closeModal();
-  };
-
   const handleClick = async () => {
-
     try {
       const myId = localStorage.getItem("membersId");
       const yourId = data.member.id;
       const roomId = await chattingRoomData(myId, yourId, id);
-      
+
       navigate(`/bigChat/${data.id}`);
 
     } catch (error) {
@@ -229,7 +236,7 @@ const PostDetails = () => {
           <span className={styles.likeCount}>{data.likey ? data.likey.length : '0'}</span>
         </button>
         <Button variant="text" color="secondary" onClick={openModal}>신고</Button>
-        {isModalOpen && <ComplaintModal onClose={closeModal} onSubmit={handleSubmit} id={id} />}
+        {isModalOpen && <ComplaintModal onClose={closeModal} id={id} />}
       </Box>
 
       <Box className={styles.shadowBox}>
@@ -277,13 +284,13 @@ const PostDetails = () => {
             <Typography variant="body2" color="textSecondary" sx={{ marginBottom: 2 }}>
               {data.hotelAd}
             </Typography>
-            <KakaoMap address={data.hotelAd == null ? data.hotel : data.hotelAd}/>
+            <KakaoMap address={data.hotelAd == null ? data.hotel : data.hotelAd} />
           </div>
         </Box>
       </Box>
 
       <Box className={styles.shadowBox}>
-        <ReviewList id={data.id}/>
+        <ReviewList id={data.id} />
       </Box>
 
       <Box className={styles.actions}>

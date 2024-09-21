@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar, Pagination } from '@mui/material';
-import { reportfetchAllData } from '../../../utils/reportfetchData';
+import { reportAllget } from '../../../utils/reportData';
 
 const AdminReport = () => {
   const [inquiries, setInquiries] = useState([]);
@@ -10,7 +10,7 @@ const AdminReport = () => {
   useEffect(() => {
     const getReportData = async () => {
       try {
-        const fetchedData = await reportfetchAllData();
+        const fetchedData = await reportAllget();
         setInquiries(fetchedData);
       } catch (error) {
         console.error('에러났당', error);

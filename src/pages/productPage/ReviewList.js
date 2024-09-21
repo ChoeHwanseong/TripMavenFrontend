@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../../../styles/guidemypage/giudePost/ReviewList.module.css';
+import styles from '../../styles/guidemypage/giudePost/ReviewList.module.css';
 import { Avatar } from '@mui/material';
 import { Star, StarHalf, StarBorder } from '@mui/icons-material';
-import { reviewGetByProductId } from '../../../utils/reviewData';
+import { reviewGetByProductId } from '../../utils/reviewData';
 
 const ReviewList = ({ id }) => {
   const [reviews, setReviews] = useState([]);
