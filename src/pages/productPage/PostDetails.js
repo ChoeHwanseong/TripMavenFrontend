@@ -14,7 +14,6 @@ import { fetchFiles } from '../../utils/fileData';
 import ProfileCardModal from './GuideProfileModal';
 import { chattingRoomData } from '../../utils/chatData';
 import ImageSlider from '../../api/ImageSlider';
-import { reviewGet } from '../../utils/reviewData';
 import ReviewList from '../guidemypage/guidepost/ReviewList';
 import Loading from '../../components/LoadingPage';
 

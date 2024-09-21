@@ -10,12 +10,11 @@ import RoleBasedRoute from "../../components/RoleBasedRoute";
 import GuideMyPageMyPost from "../guidemypage/GuideMyPageMyPost";
 import GuideMyPageAIService from "../guidemypage/guidemypageaiservice/GuideMyPageAIService";
 import ProductPost from "../productPage/ProductPost";
-import GuideMyPageLike from "../guidemypage/guidemypagelike/GuideMyPageLike";
 import { MypageContext } from "../../context/MypageContext";
 import { useEffect, useState } from "react";
 import { csAllget } from "../../utils/csData";
-import AskAll from "../askpage/AskAll";
 import AskDetailsView from "../askpage/AskDetailsView";
+import AskAll from "../askpage/AskAll";
 
 
 export default function MyPageRoutes() {
@@ -40,23 +39,19 @@ export default function MyPageRoutes() {
             <Routes>
                 <Route path="/:id" element={<RoleBasedRoute element={<MypageProfile />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
                 <Route path="/update/:id" element={<RoleBasedRoute element={<MypageUpdate />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
-                <Route path='/askall' element={<RoleBasedRoute element={<AskAll />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
                 <Route path='/askdetailsview/:id' element={<RoleBasedRoute element={<AskDetailsView />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
-                
+                <Route path='/PostDetails/:id' element={<RoleBasedRoute element={<PostDetails />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
+                <Route path='/askall' element={<RoleBasedRoute element={<AskAll />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
+
                 {/* GUIDE */}
                 <Route path='/guide/Post/:id' element={<RoleBasedRoute element={<ProductPost />} requiredRole={["GUIDE", "ADMIN"]} />} />
-                <Route path='/guide/PostDetails/:id' element={<RoleBasedRoute element={<PostDetails />} requiredRole={["GUIDE", "ADMIN"]} />} />
                 <Route path='/guide/post' element={<RoleBasedRoute element={<GuideMyPageMyPost />} requiredRole={["GUIDE", "ADMIN"]} />} />
                 <Route path='/guide/aiservice' element={<RoleBasedRoute element={<GuideMyPageAIService />} requiredRole={["GUIDE", "ADMIN"]} />} />
-
-                {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함 */}
-                <Route path='/guide/like' element={<RoleBasedRoute element={<GuideMyPageLike />} requiredRole={["GUIDE", "ADMIN"]} />} />
 
                 {/* ADMIN */}
                 <Route path='/admin/report' element={<RoleBasedRoute element={<AdminReport />} requiredRole={["ADMIN"]} />} />
                 <Route path='/admin/memberlist' element={<RoleBasedRoute element={<MemberList />} requiredRole={["ADMIN"]} />} />
                 <Route path='/admin/Answer/:id' element={<RoleBasedRoute element={<AdminAnswer />} requiredRole={["ADMIN"]} />} />
-
 
                 <Route path="*" element={<Navigate to="/" replace={true} />} />
             </Routes>

@@ -31,7 +31,7 @@ const GuideMyPageMyPost = () => {
   }, [membersId]);
 
   const handleClick = (post) => {
-    navigate(`/mypage/guide/PostDetails/${post.id}`, { state: post });
+    navigate(`/mypage/PostDetails/${post.id}`, { state: post });
   };
 
   const handleChangePage = (event, newPage) => {

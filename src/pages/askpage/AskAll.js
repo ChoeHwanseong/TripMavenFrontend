@@ -12,6 +12,8 @@ const AskAll = () => {
   const { inquiries, totalPages } = useContext(MypageContext);
   const { memberInfo } = useContext(TemplateContext);
   const [inquery, setInquiry] = useState([]);
+  const [sortOrder, setSortOrder] = useState('latest'); // 정렬 기준 관리
+  const [sortedProducts, setSortedProducts] = useState([]); // 정렬된 상품 목록을 관리하는 상태 변수
 
   useEffect(() => {
     setInquiry(inquiries)
@@ -21,12 +23,22 @@ const AskAll = () => {
     }
   }, [inquiries, memberInfo.id]);
 
+  useEffect(() => {
+    const sorted = [...inquery].sort((a, b) => {
+      if (sortOrder === 'latest') {
+        return new Date(b.createdAt) - new Date(a.createdAt); // 최근 순
+      } else {
+        return new Date(a.createdAt) - new Date(b.createdAt); // 오래된 순
+      }
+    });
+    setSortedProducts(sorted);
+  }, [sortOrder, inquery]);
 
   const handleClick = (inquiry) => {
     navigate(`/mypage/askdetailsview/${inquiry.id}`);
   };
 
-  const paginatedInquiries = inquery.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const paginatedInquiries = sortedProducts.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   const handlePageChange = (event, value) => { setPage(value); };
 
@@ -36,7 +48,6 @@ const AskAll = () => {
 
 
 
-  console.log(memberInfo.role != 'ADMIN')
 
   return (
     <Box sx={{ maxWidth: 1200, mx: 'auto', p: 3.5 }}>
@@ -44,14 +55,24 @@ const AskAll = () => {
         <Typography style={{ fontWeight: 'bold', marginLeft: '-15px' }} variant="h4">
           문의 내역
         </Typography>
-        {memberInfo.role != 'ADMIN' ?
-          <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}
-            onClick={() => navigate(`/askpost/${memberInfo.id}`)}> 문의 하기 </Button>
-          :
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar src={memberInfo.profile} sx={{ width: 32, height: 32, mr: 2 }} />
-            <Typography>관리자</Typography>
-          </Box>}
+        <div className='d-flex'>
+          <select className='me-4'
+            style={{ padding: '10px', border: '1px solid #ccc', borderRadius: '5px', fontSize: '16px', marginRight: '10px' }}
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)} >
+            <option value="latest">최근 순</option>
+            <option value="oldest">오래된 순</option>
+          </select>
+
+          {memberInfo.role != 'ADMIN' ?
+            <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}
+              onClick={() => navigate(`/askpost/${memberInfo.id}`)}> 문의 하기 </Button>
+            :
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Avatar src={memberInfo.profile} sx={{ width: 32, height: 32, mr: 2 }} />
+              <Typography>관리자</Typography>
+            </Box>}
+        </div>
       </Box>
       {memberInfo.role != 'ADMIN' ?
         <TableContainer component={Paper}>

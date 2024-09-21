@@ -10,25 +10,22 @@ const UserLike = () => {
   const navigate = useNavigate();
   const membersId = localStorage.getItem('membersId');
   const [products, setProducts] = useState([]); // 상품 목록을 관리하는 상태 변수
-  const [sortedProducts, setSortedProducts] = useState([]); // 정렬된 상품 목록을 관리하는 상태 변수
   const [loading, setLoading] = useState(true); // 로딩 상태 관리
   const [hasMore, setHasMore] = useState(false); // 더 가져올 데이터가 있는지 여부
   const [sortOrder, setSortOrder] = useState('latest'); // 정렬 기준 관리
+  const [sortedProducts, setSortedProducts] = useState([]); // 정렬된 상품 목록을 관리하는 상태 변수
 
   useEffect(() => {
-    console.log('membersId: ', membersId);
-
+    
     const likeyList = async () => {
       setLoading(true); // 데이터 로딩 시작
       try {
         const likes = await getLikey(membersId);
-        console.log('likes: ', likes);
 
         // 내가 찜한 게시글 정보 가져오기
         const resultPosts = [];
         for (const like of likes) {
           const resultPost = await postGetById(like.productBoard.id);
-          console.log('게시글 가져오기 resultPost: ', resultPost);
           resultPosts.push(resultPost);
         }
 
@@ -37,13 +34,13 @@ const UserLike = () => {
           resultPosts.map(async (product) => {
             const file = product.files.split(',')[0];
             const image = await fetchFile(file, product.id);
-            console.log('게시글 파일 이미지 가져오기 image: ', image);
+            //console.log('게시글 파일 이미지 가져오기 image: ', image);
 
             // 해당 상품의 리뷰 데이터 조회
             let reviews = [];
             try {
               reviews = await reviewGetByProductId(product.id);
-              console.log('리뷰 데이터: ', reviews);
+              //console.log('리뷰 데이터: ', reviews);
             } catch (error) {
               console.error(`Error fetching reviews for product ID ${product.id}: `, error);
             }

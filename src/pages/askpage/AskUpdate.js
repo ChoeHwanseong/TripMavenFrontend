@@ -9,7 +9,6 @@ const AskUpdate = () => {
     const { id } = useParams();
     const [inquiry, setInquiry] = useState(null);
     const navigate = useNavigate();
-
     const titleRef = useRef(null);
     const contentRef = useRef(null);
 
