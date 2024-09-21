@@ -9,21 +9,10 @@ import LoginRoutes from './pages/login/LoginRoutes';
 import MyPageRoutes from './pages/mypage/MyPageRoutes';
 import MyPageTemplate from './pages/mypage/MyPageTemplate';
 import UserReview from './pages/mypage/usermypage/UserReview';
-
 import UserLike from './pages/mypage/usermypage/UserLike';
+import ProductPost from './pages/productPage/ProductPost';
 
-import GuidePost from './pages/guidemypage/GuidePost';
-import GuideMyPageMyPost from './pages/guidemypage/GuideMyPageMyPost';
-import GuideMyPageAIService from './pages/guidemypage/guidemypageaiservice/GuideMyPageAIService';
-
-
-import PaymentForm from './pages/payment/Payment';
-import OrderPopup from './pages/payment/PaymentProc';
-import PaymentConfirmation from './pages/payment/PaymentConfirm';
-
-import AskAll from './pages/askpage/AskAll';
-import AskDetails from './pages/askpage/Askdetails';
-import AskDetailsView from './pages/askpage/AskDetailsView';
+import AskPost from './pages/askpage/AskPost';
 import AskUpdate from './pages/askpage/AskUpdate';
 import CSBoard from './pages/csboard/CSBoard';
 import TermsService from './pages/infopage/TermsService';
@@ -32,10 +21,8 @@ import SiteIntroduction from './pages/infopage/SiteInfo';
 import FAQ from './pages/csboard/FAQ';
 import ComplaintForm from './pages/report/ComplaintForm';
 import ProductBoard from './pages/productPage/ProductBoard';
-
 import BigChat from './pages/chat/BigChat';
 import ChattingRoom from './pages/chat/ChattingRoom';
-
 import DeviceCheckComponent from './pages/aiservicepage/webrecord/DeviceCheckComponent';
 import WebcamRecorder from './pages/aiservicepage/webrecord/WebcamRecorder';
 import PrecautionsPage1 from './pages/aiservicepage/PrecautionsPage1';
@@ -53,11 +40,9 @@ import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
 import CombinedPage from './pages/aiservicepage/AIPage';
 import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
 import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
-import GuideAsk from './pages/guidemypage/GuideAsk';
 import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
 import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
-import ResultFirstPage from './pages/aiservicepage/Result/ResultFirstPage';
-import ResultFinalPage from './pages/aiservicepage/Result/ResultFinalPage';
+import FaceRecognitionApp from './pages/aiservicepage/webrecord/FaceRecognitionApp';
 
 
 
@@ -77,16 +62,6 @@ function App() {
         <Route element={<MyPageTemplate />}>
           {/* MYPAGE */}
           <Route path='/mypage/*' element={<MyPageRoutes />} />
-
-          {/* GUIDE */}
-          <Route path='/guidemypost' element={<GuideMyPageMyPost />} />
-          <Route path='/guidemypageaiservice' element={<GuideMyPageAIService />} />
-          <Route path="/guideAsk" element={<GuideAsk />} /> {/*수정중*/}
-          <Route path='/guidePost/:id' element={<GuidePost />} />
-          {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
-          <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
-           */}
-          
           {/* USER */}
           <Route path='/userreview' element={<UserReview />} />
           <Route path='/reviewdetails/:id' element={<ReviewDetails />} />
@@ -109,11 +84,8 @@ function App() {
           <Route path='/askdetails/:id' element={<AskDetails />} />
           <Route path='/askdetailsview/:id' element={<AskDetailsView />} />
           <Route path='/askupdate/:id' element={<AskUpdate />} />
-
-          <Route path='/resultFirstPage/:id' element={<ResultFirstPage />} />
-          <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
-        
         </Route>
+        <Route path='/videoAppUpload' element={<VideoAppUpload />} />
         <Route path="/cs" element={<CSBoard />} />
         <Route path="/siteinfo" element={<SiteIntroduction />} />
         <Route path="/faq" element={<FAQ />} />
@@ -134,9 +106,6 @@ function App() {
         <Route path='/termsservice' element={<TermsService />} />
         <Route path='/adminreport' element={<ComplaintForm />} />
 
-        <Route path='/paymentproc' element={<OrderPopup />} />
-        <Route path='/payment' element={<PaymentForm />} />
-        <Route path='/paymentconfirm' element={<PaymentConfirmation />} />
         <Route path='/record' element={<WebcamRecorder />} />
         <Route path='/recordcheck' element={<DeviceCheckComponent />} />
         <Route path='/test' element={<DeviceCheckComponent2 />} />
@@ -148,6 +117,10 @@ function App() {
         <Route path='/juwontest' element={<ScreenRecorderApp />} />
         <Route path='/lgmtest1' element={<VideoAppUpload />} />{/* 테스트 */}
 
+        <Route path='/*' element={<NotFoundPage />} /> {/* 존재하지 않는 모든 경로 */}
+        <Route path='/Error403Page' element={<Error403Page />} />
+        <Route path='/Error500Page' element={<Error500Page />} />
+        <Route path='/MaintenancePage' element={<MaintenancePage />} />
       </Route>
     </Routes>
   </>

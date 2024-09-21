@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper, Pagination } from '@mui/material';
 import { postGetByEmail } from '../../utils/postData';
 import { fetchedData } from '../../utils/memberData';
+import Loading from '../../components/LoadingPage';
 
 const GuideMyPageMyPost = () => {
   const [posts, setPosts] = useState(null);
@@ -30,7 +31,7 @@ const GuideMyPageMyPost = () => {
   }, [membersId]);
 
   const handleClick = (post) => {
-    navigate(`/mypage/guide/PostDetails/${post.id}`, { state: post });
+    navigate(`/mypage/PostDetails/${post.id}`, { state: post });
   };
 
   const handleChangePage = (event, newPage) => {
@@ -38,7 +39,7 @@ const GuideMyPageMyPost = () => {
   };
 
   if (!posts) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
 
   // Pagination
@@ -55,7 +56,7 @@ const GuideMyPageMyPost = () => {
         <Button
           variant="contained"
           sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}
-          onClick={() => navigate(`/guidePost/${membersId}`)}
+          onClick={() => navigate(`/mypage/guide/post/${membersId}`)}
         >
           게시물 등록 하기
         </Button>

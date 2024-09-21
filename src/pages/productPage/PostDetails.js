@@ -14,8 +14,8 @@ import { fetchFiles } from '../../utils/fileData';
 import ProfileCardModal from './GuideProfileModal';
 import { chattingRoomData } from '../../utils/chatData';
 import ImageSlider from '../../api/ImageSlider';
-import { reviewGet } from '../../utils/reviewData';
 import ReviewList from '../guidemypage/guidepost/ReviewList';
+import Loading from '../../components/LoadingPage';
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -82,7 +82,7 @@ const PostDetails = () => {
     if (confirmed) {
       try {
         await postDelete(id);
-        navigate('/guidemypost');
+        navigate('/mypage/guide/post');
       } catch (error) {
         console.error('삭제 중 오류 발생:', error);
       }
@@ -121,8 +121,8 @@ const PostDetails = () => {
     try {
       const myId = localStorage.getItem("membersId");
       const yourId = data.member.id;
-      const roomId = await chattingRoomData(myId, yourId);
-
+      const roomId = await chattingRoomData(myId, yourId, id);
+      
       navigate(`/bigChat/${data.id}`);
 
     } catch (error) {
@@ -132,7 +132,7 @@ const PostDetails = () => {
   };
 
   if (!data) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
 
   return (

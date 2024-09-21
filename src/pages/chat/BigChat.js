@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import mqtt from 'mqtt';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from '../../styles/chat/BigChat.module.css';
 import ChattingRoom from './ChattingRoom';
 import { chattingListYourData, getMessages, submitMessage } from '../../utils/chatData';
 import defaultImage from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
 import { ElevatorSharp } from '@mui/icons-material';
+import ImageModal from './ImageModal'; // ImageModal 컴포넌트 가져오기
 
 function BigChat() {
   const { id } = useParams(); // URL 파라미터로 받은 채팅방 ID
@@ -19,14 +20,28 @@ function BigChat() {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const template = useContext(TemplateContext);
-  const profileImageRef = useRef(null); 
-  const [selectedFile, setSelectedFile] = useState(null); 
+  const profileImageRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImageUrl, setModalImageUrl] = useState(null);
 
   
+  const openModal = (imageUrl) => {
+    setModalImageUrl(imageUrl);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalImageUrl(null);
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
-  
+
+
 
   // 채팅방 목록 데이터 가져와서 상태에 저장하는 함수
   const getData = async () => {
@@ -67,7 +82,7 @@ function BigChat() {
       await fetchChatRoomsMessages(list_);
 
       // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
-      const mqttClient = mqtt.connect('ws://121.133.84.38:1884',{
+      const mqttClient = mqtt.connect('ws://121.133.84.38:1884', {
         reconnectPeriod: 1000,
       }); // MQTT 브로커에 연결
 
@@ -80,29 +95,29 @@ function BigChat() {
         console.error('Connection error:', err);
       });
 
-        // 메시지 수신 설정
-        mqttClient.on('message', (topic, message) => {
-          const parsedMessage = JSON.parse(message.toString());
-          const { text, sender, timestamp, file } = parsedMessage; // file 추가
+      // 메시지 수신 설정
+      mqttClient.on('message', (topic, message) => {
+        const parsedMessage = JSON.parse(message.toString());
+        const { text, sender, timestamp, file } = parsedMessage; // file 추가
 
-          try {
-            setChatMessages((prevMessages) => ({
-              ...prevMessages,
-              [topic]: [
-                ...(prevMessages[topic] || []),
-                {
-                  sender: sender,
-                  text,
-                  timestamp: new Date(timestamp).toISOString(),
-                  file, 
-                  chattingRoomId: topic
-                },
-              ]
-            }));
-          } catch (error) {
-            console.error('Error parsing message:', error);
-          }
-        });
+        try {
+          setChatMessages((prevMessages) => ({
+            ...prevMessages,
+            [topic]: [
+              ...(prevMessages[topic] || []),
+              {
+                sender: sender,
+                text,
+                timestamp: new Date(timestamp).toISOString(),
+                file,
+                chattingRoomId: topic
+              },
+            ]
+          }));
+        } catch (error) {
+          console.error('Error parsing message:', error);
+        }
+      });
 
       if (id) {
         for (let joinChat of list_) {
@@ -121,25 +136,10 @@ function BigChat() {
       }
 
       // 클라이언트를 상태로 설정
-      setClient(mqttClient);      
+      setClient(mqttClient);
     };
 
     setMQTT();
-    
-      // console.log('클라이언트 있따');
-      // const joinChat = list_.find(ele => location.pathname.includes(`${ele.chattingRoom.id}`));
-      // //console.log(id);
-      // if(client){
-      //   client.subscribe(id, (err) => {
-      //     if (!err) {
-      //       console.log(id, 'Subscribed to topic');
-      //     } else {
-      //       console.error('Subscription error:', err);
-      //     }
-      //   });
-      //   setSelectedUser(joinChat);
-      //   fetchChatMessages(joinChat.chattingRoom.id);
-    
 
     // 컴포넌트 언마운트 시 클라이언트 종료
     return () => {
@@ -155,13 +155,17 @@ function BigChat() {
 
   // 메시지 보내기 설정
   const sendMessage = async (text, fileBase64) => {
+    if (!selectedUser || !selectedUser.chattingRoom) {
+      alert("채팅방을 선택하세요.");
+      return;
+    }
     if (client && isConnected) {
 
-      const base64 = fileBase64 ? fileBase64.replace('\"','') : '';
+      const base64 = fileBase64 ? fileBase64.replace('\"', '') : '';
       console.log(base64);
-      const text1 = base64?base64:text;
+      const text1 = base64 ? base64 : text;
       const message = {
-        text:text1,
+        text: text1,
         sender: localStorage.getItem('membersId'),
         timestamp: new Date(),
       };
@@ -182,21 +186,23 @@ function BigChat() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedFile(reader.result); 
+        setSelectedFile(reader.result);
+        sendMessage("",reader.result);
       };
       reader.readAsDataURL(file);
     }
+
   };
 
   const handleSendClick = () => {
     const input = document.querySelector("#chatInput");
     const text = input.value.trim();
-    
-    if (text || selectedFile) { 
+
+    if (text || selectedFile) {
       sendMessage(text, selectedFile);
       input.value = '';
       inputRef.current.focus();
-      setSelectedFile(null); 
+      setSelectedFile(null);
     }
   };
 
@@ -236,45 +242,69 @@ function BigChat() {
 
   return (
     <div className={styles.pageBorder}>
-    <div className={styles.container}>
-      
-      <ChattingRoom setSelectedUser={setSelectedUser} loading={loading} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages} chatMessages={chatMessages} id={id} />
-        
+      <div className={styles.container}>
+
+        <ChattingRoom setSelectedUser={setSelectedUser} loading={loading} data={data} client={client} setChatMessages={setChatMessages} fetchChatMessages={fetchChatMessages} chatMessages={chatMessages} id={id} />
+
         <div className={styles.chatSection}>
           <div className={styles.chatHeader}>
             <h2 className={styles.chatName2}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
+            {selectedUser && selectedUser.chattingRoom.productBoard.member.id !== template.memberInfo.id && (
+              <div>
+                <button className={styles.reviewButton} onClick={() => navigate(`/reviewdetails/${selectedUser.chattingRoom.productBoard.id}`)}>
+                  리뷰 작성 </button>
+                <button className={styles.reviewButton} onClick={() => navigate(`/mypage/postDetails/${selectedUser.chattingRoom.productBoard.id}`)}>
+                  게시글 보러가기 </button>
+              </div>
+            )}
           </div>
 
           <div className={styles.chatMessages}>
             {(chatMessages[selectedUser?.chattingRoom.id] || []).map((msg, index) => (
               <div className={styles.messageNTime} key={index}>
-                <div
-                  className={`${styles.message} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}
-                >
+              <div
+                className={`${styles.message} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}
+              >
+       
+                <div className={styles.profileAndName}>
                   <img
                     src={
-                      msg.sender.toString() === localStorage.getItem('membersId') ?
-                        template.memberInfo.profile ? template.memberInfo.profile : defaultImage : //보내는 사람
-                        selectedUser.member.profile ? selectedUser.member.profile : defaultImage} //받는 사람
+                      msg.sender.toString() === localStorage.getItem('membersId') 
+                        ? (template.memberInfo.profile ? template.memberInfo.profile : defaultImage)  
+                        : (selectedUser.member.profile ? selectedUser.member.profile : defaultImage) 
+                    }
                     alt="profile"
                     className={styles.profileImage}
                   />
-                  <div className={styles.messageBubble}>
-                  {!msg.text.startsWith('data:image') && <span>{msg.text}</span>}
-                  {msg.text.startsWith('data:image') && (
-                    <img 
-                      src={msg.text} 
-                      alt="uploaded" 
-                      className={styles.uploadedImage}                
-                    />
-                  )}
+                  <div className={styles.chatMember}>
+                    {msg.sender.toString() === localStorage.getItem('membersId') ? '' : selectedUser.member.name}
                   </div>
-                  <span className={`${styles.messageTime} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}>
-                  {(new Date(msg.timestamp).toLocaleDateString() === new Date().toLocaleDateString() ? '' : new Date(msg.timestamp).toLocaleDateString())}
-                  {new Date(msg.timestamp).toLocaleTimeString()}
-                </span>
                 </div>
-                
+            
+                <div className={`${styles.messageContent} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}>
+                  <div>
+                  <div className={styles.messageBubble}>
+                    {!msg.text.startsWith('data:image') && <div className={styles.messageText}>{msg.text}</div>}
+                    {msg.text.startsWith('data:image') && (
+                      <div className={styles.messageImage} onClick={() => openModal(msg.text)}>
+                        <img
+                          src={msg.text}
+                          alt="uploaded"
+                          className={styles.uploadedImage}
+                        />
+                      </div>
+                    )}
+                  </div>
+                  </div>
+               
+                  <span className={`${styles.messageTime} ${msg.sender.toString() === localStorage.getItem('membersId') ? styles.sent : ''}`}>
+                    {new Date(msg.timestamp).toLocaleDateString([], { year: undefined }) === new Date().toLocaleDateString() 
+                      ? '' 
+                      : new Date(msg.timestamp).toLocaleDateString([], { year: undefined, month: '2-digit', day: '2-digit' })}
+                    {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+                </div>
               </div>
             ))}
             <div ref={messagesEndRef} />
@@ -287,17 +317,17 @@ function BigChat() {
               id="chatInput"
               placeholder="입력해주세요"
               onKeyDown={handleKeyDown}
-              ref={inputRef} 
+              ref={inputRef}
             />
 
-            <input 
-              className={styles.attachmentButton} 
-              type="file" 
-              ref={profileImageRef} 
-              onChange={handleFileChange} 
+            <input
+              className={styles.attachmentButton}
+              type="file"
+              ref={profileImageRef}
+              onChange={handleFileChange}
               multiple accept=".jpg,.jpeg,.png,.gif,.bmp"
-              id="fileUpload" 
-              style={{ display: 'none' }} 
+              id="fileUpload"
+              style={{ display: 'none' }}
             />
 
             <label htmlFor="fileUpload" className={styles.attachmentButton}>
@@ -309,6 +339,7 @@ function BigChat() {
           </div>
         </div>
       </div>
+      <ImageModal isOpen={isModalOpen} onClose={closeModal} imageUrl={modalImageUrl} />
     </div>
   );
 }

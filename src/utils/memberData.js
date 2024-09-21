@@ -57,7 +57,6 @@ export const sendEmailCode = async (email) => {
     });
     // alert 제거
   } catch (error) {
-    alert('코드 전송 중 오류가 발생했습니다.');  // 오류 발생 시에만 팝업 유지
     console.error('Error: ', error.response || error.message);
   }
 };

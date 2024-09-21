@@ -19,6 +19,7 @@ export const getNotifications = async (myId) => {
       const res = await axios.get(`/spring/noti/${myId}`);
       return res.data;
     }
+    
     catch (error) {
       console.error('에러났당', error);
       throw error; 

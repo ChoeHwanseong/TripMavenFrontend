@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import aiInfoStyles from '../../styles/aiservicepage/AIServiceInfo.module.css';
 import aiServiceStyles from '../../styles/aiservicepage/AIService.module.css';
 import mockTestImage from '../../images/mockTestImage.png'; // replace with actual path
@@ -23,6 +23,11 @@ const CombinedPage = () => {
     });
   };
 
+  // 페이지가 마운트될 때 스크롤을 맨 위로 이동
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   // 버튼 클릭 시 페이지 이동 및 스크롤 처리
   const handleClick = (path) => {
     navigate(path);
@@ -40,38 +45,22 @@ const CombinedPage = () => {
   return (
     <div>
       {/* AIServiceInfo 섹션 */}
-      
+
       <div className={aiInfoStyles.container}>
         <div className={aiInfoStyles.title}>
-          <img src="../../../images/TripMavenLogo.png" alt="TripMaven Logo" /> 의 AI는 당신의 여행 가이드 실력을<br /> 한 단계 업그레이드합니다!
+          <img src="../../../images/TripMavenLogo.png" alt="TripMaven Logo" className={aiInfoStyles.logoImage} /> 
+          의 AI는 당신의 여행 가이드 실력을<br /> 한 단계 업그레이드합니다!
         </div>
-        {/*  원래꺼
-        <div className={aiInfoStyles.features}>
-          <div className={aiInfoStyles.feature}>
-            <img src="../../../images/STTimg.png" alt="음성인식 기술" className={aiInfoStyles.featureImage} />
-            <p className={aiInfoStyles.featureTitle}>음성인식 기술 (STT)</p>
-          </div>
-          <div className={aiInfoStyles.feature}>
-            <img src="../../../images/NLPimg.png" alt="자연어 처리기술" className={aiInfoStyles.featureImage} />
-            <p className={aiInfoStyles.featureTitle}>자연어 처리기술(NLP)</p>
-          </div>
-          <div className={aiInfoStyles.feature}>
-            <img src="../../../images/MultiModalimg.png" alt="멀티모달 기술" className={aiInfoStyles.featureImage} />
-            <p className={aiInfoStyles.featureTitle}>멀티모달 기술</p>
-          </div>
-        </div>
-         */}
-
         <div className={aiInfoStyles.infoContainer}>
           <div className={aiInfoStyles.sttContainer}>
-            <img 
-              src={aiPageFlowImage} 
-              alt='ai 페이징' 
+            <img
+              src={aiPageFlowImage}
+              alt='ai 페이징'
               style={{ width: '100%', height: 'auto', display: 'block', margin: '0' }} // 인라인 스타일 적용
             />
           </div>
         </div>
-        <AiPageFlow/>
+        <AiPageFlow />
 
 
 

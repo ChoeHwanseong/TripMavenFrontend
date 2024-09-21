@@ -69,6 +69,14 @@
     background-color: #0056b3;
 }
 
+/* 타이머를 코드 버튼 아래로 위치시키는 스타일 */
+.codeButton + p {
+    margin-top: 10px; /* 버튼과 타이머 사이의 여백 */
+    text-align: center; /* 타이머를 중앙 정렬 */
+    font-size: 0.9em;
+    color: #555; /* 타이머의 색상 */
+}
+
 /* 인증번호 입력칸 스타일 */
 .verificationInput {
     padding: 10px;
@@ -202,3 +210,14 @@
     margin-left: 5px;
     padding: 0;
 }
+.timerContainer {
+    width: 100%;
+    text-align: right; /* 타이머를 오른쪽으로 정렬 */
+    margin-top: 5px;  /* 버튼과 타이머 사이의 여백 */
+}
+
+.timerText {
+    font-size: 0.9em;
+    color: gray;
+}
+

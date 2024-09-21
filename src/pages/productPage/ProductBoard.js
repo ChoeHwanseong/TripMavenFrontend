@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useInView } from 'react-intersection-observer';
 import styles from '../../styles/productPage/ProductBoard.module.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { postsAllGet, postsCityGet, postsSearchWordGet } from '../../utils/postData';
 import YouTubeSearch from '../../api/YouTubeSearch';
@@ -10,11 +9,14 @@ import { fetchFiles } from '../../utils/fileData';
 import { Button, Rating } from '@mui/material';
 import defaultimg from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
+import Loading from '../../components/LoadingPage';
 
 const ProductBoard = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const params = new URLSearchParams(location.search);
+    const [sortOrder, setSortOrder] = useState('latest'); // 정렬 기준 관리
+    const [sortedProducts, setSortedProducts] = useState([]); // 정렬된 상품 목록을 관리하는 상태 변수
     const keyword = params.get('keyword');
     const city = params.get('city');
     const [products, setProducts] = useState([]); // 상품 목록 스테이트
@@ -77,28 +79,46 @@ const ProductBoard = () => {
         if (inView && hasMore) {
             fetchMoreData();
         }
-    }, [inView, hasMore]);
+        const sorted = [...products].sort((a, b) => {
+            if (sortOrder === 'latest') {
+              return new Date(b.createdAt) - new Date(a.createdAt); // 최근 순
+            } else {
+              return new Date(a.createdAt) - new Date(b.createdAt); // 오래된 순
+            }
+          });
+          setSortedProducts(sorted);
+    }, [inView, hasMore, sortOrder, products]);
 
     return (
         <div className={styles.container}>
             <div className="App mb-5" >
-                <YouTubeSearch keyword={keyword} city={city}/>
+                <YouTubeSearch keyword={keyword} city={city} />
             </div>
             <div className='d-flex justify-content-between'>
                 <h1 style={{ marginLeft: '40px' }}>{city} 상품 목록</h1>
                 {!city && (keyword !== '' && <h3 style={{ marginLeft: '40px' }}>'{keyword}'에 대한 검색 결과입니다</h3>)}
-                {(memberInfo.role == 'GUIDE' || memberInfo.role == 'ADMIN') &&
-                    <Button
-                        variant="contained"
-                        sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}
-                        onClick={() => navigate(`/guidePost/${memberInfo.id}`)}
+                <div>
+                    <select
+                        className={styles.sortSelect}
+                        value={sortOrder} // select 요소에 현재 정렬 기준 설정
+                        onChange={(e) => setSortOrder(e.target.value)} // 선택 변경 시 상태 업데이트
                     >
-                        게시물 등록 하기
-                    </Button>
-                }
+                        <option value="latest">최근 순</option>
+                        <option value="oldest">오래된 순</option>
+                    </select>
+                    {(memberInfo.role == 'GUIDE' || memberInfo.role == 'ADMIN') &&
+                        <Button
+                            variant="contained"
+                            sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }}
+                            onClick={() => navigate(`/productPost/${memberInfo.id}`)}
+                        >
+                            게시물 등록 하기
+                        </Button>
+                    }
+                </div>
             </div>
             <div className={styles.productList}>
-                {products.map((product, index) => (
+                {sortedProducts.map((product, index) => (
                     <div
                         key={index}
                         className={styles.productItem}
@@ -124,7 +144,7 @@ const ProductBoard = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
                                 {/* 프로필 이미지 (디폴트 이미지 설정) */}
                                 <img
-                                    src={product.member.profile||defaultimg} // 디폴트 프로필 이미지
+                                    src={product.member.profile || defaultimg} // 디폴트 프로필 이미지
                                     alt="profile"
                                     style={{
                                         width: '40px',
@@ -177,14 +197,14 @@ const ProductBoard = () => {
             <div ref={ref} className={styles.loadingIndicator}>
                 {loading && (
                     <Box>
-                        <CircularProgress />
+                        <Loading />
                     </Box>
                 )}
                 {products.length === 0 &&
                     <h3>검색 결과가 없습니다</h3>}
             </div>
 
-            
+
         </div>
     );
 };

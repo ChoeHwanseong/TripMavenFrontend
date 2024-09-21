@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableRow, Paper, TextField, Button, Grid } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { csAnswerPut, csGet } from '../../../utils/csData';
+import Loading from '../../../components/LoadingPage';
 
 const AdminAnswer = () => {
     const { id } = useParams();
@@ -26,7 +27,7 @@ const AdminAnswer = () => {
     }, [id]);
 
     if (!inquiry) {
-        return <Typography>로딩중</Typography>; // 로딩 중 처리
+        return <Loading />; // 로딩 중 처리
     }
 
     const newAnswer = () => {
@@ -37,7 +38,7 @@ const AdminAnswer = () => {
         try {
             const updatedData = { comments: answerRef.current.value };
             await csAnswerPut(id, updatedData);
-            navigate('/adminask');
+            navigate('/askall');
         } catch (error) {
             console.error('에러났당:', error);
         }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box, Typography, Paper, Button } from '@mui/material';
-import styles from '../../styles/home/GuideRankging.module.css';
+import styles from '../../styles/home/GuideRanking.module.css';
 
 const GuideRanking = () => {
     const [ranking, setRanking] = useState([]);
@@ -12,9 +12,10 @@ const GuideRanking = () => {
         const fetchRanking = async () => {
             try {
                 const response = await axios.get('/api/guide-ranking');
+                console.log(response.data); // 데이터 구조 확인
                 setRanking(response.data);
             } catch (error) {
-                console.error('Error fetching guide ranking:', error);
+                console.error('가이드 랭킹을 가져오는 중 오류 발생:', error);
             }
         };
 
@@ -75,7 +76,7 @@ const GuideRanking = () => {
                             </Box>
                             <Box className={styles.rankingInfo}>
                                 <Typography variant="h6" sx={{ color: 'inherit' }}>
-                                    {guide.name}
+                                    {guide.member.name} {/* 이름을 가져오려면 적절히 수정 */}
                                     {isFirstPlace && (
                                         <img
                                             src="https://github.com/malunaridev/Challenges-iCodeThis/blob/master/4-leaderboard/assets/gold-medal.png?raw=true"
@@ -85,7 +86,7 @@ const GuideRanking = () => {
                                     )}
                                 </Typography>
                                 <Typography variant="body2" sx={{ color: 'inherit' }}>
-                                    게시물 수: {guide.postCount}
+                                    별점: {guide.averageRating.toFixed(2)} {/* 별점 표시 */}
                                 </Typography>
                             </Box>
                         </Paper>
