@@ -32,7 +32,7 @@ const AskDetailsView = () => {
         if (confirmed) {
             try {
                 await csDelte(id);
-                navigate('/askall');
+                navigate('/mypage/askall');
             } catch (error) {
                 console.error('삭제 중 오류 발생:', error);
             }
@@ -92,7 +92,7 @@ const AskDetailsView = () => {
                     </Button>
                 </Grid>
                 <Grid item>
-                    <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={() => navigate('/askall')}>
+                    <Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={() => navigate('/mypage/askall')}>
                         목록
                     </Button>
                 </Grid>

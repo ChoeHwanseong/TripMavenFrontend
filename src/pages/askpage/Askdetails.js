@@ -17,7 +17,7 @@ const AskDetails = () => {
                             content: contentRef.current.value,
                             members_id: id};
         await csPost(createData);
-        navigate('/askall');
+        navigate('/mypage/askall');
 
     } catch (error) {
         console.error('Error updating answer:', error);
