@@ -57,6 +57,8 @@ import GuideAsk from './pages/guidemypage/GuideAsk';
 import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
 import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
 import FaceRecognitionApp from './pages/aiservicepage/webrecord/FaceRecognitionApp';
+import NotFoundPage from './pages/error/NotFoundPage';
+import Error403Page from './pages/error/Error403Page';
 
 
 
@@ -146,6 +148,8 @@ function App() {
 
         <Route path='/faceRecognitionApp' element={<FaceRecognitionApp />} /> {/* 테스트용 */}
 
+        <Route path='/NotFoundPage' element={<NotFoundPage />} />
+        <Route path='/Error403Page' element={<Error403Page />} />
       </Route>
     </Routes>
   </>
