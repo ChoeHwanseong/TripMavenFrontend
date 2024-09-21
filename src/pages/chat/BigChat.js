@@ -8,6 +8,8 @@ import defaultImage from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
 import { ElevatorSharp } from '@mui/icons-material';
 import ImageModal from './ImageModal'; // ImageModal 컴포넌트 가져오기
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function BigChat() {
   const { id } = useParams(); // URL 파라미터로 받은 채팅방 ID
@@ -255,8 +257,24 @@ function BigChat() {
                   리뷰 작성 </button>
                 <button className={styles.reviewButton} onClick={() => navigate(`/mypage/postDetails/${selectedUser.chattingRoom.productBoard.id}`)}>
                   게시글 보러가기 </button>
+                  <IconButton 
+                    aria-label="delete" 
+                    size="large"
+                    sx={{
+                      backgroundColor: 'gray', 
+                      color: 'white', 
+                      '&:hover': {
+                        backgroundColor: 'darkred',
+                      },
+                      padding: '8px',
+                      marginRight: '10px'
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
               </div>
             )}
+            
           </div>
 
           <div className={styles.chatMessages}>
