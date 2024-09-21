@@ -296,7 +296,7 @@ const Home = () => {
                   backgroundPosition: 'center',
                   cursor: 'pointer'
                 }}
-                onClick={() => handleServiceCardClick('/askall')}
+                onClick={() => handleServiceCardClick('/mypage/askall')}
               >
                 <CardContent className={styles.serviceCardContent}>
                   <Typography variant="h6" className={styles.serviceTitle}>

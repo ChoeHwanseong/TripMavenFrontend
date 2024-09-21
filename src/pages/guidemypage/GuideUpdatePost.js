@@ -57,7 +57,7 @@ const GuideUpdatePost = () => {
         id: posts.id
       };
       await postPut(updateData);
-      navigate('/guidemypost');
+      navigate('/mypage/guide/post');
     } catch (error) {
       console.error('Error updating post:', error);
     }

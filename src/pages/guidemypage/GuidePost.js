@@ -176,7 +176,7 @@ const GuidePost = () => {
 
             console.log('createData', createData);
             await postPost(createData);
-            navigate('/guidemypost');
+            navigate('/mypage/guide/post');
         } catch (error) {
             console.error('Error creating post:', error);
         }

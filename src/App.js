@@ -21,7 +21,6 @@ import PaymentForm from './pages/payment/Payment';
 import OrderPopup from './pages/payment/PaymentProc';
 import PaymentConfirmation from './pages/payment/PaymentConfirm';
 
-import AskAll from './pages/askpage/AskAll';
 import AskDetails from './pages/askpage/Askdetails';
 import AskDetailsView from './pages/askpage/AskDetailsView';
 import AskUpdate from './pages/askpage/AskUpdate';
@@ -53,11 +52,11 @@ import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
 import CombinedPage from './pages/aiservicepage/AIPage';
 import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
 import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
-import GuideAsk from './pages/guidemypage/GuideAsk';
+
 import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
 import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
 import FaceRecognitionApp from './pages/aiservicepage/webrecord/FaceRecognitionApp';
-import ImageModal from './pages/chat/ImageModal';
+import GuideMyPageLike from './pages/guidemypage/guidemypagelike/GuideMyPageLike';
 
 
 
@@ -77,15 +76,12 @@ function App() {
         <Route element={<MyPageTemplate />}>
           {/* MYPAGE */}
           <Route path='/mypage/*' element={<MyPageRoutes />} />
-
           {/* GUIDE */}
           <Route path='/guidemypost' element={<GuideMyPageMyPost />} />
           <Route path='/guidemypageaiservice' element={<GuideMyPageAIService />} />
-          <Route path="/guideAsk" element={<GuideAsk />} /> {/*수정중*/}
           <Route path='/guidePost/:id' element={<GuidePost />} />
-          {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함
-          <Route path='/guidemypagelike' element={<GuideMyPageLike/>}/>
-           */}
+           {/* 일단은 가이드 찜 목록 필요없을거 같아서 주석처리함 */}
+          <Route path='/guidemypagelike' element={<GuideMyPageLike />}/>
           
           {/* USER */}
           <Route path='/userreview' element={<UserReview />} />
@@ -94,18 +90,15 @@ function App() {
           {/*<Route path='/userask' element={<UserAsk/>}/>*/}
           <Route path='/userlike' element={<UserLike />} />
           {/*<Route path='/useraskpage' element={<UserAskPage/>}/>*/}
-          {/* 
-          <Route path='/bigChat' element={<BigChat />} />*/}
-          {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
           <Route path='/bigchat/:id' element={<BigChat />} />
           <Route path='/chattingRoom' element={<ChattingRoom />} />
           <Route path='/askdetailsview/:id' element={<AskDetailsView />} />
-          <Route path='/askall' element={<AskAll />} />
+
           <Route path='/chattingRoom' element={<ChattingRoom />} />
 
           {/*<Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />*/}
           <Route path='/guidePost' element={<GuidePost />} />
-          <Route path='/askall' element={<AskAll />} />
+
           <Route path='/askdetails/:id' element={<AskDetails />} />
           <Route path='/askdetailsview/:id' element={<AskDetailsView />} />
           <Route path='/askupdate/:id' element={<AskUpdate />} />

@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../../../styles/guidemypage/guidemypagelike/GuideMyPageLike.module.css';
-import PinItem from './pinItem';
+import PinItem from './PinItem';
 
 const GuideMyPageLike = () => {
     //나중에 데이터 베이스에서 끌어올 데이터

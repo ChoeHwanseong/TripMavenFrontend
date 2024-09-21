@@ -46,7 +46,7 @@ const AskUpdate = () => {
             const updatedData = { title:titleRef.current.value,
                                   content:contentRef.current.value}
             await csPut(id, updatedData);
-            navigate('/askall');
+            navigate('/mypage/askall');
 
         } catch (error) {
             console.error('Error updating answer:', error);
