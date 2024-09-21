@@ -113,6 +113,7 @@
 
 .chatName {
   font-weight: bold;
+  margin-right: 6px;
 }
 
 .chatName2 {
@@ -236,7 +237,6 @@
   flex-direction: column;
   align-items: end;
 }
-
 .chatMember{
   margin-left: 5px;
   margin-top: 5px;
