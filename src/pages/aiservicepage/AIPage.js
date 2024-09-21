@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import aiInfoStyles from '../../styles/aiservicepage/AIServiceInfo.module.css';
 import aiServiceStyles from '../../styles/aiservicepage/AIService.module.css';
 import mockTestImage from '../../images/mockTestImage.png'; // replace with actual path
@@ -6,6 +6,10 @@ import realTestImage from '../../images/realTestImage.png'; // replace with actu
 import { useNavigate } from 'react-router-dom';
 import QuizTutorial from '../aiservicepage/QuizTutorial'; // QuizTutorial 경로로 변경 필요
 import { Modal } from '@mui/material'; // MUI의 Modal 컴포넌트 추가
+
+import aiPageFlowImage from '../../images/aiPageFlow/dd.png';
+import AiPageFlow from './AiPageFlow';
+
 
 const CombinedPage = () => {
   const navigate = useNavigate();
@@ -19,6 +23,11 @@ const CombinedPage = () => {
     });
   };
 
+  // 페이지가 마운트될 때 스크롤을 맨 위로 이동
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   // 버튼 클릭 시 페이지 이동 및 스크롤 처리
   const handleClick = (path) => {
     navigate(path);
@@ -29,38 +38,40 @@ const CombinedPage = () => {
   const handleOpenQuizModal = () => setQuizModalOpen(true);
   const handleCloseQuizModal = () => setQuizModalOpen(false);
 
+  const handleQuizCardClick = () => {
+    handleOpenQuizModal();
+  };
+
   return (
     <div>
       {/* AIServiceInfo 섹션 */}
-      
+
       <div className={aiInfoStyles.container}>
         <div className={aiInfoStyles.title}>
-          <img src="../../../images/TripMavenLogo.png" alt="TripMaven Logo" /> 의 AI는 당신의 여행 가이드 실력을<br /> 한 단계 업그레이드합니다!
+          <img src="../../../images/TripMavenLogo.png" alt="TripMaven Logo" className={aiInfoStyles.logoImage} /> 
+          의 AI는 당신의 여행 가이드 실력을<br /> 한 단계 업그레이드합니다!
         </div>
-        {/*  원래꺼
-        <div className={aiInfoStyles.features}>
-          <div className={aiInfoStyles.feature}>
-            <img src="../../../images/STTimg.png" alt="음성인식 기술" className={aiInfoStyles.featureImage} />
-            <p className={aiInfoStyles.featureTitle}>음성인식 기술 (STT)</p>
-          </div>
-          <div className={aiInfoStyles.feature}>
-            <img src="../../../images/NLPimg.png" alt="자연어 처리기술" className={aiInfoStyles.featureImage} />
-            <p className={aiInfoStyles.featureTitle}>자연어 처리기술(NLP)</p>
-          </div>
-          <div className={aiInfoStyles.feature}>
-            <img src="../../../images/MultiModalimg.png" alt="멀티모달 기술" className={aiInfoStyles.featureImage} />
-            <p className={aiInfoStyles.featureTitle}>멀티모달 기술</p>
-          </div>
-        </div>
-         */}
         <div className={aiInfoStyles.infoContainer}>
+          <div className={aiInfoStyles.sttContainer}>
+            <img
+              src={aiPageFlowImage}
+              alt='ai 페이징'
+              style={{ width: '100%', height: 'auto', display: 'block', margin: '0' }} // 인라인 스타일 적용
+            />
+          </div>
+        </div>
+        <AiPageFlow />
+
+
+
+        {/* <div className={aiInfoStyles.infoContainer}>
           <div className={aiInfoStyles.sttContainer}>
             <img src="../../../images/STT.png" alt='STT 음성 인식 기술' className={aiInfoStyles.sttImage}/>
           </div>
           <div className={aiInfoStyles.nlpContainer}>
-            <img src="../../../images/NLP.png" alt='STT 음성 인식 기술' className={aiInfoStyles.nlpImage}/>
+            <img src="../../../images/NLP.png" alt='NLP' className={aiInfoStyles.nlpImage}/>
           </div>
-        </div>
+        </div> */}
 
         <h3 className={aiInfoStyles.description}>
           TripMaven의 AI는 말과 행동, 시선, 표정을 분석할 수 있고 나만을 위한 맞춤형 퀴즈도 제작해줍니다.<br />
@@ -70,7 +81,7 @@ const CombinedPage = () => {
 
       {/* AIService 섹션 */}
       <div className={aiServiceStyles.container}>
-        <div className={aiServiceStyles.quizcardContainer}>
+        <div className={aiServiceStyles.quizcardContainer} onClick={handleQuizCardClick}>
           <div className={aiServiceStyles.quizcard}>
             <div className={aiServiceStyles.quizContainer}>
               <img src={"../../images/quizImg.png"} alt="Quiz" className={aiServiceStyles.quizImage} />
@@ -84,7 +95,7 @@ const CombinedPage = () => {
               </div>
             </div>
             <div className={aiServiceStyles.arrowContainer}>
-              <button className={aiServiceStyles.arrowButton} onClick={handleOpenQuizModal}>→</button>
+              <button className={aiServiceStyles.arrowButton} onClick={handleOpenQuizModal}><span>→</span></button>
             </div>
           </div>
         </div>

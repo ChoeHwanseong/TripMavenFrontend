@@ -1,29 +1,36 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Container, MenuItem, Select, Typography } from '@mui/material';
 import styles from '../../styles/aiservicepage/RealTestPage.module.css';
+import { createEvaluation } from '../../utils/AiData';
+import { videoFace } from '../../utils/PythonServerAPI';
+import axios from 'axios';
 
 const RealTestPage = () => {
+  const memberId = localStorage.getItem('membersId');
+  const productboardId  = useParams().id;
   const navigate = useNavigate();
-  const webcamRef = useRef(null);
-  const mediaRecorderRef = useRef(null);
-  const recognitionRef = useRef(null);
-  const [recordedChunksFirst, setRecordedChunksFirst] = useState([]); // 첫 번째 영상
-  const [recordedChunksSecond, setRecordedChunksSecond] = useState([]); // 두 번째 영상
+
   const [videoDevices, setVideoDevices] = useState([]);
   const [audioDevices, setAudioDevices] = useState([]);
   const [selectedVideoDevice, setSelectedVideoDevice] = useState(null);
   const [selectedAudioDevice, setSelectedAudioDevice] = useState(null);
-  const [isVideoConnected, setIsVideoConnected] = useState(true);
-  const [isAudioConnected, setIsAudioConnected] = useState(true);
+  const [isVideoConnected, setIsVideoConnected] = useState(false);
+  const [isAudioConnected, setIsAudioConnected] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [recordingStatus, setRecordingStatus] = useState("녹화하기");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isFirstQuestion, setIsFirstQuestion] = useState(true);
   const [timeLeft, setTimeLeft] = useState(60);
+  const [loadingMessage, setLoadingMessage] = useState("");
   const [isRecording, setIsRecording] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState(""); // 모달 메시지
+
+  const videoChunks = useRef([]);
+  const webcamRef = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  const videoBlob = useRef(null);
+  const recognitionRef = useRef(null);
 
   const questions = [
     "Q: 여행을 하는 중에 컴플레인이 들어 왔을 경우 어떻게 해결을 해야 할까요?",
@@ -31,14 +38,16 @@ const RealTestPage = () => {
     "Q: 관광객 중 한 명이 예상치 못하게 길에서 화장실을 찾기 어렵다고 말하며 도움을 요청합니다. 이럴 때 어떻게 대처하시겠어요?",
     "Q: 여행 도중 관광지가 화장실이 멀리 떨어져 있어 시간이 걸릴 것 같다고 말하는 관광객이 있습니다. 이런 경우 어떻게 응대하시겠습니까?"
   ];
-  
+
   const firstQuestion = "본인의 여행 상품에 대해 1분안에 말하시오";
 
   useEffect(() => {
+    // 장치 목록 가져오기
     navigator.mediaDevices.enumerateDevices()
       .then((devices) => {
         const videoInputs = devices.filter((d) => d.kind === 'videoinput');
         const audioInputs = devices.filter((d) => d.kind === 'audioinput');
+
         setVideoDevices(videoInputs);
         setAudioDevices(audioInputs);
         setSelectedVideoDevice(videoInputs[0] || null);
@@ -46,133 +55,114 @@ const RealTestPage = () => {
         setIsVideoConnected(videoInputs.length > 0);
         setIsAudioConnected(audioInputs.length > 0);
       })
-      .catch((error) => console.error('Error getting device information:', error));
-  
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognitionRef.current = new SpeechRecognition();
-    recognitionRef.current.continuous = true;
-    recognitionRef.current.interimResults = false;
-    recognitionRef.current.lang = 'ko-KR';
-  
-    recognitionRef.current.onresult = (event) => {
-      let finalTranscript = '';
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        if (event.results[i].isFinal) {
-          finalTranscript += event.results[i][0].transcript + ' ';
-        }
-      }
-      setTranscript(prevTranscript => prevTranscript + finalTranscript);
-    };
+      .catch((error) => console.error('장치 정보를 가져오는 중 에러 발생:', error));
   }, []);
 
-  useEffect(() => {
-    if (isFirstQuestion && timeLeft > 0 && isRecording) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-      return () => clearTimeout(timer);
-    } else if (timeLeft === 0 && isFirstQuestion && isRecording) {
-      stopRecording();
-      setRecordingStatus("다음 문제");
+  const handleRecording = async () => {
+    if (isRecording) {
+      // 영상 녹화 중지
+      mediaRecorderRef.current?.stop();
+      setIsRecording(false);
+    } else {
+      startRecording();
     }
-  }, [timeLeft, isFirstQuestion, isRecording]);
+  };
 
   const startRecording = () => {
-    if (webcamRef.current && webcamRef.current.stream) {
-      const stream = webcamRef.current.stream;
-      mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm' });
+    navigator.mediaDevices.getUserMedia({
+      audio: {
+        deviceId: selectedAudioDevice?.deviceId,
+        sampleRate: 16000,
+      },
+      video: true
+    }).then((stream) => {
+      if (webcamRef.current) webcamRef.current.srcObject = stream;
 
+      mediaRecorderRef.current = new MediaRecorder(stream);
       mediaRecorderRef.current.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          if (isFirstQuestion) {
-            setRecordedChunksFirst((prev) => [...prev, event.data]);
-          } else {
-            setRecordedChunksSecond((prev) => [...prev, event.data]);
-          }
-        }
+        videoChunks.current.push(event.data);
+      };
+
+      mediaRecorderRef.current.onstop = () => {
+        const blob = new Blob(videoChunks.current, { type: 'video/mp4' });
+        videoBlob.current = blob;
+        videoChunks.current = [];
       };
 
       mediaRecorderRef.current.start();
       setIsRecording(true);
-      console.log("녹화 시작됨");
-    }
-
-    if (recognitionRef.current) {
-      recognitionRef.current.start();
-      console.log("음성 인식 시작됨");
-    }
+    }).catch((error) => {
+      console.error('Error accessing microphone:', error);
+    });
   };
 
-  const stopRecording = () => {
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
-      setIsRecording(false);
-      console.log("녹화 중지됨");
-    }
-
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-      console.log("음성 인식 중지됨");
-    }
-  };
-
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     if (recordingStatus === "녹화하기") {
-      // 영상 녹화를 시작
+      handleRecording();
       setRecordingStatus("녹화 중지");
-      startRecording();
     } else if (recordingStatus === "녹화 중지") {
-      // 영상 녹화를 중지하고 서버로 전송
-      stopRecording();
-      setLoadingMessage("영상 전송 중"); // 모달 메시지 설정
-      uploadVideo(isFirstQuestion ? 'first' : 'second'); // 첫 번째 또는 두 번째 영상 전송
-    
+      handleRecording();
+      setRecordingStatus("전송하기");
+    } else if (recordingStatus === "전송하기") {
+      setLoadingMessage("영상 전송 중");
+      await uploadVideo(isFirstQuestion ? 'first' : 'second');
       if (isFirstQuestion) {
         setRecordingStatus("다음 문제");
       } else {
         setRecordingStatus("결과 보기");
       }
     } else if (recordingStatus === "다음 문제") {
-      // 두 번째 질문으로 변경 및 상태 업데이트
       setIsFirstQuestion(false);
       setCurrentQuestionIndex(Math.floor(Math.random() * questions.length));
       setTranscript("");
-      setRecordedChunksFirst([]); // 첫 번째 영상 녹화 데이터 초기화
       setRecordingStatus("녹화하기");
-      setLoadingMessage(""); // 모달 메시지 숨기기
+      setLoadingMessage("");
     } else if (recordingStatus === "결과 보기") {
-      // 두 번째 영상 전송 및 결과 페이지 이동
-      setLoadingMessage("영상 전송 중");
-      uploadVideo('second'); // 두 번째 영상 전송
+      navigate('/resultFinalPage/${productboardId}');
     }
   };
 
   const uploadVideo = async (videoType) => {
-    const recordedChunks = videoType === 'first' ? recordedChunksFirst : recordedChunksSecond;
-    const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+    const videoFile = new File([videoBlob.current], 'recordedVideo.mp4', { type: 'video/mp4' });
     const formData = new FormData();
-    formData.append('file', videoBlob, 'recordedVideo.webm');
-  
+    formData.append('file', videoFile);
+
     try {
-      const response = await fetch('http://localhost:8282/face/', {
-        method: 'POST',
-        body: formData
-      });
+      const response = await videoFace(formData);
+      if (response.success) {
+        const resultData = response.data;
+        console.log('resultData:', resultData);
 
-      console.log('response :: ',response);
-  
-      if (response.ok) {
-        const resultData = await response.text();
+        const evaluationResponse = await createEvaluation({
+          score: 50,
+          pronunciation: 50,
+          tone: "높다",
+          fillerwords: 50,
+          formal_speak: 50,
+          question_speak: 50,
+          text: "잘한다",
+          weight: "여러번",
+          cheek: resultData.graphs.cheekbones_graph,
+          mouth: resultData.graphs.mouth_graph,
+          brow: resultData.graphs.brow_graph,
+          eye: resultData.eye.average_blinks,
+          nasolabial: resultData.graphs.nasolabial_folds_graph,
+          commentEye : resultData.eye.comment,
+          commentsFace : resultData.expression_comment, 
+        }, memberId, productboardId);
 
-        console.log('resultData :: ',resultData); // 빈 배열... 왜 ?
-
-        setLoadingMessage(""); // 모달 숨기기
+        console.log('evaluationResponse:', evaluationResponse);
+        setLoadingMessage(""); // 모달 메시지 제거
         if (videoType === 'second') {
           alert('영상이 성공적으로 제출되었습니다!');
-          navigate('/RealTestResult', { state: { response: resultData } });
+          navigate(`/resultFinalPage/${productboardId}`, { state: { response: resultData } });
         }
       } else {
+        setLoadingMessage("");
         alert('영상 제출 중 문제가 발생했습니다.');
       }
     } catch (error) {
+      setLoadingMessage("");
       console.error('영상 제출 중 에러 발생:', error);
       alert('영상 제출 중 에러가 발생했습니다.');
     }
@@ -186,7 +176,7 @@ const RealTestPage = () => {
       <div className={styles.testContainer}>
         <div className={styles.videoBox}>
           {isVideoConnected ? (
-            <Webcam ref={webcamRef} audio={true} className={styles.video} />
+            <Webcam ref={webcamRef} audio={true} style={{ width: '100%', height: '100%', display: 'block' }} />
           ) : (
             <Typography variant="body2" color="error" align="center">
               * 웹캠이 연결되지 않았습니다.
@@ -197,54 +187,50 @@ const RealTestPage = () => {
           <p>{transcript}</p>
         </div>
       </div>
+
       <div className={styles.controls}>
         <div className={styles.selectContainer}>
           <Select
-                        value={selectedVideoDevice?.deviceId || ''}
-                        displayEmpty
-                        onChange={(e) => setSelectedVideoDevice(videoDevices.find((d) => d.deviceId === e.target.value))}
-                        className={styles.selectControl}
-                      >
-                        <MenuItem value="">웹캠을 선택하세요</MenuItem>
-                        {videoDevices.map((device) => (
-                          <MenuItem key={device.deviceId} value={device.deviceId}>
-                            {device.label}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      <Select
-                        value={selectedAudioDevice?.deviceId || ''}
-                        displayEmpty
-                        onChange={(e) => setSelectedAudioDevice(audioDevices.find((d) => d.deviceId === e.target.value))}
-                        className={styles.selectControl}
-                      >
-                        <MenuItem value="">마이크를 선택하세요</MenuItem>
-                        {audioDevices.map((device) => (
-                          <MenuItem key={device.deviceId} value={device.deviceId}>
-                            {device.label}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </div>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleButtonClick}
-                      className={styles.controlButton}
-                    >
-                      {recordingStatus}
-                    </Button>
-                  </div>
-                  {loadingMessage && (
-                    <div className={styles.modal}>
-                      <div className={styles.modalContent}>
-                        <Typography variant="h6">{loadingMessage}</Typography>
-                      </div>
-                    </div>
-                  )}
-                </Container>
-              );
-            };
-            
-            export default RealTestPage;
-            
+            value={selectedVideoDevice?.deviceId || ''}
+            displayEmpty
+            onChange={(e) => setSelectedVideoDevice(videoDevices.find((d) => d.deviceId === e.target.value))}
+            className={styles.selectControl}
+          >
+            <MenuItem value="">웹캠을 선택하세요</MenuItem>
+            {videoDevices.map((device) => (
+              <MenuItem key={device.deviceId} value={device.deviceId}>
+                {device.label}
+              </MenuItem>
+            ))}
+          </Select>
+          <Select
+            value={selectedAudioDevice?.deviceId || ''}
+            displayEmpty
+            onChange={(e) => setSelectedAudioDevice(audioDevices.find((d) => d.deviceId === e.target.value))}
+            className={styles.selectControl}
+          >
+            <MenuItem value="">마이크를 선택하세요</MenuItem>
+            {audioDevices.map((device) => (
+              <MenuItem key={device.deviceId} value={device.deviceId}>
+                {device.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+        <Button variant="contained" color="primary" onClick={handleButtonClick} className={styles.controlButton}>
+          {recordingStatus}
+        </Button>
+      </div>
+
+      {loadingMessage && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <Typography variant="h6">{loadingMessage}</Typography>
+          </div>
+        </div>
+      )}
+    </Container>
+  );
+};
+
+export default RealTestPage;

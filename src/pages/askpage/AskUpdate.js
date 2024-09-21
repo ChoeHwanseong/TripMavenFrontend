@@ -1,14 +1,14 @@
-import styles from '../../styles/guidemypage/GuideAsk.module.css';
+import styles from '../../styles/askpage/AskPost.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { csGet, csPut } from '../../utils/csData';
+import Loading from '../../components/LoadingPage';
 
 const AskUpdate = () => {
 
     const { id } = useParams();
     const [inquiry, setInquiry] = useState(null);
     const navigate = useNavigate();
-
     const titleRef = useRef(null);
     const contentRef = useRef(null);
 
@@ -28,7 +28,7 @@ const AskUpdate = () => {
     }, [id]); 
 
     if (!inquiry) {
-        return <div>로딩중</div>;  {/* 이코드 지우면 inquery.id 가져올때 오류발생할수도있음 */}
+        return <Loading />;  {/* 이코드 지우면 inquery.id 가져올때 오류발생할수도있음 */}
     }
 
     const newTitle = async () =>{
@@ -39,18 +39,16 @@ const AskUpdate = () => {
     };
 
 
-
     const handleData = async() => {
         try {
             const updatedData = { title:titleRef.current.value,
                                   content:contentRef.current.value}
             await csPut(id, updatedData);
-            navigate('/askall');
+            navigate('/mypage/askall');
 
         } catch (error) {
             console.error('Error updating answer:', error);
-        }
-    
+        }  
     };
 
  

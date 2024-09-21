@@ -12,6 +12,12 @@ export const postGetById = (id) => {
       return res.data;
   })
 }
+// 회원id로 상품 조회
+export const postGetBymemberId = (memberId) => {
+  return axios.get(baseUrl + `/memberid/${memberId}`).then(res =>{
+      return res.data;
+  })
+}
 // 회원 이메일로 상품 조회
 export const postGetByEmail = (email) => {
   return axios.get(baseUrl + `/member/${email}`).then(res =>{
@@ -21,7 +27,8 @@ export const postGetByEmail = (email) => {
 // 상품 전체 얻어오기(20개씩 얻어오기)
 export const postsAllGet = (page) => {
   return axios.get(baseUrl + `/all/${page}`).then(res =>{
-      return res.data;
+      console.log(res)
+      return res.data.content;
   })
 }
 // 상품 제목 내용 검색(20개씩 얻어오기)

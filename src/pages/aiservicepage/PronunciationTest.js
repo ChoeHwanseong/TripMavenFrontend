@@ -3,8 +3,11 @@ import { Box, Button, Container, Grid, MenuItem, Select, Typography, IconButton 
 import Stack from '@mui/material/Stack';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PronunContext } from '../../context/PronunContext';
+import {  evaluateVoiceAndText } from '../../utils/PythonServerAPI';
 
 const PronunciationTest = () => {
+    const navigate = useNavigate();
+    const timerRef = useRef(null); // 타이머 인스턴스 참조
     const [isMicActive, setIsMicActive] = useState(false); // 마이크가 활성화되었는지 여부
     const [transcript, setTranscript] = useState(''); // 자막 상태
     const [audioDevices, setAudioDevices] = useState([]);
@@ -15,13 +18,15 @@ const PronunciationTest = () => {
     const [testMessage, setTestMessage] = useState(''); // 테스트 메시지 상태
     const [isRecognitionDone, setIsRecognitionDone] = useState(false); // 음성 인식 완료 여부
     const recognitionRef = useRef(null); // SpeechRecognition 인스턴스 참조
-    const timerRef = useRef(null); // 타이머 인스턴스 참조
     const lastFinalTranscriptRef = useRef(''); // 마지막으로 인식된 최종 자막을 저장
     const accumulatedTranscriptRef = useRef(''); // 모든 최종 자막을 저장하는 참조
-    const navigate = useNavigate();
     const { newsHeadLine } = useContext(PronunContext);
     const { sequence } = useParams();
     const sequenceNumber = parseInt(sequence, 10);
+
+    const mediaRecorderRef = useRef(null);
+    const audioChunks = useRef([]);
+    const [audioBlob, setAudioBlob] = useState(null); // 녹음된 오디오 데이터를 저장
     
     
     useEffect(() => {
@@ -49,11 +54,16 @@ const PronunciationTest = () => {
     const handleStartRecording = () => {
         if (isMicActive) { // 마이크가 활성화된 경우 음성 기록 중지
             recognitionRef.current.stop(); // 음성 인식 중지
+            if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
+                mediaRecorderRef.current.stop(); // 실제 녹음 중지
+            }
             clearInterval(timerRef.current); // 타이머 중지
             setIsMicActive(false); // 마이크 비활성화
             setIsAudioPlaying(false); // 음성 중지 상태로 전환
             setTestMessage('음성 기록이 중단되었습니다.'); // 중단 메시지 표시
-        } else {
+            
+        }
+        else {
             setTranscript(''); // 자막 초기화
             setIsMicActive(true); // 음성 인식 중 상태
             setTimer(10); // 타이머 초기화
@@ -61,25 +71,114 @@ const PronunciationTest = () => {
             setTestMessage(''); // 이전 테스트 메시지 초기화
             setIsRecognitionDone(false); // 음성 인식 완료 상태 초기화
             lastFinalTranscriptRef.current = ''; // 마지막 최종 자막 초기화
-            accumulatedTranscriptRef.current = ''; // 누적된 자막 초기화
+            accumulatedTranscriptRef.current = ''; // 누적된 자막 초기화    
 
             navigator.mediaDevices.getUserMedia({
-                audio: { deviceId: selectedAudioDevice?.deviceId }
+                audio: { deviceId: selectedAudioDevice?.deviceId,
+                    sampleRate: 16000,  // 16kHz 샘플레이트
+                }
             })
-                .then((stream) => {
-                    const audioRef = new Audio();
-                    audioRef.srcObject = stream;
-                    audioRef.play();
-                    setIsAudioPlaying(true);
+            .then( stream => {
+                /*
+                const audioRef = new Audio();
+                audioRef.srcObject = stream;
+                audioRef.play();
+                */
+                mediaRecorderRef.current = new MediaRecorder(stream, {mimeType: 'audio/webm;codecs=opus'});
+                mediaRecorderRef.current.ondataavailable = (event) => {
+                    audioChunks.current.push(event.data);
+                };
 
-                    startSpeechRecognition(); // 음성 인식 시작
-                    startTimer(); // 타이머 시작
-                })
-                .catch((error) => {
-                    console.error('Error getting user media:', error);
-                    setMicError(true); // 마이크 접근 실패 시 에러 상태로 설정
-                });
+                mediaRecorderRef.current.onstop = () => {
+                    const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
+                    setAudioBlob(audioBlob); // 오디오 데이터를 Blob으로 저장
+                    console.log('오디오 멈춤, 블롭:', audioBlob);
+                    audioChunks.current = []; // 저장 후 초기화
+                    setIsRecognitionDone(true);
+                };
+
+                mediaRecorderRef.current.start();
+                setTestMessage('녹음이 시작되었습니다.');
+            })
+            .catch((error) => {
+                console.error('Error accessing microphone:', error);
+                setMicError(true);
+            });
+
+            setIsAudioPlaying(true);
+            startSpeechRecognition(); // 음성 인식 시작
+            startTimer(); // 타이머 시작
         }
+    };
+
+    //블롭 객체를 base64 인코딩
+    const blobToBase64 = (blob) => {
+        return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64String = reader.result.split(',')[1]; // Base64 인코딩된 부분만 반환
+            resolve(base64String);
+        };
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(blob); // Blob을 읽어서 Base64 인코딩
+        });
+    };
+
+    //블롭 객체를 파일로 변환
+    const convertBlobToFile = (blob, fileName) => {
+        const file = new File([blob], fileName, { type: blob.type });
+        return file;
+    };
+
+    // 오디오 서버로 전송
+    const handleSendAudio = async () => {
+        if (!audioBlob) {
+            alert('녹음된 파일이 없습니다.');
+            return;
+        }
+
+        //블롭을 base64로 인코딩하기
+        const base64Encoded = await blobToBase64(audioBlob).then((base64String) => { 
+            return base64String;
+        }).catch((error) => console.error('Blob to Base64 인코딩 중 오류 발생:', error));
+        //console.log('베이스64인코딩된 음성파일:',base64Encoded);
+
+
+        //블롭을 wav 파일로 변환하기
+        const file = convertBlobToFile(audioBlob, 'audio2.webm');
+        console.log('녹음 파일:',file);
+
+
+        //발음평가에 쓰일 원래 문장
+        const text = newsHeadLine[sequenceNumber - 1].replace(/[^가-힣a-zA-Z]/g, '')
+        //console.log('원래 문장: ',text);
+
+
+        //nlp + 목소리톤 + 말하기속도 + 발음정확도 분석에 보낼 폼데이터
+        const formData = new FormData();
+        formData.append('voice', file); // 오디오 데이터를 FormData에 추가
+        formData.append('text', text);
+        formData.append('gender', '0'); //사용자 성별 넣어줘야함
+        formData.append('isVoiceTest', '1'); //발음테스트시 1로, 영상테스트시 0으로 하면 됨
+
+        //nlp + 목소리톤 + 말하기속도 + 발음정확도 분석
+        const response = await evaluateVoiceAndText(formData);
+        console.log(response);
+
+        /*
+        console.log(audioBlob);
+        const url = window.URL.createObjectURL(audioBlob);
+        // a 태그를 생성하여 다운로드 실행
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'audio2.webm'; // 다운로드할 파일명 설정
+        document.body.appendChild(a);
+        a.click(); // 클릭 이벤트 실행 (다운로드 시작)
+        // 다운로드 후 태그와 URL 해제
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url); // 메모리 해제
+        */
     };
 
     const startSpeechRecognition = () => {
@@ -275,6 +374,10 @@ const PronunciationTest = () => {
             <Stack display="flex" justifyContent="center" direction="row" spacing={3} sx={{ mt: '25px' }}>
                 <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }} onClick={handlePronunciationTest}>
                     {sequenceNumber === 5 ? '결과 보러가기' : '다음 문장으로 가기'} 
+                </Button>
+
+                <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }} onClick={handleSendAudio}>
+                    {'보내기'} 
                 </Button>
             </Stack>
         </Container >

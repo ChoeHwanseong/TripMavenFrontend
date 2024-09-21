@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styles from '../../styles/landing/Landing.module.css';
 import Footer from '../../components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faRobot, faCompass, faMapMarkedAlt, faChartLine, faBullhorn, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 // Import images
-import Logo from '../../images/jellyfish.gif';
 import locationGif from '../../images/Location.gif';
 import envelopeGif from '../../images/Envelope.gif';
 import telephoneGif from '../../images/Telephone.gif';
@@ -17,7 +16,6 @@ import beachWithBoats from '../../images/trip.jpg';
 import koreamap from '../../images/Event.png';
 import santoriniView from '../../images/travel.jpg';
 import scrollTopGif from '../../images/scroll-top.gif';
-import bgVideo from '../../videos/BG-video.mp4';
 import { logout } from '../../utils/memberData';
 
 const TravelLandingPage = () => {
@@ -25,14 +23,23 @@ const TravelLandingPage = () => {
   const [isNavbarShrunk, setIsNavbarShrunk] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showPage, setShowPage] = useState(true);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const navigate = useNavigate();
-  //로그아웃 함수
+
+  const wordColors = [
+    { word: '경험', color: '#FF6B6B' },
+    { word: '추억', color: '#4ECDC4' },
+    { word: '계획', color: '#007BFF' }, 
+    { word: '여정', color: '#FF8C00' }  
+  ];
+
   const handleLogout = () => {
     logout().then(res => {
       localStorage.clear();
       navigate('/home');
     })
   }
+
   useEffect(() => {
     const handleScroll = () => {
       setIsNavbarShrunk(window.scrollY > 100);
@@ -48,9 +55,21 @@ const TravelLandingPage = () => {
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
 
+    const elements = document.querySelectorAll(`.${styles.fadeIn}`);
+    elements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add(styles.visible);
+      }, 200 * index);
+    });
+
+    const interval = setInterval(() => {
+      setCurrentWordIndex((prev) => (prev + 1) % wordColors.length);
+    }, 2000);
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
+      clearInterval(interval);
     };
   }, []);
 
@@ -72,7 +91,7 @@ const TravelLandingPage = () => {
 
   const handleStartClick = () => {
     setShowPage(false);
-    setTimeout(() => navigate('/home'), 300); // 300ms is the transition time
+    setTimeout(() => navigate('/home'), 300);
   };
 
   return (
@@ -109,20 +128,40 @@ const TravelLandingPage = () => {
 
         <div className={styles.contentWrapper}>
           <div className={styles.travelPage}>
-            {/* Hero Section */}
             <div className={styles.heroSection}>
-              <div className={styles.videoOverlay}></div>
-              <video autoPlay loop muted className={styles.heroVideo}>
-                <source src={bgVideo} type="video/mp4" />
-              </video>
-              <div className={styles.heroContent}>
-                <img src={Logo} alt="Travel logo" className={styles.logo} />
-                <h1 className={styles.heroTitle}>TRIPMAVEN</h1>
-                <h2 className={styles.heroSubtitle}>프리랜서 여행 가이드의 완벽한 파트너,<br />
-                  TripMaven을 경험하세요.</h2>
-                <button className={styles.btn} onClick={handleStartClick}>
-                  <span className={styles.btnText}>시작하기</span>
-                </button>
+              <div className={styles.heroTitle}>
+                <h1 className={styles.glowTitle}>
+                  <span className={`${styles.glowLetter} ${styles.glowLeft}`} style={{animationDelay: '0s'}}>T</span>
+                  <span className={`${styles.glowLetter} ${styles.glowRight}`} style={{animationDelay: '0.2s'}}>R</span>
+                  <span className={`${styles.glowLetter} ${styles.glowLeft}`} style={{animationDelay: '0.4s'}}>I</span>
+                  <span className={`${styles.glowLetter} ${styles.glowRight}`} style={{animationDelay: '0.6s'}}>P</span>
+                  <span className={`${styles.glowLetter} ${styles.glowRight}`} style={{animationDelay: '1s'}}>M</span>
+                  <span className={`${styles.glowLetter} ${styles.glowLeft}`} style={{animationDelay: '1.2s'}}>A</span>
+                  <span className={`${styles.glowLetter} ${styles.glowRight}`} style={{animationDelay: '1.4s'}}>V</span>
+                  <span className={`${styles.glowLetter} ${styles.glowLeft}`} style={{animationDelay: '1.6s'}}>E</span>
+                  <span className={`${styles.glowLetter} ${styles.glowRight}`} style={{animationDelay: '1.8s'}}>N</span>
+                </h1>
+              </div>
+              <div className={`${styles.heroLeft} ${styles.fadeIn}`}>
+                <h1 className={`${styles.heroTitle} ${styles.heroTitleLeft}`}>관광객을 위한 서비스</h1>
+                <ul className={`${styles.heroList} ${styles.heroListLeft}`}>
+                  <li><FontAwesomeIcon icon={faRobot} /> AI 챗봇으로 스마트한 정보 획득</li>
+                  <li><FontAwesomeIcon icon={faCompass} /> 다양한 가이드 상품 비교 및 선택</li>
+                  <li><FontAwesomeIcon icon={faMapMarkedAlt} /> 맞춤형 지역 정보로 여행 계획 수립</li>
+                </ul>
+              </div>
+              <div className={`${styles.heroRight} ${styles.fadeIn}`}>
+                <h1 className={`${styles.heroTitle} ${styles.heroTitleRight}`}>가이드를 위한 플랫폼</h1>
+                <ul className={`${styles.heroList} ${styles.heroListRight}`}>
+                  <li><FontAwesomeIcon icon={faChartLine} /> AI 기반 맞춤형 능력 향상 피드백</li>
+                  <li><FontAwesomeIcon icon={faBullhorn} /> 실시간 AI 상품 평가 및 홍보 지원</li>
+                  <li><FontAwesomeIcon icon={faUserPlus} /> 간편한 가이드 등록 및 상품 등록</li>
+                </ul>
+              </div>
+              <div className={styles.heroButtonWrapper}>
+                <a href="#" className={`${styles.btn2} ${styles.fadeIn}`} onClick={(e) => { e.preventDefault(); handleStartClick(); }}>
+                  <span>시작하기</span>
+                </a>
               </div>
             </div>
 
@@ -131,8 +170,22 @@ const TravelLandingPage = () => {
               <div className={`${styles.container} ${styles.flexContainer}`}>
                 <div className={styles.flexHalf}>
                   <h2 className={styles.sectionTitle}>소개를 하자면</h2>
-                  <p className={styles.sectionText}>"MAVEN"은 영어로 전문가라는 뜻입니다 </p>
-                  <p className={styles.sectionText}>우리는 여러분에게 AI를 이용하여 잊지 못할 최적의 여행을 선사합니다</p>
+                  <p className={styles.sectionText}>
+                    "MAVEN"은 영어로 '전문가'를 뜻합니다 <br/>
+                    저희는 AI를 활용하여 여러분께 잊지 못할 <br/> 최적의 여행
+                    <span className={styles.wordRotator}>
+                      {wordColors.map((item, index) => (
+                        <span
+                          key={item.word}
+                          className={`${styles.rotatingWord} ${index === currentWordIndex ? styles.visible : ''}`}
+                          style={{ color: item.color }}
+                        >
+                          {item.word}
+                        </span>
+                      ))}
+                    </span>
+                    을 선사합니다
+                  </p>
                 </div>
                 <div className={`${styles.flexHalf} ${styles.imageWrapper}`}>
                   <img src={beachWithBoats} alt="Beach with boats" className={styles.sectionImage} />
@@ -144,9 +197,9 @@ const TravelLandingPage = () => {
             <div className={`${styles.section} ${styles.darkTealSection}`}>
               <div className={`${styles.container} ${styles.flexContainer}`}>
                 <div className={styles.flexHalf}>
-                  <h2 className={styles.sectionTitle}>고객을 위하여</h2>
-                  <p className={styles.sectionText}>지역만 검색하면 날씨와 행사들을 한눈에 찾아볼 수 있습니다.<br />
-                    고객들께서 여러분이 가고자 하는곳에 어디든 가이드가 있습니다 </p>
+                  <h2 className={styles.sectionTitle}>고객을 위한 TripMaven의 기능</h2>
+                  <p className={styles.sectionText}>지역만 검색하면 날씨와 행사들을 확인할 수 있습니다 <br/>
+                   고객님이 가고자 하는 곳 어디든,<br/> 고객님에게 맞는 가이드가 있습니다 </p>
                 </div>
                 <div className={`${styles.flexHalf} ${styles.imageWrapper}`}>
                   <img src={koreamap} alt="Tropical beach" className={styles.sectionImage} />
@@ -158,11 +211,11 @@ const TravelLandingPage = () => {
             <div className={`${styles.section} ${styles.brightTealSection}`} id="features">
               <div className={styles.container}>
                 <h2 className={`${styles.sectionTitle} ${styles.center}`}>
-                  TripMaven의 주기능
+                  가이드를 위한 TripMaven의 기능
                 </h2>
                 <p className={styles.sectionSubtitle}>
-                  저희는 행동, 시선, 표정을 평가하여 가이드 여러분의 능력을 향상시켜줍니다<br />
-                  여행지 소개, 고객 응대 등을 평가받고 향상시켜 보세요!
+                  저희는 행동, 시선, 표정을 평가하여 가이드 님의 능력을 향상시켜줍니다<br />
+                  여행지 소개, 고객 응대 등을 평가받고 여러분의 능력을 향상시켜 보세요!
                 </p>
                 <div className={styles.featuresContainer}>
                   {[

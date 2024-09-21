@@ -11,13 +11,13 @@ const MQTTChatting = () => {
         const mqttClient = mqtt.connect('mqtt://localhost:1884'); // 또는 'ws://broker.hivemq.com:8000/mqtt' (웹소켓 사용 시)
         
         mqttClient.on('connect', () => {
-            console.log('Connected to MQTT broker');
+            //console.log('Connected to MQTT broker');
             setIsConnected(true);
             mqttClient.subscribe('python/mqtt'); // 원하는 토픽 구독
         });
 
         mqttClient.on('message', (topic, message) => {
-            console.log('Received message:', message.toString());
+            //console.log('Received message:', message.toString());
             setMessage(message.toString());
         });
 
@@ -26,7 +26,7 @@ const MQTTChatting = () => {
         });
 
         mqttClient.on('close', () => {
-            console.log('Disconnected from MQTT broker');
+            //console.log('Disconnected from MQTT broker');
             setIsConnected(false);
         });
 

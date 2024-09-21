@@ -38,4 +38,9 @@ npm install react-router-dom@6 이것두
       npm install recharts --legacy-peer-deps
 
 09/11 npm install face-api.js --legacy-peer-deps
- npm install chart.js react-chartjs-2 --legacy-peer-deps
+      npm install chart.js react-chartjs-2 --legacy-peer-deps
+
+09/13 npm install @wmik/use-media-recorder --force
+
+09/15 npm install react-modal --legacy-peer-deps
+9/19 npm install face-api.js --legacy-peer-deps
