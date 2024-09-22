@@ -18,7 +18,6 @@ const PronunciationTest = () => {
     const [testMessage, setTestMessage] = useState(''); // 테스트 메시지 상태
     const [isRecognitionDone, setIsRecognitionDone] = useState(false); // 음성 인식 완료 여부
     const recognitionRef = useRef(null); // SpeechRecognition 인스턴스 참조
-    const lastFinalTranscriptRef = useRef(''); // 마지막으로 인식된 최종 자막을 저장
     const accumulatedTranscriptRef = useRef(''); // 모든 최종 자막을 저장하는 참조
     const { newsHeadLine } = useContext(PronunContext);
     const { sequence } = useParams();
@@ -70,11 +69,11 @@ const PronunciationTest = () => {
             setMicError(false); // 마이크 에러 상태 초기화
             setTestMessage(''); // 이전 테스트 메시지 초기화
             setIsRecognitionDone(false); // 음성 인식 완료 상태 초기화
-            lastFinalTranscriptRef.current = ''; // 마지막 최종 자막 초기화
             accumulatedTranscriptRef.current = ''; // 누적된 자막 초기화    
 
             navigator.mediaDevices.getUserMedia({
-                audio: { deviceId: selectedAudioDevice?.deviceId,
+                audio: { 
+                    deviceId: selectedAudioDevice?.deviceId,
                     sampleRate: 16000,  // 16kHz 샘플레이트
                 }
             })
