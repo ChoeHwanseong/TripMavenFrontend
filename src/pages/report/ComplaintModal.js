@@ -3,7 +3,7 @@ import styles from '../../styles/report/ComplaintModal.module.css';
 import { reportPost } from '../../utils/reportData';
 import Loading from '../../components/LoadingPage';
 
-const ComplaintModal = ({ onClose, isReport, post }) => {
+const ComplaintModal = ({ onClose, isReport, post, where }) => {
   // 평가항목 state
   const [attitude, setAttitude] = useState(null);
   const [information, setInformation] = useState(null);
@@ -13,17 +13,30 @@ const ComplaintModal = ({ onClose, isReport, post }) => {
   const [additionalComments, setAdditionalComments] = useState('');
   const [reportData, setReportData] = useState(null);
   const membersId = localStorage.getItem('membersId');
+
+  console.log(isReport)
+  console.log(where)
+
   useEffect(() => {
-    if (isReport[0]) {
+
+    if (!where && isReport[0]) {
       const data = Object.values(isReport[1]).filter(item => item.member.id == membersId)[0];
       setReportData(data);
-
       setAttitude(data.attitude || null);
       setInformation(data.information || null);
       setDisgust(data.disgust || null);
       setOffensive(data.offensive || null);
       setNoShow(data.noShow || null);
       setAdditionalComments(data.etc || '');
+    }
+    if (where == 'report') {
+      setReportData(isReport[1])
+      setAttitude(isReport[1].attitude || null);
+      setInformation(isReport[1].information || null);
+      setDisgust(isReport[1].disgust || null);
+      setOffensive(isReport[1].offensive || null);
+      setNoShow(isReport[1].noShow || null);
+      setAdditionalComments(isReport[1].etc || '');
     }
   })
 
