@@ -109,9 +109,9 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
               <div className={styles.chatInfo}>
                 <span>
                   <span className={styles.chatName}>{joinChatting.member.name}</span>
-                  {notificationCount > 0 && notifications &&
+                  {notificationCount > 0 &&
                   (
-                    <span className="badge rounded-pill bg-danger" style={{ fontSize: '11px' }}>{notifications.find(notification => notification.type=='chat' && joinChatting.member.id==notification.senderId) && notifications.find(notification => notification.type=='chat' && joinChatting.member.id==notification.senderId).content.length}</span>
+                    <span className="badge rounded-pill bg-danger" style={{ fontSize: '11px' }}>{notifications.find(notification => notification.type=='chat' && joinChatting.member.id==notification.senderId && notification.link.includes(joinChatting.chattingRoom.productboard.id)) && notifications.find(notification => notification.type=='chat' && joinChatting.member.id==notification.senderId && notification.link.includes(joinChatting.chattingRoom.productboard.id)).content.length}</span>
                   )}
                 </span>
                 <span className={styles.chatTime}>

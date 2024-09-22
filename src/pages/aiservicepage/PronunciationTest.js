@@ -4,8 +4,10 @@ import Stack from '@mui/material/Stack';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PronunContext } from '../../context/PronunContext';
 import {  evaluateVoiceAndText } from '../../utils/PythonServerAPI';
+import { TemplateContext } from '../../context/TemplateContext';
 
 const PronunciationTest = () => {
+    const {memberInfo} = useContext(TemplateContext);
     const navigate = useNavigate();
     const timerRef = useRef(null); // 타이머 인스턴스 참조
     const [isMicActive, setIsMicActive] = useState(false); // 마이크가 활성화되었는지 여부
@@ -143,7 +145,7 @@ const PronunciationTest = () => {
         //console.log('베이스64인코딩된 음성파일:',base64Encoded);
 
 
-        //블롭을 wav 파일로 변환하기
+        //블롭을 webm 파일로 변환하기
         const file = convertBlobToFile(audioBlob, 'audio2.webm');
         console.log('녹음 파일:',file);
 
@@ -157,7 +159,7 @@ const PronunciationTest = () => {
         const formData = new FormData();
         formData.append('voice', file); // 오디오 데이터를 FormData에 추가
         formData.append('text', text);
-        formData.append('gender', '0'); //사용자 성별 넣어줘야함
+        formData.append('gender', memberInfo.gender=='male'?'0':'1'); //사용자 성별 넣어줘야함
         formData.append('isVoiceTest', '1'); //발음테스트시 1로, 영상테스트시 0으로 하면 됨
 
         //nlp + 목소리톤 + 말하기속도 + 발음정확도 분석

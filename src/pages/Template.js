@@ -8,7 +8,7 @@ import { TemplateContext } from "../context/TemplateContext";
 import { fetchData, fetchedData } from "../utils/memberData";
 import Loading from "../components/LoadingPage";
 import mqtt from "mqtt";
-import { chattingListMyData } from "../utils/chatData";
+import { chattingListMyData, getChattingRoom } from "../utils/chatData";
 import { getNotifications, postNotification, readNotification } from "../utils/NotificationData";
 
 
@@ -68,6 +68,9 @@ export default function Template() {
                         //자신 메세지 제외
                         if (sender == localStorage.getItem('membersId')) return;
 
+                        //상품아이디 얻기용
+                        const chattingRoom = await getChattingRoom(topic);
+
                         //알림 리스트에 올라가기 전에 잠깐 저장용
                         setWaitingNotification({
                             'memberId': localStorage.getItem('membersId'),
@@ -75,7 +78,8 @@ export default function Template() {
                             'createAt': timestamp,
                             'type': 'chat',
                             'link': `/bigchat/${topic}`,
-                            'senderId': `${sender}`
+                            'senderId': `${sender}`,
+                            'productId':`${chattingRoom.productboard.id}`
                         });
                     }
                     catch (error) { console.error('Error parsing message:', error); }
@@ -85,14 +89,15 @@ export default function Template() {
         }
     };
 
+    //실제 알림나타내는 리스트를 만드는 함수임. 이게 진짜
     const getNoti = async (type) => {
         const notificationList = await getNotifications(localStorage.getItem('membersId'));
         const notiStateList = []; //새로운 리스트 만들기
         for (let noti of notificationList) { //불러온거
             if (noti.type == 'chat') { //타입이 채팅이면
-                if (notiStateList.find(ele => ele.senderId == noti.senderId)) { //이미 새로운리스트에 있다면
+                if (notiStateList.find(ele => ele.senderId == noti.senderId && ele.link == noti.link )) { //이미 새로운리스트에 있다면 + 상품리스트까지 같아야함
                     notiStateList.forEach(ele => {
-                        if (ele.senderId == noti.senderId) {
+                        if (ele.senderId == noti.senderId && ele.link == noti.link) {
                             ele.content.push(noti);
                             ele.timestamp = noti.timestamp;
                         }
@@ -108,6 +113,7 @@ export default function Template() {
         return notiStateList;
     };
 
+    //url 체크해서 추가하거나 안하거나
     const urlCheck = async ()=>{
         if(waitingNotification.link){
             if (location.pathname.includes('bigchat') && 
