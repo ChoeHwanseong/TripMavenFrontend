@@ -30,7 +30,6 @@ import PronunciationTestTutorial from './pages/aiservicepage/PronunciationTestTu
 import RealTest1 from './pages/aiservicepage/RealTest1';
 import PostDetails from './pages/productPage/PostDetails';
 import RealTestPage from './pages/aiservicepage/RealTestPage'
-import RealTestResult from './pages/aiservicepage/RealTestResult'
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
@@ -47,13 +46,6 @@ import FaceDetection from './components/FaceDetection';
 
 
 
-
-
-
-
-
-
-
 function App() {
 
   return <>
@@ -63,28 +55,20 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path='/login/*' element={<LoginRoutes />} />
 
-        <Route element={<MyPageTemplate />}>
+        <Route element={<RoleBasedRoute element={<MyPageTemplate />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} >
           {/* MYPAGE */}
           <Route path='/mypage/*' element={<MyPageRoutes />} />
           {/* USER */}
           <Route path='/userreview' element={<UserReview />} />
           <Route path='/reviewdetails/:id' element={<ReviewDetails />} />
           <Route path='/reviewDetailsUpdate/:id' element={<ReviewDetailsUpdate />} />
-          {/*<Route path='/userask' element={<UserAsk/>}/>*/}
           <Route path='/userlike' element={<UserLike />} />
-          {/*<Route path='/useraskpage' element={<UserAskPage/>}/>*/}
-          {/* 
-          <Route path='/bigChat' element={<BigChat />} />*/}
-          {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
           <Route path='/bigchat/:id' element={<BigChat />} />
           <Route path='/chattingRoom' element={<ChattingRoom />} />
-          <Route path='/chattingRoom' element={<ChattingRoom />} />
-
-          {/*<Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />*/}
-    
+          <Route path='/chattingRoom' element={<ChattingRoom />} />    
           <Route path='/askupdate/:id' element={<AskUpdate />} />
-        
         </Route>
+
         <Route path='/videoAppUpload' element={<VideoAppUpload />} />
         <Route path="/cs" element={<CSBoard />} />
         <Route path="/siteinfo" element={<SiteIntroduction />} />

@@ -37,11 +37,11 @@ export default function MyPageRoutes() {
     return <>
         <MypageContext.Provider value={{ inquiries, totalPages }}>
             <Routes>
-                <Route path="/:id" element={<RoleBasedRoute element={<MypageProfile />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
-                <Route path="/update/:id" element={<RoleBasedRoute element={<MypageUpdate />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
-                <Route path='/askdetailsview/:id' element={<RoleBasedRoute element={<AskDetailsView />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
-                <Route path='/PostDetails/:id' element={<RoleBasedRoute element={<PostDetails />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
-                <Route path='/askall' element={<RoleBasedRoute element={<AskAll />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} />
+                <Route path="/:id" element={<MypageProfile />} />
+                <Route path="/update/:id" element={<MypageUpdate />} />
+                <Route path='/askdetailsview/:id' element={<AskDetailsView />} />
+                <Route path='/PostDetails/:id' element={<PostDetails />} />
+                <Route path='/askall' element={<AskAll />} />
 
                 {/* GUIDE */}
                 <Route path='/guide/Post/:id' element={<RoleBasedRoute element={<ProductPost />} requiredRole={["GUIDE", "ADMIN"]} />} />

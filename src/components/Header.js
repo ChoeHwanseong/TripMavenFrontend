@@ -9,11 +9,11 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
 import { IconButton, Badge, Typography, Avatar } from '@mui/material';
-import { logout } from '../utils/memberData';
+import { fetchedData, logout } from '../utils/memberData';
 import CloseIcon from '@mui/icons-material/Close';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import styled from '@emotion/styled';
-import {readNotification } from '../utils/NotificationData';
+import { readNotification } from '../utils/NotificationData';
 
 
 const style = {
@@ -70,7 +70,33 @@ const convertNotificationType = {
 //알림 컴포넌트
 //헤더 컴포넌트에서 받아올 알림 상태
 const NotificationComponent = () => {
-    const {notifications, setNotifications, notificationCount} = useContext(TemplateContext);
+    const { notifications, setNotifications, notificationCount } = useContext(TemplateContext);
+    const [updatedNotifications,setUpdatedNotifications] = useState(notifications);
+    useEffect(() => {
+        const fetchSenderNames = async () => {
+            try {
+                // 각 알림의 memberId로 이름을 가져옴
+                const updatedNotificationsWithNames = await Promise.all(
+                    notifications.map(async (notification) => {
+                        // 각 notification의 memberId로 이름을 가져옴
+                        const senderData = await fetchedData(notification.senderId);
+                        return {
+                            ...notification,
+                            senderName: senderData.name, // senderName 추가
+                        };
+                    })
+                );
+                setUpdatedNotifications(updatedNotificationsWithNames); // 이름이 추가된 알림으로 상태 업데이트
+            } catch (error) {
+                console.error('Error fetching sender names:', error);
+            }
+        };
+
+        if (notifications.length > 0) {
+            fetchSenderNames();
+        }
+    }, [notifications]);
+
     const navigate = useNavigate();
     //알림 펼치기 여부 상태
     const [showNotifications, setShowNotifications] = useState(false);
@@ -125,7 +151,7 @@ const NotificationComponent = () => {
             {showNotifications && (
                 <NotificationPopup style={{ width: "200px" }}>
                     {notificationCount > 0 ? (
-                        notifications.map((notification) => {
+                        updatedNotifications.map((notification) => {
                             //console.log(notification);
                             return (
                                 <NotificationItem
@@ -135,7 +161,7 @@ const NotificationComponent = () => {
                                     <NotificationTitle style={{ display: 'inline' }}>{convertNotificationType[notification.type]}</NotificationTitle>
                                     <Typography variant="caption" style={{ display: 'inline', color: 'gray' }}>{` ${new Date().toLocaleDateString() == new Date(notification.createAt + 'Z').toLocaleDateString() ? '' : new Date(notification.createAt + 'Z').toLocaleDateString().slice(6, -1)} ${new Date(notification.createAt + 'Z').toLocaleTimeString().slice(0, -3)}`}</Typography>
                                     <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingRight: '10px' }}>
-                                        <Typography variant="body2" style={{ fontWeight: 'bold' }}>{`유저아이디 ${notification.senderId}`}</Typography>
+                                        <Typography variant="body2" style={{ fontWeight: 'bold' }}>{notification.senderName}</Typography>
                                         {/*
                                     <Typography variant="body2" >{notification.content[0].content}</Typography>
                                     <Typography variant="body2" style={{fontWeight: 'bold', color: 'red'}}>{notification.type=='chat' && notification.content.length}</Typography>
@@ -160,16 +186,18 @@ const NotificationComponent = () => {
 
 //헤더 컴포넌트
 const Header = () => {
-    
+
     const location = useLocation();
     const navigate = useNavigate();
     const [searchKeyword, setSearchKeyword] = useState(''); //검색어 상태
-    const { role } = useContext(TemplateContext); //사용자 role 상태
     const [open, setOpen] = useState(false); //가이드 등록 모달 사용여부 상태
-    let menuList = menuData[role]; //사용자 role에 따라 메뉴 변경
-
     const template = useContext(TemplateContext);
-    
+    let menuList = menuData[template.memberInfo.role]; //사용자 role에 따라 메뉴 변경
+
+    useEffect(()=>{
+
+    },[location])
+
     //로그아웃 함수
     const handleLogout = () => {
         logout().then(res => {
@@ -243,7 +271,7 @@ const Header = () => {
                                 <button className={styles.dropdownButton}>
                                     {template.memberInfo.name ? (
                                         <>
-                                            <Avatar sx={{mr :1}} alt={template.memberInfo.profile} src={template.memberInfo.profile} className={styles.avatar} />
+                                            <Avatar sx={{ mr: 1 }} alt={template.memberInfo.profile} src={template.memberInfo.profile} className={styles.avatar} />
                                             {template.memberInfo.name} 님
                                         </>
                                     ) : (
@@ -274,7 +302,7 @@ const Header = () => {
                                 </div>
                             </div>
                             <button className={styles.navButton} onClick={handleOpen}>가이드 등록</button>
-                            <NotificationComponent/>
+                            <NotificationComponent />
                         </div>
 
                         {!localStorage.getItem("token") ?

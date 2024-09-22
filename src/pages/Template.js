@@ -5,7 +5,7 @@ import styles from "../styles/Template.module.css";
 import Chat from "./chat/Chat";
 import { useEffect, useState } from "react";
 import { TemplateContext } from "../context/TemplateContext";
-import { fetchedData } from "../utils/memberData";
+import { fetchData, fetchedData } from "../utils/memberData";
 import Loading from "../components/LoadingPage";
 import mqtt from "mqtt";
 import { chattingListMyData } from "../utils/chatData";
@@ -64,7 +64,7 @@ export default function Template() {
                     try {
                         const parsedMessage = JSON.parse(message.toString());
                         const { text, sender, timestamp } = parsedMessage;
-
+                        
                         //자신 메세지 제외
                         if (sender == localStorage.getItem('membersId')) return;
 
