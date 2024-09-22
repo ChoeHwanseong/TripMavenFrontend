@@ -12,7 +12,6 @@ export const reviewPost = (createData) => {
 
 // 리뷰 조회 (회원id 로)
 export const reviewGet = (membersId) => {
-    console.log('리뷰 axios 넘어간 id: ', membersId);
     return axios.get(`${baseUrl}/member/${membersId}`).then(res => {
         return res.data;
     }).catch(err => {
@@ -22,7 +21,6 @@ export const reviewGet = (membersId) => {
 
 // 리뷰 조회 (상품id 로)
 export const reviewGetByProductId = (ProductId) => {
-    console.log('리뷰 axios 넘어간 ProductId: ', ProductId);
     return axios.get(`${baseUrl}/product/${ProductId}`).then(res => {
         return res.data;
     }).catch(err => {

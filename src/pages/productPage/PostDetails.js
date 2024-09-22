@@ -17,6 +17,7 @@ import ImageSlider from '../../api/ImageSlider';
 import ReviewList from './ReviewList';
 import Loading from '../../components/LoadingPage';
 import { findByProductId } from '../../utils/reportData';
+import { reviewGetByProductId } from '../../utils/reviewData';
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -43,8 +44,12 @@ const PostDetails = () => {
       try {
         const fetchedData = await postGetById(id);
         const fetchReport = await findByProductId(id);
+        const fetchreview = await reviewGetByProductId(id);
+
+        const postdata = { ...fetchedData, report: { ...fetchReport }, review: { ...fetchreview } }
+        console.log('postdata', postdata);
         SetReportData(fetchReport);
-        setData(fetchedData);
+        setData(postdata);
         const isLikey = fetchedData.likey.find(like => like.member.id == membersId);
         setLiked(isLikey ? true : false);
       } catch (error) {
@@ -77,6 +82,8 @@ const PostDetails = () => {
       });
     }
   }, [reportdata, membersId, isReport]); // reportdata가 변경될 때만 실행
+
+
 
   const handleLike = async () => {
     if (!liked) {
@@ -220,10 +227,18 @@ const PostDetails = () => {
         </Button>
 
         <Box className={styles.symbol} sx={{ mr: 2 }}>
-          <Typography variant="body1">125건의 리뷰</Typography>
+          <Typography variant="body1">
+            {data.review && Object.values(data.review).length > 0
+              ? `${Object.values(data.review).length} 건의 리뷰`
+              : '0 건의 리뷰'}
+          </Typography>
         </Box>
         <Box className={`${styles.symbol} ${styles.star}`} sx={{ mr: 2 }}>
-          <Typography variant="body1">★ 4.5</Typography>
+          <Typography variant="body1">
+            ★{data.review && Object.values(data.review).length > 0
+              ? Object.values(data.review).reduce((acc, review) => acc + review.ratingScore, 0) / Object.values(data.review).length
+              : 0}
+          </Typography>
         </Box>
         <Box className={styles.symbol} sx={{ mr: 2 }}>
           <Typography variant="body1">AI 평가 점수</Typography>
@@ -290,7 +305,7 @@ const PostDetails = () => {
       </Box>
 
       <Box className={styles.shadowBox}>
-        <ReviewList id={data.id} />
+        <ReviewList data={data.review} />
       </Box>
 
       <Box className={styles.actions}>

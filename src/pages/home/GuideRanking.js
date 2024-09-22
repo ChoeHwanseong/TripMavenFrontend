@@ -12,7 +12,7 @@ const GuideRanking = () => {
         const fetchRanking = async () => {
             try {
                 const response = await axios.get('/api/guide-ranking');
-                console.log(response.data); // 데이터 구조 확인
+                //console.log(response.data); // 데이터 구조 확인
                 setRanking(response.data);
             } catch (error) {
                 console.error('가이드 랭킹을 가져오는 중 오류 발생:', error);

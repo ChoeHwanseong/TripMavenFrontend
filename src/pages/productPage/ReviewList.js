@@ -2,36 +2,14 @@ import React, { useState, useEffect } from 'react';
 import styles from '../../styles/guidemypage/giudePost/ReviewList.module.css';
 import { Avatar } from '@mui/material';
 import { Star, StarHalf, StarBorder } from '@mui/icons-material';
-import { reviewGetByProductId } from '../../utils/reviewData';
 
-const ReviewList = ({ id }) => {
-  const [reviews, setReviews] = useState([]);
 
-  useEffect(() => {
-
-    console.log('ReviewList id: ',id);
-
-    const getReviews = async () => {
-      try {
-        const reviewData = await reviewGetByProductId(id);
-        console.log('상품id 로 리뷰 조회: ', reviewData);
-        setReviews(reviewData);
-      } catch (error) {
-        console.error('상품id 로 리뷰 조회 중 에러:', error);
-      }
-    };
-
-    if (id) {
-      getReviews();
-    }
-  }, [id]);
-
+const ReviewList = ({ data }) => {
+  const reviews = Object.values(data)
   const renderStars = (rating) => {
     const fullStars = Math.max(0, Math.floor(rating));
     const halfStar = rating % 1 !== 0;
     const emptyStars = Math.max(0, 5 - fullStars - (halfStar ? 1 : 0));
-
-    console.log('fullStars:', fullStars, 'halfStar:', halfStar, 'emptyStars:', emptyStars);
 
     const generateStars = (count, Component) => (
       Array.from({ length: count }, (_, index) => (
@@ -58,7 +36,7 @@ const ReviewList = ({ id }) => {
       {reviews.length > 0 ? (
         reviews.map((review) => (
           <div key={review.id} className={styles.reviewItem}>
-            <Avatar alt={review.member.profile} src={review.avatar} className={styles.avatar} />
+            <Avatar alt={review.member.profile} src={review.member.profile} className={styles.avatar} />
             <div className={styles.reviewDetails}>
               <div className={styles.reviewerName}>{review.member.name}</div>
               <div className={styles.reviewTitle}>{review.title}</div>
