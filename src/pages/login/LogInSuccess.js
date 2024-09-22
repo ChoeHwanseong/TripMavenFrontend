@@ -11,7 +11,6 @@ const LoginSuccess = () => {
         const refresh = query.get('refresh');
         const role = query.get('role');
         const membersId = query.get('membersId');
-        const loginType = query.get('logintype');
         if (access && refresh) {
             // JWT 토큰과 사용자 정보를 로컬 스토리지에 저장합니다.
             window.localStorage.setItem("token", access);
@@ -19,7 +18,7 @@ const LoginSuccess = () => {
             window.localStorage.setItem("membersId", membersId);
             window.localStorage.setItem("refresh", refresh);
             // 원하는 페이지로 리다이렉트합니다.
-            navigate('/home');
+            window.location.href = `http://localhost:58337/home`;
         }
     }, [query]);
 

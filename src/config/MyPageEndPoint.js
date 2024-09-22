@@ -1,5 +1,4 @@
 export const menuData = {
-
     ADMIN: [
         { name: "내 정보 관리", path: `/mypage/${localStorage.getItem('membersId')}`},
         { name: "회원 목록", path: "/mypage/admin/memberlist" },
