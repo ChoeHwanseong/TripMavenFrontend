@@ -11,7 +11,7 @@ const RoleBasedRoute = ({ element, requiredRole }) => {
     // role이 requiredRoles에 포함되어 있는지 확인
     if (!requiredRole.includes(role)) {
         alert('권한이 없습니다.');
-        return null;
+        return <Navigate to="/home" />; // 권한이 없을 경우 /home으로 리다이렉트
     }
 
     // role이 포함되어 있으면 원하는 컴포넌트 렌더링

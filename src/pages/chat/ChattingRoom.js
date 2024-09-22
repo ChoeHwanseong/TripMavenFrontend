@@ -4,8 +4,8 @@ import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { TemplateContext } from '../../context/TemplateContext';
 
-function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages, chatMessages, id}) {
-  const {notifications, setNotifications, notificationCount} = useContext(TemplateContext);
+function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages, chatMessages, id }) {
+  const { notifications, setNotifications, notificationCount } = useContext(TemplateContext);
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
@@ -38,13 +38,14 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
     if (lastMessageDate.toDateString() === now.toDateString()) {
       return lastMessageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // 시간만 반환
     } else {
-      // 어제 또는 그 이전이면 날짜와 시간 모두 반환
-      return lastMessageDate.toLocaleDateString() + ' ' + lastMessageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // 날짜와 시간 모두 반환
+      // 어제 또는 그 이전이면 월일과 시간만 반환
+      return lastMessageDate.toLocaleDateString([], { month: '2-digit', day: '2-digit' }) + ' ' + lastMessageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // 월일과 시간 모두 반환
     }
   };
 
-  const filteredData = data.filter((joinChatting) => 
-    joinChatting.member.name.toLowerCase().includes(search.toLowerCase())
+  // 검색어와 일치하는 유저 필터링
+  const SearchData = data.filter((joinChatting) =>
+    joinChatting.member.name.toLowerCase().includes(search.toLowerCase()) 
   );
 
   const handleClick = (joinChatting) => {
@@ -62,21 +63,19 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
       fetchChatMessages(joinChatting.chattingRoom.id);
       setSelectedUser(joinChatting);
     }
-  */
-    
+    */
     navigate(`/bigchat/${joinChatting.chattingRoom.id}`);
   };
 
   return (
-
     <div className={styles.messagesSection}>
       <div className={styles.header}>
         <h2 className={styles.messagesTitle}>TripTalk</h2>
         <div className={styles.searchNewChat}>
           <input
             type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={search} // 검색 상태
+            onChange={(e) => setSearch(e.target.value)} // 검색 상태 업데이트
             className={styles.searchInput}
             placeholder="검색어를 입력하세요"
           />
@@ -84,11 +83,12 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
       </div>
 
       <div className={styles.chatList}>
-        {data.map((joinChatting, index) => {
-          const lastMessageTime = getLastMessageTime(chatMessages, joinChatting.chattingRoom.id);
-          
-          return (
-            <Box
+        {SearchData.length > 0 ? (
+          SearchData.map((joinChatting, index) => {
+            const lastMessageTime = getLastMessageTime(chatMessages, joinChatting.chattingRoom.id);
+
+            return (
+               <Box
               key={index}
               className={`${styles.chatItem} ${joinChatting.chattingRoom.id}`}
               onMouseEnter={() => handleMouseEnter(index)}
@@ -121,11 +121,13 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
                 </span>
               </div>
             </Box>
-          );
-        })}
+            );
+          })
+        ) : (
+          <p className={styles.noSearch}>검색 결과가 없습니다</p>
+        )}
       </div>
     </div>
-
   );
 }
 

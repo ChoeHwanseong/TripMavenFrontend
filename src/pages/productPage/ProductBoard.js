@@ -10,6 +10,7 @@ import { Button, Rating } from '@mui/material';
 import defaultimg from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
 import Loading from '../../components/LoadingPage';
+import { reviewGetByProductId } from '../../utils/reviewData';
 
 const ProductBoard = () => {
     const location = useLocation();
@@ -50,13 +51,12 @@ const ProductBoard = () => {
             })
         );
 
-        console.log('productsWithFiles: ', productsWithFiles);
+
         setProducts(productsWithFiles);
 
         setPage((prevPage) => prevPage + 1); // 다음 페이지로 설정
         if (results.length < 20) {
             setHasMore(false);
-            console.log('마지막 페이지');
         }
 
     };
@@ -69,9 +69,7 @@ const ProductBoard = () => {
             setHasMore(true);
             await fetchMoreData();
         };
-
         resetAndFetch();
-
     }, [location.search]);
 
     // inView 상태가 변경될 때마다 데이터를 더 가져옴
@@ -81,13 +79,40 @@ const ProductBoard = () => {
         }
         const sorted = [...products].sort((a, b) => {
             if (sortOrder === 'latest') {
-              return new Date(b.createdAt) - new Date(a.createdAt); // 최근 순
+                return new Date(b.createdAt) - new Date(a.createdAt); // 최근 순
             } else {
-              return new Date(a.createdAt) - new Date(b.createdAt); // 오래된 순
+                return new Date(a.createdAt) - new Date(b.createdAt); // 오래된 순
             }
-          });
-          setSortedProducts(sorted);
+        });
+        if (JSON.stringify(sorted) !== JSON.stringify(sortedProducts)) {
+            setSortedProducts(sorted);
+        }
     }, [inView, hasMore, sortOrder, products]);
+
+
+    useEffect(() => {
+        const productsId = sortedProducts.map(product => product.id);
+        const getReviews = async () => {
+            try {
+                // productsId에 대해 비동기 작업을 병렬로 처리
+                const reviewsData = await Promise.all(productsId.map(id => reviewGetByProductId(id)));
+
+                const updatedProducts = sortedProducts.map((product, index) => ({
+                    ...product,
+                    reviews: reviewsData[index]  // reviewsData의 해당 인덱스 값을 추가
+                }));
+
+                if (JSON.stringify(updatedProducts) !== JSON.stringify(sortedProducts)) {
+                    setSortedProducts(updatedProducts);
+                }
+            } catch (error) {
+                console.error('Error fetching reviews:', error);
+            }
+        };
+
+        getReviews();
+
+    }, [sortedProducts]);
 
     return (
         <div className={styles.container}>
@@ -160,12 +185,15 @@ const ProductBoard = () => {
 
                             <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
                                 <Box sx={{ marginRight: '10px' }}>
-                                    {product.review || '0'} 건의 리뷰
+                                    {Array.isArray(product.reviews) ? `${product.reviews.length} 건의 리뷰` : '0 건의 리뷰'}
                                 </Box>
                                 <Rating
                                     name="half-rating-read"
-                                    defaultValue={3.5}
-                                    precision={0.5}
+                                    value={
+                                        Array.isArray(product.reviews) && product.reviews.length > 0 
+                                        ? product.reviews.reduce((acc, review) => acc + review.ratingScore, 0) / product.reviews.length 
+                                        : 0 // reviews가 없을 경우 기본값 0
+                                    }                                    precision={0.5}
                                     readOnly
                                     sx={{ marginRight: '10px' }}
                                 />

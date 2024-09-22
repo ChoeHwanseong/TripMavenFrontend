@@ -4,7 +4,7 @@ import axios from 'axios';
 const VideoAppUpload = () => {
     const [file, setFile] = useState(null);
     const [result, setResult] = useState(null);
-    const [eyeGraph, setEyeGraph] = useState(null);
+    const [eyeBlinks, setEyeBlinks] = useState(null);
     const [mouthGraph, setMouthGraph] = useState(null);
     const [cheekbonesGraph, setCheekbonesGraph] = useState(null);
     const [browGraph, setBrowGraph] = useState(null);
@@ -36,7 +36,7 @@ const VideoAppUpload = () => {
             setResult(data);
 
             // base64로 인코딩된 그래프 이미지 설정
-            setEyeGraph(`data:image/png;base64,${data.graphs.eye_bar_graph}`);
+            setEyeBlinks(data.eye.total_blinks.toFixed(2));
             setMouthGraph(`data:image/png;base64,${data.graphs.mouth_graph}`);
             setCheekbonesGraph(`data:image/png;base64,${data.graphs.cheekbones_graph}`);
             setBrowGraph(`data:image/png;base64,${data.graphs.brow_graph}`);
@@ -56,10 +56,10 @@ const VideoAppUpload = () => {
                     <h2>Analysis Result:</h2>
                     <pre>{JSON.stringify(result, null, 2)}</pre>
 
-                    {eyeGraph && (
+                    {eyeBlinks !== null && (
                         <div>
                             <h3>Eye Blink Graph</h3>
-                            <img src={eyeGraph} alt="Eye Blink Graph" />
+                            <p>{eyeBlinks}</p> 
                         </div>
                     )}
                     {mouthGraph && (
