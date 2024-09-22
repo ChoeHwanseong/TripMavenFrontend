@@ -200,7 +200,7 @@ const RealTestPage = () => {
     const audioFile = new File([audioBlob.current], 'recordedAudio.webm', { type: 'audio/webm' });
     const formDataForAudio = new FormData();
     formDataForAudio.append('voice', audioFile);
-    formDataForAudio.append('text', ''); //정답 테스트이긴 한데... 정답이 없는뎅,,,
+    formDataForAudio.append('text', accumulatedTranscriptRef.current); //정답 텍스트이긴 한데... 정답이 없는뎅,,,
     formDataForAudio.append('gender', memberInfo.gender=='male'?'0':'1'); //사용자 성별
     console.log(memberInfo.gender)
     formDataForAudio.append('isVoiceTest', '0'); //발음테스트시 1로, 영상테스트시 0으로 하면 됨
@@ -215,15 +215,42 @@ const RealTestPage = () => {
         const resultAudioData = audioResponse.data; //음성 분석 결과
         console.log('resultAudioData:', resultAudioData);
 
+        //문장 내 단어와 빈도수(콤마로 구분)
+        const wordlist = resultVideoData.text_analysis.word_list;
+        const text = "";
+        const weight = "";
+        if(wordlist){
+          for(let word of wordlist){
+            text=text+","+word.text;
+            weight=weight+","+word.weight;
+          }
+        }
+
+        //불필요한 단어와 빈도수(콤마로 구분)
+        const fillerWordList = resultVideoData.text_analysis.fillerwords;
+        const fillerWords = "";
+        const fillerWeights = "";
+        if(wordlist){
+          for(let fillerWord of fillerWordList){
+            fillerWords=fillerWords+","+fillerWord.text;
+            fillerWeights=fillerWeights+","+fillerWord.weight;
+          }
+        }
+
         const evaluationResponse = await createEvaluation({
           score: 50,
-          pronunciation: 50,
+
+          fillerwords: fillerWords,
+          fillerweights: fillerWeights,
+          formal_speak: resultAudioData.speak_end.formal_speak,
+          question_speak: resultAudioData.speak_end.question_speak,
+          text: text,
+          weight: weight,
+
           tone: resultAudioData.voice_tone.voice_check,
-          fillerwords: 50,
-          formal_speak: 50,
-          question_speak: 50,
-          text: "잘한다",
-          weight: "여러번",
+          speed: resultAudioData.speed_result.phonemes_per_min,
+          pronunciation: resultAudioData.pronunciation_precision.pronunciation_accuracy,
+          
           cheek: resultVideoData.graphs.cheekbones_graph,
           mouth: resultVideoData.graphs.mouth_graph,
           brow: resultVideoData.graphs.brow_graph,
