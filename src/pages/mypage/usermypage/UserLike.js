@@ -5,6 +5,7 @@ import { getLikey, postGetById } from '../../../utils/postData';
 import { fetchFile } from '../../../utils/fileData';
 import { reviewGetByProductId } from '../../../utils/reviewData';
 import Loading from '../../../components/LoadingPage';
+import { Box, Typography } from '@mui/material';
 
 const UserLike = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const UserLike = () => {
   const [sortedProducts, setSortedProducts] = useState([]); // 정렬된 상품 목록을 관리하는 상태 변수
 
   useEffect(() => {
-    
+
     const likeyList = async () => {
       setLoading(true); // 데이터 로딩 시작
       try {
@@ -80,13 +81,16 @@ const UserLike = () => {
   }, [sortOrder, products]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.titleContainer}>
-        <h1>찜 목록</h1>
-        <img className={styles.likeicon} src="../../../images/likeicon.png" alt="Like Icon" />
-      </div>
+    <Box sx={{ maxWidth: 1200, mx: 'auto', p: 3.5 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m: 3 }}>
+        <Typography variant="h4" fontWeight="bold">
+          찜 목록
+          <img className={styles.likeicon} src="../../../images/likeicon.png" alt="Like Icon" />
+        </Typography>
+      </Box>
+
       <div className={styles.controls}>
-        <select 
+        <select
           className={styles.sortSelect}
           value={sortOrder} // select 요소에 현재 정렬 기준 설정
           onChange={(e) => setSortOrder(e.target.value)} // 선택 변경 시 상태 업데이트
@@ -100,7 +104,8 @@ const UserLike = () => {
           placeholder="상품명 또는 태그로 검색"
         />
       </div>
-     
+
+
       <div className={styles.productList}>
         {loading ? (
           <Loading />
@@ -112,17 +117,21 @@ const UserLike = () => {
             const reviewCount = product.reviews.length;
 
             return (
-              <div key={product.id} className={styles.productItem} 
-                  onClick={() => navigate(`/postDetails/${product.id}`)}
+              <div key={product.id} className={styles.productItem}
+                onClick={() => navigate(`/postDetails/${product.id}`)}
               >
                 <img src={product.image || '../../../images/travel.jpg'} alt="likey" />
                 <div>
                   <p>[{product.city} {product.day}]</p>
-                  <h3>{product.title}</h3>           
-                  <div className={styles.tags}>
-                    <span className={styles.tag}>
-                      {product.hashtag}
-                    </span>
+                  <h3>{product.title}</h3>
+                  <div className={styles.hashtags}>
+                    {product.hashtag.split('#').map((tag, index) => (
+                      tag.trim() !== '' && (
+                        <div key={index} className={styles.hashtagBox}>
+                          #{tag.trim()}
+                        </div>
+                      )
+                    ))}
                   </div>
                   <div className={styles.rating}>
                     {/* 리뷰 점수 및 리뷰 개수 표시 */}
@@ -140,11 +149,11 @@ const UserLike = () => {
           })
         )}
         {/* 로딩 중 텍스트 표시 */}
-        <div ref={(ref) => ref} className={styles.loadingIndicator}> 
+        <div ref={(ref) => ref} className={styles.loadingIndicator}>
           {hasMore && <Loading />}
         </div>
       </div>
-    </div>
+    </Box>
   );
 };
 

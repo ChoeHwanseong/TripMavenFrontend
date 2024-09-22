@@ -1,6 +1,7 @@
+/* UserLike.module.css */
 .container {
   margin-left: 30px;
-  max-width: 1200px;
+  max-width: 1100px;
   padding-bottom: 60px;
   min-height: 100vh;
   margin-top: 50px;
@@ -9,19 +10,20 @@
 .titleContainer {
   display: flex;
   align-items: center;
-  margin-bottom: 20px; /* 기존의 h1 마진 대신 사용 */
+  margin-bottom: 20px;
 }
 
 .titleContainer h1 {
   margin: 0;
-  margin-right: 10px; /* 제목과 아이콘 사이의 간격 */
+  margin-right: 10px;
   font-size: 2.5rem;
   font-weight: 600;
 }
 
 .likeicon {
-  width: 30px; /* 아이콘 크기 조절 (필요에 따라 조정) */
+  width: 30px;
   height: auto;
+  margin-left: 5px;
 }
 
 .controls {
@@ -39,7 +41,7 @@
 }
 
 .searchInput {
-  width: 70%;
+  width: 60%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -83,19 +85,19 @@
   margin: 5px 0 0;
 }
 
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 10px;
+.hashtags {
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 10px; 
+  margin-top: 10px; 
 }
 
-.tag {
-  background-color: #e0e0e0;
-  padding: 5px 10px;
-  margin-right: 5px;
-  margin-bottom: 5px;
-  border-radius: 3px;
-  font-size: 14px;
+.hashtagBox {
+  background-color: #e0e0e0; 
+  padding: 5px 10px; 
+  border-radius: 3px; 
+  font-size: 14px; 
+  color: #333; 
 }
 
 .rating {
@@ -108,4 +110,3 @@
   margin-right: 10px;
   font-size: 14px;
 }
-

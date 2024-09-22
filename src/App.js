@@ -46,7 +46,6 @@ import FaceRecognitionApp from './pages/aiservicepage/webrecord/FaceRecognitionA
 import RoleBasedRoute from './components/RoleBasedRoute';
 
 
-import GuideMyPageLike from './pages/guidemypage/guidemypagelike/GuideMyPageLike';
 import NotFoundPage from './pages/error/NotFoundPage';
 import Error403Page from './pages/error/Error403Page';
 import Error500Page from './pages/error/Error500Page';

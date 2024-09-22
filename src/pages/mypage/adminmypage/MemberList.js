@@ -33,7 +33,7 @@ const MemberList = () => {
         setData(fetchedData);
         setTotalPages(Math.ceil(fetchedData.length / itemsPerPage));
       }
-      catch (error) {console.error('에러났당', error);}
+      catch (error) { console.error('에러났당', error); }
     };
 
     getData();
@@ -60,7 +60,7 @@ const MemberList = () => {
   const [selectedUserId, setSelectedUserId] = useState(null);
 
   const handleOpen = (userId) => {
-    if(localStorage.getItem("token")) {
+    if (localStorage.getItem("token")) {
       setOpen(true);
       setSelectedUserId(userId);
     }
@@ -74,8 +74,8 @@ const MemberList = () => {
   const paginatedData = data.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return <>
-    <Box sx={{ maxWidth: 1200, p: 3,mt: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+    <Box sx={{ maxWidth: 1200, p: 3.5, mx: 'auto' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m: 3 }}>
         <Typography variant="h4" fontWeight="bold">
           회원 목록
         </Typography>
@@ -85,9 +85,9 @@ const MemberList = () => {
         </Box>
       </Box>
 
-      <TableContainer component={Paper} sx={{width:'100%'}}>
+      <TableContainer component={Paper} sx={{ width: '100%' }}>
         <Table>
-          <TableHead>
+          <TableHead sx={{ backgroundColor: '#f9f9f9' }}>
             <TableRow>
               <TableCell>회원 번호</TableCell>
               <TableCell>아이디</TableCell>
@@ -109,20 +109,20 @@ const MemberList = () => {
               >
                 <TableCell align="center">{user.id}</TableCell>
 
-                <TableCell onClick={() => handleClick(user)} 
-                  sx={{cursor: 'pointer'}}
+                <TableCell onClick={() => handleClick(user)}
+                  sx={{ cursor: 'pointer' }}
                 >{user.name}</TableCell>
 
-                <TableCell>{user.role=='USER'?'일반회원':user.role=='GUIDE'?'가이드':'관리자'}</TableCell>
-                
-                <TableCell onClick={() => handleClick(user)} 
-                  sx={{cursor: 'pointer'}}
+                <TableCell>{user.role == 'USER' ? '일반회원' : user.role == 'GUIDE' ? '가이드' : '관리자'}</TableCell>
+
+                <TableCell onClick={() => handleClick(user)}
+                  sx={{ cursor: 'pointer' }}
                 >{user.email}</TableCell>
 
                 <TableCell>{user.telNumber}</TableCell>
                 <TableCell>{user.address}</TableCell>
                 <TableCell>{user.createdAt.split('T')[0]}</TableCell>
-                <TableCell align="center">{(user.guidelicense && user.role=='USER') ? (<Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={()=>handleOpen(user.id)}>인증 요청</Button>) : '무'}</TableCell>
+                <TableCell align="center">{(user.guidelicense && user.role == 'USER') ? (<Button variant="contained" sx={{ backgroundColor: '#0066ff' }} onClick={() => handleOpen(user.id)}>인증 요청</Button>) : '무'}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -130,11 +130,11 @@ const MemberList = () => {
       </TableContainer>
 
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 3 }}>
-        <Pagination 
-          count={totalPages} 
-          page={page} 
+        <Pagination
+          count={totalPages}
+          page={page}
           onChange={handlePageChange}
-          showFirstButton 
+          showFirstButton
           showLastButton
           siblingCount={1}
           boundaryCount={1}
@@ -149,7 +149,7 @@ const MemberList = () => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-          <GuideRegistration userId={selectedUserId}/>
+        <GuideRegistration userId={selectedUserId} />
       </Box>
     </Modal>
   </>
