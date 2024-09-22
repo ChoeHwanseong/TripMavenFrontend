@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/report/ComplaintModal.module.css';
-import { postGetById } from '../../utils/postData';
 import { reportPost } from '../../utils/reportData';
 import Loading from '../../components/LoadingPage';
 
-const ComplaintModal = ({ onClose, id }) => {
-
+const ComplaintModal = ({ onClose, isReport, post }) => {
   // 평가항목 state
   const [attitude, setAttitude] = useState(null);
   const [information, setInformation] = useState(null);
@@ -13,24 +11,23 @@ const ComplaintModal = ({ onClose, id }) => {
   const [offensive, setOffensive] = useState(null);
   const [noShow, setNoShow] = useState(null);
   const [additionalComments, setAdditionalComments] = useState('');
-  const [posts, setPosts] = useState(null);
-
+  const [reportData, setReportData] = useState(null);
   const membersId = localStorage.getItem('membersId');
-
   useEffect(() => {
-    const fetchPostData = async () => {
-      try {
-        const postData = await postGetById(id);
-        console.log('postData: ',postData);
-        setPosts(postData);
-      } catch (error) {
-        console.error('Error fetching post data:', error);
-      }
-    };
+    if (isReport[0]) {
+      const data = Object.values(isReport[1]).filter(item => item.member.id == membersId)[0];
+      setReportData(data);
 
-    fetchPostData();
-  }, [id]);
+      setAttitude(data.attitude || null);
+      setInformation(data.information || null);
+      setDisgust(data.disgust || null);
+      setOffensive(data.offensive || null);
+      setNoShow(data.noShow || null);
+      setAdditionalComments(data.etc || '');
+    }
+  })
 
+  console.log(reportData)
   const handleReasonChange = (event) => {
     const { value } = event.target;
     switch (value) {
@@ -65,16 +62,14 @@ const ComplaintModal = ({ onClose, id }) => {
       // Using the value for selected reasons, null for unselected
       const complaintData = {
         member_id: membersId,
-        productboard_id: id, // Use complaintId here
+        productboard_id: post.id, // Use complaintId here
         attitude: attitude,
         information: information,
         disgust: disgust,
         offensive: offensive,
         noShow: noShow,
-        comments: additionalComments,
+        etc: additionalComments,
       };
-
-      //console.log('complaintData: ', complaintData);
 
       await reportPost(complaintData);
 
@@ -85,7 +80,7 @@ const ComplaintModal = ({ onClose, id }) => {
     }
   };
 
-  if (!posts || !posts.member) {
+  if (!post || !post.member) {
     return <Loading />
   }
 
@@ -94,57 +89,45 @@ const ComplaintModal = ({ onClose, id }) => {
       <div className={styles.modalContent}>
         <h2 className={styles.title}>Complaint</h2>
         <p className={styles.subtitle}>
-          <strong>{posts.member.name}</strong> 님을 신고하시겠습니까?
+          {reportData ? (
+            <>
+              <strong>{post.member.name}</strong> 신고내역
+            </>
+          ) : (
+            <>
+              <strong>{post.member.name}</strong> 님을 신고하시겠습니까?
+            </>
+          )}
         </p>
         <div className={styles.checkboxContainer}>
           <label>
-            <input
-              type="checkbox"
-              name="reason"
-              value="불친절한 태도"
+            <input type="checkbox" name="reason" value="불친절한 태도"
               onChange={handleReasonChange}
-              checked={attitude !== null}
-            />
+              checked={attitude !== null} />
             불친절한 태도
           </label>
           <label>
-            <input
-              type="checkbox"
-              name="reason"
-              value="부정확한 정보"
+            <input type="checkbox" name="reason" value="부정확한 정보"
               onChange={handleReasonChange}
-              checked={information !== null}
-            />
+              checked={information !== null} />
             부정확한 정보
           </label>
           <label>
-            <input
-              type="checkbox"
-              name="reason"
-              value="혐오 발언"
+            <input type="checkbox" name="reason" value="혐오 발언"
               onChange={handleReasonChange}
-              checked={disgust !== null}
-            />
+              checked={disgust !== null} />
             혐오 발언
           </label>
           <label>
-            <input
-              type="checkbox"
-              name="reason"
-              value="공격적인 언어 사용"
+            <input type="checkbox" name="reason" value="공격적인 언어 사용"
               onChange={handleReasonChange}
-              checked={offensive !== null}
-            />
+              checked={offensive !== null} />
             공격적인 언어 사용
           </label>
           <label>
-            <input
-              type="checkbox"
-              name="reason"
-              value="예약 불이행"
+            <input type="checkbox" name="reason" value="예약 불이행"
               onChange={handleReasonChange}
-              checked={noShow !== null}
-            />
+              checked={noShow !== null} />
             예약 불이행
           </label>
         </div>
@@ -154,9 +137,10 @@ const ComplaintModal = ({ onClose, id }) => {
           value={additionalComments}
           onChange={handleCommentsChange}
         />
-        <button className={styles.submitButton} onClick={handleSubmit}>
-          신고하기
-        </button>
+        {!reportData &&
+          <button className={styles.submitButton} onClick={handleSubmit}>
+            신고하기
+          </button>}
         <button className={styles.closeButton} onClick={onClose}>
           닫기
         </button>

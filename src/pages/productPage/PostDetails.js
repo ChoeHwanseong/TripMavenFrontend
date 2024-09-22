@@ -30,8 +30,7 @@ const PostDetails = () => {
   const { id, keyword } = useParams();
   const contentRef = useRef(null);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isReport, SetIsReport] = useState(false);
-  const [reportdata, SetReportData] = useState([]);
+  const [isReport, setIsReport] = useState(false);
   const membersId = localStorage.getItem('membersId');
 
   // 내용 더보기 버튼
@@ -45,10 +44,16 @@ const PostDetails = () => {
         const fetchedData = await postGetById(id);
         const fetchReport = await findByProductId(id);
         const fetchreview = await reviewGetByProductId(id);
-
         const postdata = { ...fetchedData, report: { ...fetchReport }, review: { ...fetchreview } }
         console.log('postdata', postdata);
-        SetReportData(fetchReport);
+        console.log('fetchReport', fetchReport);
+        fetchReport.forEach(element => {
+          console.log(element.member.id == membersId)
+          if(element.member.id == membersId){
+            setIsReport(true);
+          }
+        });
+        console.log(isReport)
         setData(postdata);
         const isLikey = fetchedData.likey.find(like => like.member.id == membersId);
         setLiked(isLikey ? true : false);
@@ -56,11 +61,9 @@ const PostDetails = () => {
         console.error('Error fetching data:', error);
       }
     };
-
     const getFiles = async () => {
       try {
         const fileData = await fetchFiles(id);
-        //console.log('fileData: ', fileData);
         setFileUrls(fileData);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -68,20 +71,7 @@ const PostDetails = () => {
     };
     getData();
     getFiles();
-
   }, [liked, id, membersId]);
-
-  useEffect(() => {
-    console.log('reportdata: ', reportdata);
-    console.log('isReport: ', isReport);
-    if (reportdata.length > 0) {
-      reportdata.forEach(report => {
-        if (report.member.id == membersId) {
-          SetIsReport(true);
-        }
-      });
-    }
-  }, [reportdata, membersId, isReport]); // reportdata가 변경될 때만 실행
 
 
 
@@ -108,9 +98,6 @@ const PostDetails = () => {
   };
 
   const openModal = () => {
-
-    //만약 신고했다면 다시 신고하지 않게 하기
-
     setComplaintId(id);
     setIsModalOpen(true);
   };
@@ -251,7 +238,7 @@ const PostDetails = () => {
           <span className={styles.likeCount}>{data.likey ? data.likey.length : '0'}</span>
         </button>
         <Button variant="text" color="secondary" onClick={openModal}>신고</Button>
-        {isModalOpen && <ComplaintModal onClose={closeModal} id={id} />}
+        {isModalOpen && <ComplaintModal onClose={closeModal} post={data} isReport={[isReport, data.report]}/>}
       </Box>
 
       <Box className={styles.shadowBox}>
