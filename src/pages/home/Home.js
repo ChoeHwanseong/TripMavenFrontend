@@ -49,7 +49,7 @@ const Home = () => {
     setEventSelectedRegion(region);
     setWeatherSelectedRegion(region);
   };
-  
+
   const handleServiceCardClick = (path) => {
     navigate(path);
   };
@@ -85,6 +85,7 @@ const Home = () => {
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             border: '1px solid #f1f1f1',
             mb: '45px',
+            marginTop:'85px'
           }}>
             <Box sx={{ mb: 3 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
@@ -128,10 +129,10 @@ const Home = () => {
                         image={city.image}
                         alt={city.name}
                       />
-                      <CardContent sx={{ 
-                        flexGrow: 1, 
-                        display: 'flex', 
-                        alignItems: 'center', 
+                      <CardContent sx={{
+                        flexGrow: 1,
+                        display: 'flex',
+                        alignItems: 'center',
                         justifyContent: 'center',
                         padding: '8px',
                       }}>
@@ -146,10 +147,10 @@ const Home = () => {
         </div>
 
         {/* AI 소개 섹션 */}
-        <Box className={styles.aiSection} sx={{ 
-          position: 'relative', 
-          overflow: 'hidden', 
-          my: 4, 
+        <Box className={styles.aiSection} sx={{
+          position: 'relative',
+          overflow: 'hidden',
+          my: 4,
           borderRadius: '16px',
           background: 'linear-gradient(135deg, #0066ff, #00ccff)',
           minHeight: isSmallScreen ? '200px' : '300px', // 최소 높이 설정
@@ -169,15 +170,15 @@ const Home = () => {
             </svg>
           </div>
           <Grid container spacing={2} alignItems="center" className={styles.aiContent}
-                sx={{ position: 'relative', zIndex: 1, height: '100%', p: 3 }}>
-            <Grid item xs={12} sm={4} md={3} sx={{ 
-              display: 'flex', 
+            sx={{ position: 'relative', zIndex: 1, height: '100%', p: 3 }}>
+            <Grid item xs={12} sm={4} md={3} sx={{
+              display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-start', // 왼쪽 정렬
               height: '100%',
             }}>
-              <Box className={styles.aiImageContainer} sx={{ 
-                width: '100%', 
+              <Box className={styles.aiImageContainer} sx={{
+                width: '100%',
                 maxWidth: { xs: '120px', sm: '150px', md: '200px' }, // 반응형 크기
                 background: 'rgba(255, 255, 255, 0.2)',
                 borderRadius: '50%',
@@ -191,13 +192,13 @@ const Home = () => {
                 />
               </Box>
             </Grid>
-            <Grid item xs={12} sm={8} md={9} sx={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
+            <Grid item xs={12} sm={8} md={9} sx={{
+              display: 'flex',
+              flexDirection: 'column',
               justifyContent: 'center',
               height: '100%',
             }}>
-              <Typography variant="h6" className={styles.aiTitle} sx={{ 
+              <Typography variant="h6" className={styles.aiTitle} sx={{
                 fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.5rem' },
                 mb: 2,
                 color: 'white',
@@ -212,7 +213,7 @@ const Home = () => {
                 display: { xs: 'none', sm: 'block' }, // 작은 화면에서 숨김
               }}>
                 우리의 AI는 당신의 가이드 능력에 맞는 최적의 서비스를 제공합니다.
-                재밌는 퀴즈, 실전 테스트! <br/> AI와 함께 특별한 경험을 체험하세요.
+                재밌는 퀴즈, 실전 테스트! <br /> AI와 함께 특별한 경험을 체험하세요.
               </Typography>
               <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-end', sm: 'flex-start' } }}>
                 <Button
@@ -236,18 +237,19 @@ const Home = () => {
             </Grid>
           </Grid>
         </Box>
-		
+
         {/* 새로운 서비스 소개 섹션 */}
         <Box sx={{ my: 6 }}>
           <Grid container spacing={3}>
             {/* 채팅방 시스템 */}
             <Grid item xs={12} md={4}>
-              <Card 
-                className={styles.serviceCard} 
+              <Card
+                className={styles.serviceCard}
                 style={{
                   backgroundImage: `url(${process.env.PUBLIC_URL}/images/chatting.png)`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
+                  backgroundSize: '50%',
+                  backgroundPosition: '90% ',
+                  backgroundRepeat: 'no-repeat',
                   cursor: 'pointer'
                 }}
                 onClick={() => handleServiceCardClick('/bigchat/:id')}
@@ -265,12 +267,13 @@ const Home = () => {
 
             {/* 이용 후기 */}
             <Grid item xs={12} md={4}>
-              <Card 
-                className={styles.serviceCard} 
+              <Card
+                className={styles.serviceCard}
                 style={{
                   backgroundImage: `url(${process.env.PUBLIC_URL}/images/testimony.png)`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
+                  backgroundSize: '50%',
+                  backgroundPosition: '90% ',
+                  backgroundRepeat: 'no-repeat',
                   cursor: 'pointer'
                 }}
                 onClick={() => handleServiceCardClick('/userreview')}
@@ -288,12 +291,13 @@ const Home = () => {
 
             {/* 1대1 문의 */}
             <Grid item xs={12} md={4}>
-              <Card 
-                className={styles.serviceCard} 
+              <Card
+                className={styles.serviceCard}
                 style={{
                   backgroundImage: `url(${process.env.PUBLIC_URL}/images/inquiry.png)`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
+                  backgroundSize: '50%',
+                  backgroundPosition: '90% ',
+                  backgroundRepeat: 'no-repeat',
                   cursor: 'pointer'
                 }}
                 onClick={() => handleServiceCardClick('/mypage/askall')}
