@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../styles/aiservicepage/Quiz.module.css';
-import { fetchData, submitAnswer } from '../../utils/Quiz';  
+import { fetchData, submitAnswer } from '../../utils/Quiz';
 import { useNavigate } from 'react-router-dom';
 import QuizResult from './FinishQuiz';
 
@@ -9,7 +9,7 @@ const QuizForm = () => {
   const [currentQuiz, setCurrentQuiz] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
   const [usedQuiz, setUsedQuiz] = useState([]);
-  const [score, setScore] = useState(0); 
+  const [score, setScore] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -17,8 +17,10 @@ const QuizForm = () => {
     const getData = async () => {
       try {
         const fetchedData = await fetchData();
-        setData(fetchedData);
-        randomQuiz(fetchedData, []);
+        // 10개의 문제만 랜덤하게 선택
+        const selectedQuizzes = getRandomQuizzes(fetchedData, 10);
+        setData(selectedQuizzes);
+        randomQuiz(selectedQuizzes, []);
       } catch (error) {
         console.error('에러났당', error);
       }
@@ -26,6 +28,12 @@ const QuizForm = () => {
 
     getData();
   }, []);
+  
+  // 10개의 랜덤 문제를 선택하는 함수
+  const getRandomQuizzes = (quizList, numberOfQuizzes) => {
+    const shuffledQuizzes = quizList.sort(() => Math.random() - 0.5);  // 퀴즈 리스트를 섞음
+    return shuffledQuizzes.slice(0, numberOfQuizzes);  // 첫 10개의 문제만 반환
+  };
 
   const randomQuiz = (quizList, usedQuiz) => {
     const availableQuiz = quizList.filter(quiz => !usedQuiz.includes(quiz.id));
@@ -59,7 +67,7 @@ const QuizForm = () => {
         if (isCorrect) {
           setScore(prevScore => {
             const newScore = prevScore + 10;
-            console.log('총점', newScore); 
+            console.log('총점', newScore);
             return newScore;
           });
         }
@@ -76,7 +84,7 @@ const QuizForm = () => {
       <h2>퀴즈 맞추기</h2>
       {currentQuiz && (
         <>
-          <p className={styles.question}> {usedQuiz.length }. {currentQuiz.question}</p>
+          <p className={styles.question}> {usedQuiz.length}. {currentQuiz.question}</p>
           <ul className={styles.options}>
             <li>
               <button
@@ -116,7 +124,7 @@ const QuizForm = () => {
           </button>
         </>
       )}
-       <QuizResult isOpen={isModalOpen} onClose={handleCloseModal} newScore={score} />  
+      <QuizResult isOpen={isModalOpen} onClose={handleCloseModal} newScore={score} />
     </div>
   );
 };
