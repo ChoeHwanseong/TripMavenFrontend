@@ -10,16 +10,14 @@ import MyPageRoutes from './pages/mypage/MyPageRoutes';
 import MyPageTemplate from './pages/mypage/MyPageTemplate';
 import UserReview from './pages/mypage/usermypage/UserReview';
 import UserLike from './pages/mypage/usermypage/UserLike';
-import ProductPost from './pages/productPage/ProductPost';
 
-import AskPost from './pages/askpage/AskPost';
 import AskUpdate from './pages/askpage/AskUpdate';
 import CSBoard from './pages/csboard/CSBoard';
 import TermsService from './pages/infopage/TermsService';
 import RegisterGuide from './pages/registerguidepage/RegisterGuide';
 import SiteIntroduction from './pages/infopage/SiteInfo';
 import FAQ from './pages/csboard/FAQ';
-import ComplaintForm from './pages/report/ComplaintForm';
+
 import ProductBoard from './pages/productPage/ProductBoard';
 import BigChat from './pages/chat/BigChat';
 import ChattingRoom from './pages/chat/ChattingRoom';
@@ -44,6 +42,14 @@ import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
 import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
 import ResultFinalPage from './pages/aiservicepage/Result/ResultFinalPage';
 import ResultFirstPage from './pages/aiservicepage/Result/ResultFirstPage';
+import RoleBasedRoute from './components/RoleBasedRoute';
+
+
+
+
+
+
+
 
 
 
@@ -76,10 +82,7 @@ function App() {
           {/*<Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />*/}
     
           <Route path='/askupdate/:id' element={<AskUpdate />} />
-
-          {/* 실전 테스트 결과 페이지 라우팅 */}
-          <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
-          <Route path='/resultFirstPage/:id' element={<ResultFirstPage />} />
+        
         </Route>
         <Route path='/videoAppUpload' element={<VideoAppUpload />} />
         <Route path="/cs" element={<CSBoard />} />
@@ -100,20 +103,22 @@ function App() {
         <Route path='/postDetails/:id' element={<PostDetails />} />
 
         <Route path='/termsservice' element={<TermsService />} />
-        <Route path='/adminreport' element={<ComplaintForm />} />
 
         <Route path='/record' element={<WebcamRecorder />} />
         <Route path='/recordcheck' element={<DeviceCheckComponent />} />
         <Route path='/test' element={<DeviceCheckComponent2 />} />
 
         <Route path='/realTestPage/:id' element={<RealTestPage />} />
-        <Route path='/realTestResult/:id' element={<RealTestResult />} />
+        {/* <Route path='/realTestResult/:id' element={<RealTestResult />} />  미사용(ResultFinalPage 사용)*/}
         <Route path='/productComponent' element={<ProductComponent />} />
 
         <Route path='/juwontest' element={<ScreenRecorderApp />} />
         <Route path='/lgmtest1' element={<VideoAppUpload />} />{/* 테스트 */}
 
-        
+        {/* 실전 테스트 결과 페이지 라우팅 */}
+        <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
+        <Route path='/resultFirstPage/:id' element={<ResultFirstPage />} />
+
       </Route>
     </Routes>
   </>

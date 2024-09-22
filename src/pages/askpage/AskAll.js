@@ -52,7 +52,7 @@ const AskAll = () => {
   return (
     <Box sx={{ maxWidth: 1200, mx: 'auto', p: 3.5 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m: 3 }}>
-        <Typography style={{ fontWeight: 'bold', marginLeft: '-15px' }} variant="h4">
+        <Typography variant="h4" fontWeight="bold">
           문의 내역
         </Typography>
         <div className='d-flex'>

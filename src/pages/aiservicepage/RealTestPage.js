@@ -145,8 +145,10 @@ const RealTestPage = () => {
           cheek: resultData.graphs.cheekbones_graph,
           mouth: resultData.graphs.mouth_graph,
           brow: resultData.graphs.brow_graph,
-          eye: resultData.graphs.eye_bar_graph,
-          nasolabial: resultData.graphs.nasolabial_folds_graph
+          eye: resultData.eye.average_blinks,
+          nasolabial: resultData.graphs.nasolabial_folds_graph,
+          commentEye : resultData.eye.comment,
+          commentsFace : resultData.expression_comment, 
         }, memberId, productboardId);
 
         console.log('evaluationResponse:', evaluationResponse);

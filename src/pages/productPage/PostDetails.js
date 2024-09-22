@@ -14,8 +14,10 @@ import { fetchFiles } from '../../utils/fileData';
 import ProfileCardModal from './GuideProfileModal';
 import { chattingRoomData } from '../../utils/chatData';
 import ImageSlider from '../../api/ImageSlider';
-import ReviewList from '../guidemypage/guidepost/ReviewList';
+import ReviewList from './ReviewList';
 import Loading from '../../components/LoadingPage';
+import { findByProductId } from '../../utils/reportData';
+import { reviewGetByProductId } from '../../utils/reviewData';
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ const PostDetails = () => {
   const { id, keyword } = useParams();
   const contentRef = useRef(null);
   const [isExpanded, setIsExpanded] = useState(false);
-
+  const [isReport, setIsReport] = useState(false);
   const membersId = localStorage.getItem('membersId');
 
   // 내용 더보기 버튼
@@ -39,33 +41,39 @@ const PostDetails = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        console.log('포스트 디테일 들어옴');
         const fetchedData = await postGetById(id);
-        console.log('fetchedData: ', fetchedData);
-        setData(fetchedData);
-
+        const fetchReport = await findByProductId(id);
+        const fetchreview = await reviewGetByProductId(id);
+        const postdata = { ...fetchedData, report: { ...fetchReport }, review: { ...fetchreview } }
+        console.log('postdata', postdata);
+        console.log('fetchReport', fetchReport);
+        fetchReport.forEach(element => {
+          console.log(element.member.id == membersId)
+          if(element.member.id == membersId){
+            setIsReport(true);
+          }
+        });
+        console.log(isReport)
+        setData(postdata);
         const isLikey = fetchedData.likey.find(like => like.member.id == membersId);
         setLiked(isLikey ? true : false);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
     const getFiles = async () => {
       try {
         const fileData = await fetchFiles(id);
-        console.log('fileData: ', fileData);
         setFileUrls(fileData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
-
     getData();
     getFiles();
-
   }, [liked, id, membersId]);
+
+
 
   const handleLike = async () => {
     if (!liked) {
@@ -110,19 +118,12 @@ const PostDetails = () => {
   };
 
 
-
-  const handleSubmit = (complaintData) => {
-    console.log('Complaint submitted:', complaintData, 'for id:', complaintId);
-    closeModal();
-  };
-
   const handleClick = async () => {
-
     try {
       const myId = localStorage.getItem("membersId");
       const yourId = data.member.id;
       const roomId = await chattingRoomData(myId, yourId, id);
-      
+
       navigate(`/bigChat/${data.id}`);
 
     } catch (error) {
@@ -213,10 +214,18 @@ const PostDetails = () => {
         </Button>
 
         <Box className={styles.symbol} sx={{ mr: 2 }}>
-          <Typography variant="body1">125건의 리뷰</Typography>
+          <Typography variant="body1">
+            {data.review && Object.values(data.review).length > 0
+              ? `${Object.values(data.review).length} 건의 리뷰`
+              : '0 건의 리뷰'}
+          </Typography>
         </Box>
         <Box className={`${styles.symbol} ${styles.star}`} sx={{ mr: 2 }}>
-          <Typography variant="body1">★ 4.5</Typography>
+          <Typography variant="body1">
+            ★{data.review && Object.values(data.review).length > 0
+              ? Object.values(data.review).reduce((acc, review) => acc + review.ratingScore, 0) / Object.values(data.review).length
+              : 0}
+          </Typography>
         </Box>
         <Box className={styles.symbol} sx={{ mr: 2 }}>
           <Typography variant="body1">AI 평가 점수</Typography>
@@ -229,7 +238,7 @@ const PostDetails = () => {
           <span className={styles.likeCount}>{data.likey ? data.likey.length : '0'}</span>
         </button>
         <Button variant="text" color="secondary" onClick={openModal}>신고</Button>
-        {isModalOpen && <ComplaintModal onClose={closeModal} onSubmit={handleSubmit} id={id} />}
+        {isModalOpen && <ComplaintModal onClose={closeModal} post={data} isReport={[isReport, data.report]}/>}
       </Box>
 
       <Box className={styles.shadowBox}>
@@ -277,13 +286,13 @@ const PostDetails = () => {
             <Typography variant="body2" color="textSecondary" sx={{ marginBottom: 2 }}>
               {data.hotelAd}
             </Typography>
-            <KakaoMap address={data.hotelAd == null ? data.hotel : data.hotelAd}/>
+            <KakaoMap address={data.hotelAd == null ? data.hotel : data.hotelAd} />
           </div>
         </Box>
       </Box>
 
       <Box className={styles.shadowBox}>
-        <ReviewList id={data.id}/>
+        <ReviewList data={data.review} />
       </Box>
 
       <Box className={styles.actions}>

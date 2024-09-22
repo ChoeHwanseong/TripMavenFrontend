@@ -41,6 +41,9 @@ const ResultFinalPage = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.pageTitle}>
+      실전 테스트 결과
+      </div>
       <div className={styles.mainResult}>
         {/* 종합 결과 */}
         <Box className={styles.titleContainer}>

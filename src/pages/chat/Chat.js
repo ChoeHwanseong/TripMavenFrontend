@@ -77,12 +77,6 @@ const Chat = () => {
         botMessageElement.innerHTML = `<p>${botAnswer}</p>`;
         chattingArea.appendChild(botMessageElement);
 
-        /*
-        await axios.post('/chatbot', {
-          inquery: message,
-          answer: botAnswer,
-        });
-        */
 
       }
       catch (error) {

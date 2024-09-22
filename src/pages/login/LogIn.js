@@ -14,22 +14,11 @@ const Login = () => {
         });
     };
     
-    useEffect(()=>{
-
-    },[]);
-
-
-    const [autoLogin, setAutoLogin] = useState(false);
-
-    const handleAutoLoginChange = () => setAutoLogin(!autoLogin);
-
     const handleLogin = async (e) => {
         e.preventDefault();
         
         try {
             const response = await FormLogin(formData);
-            console.log(response);
-
             // 로그인 성공 시 처리
             if (response) {
                 window.location.href = '/home'; // 예시: 홈으로 리다이렉트
@@ -37,8 +26,7 @@ const Login = () => {
                 alert('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
             }
         } catch (error) {
-            alert('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
-            console.error('로그인 요청 중 오류 발생:', error);
+            alert(error.response.data.message);
         }
 
     };
@@ -47,17 +35,14 @@ const Login = () => {
         const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID; // 환경 변수에서 클라이언트 ID를 가져옵니다.
         const redirectUri = process.env.REACT_APP_GOOGLE_URL; // 리다이렉트 URI
         const encodedRedirectUri = encodeURIComponent(redirectUri); // 리다이렉트 URI를 인코딩합니다.
-        //window.location.href = redirectUri;
+
         window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}&scope=email profile`;
     };
 
-    const kakaoLogin = () => { ///////////////석세스 요청으로 가면 그 최초마운트에서 (쿼리든 머리든)쿠키~에 있는거 읽고 저장하고 중 저장이 되면. 네비게이트... 
-        // 씨발 그럼. . 폼도 같이 쓸수 있네요. 
-
+    const kakaoLogin = () => { 
         const clientId = process.env.REACT_APP_KAKAO_CLIENT_ID; // 환경 변수에서 클라이언트 ID를 가져옵니다.
         const redirectUri = process.env.REACT_APP_KAKAO_URL; // 리다이렉트 URI
         const encodedRedirectUri = encodeURIComponent(redirectUri); // 리다이렉트 URI를 인코딩합니다.
-        //window.location.href = redirectUri;
         window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}&through_account=true`;
     };
 
@@ -67,7 +52,6 @@ const Login = () => {
         const encodedRedirectUri = encodeURIComponent(redirectUri); // 리다이렉트 URI를 인코딩합니다.
         const state = uuidv4();
         localStorage.setItem('naver_login_state', state);
-
         window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodedRedirectUri}&state=${encodeURIComponent(state)}`;
     };
 
@@ -76,7 +60,6 @@ const Login = () => {
         if (event.key === 'Enter') {
             try {
                 const response = await FormLogin(formData);
-                console.log(response);
     
                 // 로그인 성공 시 처리
                 if (response) {

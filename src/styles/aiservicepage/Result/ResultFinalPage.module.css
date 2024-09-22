@@ -7,6 +7,15 @@
   font-family: Arial, sans-serif;
 }
 
+.pageTitle {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: start;
+  margin-bottom: 30px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
 .mainResult {
   width: 100%;
   border: 2px dotted #007bff;
