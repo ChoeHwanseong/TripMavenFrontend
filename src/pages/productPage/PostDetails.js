@@ -123,8 +123,7 @@ const PostDetails = () => {
       const myId = localStorage.getItem("membersId");
       const yourId = data.member.id;
       const roomId = await chattingRoomData(myId, yourId, id);
-
-      navigate(`/bigChat/${data.id}`);
+      navigate(`/bigChat/${roomId}`);
 
     } catch (error) {
       console.error('Error fetching or creating chat room:', error);
@@ -152,7 +151,7 @@ const PostDetails = () => {
           <ProfileCardModal
             isOpen={isGuideModalOpen}
             onClose={closeGuideModal}
-            guideData={data.member} // 가이드 데이터를 ProfileCardModal로 전달
+            postData = {data}
           />
         </Box>
 

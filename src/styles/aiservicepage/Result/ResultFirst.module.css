@@ -1,3 +1,20 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.pageTitle {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: start;
+  margin-bottom: 30px;
+  padding: 20px;
+  border-radius: 10px;
+}
 .mainContainer {
   width: 100%;
   border: 2px solid #c2c2c2;
@@ -183,4 +200,22 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+}
+
+.modalBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fullscreenImage {
+  max-width: 100%;
+  max-height: 100%;
 }
