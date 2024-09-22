@@ -3,6 +3,7 @@ import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead
 import { reportAllget } from '../../../utils/reportData';
 import ComplaintModal from '../../report/ComplaintModal';
 import { TemplateContext } from '../../../context/TemplateContext';
+import { activeOnOff } from '../../../utils/memberData';
 
 const AdminReport = () => {
   const [inquiries, setInquiries] = useState([]);
@@ -39,6 +40,12 @@ const AdminReport = () => {
     setSelectedReport(null); // 선택된 데이터 초기화
   };
 
+  const handleMember = (member) =>{
+    console.log(member);
+    activeOnOff(member.id);
+    console.log(member);
+
+  }
   // Pagination
   const indexOfLastRow = page * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
@@ -81,8 +88,7 @@ const AdminReport = () => {
                 <TableCell>{inquiry.createdAt.split('T')[0]}</TableCell>
                 <TableCell onClick={(e) => {
                   e.stopPropagation();
-                  console.log(inquiry.productBoard.member.id)
-                  console.log(inquiry.productBoard.member)
+                  handleMember(inquiry.productBoard.member);
                 }}>
                   {inquiry.productBoard.member.isactive == "1" ? '비활성화하기' : '활성화하기'}
                 </TableCell>

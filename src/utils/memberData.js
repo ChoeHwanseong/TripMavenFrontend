@@ -82,8 +82,7 @@ export const FormLogin = async (form) => {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
-  });
-
+  })
   const token = response.headers['authorization'] || response.headers['Authorization'];
   if (token) {
     const pureToken = token.split(' ')[1];
@@ -145,6 +144,17 @@ export const deleteProfile = async (id) => {
     const res = await axios.put(`/spring/members/delete/${id}`);
     logout();
     localStorage.clear();
+    return res.data;
+  } catch (error) {
+    console.error('회원 탈퇴 중 에러났당', error);
+    throw error;
+  }
+};
+
+// 활동 온오프
+export const activeOnOff = async (id) => {
+  try {
+    const res = await axios.put(`/spring/members/activeonoff/${id}`);
     return res.data;
   } catch (error) {
     console.error('회원 탈퇴 중 에러났당', error);
