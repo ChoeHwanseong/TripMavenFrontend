@@ -147,7 +147,7 @@ function BigChat() {
         client.end();
       }
     };
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     scrollToBottom();
