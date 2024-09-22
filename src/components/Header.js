@@ -229,7 +229,6 @@ const Header = () => {
     };
 
     const handleNavigatePage = () => {
-        console.log('검색 실행:', searchKeyword);
         navigate(`/product?keyword=${searchKeyword}`);
     };
 
