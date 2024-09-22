@@ -4,11 +4,13 @@ import styles from "../../../styles/aiservicepage/Result/ResultFinalPage.module.
 import MovieIcon from '@mui/icons-material/Movie'; 
 import MicIcon from '@mui/icons-material/Mic';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents'; 
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { resultGetByProductId } from "../../../utils/AiData";
 
 const ResultFinalPage = () => {
 
+  const location = useLocation();
+  const { responses, videoUrls, videoDuration } = location.state || {};
 
   const productboardId  = useParams().id;
   const navigate = useNavigate(); 
@@ -16,6 +18,11 @@ const ResultFinalPage = () => {
   const [result, setResult] = useState([]);
 
   useEffect(() => {
+    console.log('location.state : ',location.state );
+    console.log('프랍스 내려온 responses: ',responses);
+    console.log('프랍스 내려온 videoUrls: ',videoUrls);
+    console.log('프랍스 내려온 videoDuration: ',videoDuration);
+
     const getResults = async () => {
       
         const data = await resultGetByProductId(productboardId);
@@ -26,14 +33,18 @@ const ResultFinalPage = () => {
 
     getResults();
 
-  }, [productboardId]);
+  }, [productboardId, responses]);
 
 
   const handleGoToFirstPage = () => {
     console.log('handleGoToFirstPage의 result: ',result);
     // navigate 함수를 이용해 데이터를 state로 전달
     navigate(`/resultFirstPage/${productboardId}`, {
-      state: {result},
+      state: {
+        responses: responses,
+        videoUrls: videoUrls,
+        videoDuration: videoDuration
+      }
     });
   };
 
@@ -52,6 +63,19 @@ const ResultFinalPage = () => {
           </Typography>
         </Box>
 
+        <Box className={styles.resultBox}>
+          <Typography variant="h6" align="center">
+            감정 분석 결과
+          </Typography>
+          <Box className={styles.resultText}>
+            {result.map((res, idx) => (
+              <div key={idx}>
+                <p>{`감정 분석 ${idx + 1}: ${JSON.stringify(res.expressions)}`}</p>
+              </div>
+            ))}
+          </Box>
+        </Box>
+        
         <div className={styles.resultSection}>
           {/* 영상 분석 결과 */}
           <Box className={styles.resultBox}>

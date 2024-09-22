@@ -6,6 +6,8 @@ import styles from '../../styles/aiservicepage/RealTestPage.module.css';
 import { createEvaluation } from '../../utils/AiData';
 import { videoFace } from '../../utils/PythonServerAPI';
 import axios from 'axios';
+import FaceDetection from '../../components/FaceDetection';
+
 
 const RealTestPage = () => {
   const memberId = localStorage.getItem('membersId');
@@ -25,6 +27,8 @@ const RealTestPage = () => {
   const [timeLeft, setTimeLeft] = useState(60);
   const [loadingMessage, setLoadingMessage] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+
+  const [responses, setResponses] = useState([]); // 감정 분석 결과 저장
 
   const videoChunks = useRef([]);
   const webcamRef = useRef(null);
@@ -87,6 +91,10 @@ const RealTestPage = () => {
         const blob = new Blob(videoChunks.current, { type: 'video/mp4' });
         videoBlob.current = blob;
         videoChunks.current = [];
+
+         // 녹화 시간이 얼마나 되었는지 계산
+        const duration = Math.floor(stream.getVideoTracks()[0].getSettings().frameRate * videoChunks.current.length); 
+        setTimeLeft(duration);  // 녹화 시간을 상태에 저장
       };
 
       mediaRecorderRef.current.start();
@@ -138,6 +146,7 @@ const RealTestPage = () => {
           pronunciation: 50,
           tone: "높다",
           fillerwords: 50,
+          fillerweights: "메롱",
           formal_speak: 50,
           question_speak: 50,
           text: "잘한다",
@@ -153,9 +162,29 @@ const RealTestPage = () => {
 
         console.log('evaluationResponse:', evaluationResponse);
         setLoadingMessage(""); // 모달 메시지 제거
+
+        // 두 개의 결과를 배열로 전달
+        const previousResult = localStorage.getItem("previousResult") 
+        ? JSON.parse(localStorage.getItem("previousResult")) 
+        : [];
+
+        const allResults = [...previousResult, resultData]; // 결과를 배열에 추가
+
+        localStorage.setItem("previousResult", JSON.stringify(allResults)); // 두 번째 결과 저장
+        console.log('allResults: ',allResults);
+
         if (videoType === 'second') {
-          alert('영상이 성공적으로 제출되었습니다!');
-          navigate(`/resultFinalPage/${productboardId}`, { state: { response: resultData } });
+            alert('영상이 성공적으로 제출되었습니다!');
+            navigate(`/resultFinalPage/${productboardId}`, {
+                state: {
+                    responses: allResults, // 두 개의 결과를 배열로 전달
+                    videoUrls: [
+                        URL.createObjectURL(videoBlob.current), 
+                        ...previousResult.map(() => URL.createObjectURL(videoBlob.current))
+                    ],
+                    videoDuration: timeLeft
+                }
+            });
         }
       } else {
         setLoadingMessage("");
@@ -176,7 +205,10 @@ const RealTestPage = () => {
       <div className={styles.testContainer}>
         <div className={styles.videoBox}>
           {isVideoConnected ? (
-            <Webcam ref={webcamRef} audio={true} style={{ width: '100%', height: '100%', display: 'block' }} />
+             <>
+             <Webcam ref={webcamRef} audio={true} style={{ width: '100%', height: '100%', display: 'block' }} />
+          {/*    <FaceDetection webcamRef={webcamRef} setResponses={setResponses} responses={responses} />  FaceDetection 사용 */}
+           </>
           ) : (
             <Typography variant="body2" color="error" align="center">
               * 웹캠이 연결되지 않았습니다.
