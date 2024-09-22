@@ -43,6 +43,7 @@ import ResultFinalPage from './pages/aiservicepage/Result/ResultFinalPage';
 import ResultFirstPage from './pages/aiservicepage/Result/ResultFirstPage';
 import RoleBasedRoute from './components/RoleBasedRoute';
 import FaceDetection from './components/FaceDetection';
+import ProductPost from './pages/productPage/ProductPost';
 
 
 
@@ -86,6 +87,7 @@ function App() {
         <Route path='/registerguide' element={<RegisterGuide />} />
         <Route path='/product' element={<ProductBoard />} />
         <Route path='/postDetails/:id' element={<PostDetails />} />
+        <Route path='/productPost/:id' element={<ProductPost />} />
 
         <Route path='/termsservice' element={<TermsService />} />
 

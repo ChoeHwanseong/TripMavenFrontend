@@ -31,8 +31,6 @@ const RealTestPage = () => {
 
   const [responses, setResponses] = useState([]); // 감정 분석 결과 저장
 
-  const [responses, setResponses] = useState([]); // 감정 분석 결과 저장
-
   const webcamRef = useRef(null);
   const videoBlob = useRef(null);
   const videoChunks = useRef([]);
@@ -278,7 +276,7 @@ const RealTestPage = () => {
         ? JSON.parse(localStorage.getItem("previousResult")) 
         : [];
 
-        const allResults = [...previousResult, resultData]; // 결과를 배열에 추가
+        const allResults = [...previousResult, resultVideoData]; // 결과를 배열에 추가
 
         localStorage.setItem("previousResult", JSON.stringify(allResults)); // 두 번째 결과 저장
         console.log('allResults: ',allResults);
