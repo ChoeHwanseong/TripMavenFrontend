@@ -11,7 +11,6 @@ const MypageProfile = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [userInfo, setUserInfo] = useState(template.memberInfo);
-  console.log(userInfo);
 
   useEffect(() => {
     if (template.memberInfo && template.memberInfo.id !== id) {

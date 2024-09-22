@@ -71,7 +71,6 @@ const convertNotificationType = {
 //헤더 컴포넌트에서 받아올 알림 상태
 const NotificationComponent = () => {
     const { notifications, setNotifications, notificationCount } = useContext(TemplateContext);
-    console.log(notifications)
     const [updatedNotifications,setUpdatedNotifications] = useState(notifications);
     useEffect(() => {
         const fetchSenderNames = async () => {
@@ -191,11 +190,13 @@ const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [searchKeyword, setSearchKeyword] = useState(''); //검색어 상태
-    const { role } = useContext(TemplateContext); //사용자 role 상태
     const [open, setOpen] = useState(false); //가이드 등록 모달 사용여부 상태
-    let menuList = menuData[role]; //사용자 role에 따라 메뉴 변경
-
     const template = useContext(TemplateContext);
+    let menuList = menuData[template.memberInfo.role]; //사용자 role에 따라 메뉴 변경
+
+    useEffect(()=>{
+
+    },[location])
 
     //로그아웃 함수
     const handleLogout = () => {
