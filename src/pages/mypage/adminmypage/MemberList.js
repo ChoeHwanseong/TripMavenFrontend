@@ -76,8 +76,8 @@ const MemberList = () => {
   const paginatedData = data.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return <>
-    <Box sx={{ maxWidth: 1200, p: 3, mt: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+    <Box sx={{ maxWidth: 1200, p: 3.5, mx: 'auto' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m: 3 }}>
         <Typography variant="h4" fontWeight="bold">
           회원 목록
         </Typography>
@@ -89,7 +89,7 @@ const MemberList = () => {
 
       <TableContainer component={Paper} sx={{ width: '100%' }}>
         <Table>
-          <TableHead>
+          <TableHead sx={{ backgroundColor: '#f9f9f9' }}>
             <TableRow>
               <TableCell>회원 번호</TableCell>
               <TableCell>아이디</TableCell>

@@ -45,8 +45,8 @@ const AdminReport = () => {
   const currentRows = inquiries.slice(indexOfFirstRow, indexOfLastRow);
 
   return (
-    <Box sx={{ maxWidth: 1200, p: 3, mt: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+    <Box sx={{ maxWidth: 1200, p: 3.5, mx:'auto' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m: 3 }}>
         <Typography variant="h4" fontWeight="bold">
           신고 내역
         </Typography>
@@ -97,7 +97,6 @@ const AdminReport = () => {
           count={Math.ceil(inquiries.length / rowsPerPage)}
           page={page}
           onChange={handleChangePage}
-          color="primary"
         />
       </Box>
       {/* ComplaintModal 표시 */}
