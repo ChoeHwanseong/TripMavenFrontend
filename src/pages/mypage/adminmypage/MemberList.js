@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar, Button, Modal, Pagination } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { fetchData } from '../../../utils/memberData';
 import GuideRegistration from '../../registerguidepage/RegisterGuide';
+import { TemplateContext } from '../../../context/TemplateContext';
 
 const style = {
   position: 'absolute',
@@ -25,6 +26,7 @@ const MemberList = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 10;
+  const { memberInfo } = useContext(TemplateContext);
 
   useEffect(() => {
     const getData = async () => {
@@ -80,7 +82,7 @@ const MemberList = () => {
           회원 목록
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar src="../../../images/defaultimage.png" sx={{ width: 32, height: 32, mr: 2 }} />
+          <Avatar src={memberInfo.profile} sx={{ width: 32, height: 32, mr: 2 }} />
           <Typography>관리자</Typography>
         </Box>
       </Box>

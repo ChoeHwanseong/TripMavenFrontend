@@ -42,7 +42,6 @@ import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
 import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
 import ResultFinalPage from './pages/aiservicepage/Result/ResultFinalPage';
 import ResultFirstPage from './pages/aiservicepage/Result/ResultFirstPage';
-import FaceRecognitionApp from './pages/aiservicepage/webrecord/FaceRecognitionApp';
 import RoleBasedRoute from './components/RoleBasedRoute';
 
 
