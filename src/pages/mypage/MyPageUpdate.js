@@ -7,6 +7,7 @@ import defaultImage from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
 import DaumPost, { splitByblank} from '../../api/DaumPostApi';
 import { useLocation } from 'react-router-dom';
+import Loading from '../../components/LoadingPage';
 
 const MypageUpdate = () => {
   const template = useContext(TemplateContext);
@@ -29,8 +30,8 @@ const MypageUpdate = () => {
 
   if (!template.memberInfo) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <CircularProgress />
+      <Box>
+        <Loading />
       </Box>
     );
   }
@@ -80,7 +81,7 @@ const MypageUpdate = () => {
   return (
     <Box className={styles.container}>
       <Box className={styles.content}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>프로필 <small>수정</small></Typography>
+        <Typography variant="h4" fontWeight="bold" gutterBottom>프로필 수정</Typography>
         {/* 프로필 사진 및 이름 */}
         <Box className={styles.profileSection}>
           <Avatar alt={profileImage || 'Profile Picture'} src={profileImage || defaultImage} className={styles.avatar} />
