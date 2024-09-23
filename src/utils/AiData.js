@@ -13,7 +13,11 @@ export const createEvaluation = async (formData, memberId, productboardId) => {
       const payload = {
           ...formData, // formData에 있는 필드들
           member_id: memberId,
-          productboard_id: productboardId
+          productboard_id: productboardId,
+          join_evaluation: { 
+            memberId: memberId, 
+            productboardId: productboardId // 상품 게시판 ID
+          }
       };
 
       console.log('post에 전송될 payload: ',payload)
@@ -37,6 +41,26 @@ export const createEvaluation = async (formData, memberId, productboardId) => {
 export const resultGetByProductId = (ProductId) => {
     console.log('리뷰 axios 넘어간 ProductId: ', ProductId);
     return axios.get(`${baseUrl}/product/${ProductId}`).then(res => {
+        return res.data;
+    }).catch(err => {
+        console.error('Error fetching reviews:', err);
+    });
+}
+
+// 분석내용 조회 (평가id 로)
+export const resultGetById = (id) => {
+    console.log('리뷰 axios 넘어간 id: ', id);
+    return axios.get(`${baseUrl}/${id}`).then(res => {
+        return res.data;
+    }).catch(err => {
+        console.error('Error fetching reviews:', err);
+    });
+}
+
+// 분석내용 조회 (회원id 로)
+export const resultGetByMemberId = (MemberId) => {
+    console.log('리뷰 axios 넘어간 MemberId: ', MemberId);
+    return axios.get(`${baseUrl}/member/${MemberId}`).then(res => {
         return res.data;
     }).catch(err => {
         console.error('Error fetching reviews:', err);

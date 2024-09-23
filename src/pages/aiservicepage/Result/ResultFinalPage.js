@@ -24,6 +24,7 @@ const ResultFinalPage = () => {
     console.log('프랍스 내려온 videoUrls: ',videoUrls);
     console.log('프랍스 내려온 videoDuration: ',videoDuration);
 
+    // 상품id 로 도착 시 (ai 테스트 후, 바로 이동된 경우)
     const getResults = async () => {
       
         const data = await resultGetByProductId(productboardId);
@@ -41,6 +42,18 @@ const ResultFinalPage = () => {
     console.log('handleGoToFirstPage의 result: ',result);
     // navigate 함수를 이용해 데이터를 state로 전달
     navigate(`/resultFirstPage/${productboardId}`, {
+      state: {
+        responses: responses,
+        videoUrls: videoUrls,
+        videoDuration: videoDuration
+      }
+    });
+  };
+
+  const handleGoToSecondPage = () => {
+    console.log('handleGoToFirstPage의 result: ',result);
+    // navigate 함수를 이용해 데이터를 state로 전달
+    navigate(`/resultSecondPage/${productboardId}`, {
       state: {
         responses: responses,
         videoUrls: videoUrls,
@@ -166,7 +179,7 @@ const ResultFinalPage = () => {
               내용들이갈거야내용들이갈거야내용들이갈거야내용들이갈거야내용들이갈거야
             </Box>
           </Box>
-          <Button variant="contained" className={styles.detailButton}>
+          <Button variant="contained" className={styles.detailButton} onClick={handleGoToSecondPage}>
             두 번째 테스트 결과 자세히 보기 &gt;&gt;
           </Button>
         </Box>

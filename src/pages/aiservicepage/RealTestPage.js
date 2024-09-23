@@ -96,7 +96,6 @@ const RealTestPage = () => {
 
       videoRecorderRef.current.onstop = () => {
         const blob = new Blob(videoChunks.current, { type: 'video/mp4' });
-        console.log('비디오 블롭:',blob);
         videoBlob.current = blob;
         videoChunks.current = [];
 
@@ -104,8 +103,30 @@ const RealTestPage = () => {
         const duration = Math.floor(stream.getVideoTracks()[0].getSettings().frameRate * videoChunks.current.length); 
         setTimeLeft(duration);  // 녹화 시간을 상태에 저장
       };
-      
+
       videoRecorderRef.current.start();
+      setIsRecording(true);
+    }).catch((error) => console.error('Error accessing microphone:', error));
+
+    //오디오 녹화
+    navigator.mediaDevices.getUserMedia({
+      audio: {
+        deviceId: selectedAudioDevice?.deviceId,
+        sampleRate: 16000,
+      }
+    }).then((stream) => {
+      audioRecorderRef.current = new MediaRecorder(stream, {mimeType: 'audio/webm;codecs=opus'});
+      audioRecorderRef.current.ondataavailable = (event) => {
+        audioChunks.current.push(event.data);
+      };
+
+      audioRecorderRef.current.onstop = () => {
+        const blob = new Blob(audioChunks.current, { type: 'audio/webm' });
+        audioBlob.current = blob;
+        audioChunks.current = [];
+      };
+
+      audioRecorderRef.current.start();
       setIsRecording(true);
     }).catch((error) => console.error('Error accessing microphone:', error));
   };
@@ -186,31 +207,24 @@ const RealTestPage = () => {
     //오디오 녹화 파일
     const audioFile = new File([audioBlob.current], 'recordedAudio.webm', { type: 'audio/webm' });
     const formDataForAudio = new FormData();
-    formDataForAudio.append('voice', videoFile);
+    formDataForAudio.append('voice', audioFile);
     formDataForAudio.append('text', accumulatedTranscriptRef.current); //정답 텍스트이긴 한데... 정답이 없는뎅,,,
-    console.log('text: ',accumulatedTranscriptRef.current);
     formDataForAudio.append('gender', memberInfo.gender=='male'?'0':'1'); //사용자 성별
+    console.log(memberInfo.gender)
     formDataForAudio.append('isVoiceTest', '0'); //발음테스트시 1로, 영상테스트시 0으로 하면 됨
 
 
     try {
       const videoResponse = await videoFace(formDataForVideo);
-/* 음성 막아놓깅
       const audioResponse = await evaluateVoiceAndText(formDataForAudio);
       if (videoResponse.success && audioResponse.success) {
         const resultVideoData = videoResponse.data; //영상 분석 결과
         console.log('resultVideoData:', resultVideoData);
         const resultAudioData = audioResponse.data; //음성 분석 결과
         console.log('resultAudioData:', resultAudioData);
-*/
-        if (videoResponse.success) {
-          const resultVideoData = videoResponse.data; //영상 분석 결과
-          console.log('resultVideoData:', resultVideoData);
-
 
         //문장 내 단어와 빈도수(콤마로 구분)
-/* 음성 막아놓깅
-       const wordlist = resultVideoData.text_analysis.word_list;
+        const wordlist = resultVideoData.text_analysis.word_list;
         const text = "";
         const weight = "";
         if(wordlist){
@@ -230,9 +244,8 @@ const RealTestPage = () => {
             fillerWeights=fillerWeights+","+fillerWord.weight;
           }
         }
-*/
+
         const evaluationResponse = await createEvaluation({
-          /*
           score: 50,
           fillerwords: fillerWords,
           fillerweights: fillerWeights,
@@ -251,28 +264,8 @@ const RealTestPage = () => {
           eye: resultVideoData.eye.average_blinks,
           nasolabial: resultVideoData.graphs.nasolabial_folds_graph,
           commentEye : resultVideoData.eye.comment,
-          commentsFace : resultVideoData.expression_comment,
-          */
-          score: 50,
-          fillerwords: "높다",
-          fillerweights: "메롱",
-          formal_speak: 50,
-          question_speak: 50,
-          text: "히히",
-          weight: "새우만두",
-
-          tone: "높은데 낮음",
-          speed: 50,
-          pronunciation: 50,
-          
-          cheek: resultVideoData.graphs.cheekbones_graph,
-          mouth: resultVideoData.graphs.mouth_graph,
-          brow: resultVideoData.graphs.brow_graph,
-          eye: resultVideoData.eye.average_blinks,
-          nasolabial: resultVideoData.graphs.nasolabial_folds_graph,
-          commentEye : resultVideoData.eye.comment,
           commentsFace : resultVideoData.expression_comment, 
-
+          
         }, memberId, productboardId);
 
         console.log('evaluationResponse:', evaluationResponse);
