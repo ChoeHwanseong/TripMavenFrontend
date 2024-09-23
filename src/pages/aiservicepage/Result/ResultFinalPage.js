@@ -12,6 +12,7 @@ const ResultFinalPage = () => {
   const location = useLocation();
   const { responses, videoUrls, videoDuration } = location.state || {};
 
+  const memberId = localStorage.getItem('membersId');
   const productboardId  = useParams().id;
   const navigate = useNavigate(); 
 
@@ -170,7 +171,7 @@ const ResultFinalPage = () => {
           </Button>
         </Box>
       </div>
-          <button className={styles.button}>
+          <button className={styles.button} onClick={()=>navigate(`/mypage/${memberId}`)}>
             마이페이지로 이동 &gt;&gt;
           </button>
     </div>

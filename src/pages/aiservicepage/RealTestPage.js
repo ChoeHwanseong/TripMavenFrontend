@@ -222,13 +222,21 @@ const RealTestPage = () => {
 
     try {
       const videoResponse = await videoFace(formDataForVideo);
+/* 음성 막아놓깅
       const audioResponse = await evaluateVoiceAndText(formDataForAudio);
       if (videoResponse.success && audioResponse.success) {
         const resultVideoData = videoResponse.data; //영상 분석 결과
         const resultAudioData = audioResponse.data; //음성 분석 결과
+        console.log('resultAudioData:', resultAudioData);
+*/
+        if (videoResponse.success) {
+          const resultVideoData = videoResponse.data; //영상 분석 결과
+          console.log('resultVideoData:', resultVideoData);
+
 
         //문장 내 단어와 빈도수(콤마로 구분)
-        const wordlist = resultVideoData.text_analysis.word_list;
+/* 음성 막아놓깅
+       const wordlist = resultVideoData.text_analysis.word_list;
         const text = "";
         const weight = "";
         if(wordlist){
@@ -248,10 +256,10 @@ const RealTestPage = () => {
             fillerWeights=fillerWeights+","+fillerWord.weight;
           }
         }
-
+*/
         const evaluationResponse = await createEvaluation({
+          /*
           score: 50,
-
           fillerwords: fillerWords,
           fillerweights: fillerWeights,
           formal_speak: resultAudioData.speak_end.formal_speak,
@@ -269,7 +277,28 @@ const RealTestPage = () => {
           eye: resultVideoData.eye.average_blinks,
           nasolabial: resultVideoData.graphs.nasolabial_folds_graph,
           commentEye : resultVideoData.eye.comment,
+          commentsFace : resultVideoData.expression_comment,
+          */
+          score: 50,
+          fillerwords: "높다",
+          fillerweights: "메롱",
+          formal_speak: 50,
+          question_speak: 50,
+          text: "히히",
+          weight: "새우만두",
+
+          tone: "높은데 낮음",
+          speed: 50,
+          pronunciation: 50,
+          
+          cheek: resultVideoData.graphs.cheekbones_graph,
+          mouth: resultVideoData.graphs.mouth_graph,
+          brow: resultVideoData.graphs.brow_graph,
+          eye: resultVideoData.eye.average_blinks,
+          nasolabial: resultVideoData.graphs.nasolabial_folds_graph,
+          commentEye : resultVideoData.eye.comment,
           commentsFace : resultVideoData.expression_comment, 
+
         }, memberId, productboardId);
 
         console.log('evaluationResponse:', evaluationResponse);
