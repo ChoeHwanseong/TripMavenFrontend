@@ -189,53 +189,49 @@ const RealTestPage = () => {
 
   //음성인식
   const startSpeechRecognition = () => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-    recognitionRef.current = recognition; // ref로 인스턴스 참조
-    recognition.lang = 'ko-KR'; // 한국어 설정
-    recognition.interimResults = true; // 중간 결과를 활성화
-    recognition.continuous = true; // 음성 인식을 10초 동안 강제로 유지
+    if (!recognitionRef.current) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
 
-    recognition.onresult = (event) => {
-      let interimTranscript = '';
-      let finalTranscript = '';
+      recognitionRef.current.continuous = true;
+      recognitionRef.current.interimResults = true;
+      recognitionRef.current.lang = 'ko-KR';
 
-      for (let i = 0; i < event.results.length; i++) {
-        // 중간 결과를 처리
-        if (event.results[i].isFinal) {
-          finalTranscript += event.results[i][0].transcript.trim() + ' ';
-        } else {
-          interimTranscript += event.results[i][0].transcript.trim() + ' ';
-        }
-      }
-
-      // 최종 자막을 누적 및 업데이트
-      if (finalTranscript) {
-        accumulatedTranscriptRef.current += finalTranscript;
-        setTranscript(accumulatedTranscriptRef.current.trim());
-      }
-
-      // 실시간으로 중간 결과 업데이트
-      if (interimTranscript) {
-        setTranscript(accumulatedTranscriptRef.current + interimTranscript);
-      }
+      recognitionRef.current.onresult = handleResult;
+      recognitionRef.current.onerror = handleError;
+      recognitionRef.current.onend = () => {
+        console.log('Speech recognition ended');
+      };
     }
 
-    recognition.onerror = (event) => {
-      console.error('Speech recognition error:', event.error);
-      recognition.stop();
-    };
-
-    recognition.onend = () => {
-      // 음성 인식이 자동으로 종료되지 않도록 빈 onend 핸들러
-    };
-
-    recognition.start();
+    recognitionRef.current.start();
+    setTranscript(''); // 음성 인식 시작 시 트랜스크립트 초기화
 
     // 60초 후 음성 인식 종료
     setTimeout(() => {
-      recognition.stop();
-    }, 60000); // 10000ms = 10초
+      recognitionRef.current.stop();
+    }, 60000);
+  };
+
+  const handleResult = (event) => {
+    let finalTranscript = '';
+    let interimTranscript = '';
+
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcript = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        finalTranscript += transcript + ' ';
+      } else {
+        interimTranscript += transcript;
+      }
+    }
+
+    accumulatedTranscriptRef.current += finalTranscript;
+    setTranscript(accumulatedTranscriptRef.current + interimTranscript);
+  };
+
+  const handleError = (event) => {
+    console.error('Speech recognition error', event.error);
   };
 
   //녹화, 녹음 파일 파이썬 서버에 보내기 + 결과 받아서 데이터베이스에 저장하기
