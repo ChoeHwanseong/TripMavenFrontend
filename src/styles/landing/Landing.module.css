@@ -10,6 +10,8 @@
 
 .contentWrapper {
   width: 100%;
+  max-width : 1600px;
+  min-width : 400px;
   margin: 0 auto;
   padding: 0;
 }
@@ -17,6 +19,7 @@
 .travelPage {
   font-family: Arial, sans-serif;
   width: 100%;
+  min-width : 400px;
 }
 
 .container {
@@ -46,15 +49,17 @@
   min-height: 100vh;
   position: relative;
   background-color: #f0f8ff;
+  
 }
 
 .glowTitle {
   color: rgb(75, 54, 233);
-  font-size: 8rem;
+  font-size: 8.5rem;
   position: relative;
   display: inline-block;
   margin: 0;
   padding: 0;
+  bottom: 20px;
   letter-spacing: 50px;
   font-weight: bold;
 }
@@ -133,10 +138,14 @@
 
 .heroButtonWrapper {
   position: absolute;
-  left: 50%;
+  left: 0;
+  right: 0;
   bottom: 10%;
-  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 3;
+  width: 100%;
 }
 
 .heroLeft::before, .heroRight::before {
@@ -220,6 +229,8 @@
   border-radius: 15%;
   transition: 0.5s;
   background: linear-gradient(45deg, #959fda, #2576ef);
+  white-space: nowrap;
+  min-width: max-content;
 }
 
 .btn2:hover {
@@ -258,10 +269,11 @@
 
 .section {
   padding: 6rem 0;
+  background-color: #ffffff;
 }
 
 .tealSection, .darkTealSection, .brightTealSection {
-  background-color: #92bcf6;
+  background-color: #95c9fd;
   color: #ffffff;
   min-height: 100vh;
   display: flex;
@@ -288,11 +300,13 @@
 }
 
 .sectionText {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
   line-height: 1.5;
+  min-height: 4.5em; /* 3줄의 텍스트를 수용할 수 있는 높이 */
+  white-space: pre-line; /* 줄바꿈을 유지합니다 */
+  margin-bottom: 1.5rem;
   margin-left: 20px;
-  color: rgb(255, 255, 255);
+  color: #ffffff;
   position: relative;
 }
 
@@ -442,13 +456,14 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  min-width: 1440px;
-  padding: 1rem 0;
-  justify-content: space-between;
-  transition: background-color 0.3s ease-in-out, padding 0.3s ease-in-out;
+  width: 100%;
+  padding: 1rem 2rem;
+  transition: all 0.3s ease-in-out;
   z-index: 1000;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease-in-out, padding 0.3s ease-in-out;
 }
 
 .navbarShrink {
@@ -462,7 +477,7 @@
   align-items: center;
   width: 100%;
   max-width: 3500px;
-  padding: 0 2rem;
+  margin: 0 auto;
 }
 
 .navbarBrand {
@@ -488,7 +503,7 @@
   text-decoration: none;
   transition: color 0.3s ease-in-out;
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .navbarShrink .navLink {
@@ -597,6 +612,245 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 1440px) {
+  .container {
+    width: 90%;
+    max-width: 1200px;
+  }
+
+  .glowTitle {
+    font-size: 6rem;
+    letter-spacing: 30px;
+  }
+
+  .heroTitle {
+    font-size: 2.2rem;
+  }
+
+  .heroList {
+    font-size: 2rem;
+  }
+
+  .heroList li {
+    font-size: 1.3rem;
+  }
+
+  .sectionTitle {
+    font-size: 2.2rem;
+    padding: 100px;
+  }
+
+  .sectionText {
+    font-size: 1.8rem;
+  }
+
+  .featureIcon {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .navbarContainer {
+    max-width: 960px;
+  }
+  
+  .navLink {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .glowTitle {
+    font-size: 5rem;
+    letter-spacing: 20px;
+  }
+
+  .heroSection {
+    flex-direction: column;
+  }
+
+  .heroLeft, .heroRight {
+    width: 100%;
+  }
+
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroList {
+    font-size: 1.8rem;
+  }
+
+  .heroList li {
+    font-size: 1.2rem;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+    padding: 80px;
+  }
+
+  .sectionText {
+    font-size: 1.6rem;
+  }
+
+  .flexContainer {
+    flex-direction: column;
+  }
+
+  .featuresContainer {
+    flex-direction: column;
+  }
+
+  .featureCard {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .navbarContainer {
+    max-width: 720px;
+  }
+  
+  .navItem {
+    margin-left: 1rem;
+  }
+  
+  .navLink {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .glowTitle {
+    font-size: 4rem;
+    letter-spacing: 15px;
+    bottom : -435px;
+  }
+
+  .heroTitle {
+    font-size: 1.8rem;
+  }
+
+  .heroList {
+    font-size: 1.6rem;
+  }
+
+  .heroList li {
+    font-size: 1.1rem;
+  }
+  
+  .heroButtonWrapper {
+    bottom: 5%;
+  }
+
+  .btn2 {
+    padding: 10px 20px;
+    bottom: 90px;
+    font-size: 0.9em;
+  }
+
+  .sectionTitle {
+    font-size: 1.8rem;
+    padding: 60px;
+  }
+
+  .sectionText {
+    font-size: 1.4rem;
+  }
+
+  .contactSection {
+    flex-direction: column;
+  }
+
+  .contactImageWrapper, .contactInfoWrapper {
+    width: 100%;
+  }
+
+  .contactInfoWrapper {
+    position: relative;
+  }
+
+  .navbar {
+    padding: 0.5rem 1rem;
+  }
+
+  .navbarContainer {
+    max-width: 100%;
+  }
+
+  .navbarNav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: 1rem 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .navbarNav.show {
+    display: flex;
+  }
+
+  .navItem {
+    margin: 0.5rem 0;
+  }
+
+  .navLink {
+    color: #333;
+    display: block;
+    padding: 0.5rem 2rem;
+    font-size: 1rem;
+  }
+
+  .navbarToggler {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .glowTitle {
+    font-size: 3rem;
+    letter-spacing: 10px;
+    bottom : 50px;
+  }
+
+  .heroTitle {
+    font-size: 1.6rem;
+  }
+
+  .heroList {
+    font-size: 1.4rem;
+  }
+
+  .heroList li {
+    font-size: 1rem;
+  }
+  
+  .btn2 {
+    padding: 8px 16px;
+    font-size: 0.8em;
+  }
+
+  .sectionTitle {
+    font-size: 1.6rem;
+    padding: 40px;
+  }
+
+  .sectionText {
+    font-size: 1.2rem;
+  }
+
+  .btn2 {
+    padding: 10px 30px;
+    font-size: 1em;
   }
 }
 
