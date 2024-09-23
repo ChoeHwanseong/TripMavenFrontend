@@ -68,16 +68,6 @@ const RealTestPage = () => {
       .catch((error) => console.error('장치 정보를 가져오는 중 에러 발생:', error));
   }, []);
 
-  const handleRecording = async () => {
-    if (isRecording) {
-      // 영상 녹화 중지
-      videoRecorderRef.current?.stop();
-      setIsRecording(false);
-    } else {
-      startRecording();
-    }
-  };
-
   const startRecording = () => {
     //비디오 녹화
     navigator.mediaDevices.getUserMedia({
@@ -106,6 +96,23 @@ const RealTestPage = () => {
       };
       
       videoRecorderRef.current.start();
+
+
+      // 오디오 녹화
+      const audioStream = new MediaStream(stream.getAudioTracks());
+      audioRecorderRef.current = new MediaRecorder(audioStream, { mimeType: 'audio/webm;codecs=opus' });
+      audioRecorderRef.current.ondataavailable = (event) => {
+        audioChunks.current.push(event.data);
+      };
+
+      audioRecorderRef.current.onstop = () => {
+        const blob = new Blob(audioChunks.current, { type: 'audio/webm' });
+        console.log('오디오 블롭:',blob);
+        audioBlob.current = blob;
+        audioChunks.current = [];
+      };
+
+      audioRecorderRef.current.start();
       setIsRecording(true);
     }).catch((error) => console.error('Error accessing microphone:', error));
   };
@@ -113,13 +120,16 @@ const RealTestPage = () => {
   const handleButtonClick = async () => {
     if (recordingStatus === "녹화하기") {
       accumulatedTranscriptRef.current = ''; // 누적된 자막 초기화
-      handleRecording();
       startSpeechRecognition();
+      startRecording();
       setRecordingStatus("녹화 중지");
+      setIsRecording(true);
     } else if (recordingStatus === "녹화 중지") {
-      handleRecording();
       recognitionRef.current.stop();
+      videoRecorderRef.current.stop();
+      audioRecorderRef.current.stop();
       setRecordingStatus("전송하기");
+      setIsRecording(false);
     } else if (recordingStatus === "전송하기") {
       setLoadingMessage("영상 전송 중");
       await uploadVideo(isFirstQuestion ? 'first' : 'second');
@@ -180,17 +190,34 @@ const RealTestPage = () => {
   const uploadVideo = async (videoType) => {
     //비디오 녹화 파일
     const videoFile = new File([videoBlob.current], 'recordedVideo.mp4', { type: 'video/mp4' });
+    console.log('비디오 파일:',videoFile);
     const formDataForVideo = new FormData();
     formDataForVideo.append('file', videoFile);
 
     //오디오 녹화 파일
-    const audioFile = new File([audioBlob.current], 'recordedAudio.webm', { type: 'audio/webm' });
+    const audioFile = new File([audioBlob.current], 'audio222.webm', { type: 'audio/webm' });
+    console.log('오디오 파일:',audioFile);
     const formDataForAudio = new FormData();
-    formDataForAudio.append('voice', videoFile);
+    formDataForAudio.append('voice', audioFile);
     formDataForAudio.append('text', accumulatedTranscriptRef.current); //정답 텍스트이긴 한데... 정답이 없는뎅,,,
     console.log('text: ',accumulatedTranscriptRef.current);
     formDataForAudio.append('gender', memberInfo.gender=='male'?'0':'1'); //사용자 성별
     formDataForAudio.append('isVoiceTest', '0'); //발음테스트시 1로, 영상테스트시 0으로 하면 됨
+
+    /**/
+    console.log(audioBlob.current);
+    const url = window.URL.createObjectURL(audioBlob.current);
+    // a 태그를 생성하여 다운로드 실행
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'audio2.webm'; // 다운로드할 파일명 설정
+    document.body.appendChild(a);
+    a.click(); // 클릭 이벤트 실행 (다운로드 시작)
+    // 다운로드 후 태그와 URL 해제
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url); // 메모리 해제
+    
 
 
     try {
@@ -198,9 +225,7 @@ const RealTestPage = () => {
       const audioResponse = await evaluateVoiceAndText(formDataForAudio);
       if (videoResponse.success && audioResponse.success) {
         const resultVideoData = videoResponse.data; //영상 분석 결과
-        console.log('resultVideoData:', resultVideoData);
         const resultAudioData = audioResponse.data; //음성 분석 결과
-        console.log('resultAudioData:', resultAudioData);
 
         //문장 내 단어와 빈도수(콤마로 구분)
         const wordlist = resultVideoData.text_analysis.word_list;
