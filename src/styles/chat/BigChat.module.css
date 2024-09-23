@@ -81,12 +81,28 @@
 .chatList {
   display: flex;
   border: 3px solid #e6e6e6;
+  overflow-y: auto;
   width: 388px;
   height: 550px; 
   background-color: #d6d6d62c;
   border-radius: 10px;
   flex-direction: column;
   margin-top: 20px;
+}
+
+/* 스크롤바 전체 영역 설정 */
+.chatList::-webkit-scrollbar {
+  width: 10px;
+  /* 스크롤바의 너비 */
+
+}
+
+/* 스크롤바 막대 설정 */
+.chatList::-webkit-scrollbar-thumb {
+  background-color: #aaa9a9;
+  /* 스크롤바 막대의 배경 색상 */
+  border-radius: 10px;
+  /* 스크롤바 막대의 모서리 둥글게 설정 */
 }
 
 .chatItem {
@@ -186,7 +202,7 @@
 
 .chatMessages {
   flex-grow: 1;
-  overflow-y: auto;
+  overflow-y: auto; 
   border: 3px solid #e6e6e6;
   background-color: #BACEE0;
   border-radius: 10px;
@@ -194,7 +210,7 @@
   padding: 10px;
   padding-right: 0px;
   margin-right: 20px;
-
+  height: 500px
 }
 
 .productBoard {
@@ -334,5 +350,6 @@
   border-radius: 10px;
   padding: 10px;
   margin: 10px;
+  height: 700px;
 }
 

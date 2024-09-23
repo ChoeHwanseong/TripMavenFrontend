@@ -88,7 +88,7 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
             const lastMessageTime = getLastMessageTime(chatMessages, joinChatting.chattingRoom.id);
 
             return (
-               <Box
+            <Box
               key={index}
               className={`${styles.chatItem} ${joinChatting.chattingRoom.id}`}
               onMouseEnter={() => handleMouseEnter(index)}
