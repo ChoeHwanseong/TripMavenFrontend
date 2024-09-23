@@ -210,7 +210,7 @@ const TravelLandingPage = () => {
                     ]}
                     wrapper="p"
                     cursor={true}
-                    repeat={1}
+                    repeat={0}
                     style={{ whiteSpace: 'pre-line', display: 'inline-block' }}
                   />
                 </div>
