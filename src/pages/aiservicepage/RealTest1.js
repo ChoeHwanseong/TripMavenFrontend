@@ -6,7 +6,7 @@ import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
 
-const DeviceCheckComponent = () => {
+const RealTest1 = () => {
   const webcamRef = useRef(null);
   const audioRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -231,4 +231,4 @@ const DeviceCheckComponent = () => {
   );
 };
 
-export default DeviceCheckComponent;
+export default RealTest1;

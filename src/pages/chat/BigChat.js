@@ -13,7 +13,6 @@ function BigChat() {
   const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-
     const getUserData = async () => {
       try {
         const userData = await fetchData(id); 
@@ -22,7 +21,6 @@ function BigChat() {
         console.error('Error fetching user data:', error);
       }
     };
-
     getUserData();
 
     // MQTT 브로커에 연결
@@ -54,6 +52,7 @@ function BigChat() {
             time: new Date(timestamp).toLocaleTimeString(),
           },
         ]);
+        
       } catch (error) {
         console.error('Error parsing message:', error);
       }
@@ -68,6 +67,9 @@ function BigChat() {
     });
 
     setClient(mqttClient);
+
+    const chatBody = document.getElementById('chatMessages'); //채팅 스크롤
+    chatBody.scrollTop = chatBody.scrollHeight; // 스크롤을 맨 아래로 이동
 
     // 컴포넌트 언마운트 시 클라이언트 종료
     return () => {
@@ -104,12 +106,14 @@ function BigChat() {
   };
 
   const handleSendClick = () => {
+    
     const input = document.querySelector("#chatInput");
     const text = input.value.trim();
     if (text) {
       sendMessage(text);
       input.value = '';
     }
+
   };
   
   return (
@@ -122,21 +126,23 @@ function BigChat() {
           <button className={styles.infoButton}>i</button>
         </div>
 
-        <div className={styles.chatMessages}>
+        <div className={styles.chatMessages} id='chatMessages'>
           {chatMessages.map((msg, index) => (
-            <div
-              key={index}
-              className={`${styles.message} ${msg.sender === 'self' ? styles.sent : ''}`}
-            >
-              <img
-                src={msg.sender === 'self' ? "../images/defaultimage.png" : "../images/choehwanseong.png"}
-                alt="profile"
-                className={styles.profileImage}
-              />
-              <div className={styles.messageBubble}>
-                <span>{msg.text}</span>
-                <span className={styles.messageTime}>{msg.time}</span>
+            <div className={styles.messageNTime}>
+              <div
+                key={index}
+                className={`${styles.message} ${msg.sender === 'self' ? styles.sent : ''}`}
+              >
+                <img
+                  src={msg.sender === 'self' ? "../images/defaultimage.png" : "../images/choehwanseong.png"}
+                  alt="profile"
+                  className={styles.profileImage}
+                />
+                <div className={styles.messageBubble}>
+                  <span>{msg.text}</span>
+                </div>  
               </div>
+              <span className={`${styles.messageTime} ${msg.sender === 'self' ? styles.sent : ''}`}>{msg.time}</span>
             </div>
           ))}
         </div>
