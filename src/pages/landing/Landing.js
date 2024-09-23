@@ -5,6 +5,7 @@ import Footer from '../../components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faRobot, faCompass, faMapMarkedAlt, faChartLine, faBullhorn, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { TypeAnimation } from 'react-type-animation';
 // Import images
 import locationGif from '../../images/Location.gif';
 import envelopeGif from '../../images/Envelope.gif';
@@ -30,7 +31,7 @@ const TravelLandingPage = () => {
     { word: '경험', color: '#FF6B6B' },
     { word: '추억', color: '#4ECDC4' },
     { word: '계획', color: '#007BFF' }, 
-    { word: '여정', color: '#FF8C00' }  
+    { word: '여정', color: '#FFD900' }  
   ];
 
   const handleLogout = () => {
@@ -194,18 +195,31 @@ const TravelLandingPage = () => {
             </div>
 
             {/* Features section */}
-            <div className={`${styles.section} ${styles.darkTealSection}`}>
-              <div className={`${styles.container} ${styles.flexContainer}`}>
-                <div className={styles.flexHalf}>
-                  <h2 className={styles.sectionTitle}>고객을 위한 TripMaven의 기능</h2>
-                  <p className={styles.sectionText}>지역만 검색하면 날씨와 행사들을 확인할 수 있습니다 <br/>
-                   고객님이 가고자 하는 곳 어디든,<br/> 고객님에게 맞는 가이드가 있습니다 </p>
-                </div>
-                <div className={`${styles.flexHalf} ${styles.imageWrapper}`}>
-                  <img src={koreamap} alt="Tropical beach" className={styles.sectionImage} />
+          <div className={`${styles.section} ${styles.darkTealSection}`}>
+            <div className={`${styles.container} ${styles.flexContainer}`}>
+              <div className={styles.flexHalf}>
+                <h2 className={styles.sectionTitle}>고객을 위한 TripMaven의 기능</h2>
+                <div className={styles.sectionText}>
+                  <TypeAnimation
+                    sequence={[
+                      '지역만 검색하면 날씨와 행사들을 확인할 수 있습니다',
+                      1000,
+                      '지역만 검색하면 날씨와 행사들을 확인할 수 있습니다\n고객님이 가고자 하는 곳 어디든,',
+                      1000,
+                      '지역만 검색하면 날씨와 행사들을 확인할 수 있습니다\n고객님이 가고자 하는 곳 어디든,\n고객님에게 맞는 가이드가 있습니다',
+                    ]}
+                    wrapper="p"
+                    cursor={true}
+                    repeat={1}
+                    style={{ whiteSpace: 'pre-line', display: 'inline-block' }}
+                  />
                 </div>
               </div>
+              <div className={`${styles.flexHalf} ${styles.imageWrapper}`}>
+                <img src={koreamap} alt="Tropical beach" className={styles.sectionImage} />
+              </div>
             </div>
+          </div>
 
             {/* News Features section */}
             <div className={`${styles.section} ${styles.brightTealSection}`} id="features">
