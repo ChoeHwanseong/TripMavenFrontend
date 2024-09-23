@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import styles from '../styles/components/Footer.module.css'; // CSS 모듈 파일을 불러옵니다.
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { RoleContext } from './context/roleContext';
+import { TemplateContext } from '../context/TemplateContext';
 
 
 const Footer = ({ className, ...props }) => {
-  const { setSearchKeyword } = useContext(RoleContext);
+  const { setSearchKeyword } = useContext(TemplateContext);
 
   const navigate = useNavigate();
 
@@ -42,7 +42,7 @@ const Footer = ({ className, ...props }) => {
           <span className={styles.bar}> | </span>
           <a className={styles.footerLink}><button className={styles.navButton} onClick={() => { handleClick('/siteinfo') }}>사이트소개</button></a>
           <span className={styles.bar}> | </span>
-          <a className={styles.footerLink}><button className={styles.navButton} onClick={() => { handleClick('/askall') }}>1:1문의</button></a>
+          <a className={styles.footerLink}><button className={styles.navButton} onClick={() => { handleClick('/mypage/askall') }}>1:1문의</button></a>
           <span className={styles.bar}> | </span>
           <a className={styles.footerLink}><button className={styles.navButton} onClick={() => { handleClick('/faq') }}>고객센터</button></a>
           <span className={styles.bar}> | </span>

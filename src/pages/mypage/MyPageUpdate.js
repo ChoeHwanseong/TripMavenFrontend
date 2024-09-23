@@ -1,281 +1,162 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Button, TextField, Typography, Avatar, Grid } from '@mui/material';
+import React, { useContext, useRef, useState } from 'react';
+import { Box, Button, TextField, Typography, Avatar, Grid, CircularProgress, MenuItem } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { fetchedData, updateProfile } from '../../utils/memberData';
-import { postPut } from '../../utils/postData';
+import { updateProfile } from '../../utils/memberData';
+import styles from '../../styles/mypage/MyProfile.module.css';
+import defaultImage from '../../images/default_profile.png';
+import { TemplateContext } from '../../context/TemplateContext';
+import DaumPost, { splitByblank} from '../../api/DaumPostApi';
+import { useLocation } from 'react-router-dom';
+import Loading from '../../components/LoadingPage';
 
 const MypageUpdate = () => {
-  const [profileData, setProfileData] = useState(null);
-  const [certificateFileName, setCertificateFileName] = useState('');
-  const membersId= localStorage.getItem('membersId');
-  const navigate = useNavigate();
+  const template = useContext(TemplateContext);
+  const location = useLocation();
+  const { userInfo } = location.state || template.memberInfo;
+  console.log(userInfo)
+  const [town,area] = splitByblank(userInfo.address);
+  const [profileImage, setProfileImage] = useState(userInfo.profile); // 프로필 이미지 상태 추가
+  const [townAddress, setTownAddress] = useState(town);
+  const [areaAddress, setAreaAddress] = useState(area);
 
-  // 기존 데이타 뿌려주기.
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const fetchData = await fetchedData(membersId);
-        setProfileData(fetchData);
-      } catch (error) {
-        console.error('에러났당', error);
-      }
-    };
+  // 각 텍스트 필드와 파일 입력에 대한 ref 생성
+  const nameRef = useRef(userInfo.name);
+  const telNumberRef = useRef(userInfo.telNumber);
+  const genderRef = useRef(userInfo.gender);
+  const birthdayRef = useRef(userInfo.birthday);
+  const introduceRef = useRef(userInfo.introduce);
+  const profileImageRef = useRef(userInfo.profile); 
+  const interCityRef = useRef(userInfo.interCity)
 
-    getData();
-  }, [membersId]);
+  if (!template.memberInfo) {
+    return (
+      <Box>
+        <Loading />
+      </Box>
+    );
+  }
 
-
-  
-
-//const profileRef = useRef(null);
-  const nameRef = useRef(null);
-
-  const telNumberRef = useRef(null);
-  const addressRef = useRef(null);
-
-  const genderRef = useRef(null);
-  const birthdayRef = useRef(null);
-//const guidelicenseRef = useRef(null);
-  
-  const introduceRef = useRef(null);
-
-
-    // 수정된 값 저장
-    const newName = async () =>{
-      setProfileData({...profileData,name:nameRef.current.value})
-    };
-    const newTelNumber = async () =>{
-      setProfileData({...profileData,telNumber:telNumberRef.current.value})
-    };
-    const newAddress = async () =>{
-      setProfileData({...profileData,address:addressRef.current.value})
-    };
-    const newGender = async () =>{
-      setProfileData({...profileData,gender:genderRef.current.value})
-    };
-    const newBirthday = async () =>{
-      setProfileData({...profileData,birthday:birthdayRef.current.value})
-    }; 
-    const newIntroduce = async () =>{
-      setProfileData({...profileData,introduce:introduceRef.current.value})
-    };
-  
-  
-  
-  // 프로필 수정
-  const handleProfile = async() => {
-    try {
-        const updateData = { name: nameRef.current.value,
-                            telNumber : telNumberRef.current.value,
-                            address : addressRef.current.value,
-                            gender : genderRef.current.value,
-                            birthday  : birthdayRef.current.value,
-                            introduce : introduceRef.current.value,
-                            id : membersId
-                          };
-        console.log('updateData: ',updateData);
-        console.log('updateData.membersId: ',updateData.id);
-        await updateProfile(updateData.id,updateData);
-        //alert('프로필이 성공적으로 수정되었습니다.');
-        navigate(`/mypageprofile/${membersId}`);
-
-    }  catch (error) {
-        console.error('프로필 수정 중 오류 발생:', error);
-        alert('프로필 수정에 실패했습니다. 다시 시도해주세요.');
-        }
-
-  };
-
-
-
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
+  const previewImage = () => {
+    const input = profileImageRef.current;
+    const file = input.files && input.files[0];
+    
     if (file) {
-      setCertificateFileName(file.name);
+      if (file.type.startsWith('image/')) {
+        // FileReader를 사용하여 파일을 Base64로 변환
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          // Base64 인코딩된 결과를 상태에 저장
+          setProfileImage(reader.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert('이미지 파일만 업로드할 수 있습니다.');
+      }
+    } else {
+      setProfileImage(userInfo.profile || defaultImage); // 파일이 선택되지 않은 경우 기본 이미지 설정
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const profileupdate = await updateProfile(id, profileData);
-  //     setProfileData(profileupdate);
-  //     alert('프로필이 성공적으로 수정되었습니다.');
-  //     navigate(`/mypageprofile/2`);
-  //   } catch (error) {
-  //     console.error('프로필 수정 중 오류 발생:', error);
-  //     alert('프로필 수정에 실패했습니다. 다시 시도해주세요.');
-  //   }
-  // };
 
-  if (!profileData) {
-    return <Typography variant="h6">로딩중</Typography>;
-  }
+  // 프로필 업데이트 함수에서 ref 값을 사용
+  const handleProfileUpdate = () => {
+    const updateData = {
+      'name': nameRef.current.value,
+      'telNumber': telNumberRef.current.value,
+      'gender': genderRef.current.value,
+      'birthday': birthdayRef.current.value,
+      'address': `${areaAddress}　${townAddress}`,
+      'interCity': interCityRef.current.value,
+      'profile': profileImage,
+      'introduce': introduceRef.current.value,
+    }
+    updateProfile(userInfo.id, updateData)
+      .then(() => {
+        alert('변경이 완료되었습니다.');
+        window.location.href = `http://localhost:58337/mypage/${userInfo.id}`;
+      })
+      .catch(() => alert('변경이 실패되었습니다.'));
+  };
 
   return (
-    <Box sx={{ p: 7 }}>
-      <Typography style={{ fontSize: '35px', fontWeight: 'bold' }} gutterBottom>프로필 수정</Typography>
-      <form>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={2}>
-            <Avatar
-              src="../../../images/defaultimage.png"
-              alt="프로필 이미지"
-              sx={{ width: 100, height: 100, mb: 2.5, ml: 0.6 }}
-            />
-            <Button
-              sx={{ backgroundColor: '#0066ff', height: .13, '&:hover': { backgroundColor: '#0056b3' }, }}
-              variant="contained"
-              component="label"
-              startIcon={<CloudUploadIcon />}
-            >
-              파일 찾기
-              <input type="file" hidden />
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={10}>
-            <TextField
-              fullWidth
-              label="닉네임"
-              id="name"
-              name="name"
-              value={profileData.name || ''}
-              onChange={newName}
-              margin="normal"
-              inputRef={nameRef}
-    
-            />
-            <TextField
-              fullWidth
-              label="이메일"
-              id="email"
-              name="email"
-              value={profileData.email || ''}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <TextField
-              fullWidth
-              label="전화번호"
-              id="telNumber"
-              name="telNumber"
-              value={profileData.telNumber || ''}
-              onChange={newTelNumber}
-              margin="normal"
-              inputRef={telNumberRef}
-            />
-            <TextField
-              sx={{ width: 0.88 }}
-              label="주소"
-              id="address"
-              name="address"
-              value={profileData.address || ''}
-              onChange={newAddress}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-              inputRef={addressRef}
-            />
-            <Button
-              sx={{
-                mt: 1.9, ml: 1, color: '#000000',
-                border: 1, backgroundColor: '#f1f1f1',
-                justifyContent:'flex-end',
-                height: .17, '&:hover': { backgroundColor: '#DEDEDE' },
-              }}
-              variant="contained"
-              component="label"
-            >
-              주소 찾기
-              <input type="button" hidden />
-            </Button>
-          </Grid>
-        </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="성별"
-              id="gender"
-              name="gender"
-              value={profileData.gender || ''}
-              onChange={newGender}
-              margin="normal"
-              inputRef={genderRef}
-            />
-            <TextField
-              fullWidth
-              label="생년월일"
-              id="birthday"
-              name="birthday"
-              value={profileData.birthday || ''}
-              onChange={newBirthday}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-              inputRef={birthdayRef}
-            />
-            <TextField
-              sx={{ width: 0.72 }}
-              label="자격증"
-              id="certificate"
-              name="certificate"
-              value={certificateFileName || profileData.certificate || ''}
-              margin="normal"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <Button
-              sx={{ mt: 2, ml: 2, backgroundColor: '#0066ff', height: .23, '&:hover': { backgroundColor: '#0056b3' }, }}
-              variant="contained"
-              component="label"
-              startIcon={<CloudUploadIcon />}
-            >
-              파일 찾기
-              <input type="file" hidden onChange={handleFileChange} />
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="자기소개"
-              id="about"
-              name="about"
-              value={profileData.about || ''}
-              onChange={newIntroduce}
-              margin="normal"
-              multiline
-              rows={8}
-              inputRef={introduceRef}
-            />
-          </Grid>
-        </Grid>
-        <Box display="flex" justifyContent="flex-end">
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px',
-              '&:hover': { backgroundColor: '#0056b3' },
-            }}
-            onClick={handleProfile}
-          >
-            수정 하기
+    <Box className={styles.container}>
+      <Box className={styles.content}>
+        <Typography variant="h4" fontWeight="bold" gutterBottom>프로필 수정</Typography>
+        {/* 프로필 사진 및 이름 */}
+        <Box className={styles.profileSection}>
+          <Avatar alt={profileImage || 'Profile Picture'} src={profileImage || defaultImage} className={styles.avatar} />
+          <Button sx={{ backgroundColor: '#0066ff', height: .23, '&:hover': { backgroundColor: '#0056b3' } }}
+            variant="contained" component="label" startIcon={<CloudUploadIcon />}>
+            프로필 등록
+            <input type="file" hidden ref={profileImageRef} onChange={previewImage} accept="image/*" />
           </Button>
-       
+          <Typography variant="h5" fontWeight="bold">
+            {userInfo.email || '아이디 없음'}
+          </Typography>
         </Box>
-      </form>
+        {/* 프로필 이미지 아래에 텍스트 박스들 배치 */}
+        <Box className={styles.texts}>
+          <Box className={styles.formGroup}>
+            <TextField required id="filled-required" label="name" variant="filled" fullWidth
+              inputRef={nameRef} defaultValue={userInfo.name || ''} />
+            <TextField label="PHONE-NUMBER" type="tel" variant="filled" fullWidth
+              inputRef={telNumberRef} defaultValue={userInfo.telNumber || ''} />
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <TextField select label="GENDER" variant="filled" fullWidth
+                inputRef={genderRef} defaultValue={userInfo.gender || ''}>
+                {/* MenuItem으로 선택지 구성 */}
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
+              </TextField>
+              <TextField label="BIRTHDAY" type="date" variant="filled" fullWidth
+                inputRef={birthdayRef} defaultValue={userInfo.birthday || ''}
+                InputLabelProps={{ shrink: true, }} />
+            </Box>
+            <TextField select label="INTERCITY" variant="filled" fullWidth
+              inputRef={interCityRef} defaultValue={userInfo.interCity || ''}>
+              {/* MenuItem으로 선택지 구성 */}
+              <MenuItem value="">관심 지역을 선택하세요</MenuItem>
+              <MenuItem value="seoul">서울</MenuItem>
+              <MenuItem value="busan">부산</MenuItem>
+              <MenuItem value="incheon">인천</MenuItem>
+              <MenuItem value="daegu">대구</MenuItem>
+              <MenuItem value="daejeon">대전</MenuItem>
+              <MenuItem value="gwangju">광주</MenuItem>
+              <MenuItem value="ulsan">울산</MenuItem>
+              <MenuItem value="sejong">세종</MenuItem>
+              <MenuItem value="gyeonggi">경기도</MenuItem>
+              <MenuItem value="gangwon">강원특별자치도</MenuItem>
+              <MenuItem value="chungbuk">충청북도</MenuItem>
+              <MenuItem value="chungnam">충청남도</MenuItem>
+              <MenuItem value="jeonbuk">전북특별자치도</MenuItem>
+              <MenuItem value="jeonnam">전라남도</MenuItem>
+              <MenuItem value="gyeongbuk">경상북도</MenuItem>
+              <MenuItem value="gyeongnam">경상남도</MenuItem>
+              <MenuItem value="jeju">제주특별자치도</MenuItem>
+            </TextField>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <TextField sx={{ width: 0.820 }}
+                label="주소" name="areaAddress" variant="filled"
+                InputProps={{ readOnly: true }}
+                value={areaAddress||'주소를 입력하세요.'} />
+                <DaumPost setAreaAddress={setAreaAddress}/>
+            </Box>
+            <TextField label="상세 주소" name="townAddress" variant="filled" placeholder="상세주소를 입력하세요."
+                value={townAddress} onChange={(e)=>setTownAddress(e.target.value)}/>
+            <Grid item xs={12} md={6}>
+              <TextField fullWidth label="자기소개" variant="filled" multiline rows={8}
+                inputRef={introduceRef} defaultValue={userInfo.introduce} />
+            </Grid>
+          </Box>
+        </Box>
+
+        <Box display="flex" justifyContent="flex-end">
+          <Button sx={{ mt: 2, backgroundColor: '#0066ff', height: '55px', width: '115px', '&:hover': { backgroundColor: '#0056b3' }, }}
+            onClick={handleProfileUpdate} variant="contained">수정 완료</Button>
+        </Box>
+      </Box>
     </Box>
   );
 };
 
 export default MypageUpdate;
-
-

@@ -8,12 +8,16 @@ import Box from '@mui/material/Box';
 
 // 발급받은 OpenAI API 키를 변수로 저장
 const apiKey = process.env.REACT_APP_CHATBOT_KEY;
-console.log(apiKey)
-const infoMessage = `You are the TripMaven customer service chatbot. The service we provide involves guide training evaluation and travel product introductions through AI services. Guides can enhance their skills and assess and improve their abilities through AI training. Customers can browse verified guides' travel products and enjoy them by contacting the guides.
-When responding, you must be polite and courteous to all users. If there is a question for which you do not have a clear answer, please respond with "Please contact the administrator."
+const infoMessage = `You are TripMaven Customer Service Chatbot. TripMaven is a platform that connects tour guides and travelers. Guides can post their own travel itineraries, and travelers can choose these to enjoy a personalized travel experience. You can search for various itineraries and activities, including city tours, cultural experiences, nature explorations, and culinary trips, catering to different preferences. Travelers can select their preferred trip and directly contact the guide to arrange a customized experience.
+TripMaven’s basic service is free, but payments are made based on individual itineraries. Detailed information about each trip, including fees, can be found on the guide's posts. You can review the guide's profile and ratings before making a choice, and communicate with the guide through TripMaven’s messaging system to finalize the travel plans.
+To start using TripMaven, click the "Sign Up" button on the website and easily register using your email or social media account. Once you find an itinerary you like, click the "Contact" button to send a message directly to the guide. You can search for trips using locations or keywords and narrow down the results with filters.
+If you wish to become a guide, click the "Register as a Guide" button, provide the necessary information, and complete the verification process, including submitting your credentials. When posting a trip, make sure to include clear descriptions, pricing, and duration details. It’s also important to manage reviews and ratings to build trust. You can monitor your bookings and earnings in real-time through the guide dashboard.
+TripMaven also offers AI-powered assessments to help guides improve their language skills, knowledge, and communication abilities. Through pronunciation tests, practical scenarios, and quizzes, the AI provides feedback to help guides enhance their skills and grow into more trusted professionals.
+For payment or reservation cancellations, please contact our support team at 010-1234-1234.
 Since you are a Korean bot and most of your users are Korean, please make sure to respond in Korean.
 If the user wishes to cancel a payment or reservation, please instruct them to consult with a counselor at 010-1234-1234.
-If the user requests additional tour information, please display the link <a href="http://localhost:58337/faq/">here</a>.`;
+If the user requests additional site information, please display the link <a href="http://localhost:58337/faq/">here</a>.
+`;
 let messages = [{ 'role': 'system', 'content': infoMessage }];//new Array();
 const Chat = () => {
   const [isVisible, setIsVisible] = useState(false); // 챗봇 팝업의 표시 상태를 관리하는 상태 변수
@@ -21,7 +25,6 @@ const Chat = () => {
   const [chatHistory, setChatHistory] = useState([]); //대화기록 저장
   const chatInputRef = useRef(null); // 입력 필드에 대한 참조를 생성
   const [loading, setLoading] = useState(false); //로딩 스테이트
-  console.log(messages)
   // 챗봇 팝업의 표시/숨기기 토글 함수
   const toggleChat = (event) => {
     event.preventDefault(); // 기본 동작 방지 (링크 클릭 시 페이지 이동 방지)
@@ -74,12 +77,6 @@ const Chat = () => {
         botMessageElement.innerHTML = `<p>${botAnswer}</p>`;
         chattingArea.appendChild(botMessageElement);
 
-        /*
-        await axios.post('/chatbot', {
-          inquery: message,
-          answer: botAnswer,
-        });
-        */
 
       }
       catch (error) {
@@ -137,7 +134,7 @@ const Chat = () => {
           <div className={styles.chatContainer}>
 
             <header className={styles.chatHeader}>
-              <span className={styles.chatTitle}>1:1 Chatting System</span>
+              <span className={styles.chatTitle}>Tripmaven ChatBot</span>
               <button className={styles.chatClose} onClick={toggleChat}>
                 <FontAwesomeIcon icon={faTimes} />
               </button>

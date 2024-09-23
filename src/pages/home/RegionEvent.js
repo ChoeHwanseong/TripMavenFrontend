@@ -5,29 +5,30 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import dummyImg from '../../images/dummyImg.png';
 import styles from '../../styles/home/RegionEvent.module.css';
-import { RoleContext } from '../../components/context/roleContext';
+import { TemplateContext } from '../../context/TemplateContext';
+import Loading from '../../components/LoadingPage';
 
 const API_KEY = 'fxK0NInA37%2B5%2FUmqb3ZtIqKfeJDzlDS9iU9A25kDySbSG2wyyzESFN8pUjf1G3sBAqnKnI0ZkDOCaNC8PDJTxg%3D%3D';
 const BASE_URL = 'https://apis.data.go.kr/B551011/KorService1';
 
 const changeRegionKorName = {
-      "seoul":'서울',
-      "incheon":'인천',
-      "daejeon":'대전',
-      "daegu":'대구',
-      "gwangju":'광주',
-      "busan":'부산',
-      "ulsan":'울산',
-      "sejong":'세종특별자치시',
-      "gyeonggi":'경기도',
-      "gangwon":'강원특별자치도',
-      "chungbuk":'충청북도',
-      "chungnam":'충청남도',
-      "gyeongbuk":'경상북도',
-      "gyeongnam":'경상남도',
-      "jeonbuk":'전북특별자치도',
-      "jeonnam":'전라남도',
-      "jeju":'제주도'
+	  "seoul":'서울', 
+	  "incheon":'인천', 
+	  "daejeon":'대전', 
+	  "daegu":'대구', 
+	  "gwangju":'광주',
+	  "busan":'부산', 
+	  "ulsan":'울산', 
+	  "sejong":'세종특별자치시', 
+	  "gyeonggi":'경기도',
+	  "gangwon":'강원특별자치도', 
+	  "chungbuk":'충청북도', 
+	  "chungnam":'충청남도',
+	  "gyeongbuk":'경상북도', 
+	  "gyeongnam":'경상남도', 
+	  "jeonbuk":'전북특별자치도',
+	  "jeonnam":'전라남도', 
+	  "jeju":'제주도'
 }
 
 const Modal = ({ isOpen, onClose, children }) => {
@@ -35,41 +36,19 @@ const Modal = ({ isOpen, onClose, children }) => {
 
   return (
     <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 1000
+      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex',
+      justifyContent: 'center', alignItems: 'center', zIndex: 1000
     }}>
       <div style={{
-        backgroundColor: 'white',
-        padding: '20px',
-        borderRadius: '8px',
-        width: '90%',
-        maxWidth: '700px',
-        height: '90%',
-        maxHeight: '750px',
-        overflow: 'auto',
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column'
+        backgroundColor: 'white', padding: '20px', borderRadius: '8px',
+        width: '90%', maxWidth: '700px', height: '90%', maxHeight: '750px',
+        overflow: 'auto', position: 'relative', display: 'flex', flexDirection: 'column'
       }}>
-        <button 
-          onClick={onClose} 
-          style={{ 
-            position: 'absolute', 
-            top: '10px', 
-            right: '10px',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer'
-          }}
-        >
+        <button onClick={onClose} style={{ 
+          position: 'absolute', top: '10px', right: '10px',
+          background: 'none', border: 'none', cursor: 'pointer'
+        }}>
           <X size={24} />
         </button>
         {children}
@@ -91,17 +70,17 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
   const [eventDetails, setEventDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [direction, setDirection] = useState(0);
-  const { memberInfo } = useContext(RoleContext);
+  const [slideDirection, setSlideDirection] = useState('next');
+  const { memberInfo } = useContext(TemplateContext);
   const selectbox = useRef(null);
 
   useEffect(() => {
     const mountFunc = async () => {
       await fetchRegions();
-      console.log(memberInfo);
+	  //console.log(memberInfo);
       const changedRegionName = changeRegionKorName[memberInfo.interCity] //회원 관심지역 한글 이름
       const select = selectbox.current;
-      if (select) {
+      if (select && changedRegionName) {
         for (let i = 0; i < select.options.length; i++) {
           if (select.options[i].innerText == changedRegionName) {
             select.selectedIndex = i;
@@ -109,16 +88,16 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
           }
         }
       }
-      else if(changedRegionName === undefined){ //관심지역 없거나, 로그인 안됐을때 부산으로 (나중에 인기 관광지 있으면 거기로)
-        select.selectedIndex = 5; //부산임
+      else if(changedRegionName === undefined){  //관심지역 없거나, 로그인 안됐을때 부산으로 (나중에 인기 관광지 있으면 거기로)
+        select.selectedIndex = 5; // 부산
       }
     };
     mountFunc();
   }, [memberInfo]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const changedRegionName = changeRegionKorName[memberInfo.interCity]
-    if(changedRegionName===undefined){
+    if(changedRegionName === undefined){
       const selectedRegionObject = regions.find(region => region.name === '부산');
       if (selectedRegionObject && setSelectedRegion) {setSelectedRegion(selectedRegionObject);}
     }
@@ -126,13 +105,11 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
       const selectedRegionObject = regions.find(region => region.name === changedRegionName);
       if (selectedRegionObject && setSelectedRegion) {setSelectedRegion(selectedRegionObject);}
     }
-    //console.log(selectedRegion);
   }, [regions]);
 
   useEffect(() => {
     if (selectedRegion) {
       fetchEvents(selectedRegion.code);
-      console.log(selectedRegion);
     } else {
       setEvents([]);
     }
@@ -151,20 +128,13 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
       const response = await axios.get(`${BASE_URL}/areaCode1`, {
         params: {
           serviceKey: decodeURIComponent(API_KEY),
-          numOfRows: 20,
-          pageNo: 1,
-          MobileOS: 'ETC',
-          MobileApp: 'TestApp',
-          _type: 'json'
+          numOfRows: 20, pageNo: 1, MobileOS: 'ETC', MobileApp: 'TestApp', _type: 'json'
         },
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
       });  
       const { response: apiResponse } = response.data;
       if (apiResponse && apiResponse.header.resultCode === "0000") {
         const regions_ = apiResponse.body.items.item;
-        console.log(regions_);
         setRegions(regions_);
       }
       else {throw new Error(apiResponse?.header?.resultMsg || '알 수 없는 API 오류');}
@@ -179,19 +149,10 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
       const response = await axios.get(`${BASE_URL}/searchFestival1`, {
         params: {
           serviceKey: decodeURIComponent(API_KEY),
-          numOfRows: 10,
-          pageNo: 1,
-          MobileOS: 'ETC',
-          MobileApp: 'AppTest',
-          arrange: 'A',
-          listYN: 'Y',
-          areaCode: areaCode,
-          eventStartDate: '20240827',
-          _type: 'json'
+          numOfRows: 10, pageNo: 1, MobileOS: 'ETC', MobileApp: 'AppTest',
+          arrange: 'A', listYN: 'Y', areaCode: areaCode, eventStartDate: '20240919', _type: 'json'
         },
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
       });
   
       const { response: apiResponse } = response.data;
@@ -211,27 +172,17 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
       setLoading(false);
     }
   };
-
+  
   const fetchEventDetails = async (contentId) => {
     try {
       const response = await axios.get(`${BASE_URL}/detailCommon1`, {
         params: {
           serviceKey: decodeURIComponent(API_KEY),
-          contentId: contentId,
-          MobileOS: 'ETC',
-          MobileApp: 'TestApp',
-          defaultYN: 'Y',
-          firstImageYN: 'Y',
-          areacodeYN: 'Y',
-          catcodeYN: 'Y',
-          addrinfoYN: 'Y',
-          mapinfoYN: 'Y',
-          overviewYN: 'Y',
-          _type: 'json'
+          contentId: contentId, MobileOS: 'ETC', MobileApp: 'TestApp',
+          defaultYN: 'Y', firstImageYN: 'Y', areacodeYN: 'Y', catcodeYN: 'Y',
+          addrinfoYN: 'Y', mapinfoYN: 'Y', overviewYN: 'Y', _type: 'json'
         },
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
       });
 
       const { response: apiResponse } = response.data;
@@ -258,14 +209,14 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
   };
 
   const handlePrevEvent = () => {
-    setDirection(-1);
+    setSlideDirection('prev');
     setCurrentEventIndex((prevIndex) => 
       prevIndex > 0 ? prevIndex - 1 : events.length - 1
     );
   };
 
   const handleNextEvent = () => {
-    setDirection(1);
+    setSlideDirection('next');
     setCurrentEventIndex((prevIndex) => 
       prevIndex < events.length - 1 ? prevIndex + 1 : 0
     );
@@ -279,7 +230,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
 
   return (
     <div style={{ width, height, overflow: 'hidden' }}>
-      {/*
+	  {/*
       .searchInput {
         flex: 1;
         padding-left: 20px;
@@ -289,7 +240,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
         border-radius: 8px;
       }
       */}
-
+	  
       <select 
         ref={selectbox}
         value={selectedRegion ? selectedRegion.code : ''} 
@@ -306,7 +257,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
   
       {loading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100% - 40px)' }}>
-          <CircularProgress />
+          <Loading />
         </Box>
       )}
   
@@ -329,55 +280,60 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
             position: 'relative',
             overflow: 'hidden'
           }}>
-            {events.map((event, index) => (
-              <div
-                key={event.contentid}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: `${(index - currentEventIndex) * 100}%`,
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  padding: '10px',
-                  boxSizing: 'border-box',
-                  textAlign: 'center',
-                  transition: 'all 0.3s ease',
-                  transform: `translateX(${direction * (index === currentEventIndex ? 0 : 100)}%)`,
-                  opacity: index === currentEventIndex ? 1 : 0,
-                }}
-              >
+            {events.map((event, index) => {
+              let position = index - currentEventIndex;
+              if (slideDirection === 'prev') {
+                if (position === -1) position = events.length - 1;
+                else if (position === events.length - 1) position = -1;
+              }
+              return (
                 <div
-                  style={{ 
+                  key={event.contentid}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: `${position * 100}%`,
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: '10px',
+                    boxSizing: 'border-box',
+                    textAlign: 'center',
+                    transition: 'all 0.3s ease',
+                    opacity: position === 0 ? 1 : 0,
+                  }}
+                >
+                  <div style={{ 
                     width: '100%', 
                     height: '250px',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center'
                   }}>
-                  <img 
-                    src={event.firstimage || dummyImg}
-                    alt={event.title}
-                    style={{ 
-                      maxWidth: '90%', 
-                      maxHeight: '90%', 
-                      objectFit: 'contain',
-                      marginBottom: '10px',
-                      cursor: 'pointer'
-                    }}
-                    onClick={handleEventClick}
-                  />
+                    <img 
+                      src={event.firstimage || dummyImg}
+                      alt={event.title}
+                      style={{ 
+                        maxWidth: '90%', 
+                        maxHeight: '90%', 
+                        objectFit: 'contain',
+                        marginBottom: '10px',
+                        cursor: 'pointer'
+                      }}
+                      onClick={handleEventClick}
+                    />
+                  </div>
+                  <h3 style={{ margin: '0 0 5px 0', fontSize: '18px' }}>{event.title}</h3>
+                  <p style={{ margin: '0 0 3px 0', fontSize: '16px' }}>
+                    기간: {formatDate(event.eventstartdate)} ~ {formatDate(event.eventenddate)}
+                  </p>
+                  <p style={{ margin: '0', fontSize: '16px' }}>장소: {event.addr1}</p>
                 </div>
-                <h3 style={{ margin: '0 0 5px 0', fontSize: '18px' }}>{event.title}</h3>
-                <p style={{ margin: '0 0 3px 0', fontSize: '16px' }}>
-                  기간: {formatDate(event.eventstartdate)} ~ {formatDate(event.eventenddate)}
-                </p>
-                <p style={{ margin: '0', fontSize: '16px' }}>장소: {event.addr1}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <button onClick={handleNextEvent} style={{ background: 'none', border: 'none', cursor: 'pointer', zIndex: 2 }}>
             <ChevronRight size={24} />
@@ -414,16 +370,16 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
                 <p><strong>개요:</strong> {eventDetails.overview}</p>
                 {eventDetails.homepage && (
                   <p>
-                  <strong>홈페이지:</strong>{' '}
-                  <a 
-                    href={extractUrl(eventDetails.homepage)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ textDecoration: "none", color: "#0066ff" }}
-                  >
-                    {extractUrl(eventDetails.homepage)}
-                  </a>
-                </p>
+                    <strong>홈페이지:</strong>{' '}
+                    <a 
+                      href={extractUrl(eventDetails.homepage)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: "none", color: "#0066ff" }}
+                    >
+                      {extractUrl(eventDetails.homepage)}
+                    </a>
+                  </p>
                 )}
               </div>
             </div>

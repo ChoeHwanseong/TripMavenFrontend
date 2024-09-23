@@ -8,7 +8,7 @@ const QuizResult = ({ isOpen, newScore}) => {
     const navigate = useNavigate();
 
     const handleSubmit = () => {
-        navigate('/aiservice');
+        navigate('/aipage');
       };
 
     if (!isOpen) return null;
@@ -20,11 +20,11 @@ const QuizResult = ({ isOpen, newScore}) => {
 
                 <div className={styles.scoreSection}>
                     <div className={styles.scoreCircle}>
-                    <ScoreCircle score={newScore} />
+                    <ScoreCircle score={newScore} className={styles.score} />
+
                     </div>
                 
                 </div>
-              
                 <button className={styles.viewQuestionsButton} onClick={handleSubmit}>시작 페이지로 이동</button>
             </div>
         </div>

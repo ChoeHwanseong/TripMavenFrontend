@@ -1,17 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from '../styles/components/Header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { menuData } from '../config/MyPageEndPoint';
-import { RoleContext } from './context/roleContext';
+import { TemplateContext } from '../context/TemplateContext';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import GuideRegistration from '../pages/registerguidepage/RegisterGuide';
-import { ButtonGroup, Button } from '@mui/material';
-import { logout } from '../utils/memberData';
-import IconButton from '@mui/material/IconButton';
+import { IconButton, Badge, Typography, Avatar } from '@mui/material';
+import { fetchedData, logout } from '../utils/memberData';
 import CloseIcon from '@mui/icons-material/Close';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import styled from '@emotion/styled';
+import { readNotification } from '../utils/NotificationData';
+
 
 const style = {
     position: 'absolute',
@@ -25,42 +28,197 @@ const style = {
     border: '1px solid primary',
     borderRadius: '16px',
     boxShadow: 24,
-    overflow: 'hidden', // 추가
+    overflow: 'hidden',
 };
 
+const NotificationPopup = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+`;
+
+const NotificationItem = styled.div`
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  &:last-child {
+    border-bottom: none;
+  }
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
+
+const NotificationTitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+const convertNotificationType = {
+    'chat': '채팅',
+    'review': '리뷰'
+}
+
+
+//알림 컴포넌트
+//헤더 컴포넌트에서 받아올 알림 상태
+const NotificationComponent = () => {
+    const { notifications, setNotifications, notificationCount } = useContext(TemplateContext);
+    const [updatedNotifications,setUpdatedNotifications] = useState(notifications);
+    useEffect(() => {
+        const fetchSenderNames = async () => {
+            try {
+                // 각 알림의 memberId로 이름을 가져옴
+                const updatedNotificationsWithNames = await Promise.all(
+                    notifications.map(async (notification) => {
+                        // 각 notification의 memberId로 이름을 가져옴
+                        const senderData = await fetchedData(notification.senderId);
+                        return {
+                            ...notification,
+                            senderName: senderData.name, // senderName 추가
+                        };
+                    })
+                );
+                setUpdatedNotifications(updatedNotificationsWithNames); // 이름이 추가된 알림으로 상태 업데이트
+            } catch (error) {
+                console.error('Error fetching sender names:', error);
+            }
+        };
+
+        if (notifications.length > 0) {
+            fetchSenderNames();
+        }
+    }, [notifications]);
+
+    const navigate = useNavigate();
+    //알림 펼치기 여부 상태
+    const [showNotifications, setShowNotifications] = useState(false);
+
+    //알림 펼치기
+    const handleClick = () => {
+        setShowNotifications(!showNotifications);
+    };
+
+    //알림 내용 눌렀을때
+    const handleNotificationClick = (noti) => {
+        //console.log(noti);
+        //누른 알림 상태리스트에서 삭제
+        setNotifications(prevNotifications =>
+            prevNotifications.filter(notification => notification.id !== noti.id)
+        );
+        //알림테이블에서 읽음처리로 수정하기
+        readNotification(noti.content[0]);
+        setShowNotifications(false);
+        navigate(noti.link);
+    };
+
+    //알림 모션
+    const ringAnimation = notificationCount > 0 ? `
+        @keyframes ring {
+            0% { transform: rotate(0); }
+            5% { transform: rotate(5deg); }
+            10% { transform: rotate(-5deg); }
+            15% { transform: rotate(5deg); }
+            20% { transform: rotate(-5deg); }
+            25% { transform: rotate(0); }
+            100% { transform: rotate(0); }
+        }
+    ` : '';
+
+    return (
+        <div style={{ position: 'relative' }}>
+            <IconButton
+                onClick={handleClick}
+                style={{
+                    transition: 'transform 0.3s ease',
+                    animation: notificationCount > 0 ? 'ring 2s infinite' : 'none',
+                }}
+            >
+                <Badge badgeContent={notificationCount} color="error">
+                    <NotificationsIcon />
+                </Badge>
+            </IconButton>
+            <style>
+                {ringAnimation}
+            </style>
+            {showNotifications && (
+                <NotificationPopup style={{ width: "200px" }}>
+                    {notificationCount > 0 ? (
+                        updatedNotifications.map((notification) => {
+                            //console.log(notification);
+                            return (
+                                <NotificationItem
+                                    key={notification.id}
+                                    onClick={() => handleNotificationClick(notification)}
+                                >
+                                    <NotificationTitle style={{ display: 'inline' }}>{convertNotificationType[notification.type]}</NotificationTitle>
+                                    <Typography variant="caption" style={{ display: 'inline', color: 'gray' }}>{` ${new Date().toLocaleDateString() == new Date(notification.createAt + 'Z').toLocaleDateString() ? '' : new Date(notification.createAt + 'Z').toLocaleDateString().slice(6, -1)} ${new Date(notification.createAt + 'Z').toLocaleTimeString().slice(0, -3)}`}</Typography>
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingRight: '10px' }}>
+                                        <Typography variant="body2" style={{ fontWeight: 'bold' }}>{notification.senderName}</Typography>
+                                        {/*
+                                    <Typography variant="body2" >{notification.content[0].content}</Typography>
+                                    <Typography variant="body2" style={{fontWeight: 'bold', color: 'red'}}>{notification.type=='chat' && notification.content.length}</Typography>
+                                    */}
+                                        {notification.type == 'chat' && (
+                                            <span className="badge rounded-pill bg-danger" style={{ fontSize: '11px' }}>{notification.type == 'chat' && notification.content.length}</span>
+                                        )}
+                                    </Box>
+                                </NotificationItem>
+                            )
+                        })
+                    ) : (
+                        <NotificationItem>
+                            <Typography variant="body2">알림이 없습니다</Typography>
+                        </NotificationItem>
+                    )}
+                </NotificationPopup>
+            )}
+        </div>
+    );
+};
+
+//헤더 컴포넌트
 const Header = () => {
+
     const location = useLocation();
     const navigate = useNavigate();
-    const [searchKeyword, setSearchKeyword] = useState('');
-    const { role, setRole } = useContext(RoleContext);
-    const [open, setOpen] = useState(false);
-    const [notificationCount, setNotificationCount] = useState(0);
-    let menuList = menuData[role];
+    const [searchKeyword, setSearchKeyword] = useState(''); //검색어 상태
+    const [open, setOpen] = useState(false); //가이드 등록 모달 사용여부 상태
+    const template = useContext(TemplateContext);
+    let menuList = menuData[template.memberInfo.role]; //사용자 role에 따라 메뉴 변경
 
-    const handleLogout=()=>{
-        logout().then(res =>{
+    useEffect(()=>{
+
+    },[location])
+
+    //로그아웃 함수
+    const handleLogout = () => {
+        logout().then(res => {
             localStorage.clear();
-            navigate('/home');
+            window.location.href = `http://localhost:58337/home`;
         })
-      }
+    }
 
     //가이드 등록 모달 관련 함수
     const handleOpen = () => {
-        if(localStorage.getItem("token")) setOpen(true);
+        if (localStorage.getItem("token")) setOpen(true);
     };
     const handleClose = () => setOpen(false);
 
-    //검색관련 함수
+    //상품목록 페이지 벗어날때 검색창 비우기
     useEffect(() => {
-        handleSearchKeyword();
-    }, [location.pathname]);
-    
-
-    const handleSearchKeyword = () => {
+        //상품페이지 벗어날때 검색창 검색어 초기화
         if (!location.pathname.includes('/product')) {
             setSearchKeyword('');
         }
-    };
+    }, [location.pathname]);
 
     const handleChange = (event) => {
         setSearchKeyword(event.target.value);
@@ -71,7 +229,6 @@ const Header = () => {
     };
 
     const handleNavigatePage = () => {
-        console.log('검색 실행:', searchKeyword);
         navigate(`/product?keyword=${searchKeyword}`);
     };
 
@@ -88,34 +245,10 @@ const Header = () => {
         scrollToTop();
     };
 
-    //알람 관련 함수
-    const handleNotificationClick = () => {
-        console.log('알림 아이콘 클릭됨');
-        setNotificationCount(prevCount => prevCount + 1);
-    };
-
-    const renderNotificationIcon = () => {
-        return (
-            <div className={styles.notificationIconWrapper} onClick={handleNotificationClick}>
-                <div className={`${styles.notificationIcon} ${notificationCount > 0 ? styles.shake : ''}`}>
-                    <FontAwesomeIcon icon={faBell} className={styles.bellIcon} />
-                </div>
-                {notificationCount > 0 && (
-                    <span className={styles.notificationBadge}>{notificationCount}</span>
-                )}
-            </div>
-        );
-    };
-
     return (
         <header className={styles.header}>
             <div className={styles.headerFrame}>
                 <button className={styles.logoButton} onClick={() => { navigate('/home'); }}>TripMaven</button>
-                <ButtonGroup variant="contained" aria-label="Basic button group">
-                    <Button onClick={() => { setRole('user') }}>고객</Button>
-                    <Button onClick={() => { setRole('guide') }}>가이드</Button>
-                    <Button onClick={() => { setRole('admin') }}>관리자</Button>
-                </ButtonGroup>
 
                 <div className={styles.nav}>
                     <div className={styles.inputstyle}>
@@ -132,10 +265,17 @@ const Header = () => {
                     <div className={styles.navFrame}>
                         <div className={styles.navItems}>
                             <button className={styles.navButton} onClick={() => { handleClick('/home') }}>Home</button>
-                            <button className={styles.navButton} onClick={() => { handleClick('/aiservice') }}>AI 서비스</button>
+                            <button className={styles.navButton} onClick={() => { handleClick('/aipage') }}>AI 서비스</button>
                             <div className={styles.dropdown}>
                                 <button className={styles.dropdownButton}>
-                                    마이 페이지
+                                    {template.memberInfo.name ? (
+                                        <>
+                                            <Avatar sx={{ mr: 1 }} alt={template.memberInfo.profile} src={template.memberInfo.profile} className={styles.avatar} />
+                                            {template.memberInfo.name} 님
+                                        </>
+                                    ) : (
+                                        '마이 페이지'
+                                    )}
                                     <svg
                                         className={styles.dropdownIcon}
                                         width="9"
@@ -161,9 +301,8 @@ const Header = () => {
                                 </div>
                             </div>
                             <button className={styles.navButton} onClick={handleOpen}>가이드 등록</button>
+                            <NotificationComponent />
                         </div>
-
-                        {renderNotificationIcon()}
 
                         {!localStorage.getItem("token") ?
                             <NavLink className={styles.loginButton} to="/login" >로그인</NavLink>

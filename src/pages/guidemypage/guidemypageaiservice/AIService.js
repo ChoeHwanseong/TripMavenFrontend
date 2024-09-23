@@ -12,7 +12,7 @@ const AIService = () => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/aiservice'); // AIService 페이지로 이동
+        navigate('/aipage'); // AIService 페이지로 이동
     };
  
 
