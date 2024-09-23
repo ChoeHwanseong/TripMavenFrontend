@@ -60,7 +60,7 @@ export const getMessages = async (chattingRoomId) => {
 
 export const getChattingRoom = async (chattingRoomId) => {
   try {
-    const res = await axios.get(`/spring/chat/chattingRoom/${chattingRoomId}`);  // POST 요청으로 채팅방 ID를 전송
+    const res = await axios.get(`/spring/chat/chattingroom/${chattingRoomId}`);  // POST 요청으로 채팅방 ID를 전송
     return res.data;
   } catch (error) {
     console.error('에러났당', error);

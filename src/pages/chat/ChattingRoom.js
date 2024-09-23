@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { TemplateContext } from '../../context/TemplateContext';
 
-function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages, chatMessages, id }) {
+function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchChatMessages, chatMessages }) {
   const { notifications, setNotifications, notificationCount } = useContext(TemplateContext);
   const [hoveredRow, setHoveredRow] = useState(null);
   const navigate = useNavigate();
@@ -109,9 +109,9 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
               <div className={styles.chatInfo}>
                 <span>
                   <span className={styles.chatName}>{joinChatting.member.name}</span>
-                  {notificationCount > 0 &&
+                  {notificationCount > 0 && notifications &&
                   (
-                    <span className="badge rounded-pill bg-danger" style={{ fontSize: '11px' }}>{notifications.find(notification => notification.type=='chat' && joinChatting.member.id==notification.senderId && notification.link.includes(joinChatting.chattingRoom.productboard.id)) && notifications.find(notification => notification.type=='chat' && joinChatting.member.id==notification.senderId && notification.link.includes(joinChatting.chattingRoom.productboard.id)).content.length}</span>
+                    <span className="badge rounded-pill bg-danger" style={{ fontSize: '11px' }}>{notifications.find(notification => notification.type=='chat' && joinChatting.member.id==notification.senderId && notification.link.includes(joinChatting.chattingRoom.id)) && notifications.find(notification => notification.type=='chat' && joinChatting.member.id==notification.senderId && notification.link.includes(joinChatting.chattingRoom.id)).content.length}</span>
                   )}
                 </span>
                 <span className={styles.chatTime}>

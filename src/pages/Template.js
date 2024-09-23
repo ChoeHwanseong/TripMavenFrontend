@@ -70,6 +70,9 @@ export default function Template() {
 
                         //상품아이디 얻기용
                         const chattingRoom = await getChattingRoom(topic);
+                        console.log(chattingRoom);
+
+                        console.log('템플릿에서 메시지 받기:');
 
                         //알림 리스트에 올라가기 전에 잠깐 저장용
                         setWaitingNotification({
@@ -79,7 +82,7 @@ export default function Template() {
                             'type': 'chat',
                             'link': `/bigchat/${topic}`,
                             'senderId': `${sender}`,
-                            'productId':`${chattingRoom.productboard.id}`
+                            'productId':`${chattingRoom.productBoard.id}`
                         });
                     }
                     catch (error) { console.error('Error parsing message:', error); }
@@ -95,6 +98,7 @@ export default function Template() {
         const notiStateList = []; //새로운 리스트 만들기
         for (let noti of notificationList) { //불러온거
             if (noti.type == 'chat') { //타입이 채팅이면
+                //console.log('알림 저장')
                 if (notiStateList.find(ele => ele.senderId == noti.senderId && ele.link == noti.link )) { //이미 새로운리스트에 있다면 + 상품리스트까지 같아야함
                     notiStateList.forEach(ele => {
                         if (ele.senderId == noti.senderId && ele.link == noti.link) {
@@ -119,6 +123,7 @@ export default function Template() {
             if (location.pathname.includes('bigchat') && 
                 location.pathname === waitingNotification.link) return;
             else {
+                //console.log('알림 디비에 저장')
                 const postedData = await postNotification(waitingNotification); //알림테이블(DB)에 추가하기
                 //받은 메세지 알림 리스트 상태에 추가(dto 그대로 받기)
                 const notiList = await getNoti(); //알림 테이블 불러오기
@@ -161,6 +166,7 @@ export default function Template() {
     },[isLoading, location.pathname]);
 
     useEffect(()=>{
+        //console.log('왜 url체크 함수 안됨?');
         urlCheck();
     },[waitingNotification])
 
