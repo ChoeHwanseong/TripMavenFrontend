@@ -33,9 +33,6 @@ export const submitMessage  = async (topic, userMessage , membersId) => {
   }
 };
 
-   
-
-
 export const chattingListMyData = async (myId) => {
   try {
     const res = await axios.get(`/spring/chat/topic/my/${myId}`);
@@ -51,6 +48,16 @@ export const chattingListMyData = async (myId) => {
 export const getMessages = async (chattingRoomId) => {
   try {
     const res = await axios.get(`/spring/chat/history/${chattingRoomId}`);  // POST 요청으로 채팅방 ID를 전송
+    return res.data;
+  } catch (error) {
+    console.error('에러났당', error);
+    throw error;
+  }
+};
+
+export const getChattingRoom = async (chattingRoomId) => {
+  try {
+    const res = await axios.get(`/spring/chat/chattingroom/${chattingRoomId}`);  // POST 요청으로 채팅방 ID를 전송
     return res.data;
   } catch (error) {
     console.error('에러났당', error);

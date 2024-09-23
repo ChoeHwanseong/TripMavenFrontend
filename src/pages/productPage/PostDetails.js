@@ -133,7 +133,7 @@ const PostDetails = () => {
 
   if (!data) {
     return <Loading />;
-  }
+  } 
 
   return (
     <Box className={styles.postHeaderContainer}>

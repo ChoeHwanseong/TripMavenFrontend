@@ -96,6 +96,7 @@ const RealTestPage = () => {
 
       videoRecorderRef.current.onstop = () => {
         const blob = new Blob(videoChunks.current, { type: 'video/mp4' });
+        console.log('비디오 블롭:',blob);
         videoBlob.current = blob;
         videoChunks.current = [];
 
@@ -103,30 +104,8 @@ const RealTestPage = () => {
         const duration = Math.floor(stream.getVideoTracks()[0].getSettings().frameRate * videoChunks.current.length); 
         setTimeLeft(duration);  // 녹화 시간을 상태에 저장
       };
-
+      
       videoRecorderRef.current.start();
-      setIsRecording(true);
-    }).catch((error) => console.error('Error accessing microphone:', error));
-
-    //오디오 녹화
-    navigator.mediaDevices.getUserMedia({
-      audio: {
-        deviceId: selectedAudioDevice?.deviceId,
-        sampleRate: 16000,
-      }
-    }).then((stream) => {
-      audioRecorderRef.current = new MediaRecorder(stream, {mimeType: 'audio/webm;codecs=opus'});
-      audioRecorderRef.current.ondataavailable = (event) => {
-        audioChunks.current.push(event.data);
-      };
-
-      audioRecorderRef.current.onstop = () => {
-        const blob = new Blob(audioChunks.current, { type: 'audio/webm' });
-        audioBlob.current = blob;
-        audioChunks.current = [];
-      };
-
-      audioRecorderRef.current.start();
       setIsRecording(true);
     }).catch((error) => console.error('Error accessing microphone:', error));
   };
@@ -207,10 +186,10 @@ const RealTestPage = () => {
     //오디오 녹화 파일
     const audioFile = new File([audioBlob.current], 'recordedAudio.webm', { type: 'audio/webm' });
     const formDataForAudio = new FormData();
-    formDataForAudio.append('voice', audioFile);
+    formDataForAudio.append('voice', videoFile);
     formDataForAudio.append('text', accumulatedTranscriptRef.current); //정답 텍스트이긴 한데... 정답이 없는뎅,,,
+    console.log('text: ',accumulatedTranscriptRef.current);
     formDataForAudio.append('gender', memberInfo.gender=='male'?'0':'1'); //사용자 성별
-    console.log(memberInfo.gender)
     formDataForAudio.append('isVoiceTest', '0'); //발음테스트시 1로, 영상테스트시 0으로 하면 됨
 
 

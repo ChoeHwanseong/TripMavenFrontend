@@ -170,8 +170,10 @@ function BigChat() {
         timestamp: new Date(),
       };
 
+      //MQTT에 메세지 보내기
       client.publish(`${selectedUser.chattingRoom.id}`, JSON.stringify(message));
 
+      //데이터베이스에 채팅 저장
       try {
         await submitMessage(selectedUser.chattingRoom.id, JSON.stringify(message.text), localStorage.getItem('membersId'));
         console.log('메시지 저장됨');
