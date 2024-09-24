@@ -43,3 +43,4 @@ npm install react-router-dom@6 이것두
 09/13 npm install @wmik/use-media-recorder --force
 
 09/15 npm install react-modal --legacy-peer-deps
+09/23 npm install react-type-animation --legacy-peer-deps
