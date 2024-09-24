@@ -215,20 +215,15 @@ const RealTestPage = () => {
   };
 
   const handleResult = (event) => {
-    let finalTranscript = '';
     let interimTranscript = '';
-
     for (let i = event.resultIndex; i < event.results.length; i++) {
-      const transcript = event.results[i][0].transcript;
+      const transcriptChunk = event.results[i][0].transcript;
       if (event.results[i].isFinal) {
-        finalTranscript += transcript + ' ';
+        setTranscript(prev => prev + transcriptChunk + ' '); // 최종 자막 업데이트
       } else {
-        interimTranscript += transcript;
+        interimTranscript += transcriptChunk; // 실시간 자막
       }
     }
-
-    accumulatedTranscriptRef.current += finalTranscript;
-    setTranscript(accumulatedTranscriptRef.current + interimTranscript);
   };
 
   const handleError = (event) => {
