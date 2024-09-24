@@ -269,8 +269,29 @@ const RealTestPage = () => {
 
     // 60초 후 음성 인식 종료
     setTimeout(() => {
+<<<<<<< HEAD
       recognition.stop();
     }, 60000); // 10000ms = 10초
+=======
+      recognitionRef.current.stop();
+    }, 60000);
+  };
+
+  const handleResult = (event) => {
+    let interimTranscript = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcriptChunk = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        setTranscript(prev => prev + transcriptChunk + ' '); // 최종 자막 업데이트
+      } else {
+        interimTranscript += transcriptChunk; // 실시간 자막
+      }
+    }
+  };
+
+  const handleError = (event) => {
+    console.error('Speech recognition error', event.error);
+>>>>>>> 8e9cf2cf4adca0140978bca5dde852495d9cb4bf
   };
 
   //녹화, 녹음 파일 파이썬 서버에 보내기 + 결과 받아서 데이터베이스에 저장하기
