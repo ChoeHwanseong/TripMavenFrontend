@@ -4,17 +4,15 @@ import MovieIcon from '@mui/icons-material/Movie';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import styles from "../../../styles/aiservicepage/Result/ResultFirst.module.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const ResultFirstPage = () => {
   const location = useLocation(); // useLocation을 사용하여 state를 가져옴
-  const firstResult = location.state?.responses ? location.state.responses[0] : null; // 첫 번째 결과만 가져옴
+  const { result, videoUrls, videoDuration } = location.state || {};
 
-  const { videoUrls, videoDuration } = location.state || {};
-
+  const groupFirstId = useParams().id;
 
   // 그래프를 저장할 상태 변수
-  const [eyeGraph, setEyeGraph] = useState(null);
   const [mouthGraph, setMouthGraph] = useState(null);
   const [cheekbonesGraph, setCheekbonesGraph] = useState(null);
   const [browGraph, setBrowGraph] = useState(null);
@@ -34,19 +32,17 @@ const ResultFirstPage = () => {
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
+    console.log('상세프랍스 내려온 groupFirstId: ', groupFirstId);
+    console.log('ResultFirstPage에서 가져온 result: ', result);
 
-    console.log('상세프랍스 내려온 videoUrl: ', videoUrls);
-    console.log('상세 프랍스 내려온 videoDuration: ', videoDuration);
-    console.log('ResultFirstPage에서 가져온 firstResult: ', firstResult);
-
-    if (firstResult) {
+    if (result) {
       // 각 결과에서 그래프를 추출하여 상태에 저장
-      setMouthGraph(`data:image/png;base64,${firstResult.graphs.mouth_graph}`);
-      setCheekbonesGraph(`data:image/png;base64,${firstResult.graphs.cheekbones_graph}`);
-      setBrowGraph(`data:image/png;base64,${firstResult.graphs.brow_graph}`);
-      setNasolabialFoldsGraph(`data:image/png;base64,${firstResult.graphs.nasolabial_folds_graph}`);
+      setMouthGraph(`data:image/png;base64,${result.mouth}`);
+      setCheekbonesGraph(`data:image/png;base64,${result.cheek}`);
+      setBrowGraph(`data:image/png;base64,${result.brow}`);
+      setNasolabialFoldsGraph(`data:image/png;base64,${result.nasolabial}`);
     }
-  }, [firstResult]);
+  }, [result]);
 
   return <>
 
@@ -65,7 +61,7 @@ const ResultFirstPage = () => {
         </Typography>
       </Box>
 
-      {firstResult ? (
+      {result  ? (
         <>
          {/* 비디오 분석 섹션 */}
         <div className={styles.boxContainer}>
@@ -93,7 +89,7 @@ const ResultFirstPage = () => {
                         눈 깜빡임 횟수
                       </Typography>
                       <Typography className={styles.monChartLabel} align="center">
-                        {firstResult.eye.average_blinks} 회
+                        {result.eye.average_blinks} 회
                       </Typography>
                     </Box>
                   </Grid>
@@ -222,7 +218,7 @@ const ResultFirstPage = () => {
                         <EmojiEmotionsIcon className={styles.icon} /> Face Comment
                       </Typography>
                       <Typography className={styles.resultText}>
-                        {firstResult.expression_comment}
+                        {result.expression_comment}
                       </Typography>
                     </Box>
                   </Box>
@@ -247,7 +243,7 @@ const ResultFirstPage = () => {
     </div>
 
 
-    {firstResult ? (
+    {result ? (
       <>
 
     <div className={styles.mainContainer}>

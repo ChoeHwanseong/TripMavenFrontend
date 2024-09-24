@@ -361,6 +361,8 @@ const RealTestPage = () => {
         }, memberId, productboardId);
         ResultIdRef.current = evaluationResponse.data.id;
 
+
+
         console.log('evaluationResponse:', evaluationResponse);
         setLoadingMessage(""); // 모달 메시지 제거
 
@@ -376,7 +378,7 @@ const RealTestPage = () => {
 
         if (videoType === 'second') {
           alert('영상이 성공적으로 제출되었습니다!');
-          navigate(`/resultFinalPage/${productboardId}`, {
+          navigate(`/resultFinalPage/${evaluationResponse.data.id}`, {
             state: {
               responses: allResults, // 두 개의 결과를 배열로 전달
               videoUrls: [
