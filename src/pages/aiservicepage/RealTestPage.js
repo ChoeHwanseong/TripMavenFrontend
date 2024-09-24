@@ -42,6 +42,7 @@ const RealTestPage = () => {
   const recognitionRef = useRef(null);
   const intervalRef = useRef(null);  //타이머
   const timeoutRef = useRef(null);  // 타임아웃을 관리하는 ref
+  const ResultIdRef = useRef(''); // 모든 최종 자막을 저장하는 참조
 
   const questions = [
     "Q: 여행을 하는 중에 컴플레인이 들어 왔을 경우 어떻게 해결을 해야 할까요?",
@@ -318,7 +319,9 @@ const RealTestPage = () => {
           nasolabial: resultVideoData.graphs.nasolabial_folds_graph,
           commentEye: resultVideoData.eye.comment,
           commentsFace: resultVideoData.expression_comment,
+          group_id: ResultIdRef.current == ''?"0":ResultIdRef.current
         }, memberId, productboardId);
+        ResultIdRef.current = evaluationResponse.data.id;
 
         console.log('evaluationResponse:', evaluationResponse);
         setLoadingMessage(""); // 모달 메시지 제거
