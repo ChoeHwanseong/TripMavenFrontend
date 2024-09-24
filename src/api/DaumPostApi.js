@@ -46,7 +46,7 @@ function DaumPost({setAreaAddress}) {
         //주소검색이 완료되고, 결과 주소를 클릭 시 해당 함수 수행
         open({ onComplete: handleComplete });
     }
-    return <Button sx={{ height:'57px',color: '#676767', border: 1, backgroundColor: '#f1f1f1', '&:hover': { backgroundColor: '#DEDEDE' } }}
+    return <Button sx={{ fontSize: '15px', width: '100px', height:'57px',color: '#676767', border: 1, backgroundColor: '#f1f1f1', '&:hover': { backgroundColor: '#DEDEDE' } }}
         variant="contained" component="label" onClick={handleClick}>주소찾기</Button>
 }
 
