@@ -9,6 +9,7 @@ import { PieChart } from "@mui/x-charts";
 import WordCloud from 'react-d3-cloud';
 import ReactSpeedometer from "react-d3-speedometer"
 import { set } from "mobx";
+import { fetchFile } from "../../../utils/fileData";
 
 const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
   const location = useLocation(); // useLocation을 사용하여 state를 가져옴
@@ -22,14 +23,11 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
   // 그래프를 저장할 상태 변수
   const [graphs, setGraphs] = useState([]);
   const graphNames = ['입 주변 변화율','광대 주변 변화율','미간 주름 변화율','팔자 주름 변화율']
-  const [mouthGraph, setMouthGraph] = useState(null);
-  const [cheekbonesGraph, setCheekbonesGraph] = useState(null);
-  const [browGraph, setBrowGraph] = useState(null);
-  const [nasolabialFoldsGraph, setNasolabialFoldsGraph] = useState(null);
 
   // 그래프 이미지 확대용 모달
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [fileURL, setFileURL] = useState(null);
 
   // 모달 열기
   const handleOpen = (imgSrc) => {
@@ -43,26 +41,32 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
   useEffect(() => {
     console.log('상세프랍스 내려온 groupFirstId: ', groupFirstId);
     console.log('ResultFinalPage에서 가져온 result: ', result);
+    const temp = async () => {
+      if (result) {
+        const fileUrl = await fetchFile(result.filename, 1);
+        setFileURL(fileUrl);
 
-    if (result) {
-      // 각 결과에서 그래프를 추출하여 상태에 저장
-      setGraphs([`data:image/png;base64,${result.mouth}`,
-                  `data:image/png;base64,${result.cheek}`,
-                  `data:image/png;base64,${result.brow}`,
-                  `data:image/png;base64,${result.nasolabial}`]);
-                  
-      if (result.text) {
-        const wordList = result.text.split(',');
-        const weightList = result.weight.split(',');
-        const keyValue = [];
+        // 각 결과에서 그래프를 추출하여 상태에 저장
+        setGraphs([`data:image/png;base64,${result.mouth}`,
+                    `data:image/png;base64,${result.cheek}`,
+                    `data:image/png;base64,${result.brow}`,
+                    `data:image/png;base64,${result.nasolabial}`]);
+                    
+        if (result.text) {
+          const wordList = result.text.split(',');
+          const weightList = result.weight.split(',');
+          const keyValue = [];
 
-        for (let i = 0; i < wordList.length; i++) {
-          keyValue.push({ 'text': wordList[i], 'value': parseInt(weightList[i], 10) * 100 });
+          for (let i = 0; i < wordList.length; i++) {
+            keyValue.push({ 'text': wordList[i], 'value': parseInt(weightList[i], 10) * 100 });
+          }
+          setWordCloudData(keyValue);
         }
-        setWordCloudData(keyValue);
       }
-    }
+    };
     
+    temp();
+
     //페이지 옮기면 스크롤 위로 올리기
     scrollToTop(); 
   }, [result, pageNumber]);
@@ -154,7 +158,7 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                     {(videoUrls && videoUrls.length > 0) ?
                       (
                         <video controls className={styles.videoPlayer}>
-                          <source src={videoUrls[0]} type="video/mp4" />
+                          <source src={videoUrls[0] || fileURL} type="video/mp4" />
                         </video>
                       )
                       :
