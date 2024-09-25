@@ -52,8 +52,8 @@ export const fetchFiles = async (productboardId) => {
 export const fetchFile = async (filename,productboardId) => {
   try {
     console.log('파일이므리: ',filename);
-
-    
+ 
+ 
     const response = await axios.get(`${baseUrl}/upload/${productboardId}/${filename}`, {
        responseType: 'blob'
     });

@@ -40,7 +40,6 @@ import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
 import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
 import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
 import ResultFinalPage from './pages/aiservicepage/Result/ResultFinalPage';
-import ResultFirstPage from './pages/aiservicepage/Result/ResultFirstPage';
 import RoleBasedRoute from './components/RoleBasedRoute';
 import FaceDetection from './components/FaceDetection';
 import ProductPost from './pages/productPage/ProductPost';
@@ -104,9 +103,8 @@ function App() {
 
         {/* 실전 테스트 결과 페이지 라우팅 */}
         <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
-        <Route path='/resultFirstPage/:id' element={<ResultFirstPage />} />
         <Route path='/faceDetection' element={<FaceDetection />} />
-
+        
       </Route>
     </Routes>
   </>
