@@ -155,3 +155,10 @@
   border-radius: 5px;
   font-size: 1rem;
 }
+
+.testResultContainer {
+  display: flex;
+  justify-content: space-between; /* 두 개의 박스를 양옆으로 배치 */
+  gap: 20px; /* 두 박스 사이의 간격 */
+  width: 100%; /* 전체 너비를 차지하도록 설정 */
+}

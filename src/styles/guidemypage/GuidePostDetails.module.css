@@ -221,6 +221,7 @@ background-color: #fff;
 
 .container {
   margin-top: 20px; /* Adjust the value as needed */
+  padding: 0;
 }
 
 /* ButtonStyles.module.css */

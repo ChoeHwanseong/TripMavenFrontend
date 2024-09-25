@@ -33,17 +33,18 @@ import RealTestPage from './pages/aiservicepage/RealTestPage'
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
-import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
+import VideoAppUpload from './pages/aiservicepage/webrecord/VideoUpload';
 import CombinedPage from './pages/aiservicepage/AIPage';
 import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
 import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
 import ReviewDetails from './pages/mypage/usermypage/ReviewDetails';
 import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
 import ResultFinalPage from './pages/aiservicepage/Result/ResultFinalPage';
-import ResultFirstPage from './pages/aiservicepage/Result/ResultFirstPage';
 import RoleBasedRoute from './components/RoleBasedRoute';
 import FaceDetection from './components/FaceDetection';
 import ProductPost from './pages/productPage/ProductPost';
+import Error404Page from './pages/error/Error404Page';
+
 
 
 
@@ -75,38 +76,37 @@ function App() {
         <Route path="/siteinfo" element={<SiteIntroduction />} />
         <Route path="/faq" element={<FAQ />} />
 
-        <Route path='/precautionspage1' element={<PrecautionsPage1 />} />
-        <Route path='/quizform2' element={<QuizForm2 />} />
-        <Route path='/quiztutorial' element={<QuizTutorial />} />
-        <Route path='/pronunciationtesttutorial' element={<PronunciationTestTutorial />} />
-        <Route path='/realtest1' element={<RealTest1 />} />
-        <Route path='/analysisresult' element={<AnalysisResult />} />
-        <Route path='/pronunciation/*' element={<PronunciationRoutes />} /> {/*  URL이 /pronunciation 로 시작하는 애들은 PronunciationRoutes여기서 처리해주세요~ */}
-        <Route path='/aipage' element={<CombinedPage />} />
+        <Route path='/precautionspage1' element={<RoleBasedRoute element={<PrecautionsPage1 />} requiredRole={["USER","GUIDE", "ADMIN"]} />} />
+        <Route path='/quizform2' element={<RoleBasedRoute element={<QuizForm2 />} requiredRole={["USER","GUIDE", "ADMIN"]} />} />
+        <Route path='/quiztutorial' element={<RoleBasedRoute element={<QuizTutorial />} requiredRole={["USER","GUIDE", "ADMIN"]} />} />
+        <Route path='/pronunciationtesttutorial' element={<RoleBasedRoute element={<PronunciationTestTutorial />} requiredRole={["USER","GUIDE", "ADMIN"]} />} />
+        <Route path='/realtest1' element={<RoleBasedRoute element={<RealTest1 />} requiredRole={["USER","GUIDE", "ADMIN"]} />} />
+        <Route path='/analysisresult' element={<RoleBasedRoute element={<AnalysisResult />} requiredRole={["USER","GUIDE", "ADMIN"]} />} />
+        <Route path='/pronunciation/*' element={<RoleBasedRoute element={<PronunciationRoutes />} requiredRole={["USER","GUIDE", "ADMIN"]} />} />
+        <Route path='/aipage' element={<RoleBasedRoute element={<CombinedPage />} requiredRole={["USER","GUIDE", "ADMIN"]} />} />
 
         <Route path='/registerguide' element={<RegisterGuide />} />
         <Route path='/product' element={<ProductBoard />} />
         <Route path='/postDetails/:id' element={<PostDetails />} />
-        <Route path='/productPost/:id' element={<ProductPost />} />
-
+        <Route path='/productPost/:id' element={<RoleBasedRoute element={<ProductPost />}  requiredRole={["GUIDE", "ADMIN"]} />} />
         <Route path='/termsservice' element={<TermsService />} />
-
         <Route path='/record' element={<WebcamRecorder />} />
         <Route path='/recordcheck' element={<DeviceCheckComponent />} />
         <Route path='/test' element={<DeviceCheckComponent2 />} />
-
         <Route path='/realTestPage/:id' element={<RealTestPage />} />
+
         {/* <Route path='/realTestResult/:id' element={<RealTestResult />} />  미사용(ResultFinalPage 사용)*/}
         <Route path='/productComponent' element={<ProductComponent />} />
-
         <Route path='/juwontest' element={<ScreenRecorderApp />} />
-        <Route path='/lgmtest1' element={<VideoAppUpload />} />{/* 테스트 */}
-
         {/* 실전 테스트 결과 페이지 라우팅 */}
+        
         <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
-        <Route path='/resultFirstPage/:id' element={<ResultFirstPage />} />
+
         <Route path='/faceDetection' element={<FaceDetection />} />
 
+
+        <Route path='*' element={<Error404Page />} />
+    
       </Route>
     </Routes>
   </>

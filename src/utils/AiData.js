@@ -19,13 +19,13 @@ export const createEvaluation = async (formData, memberId, productboardId) => {
       console.log('post에 전송될 payload: ',payload)
 
       // URL 수정 (기존의 `${baseUrl}`을 올바르게 사용)
-      const response = await axios.post(`http://localhost:9099${baseUrl}`, payload, {
+      const response = await axios.post(`${baseUrl}`, payload, {
           headers: {
               'Content-Type': 'application/json', // 전송 데이터 타입
           },
       });
       console.log('서버 응답:', response.data);
-      return response.data;
+      return { success: true, data: response.data };
   } catch (error) {
       console.error('저장 중 오류 발생:', error);
       return { success: false, error: error.message };
@@ -34,9 +34,29 @@ export const createEvaluation = async (formData, memberId, productboardId) => {
 
 
 // 분석내용 조회 (상품id 로)
-export const resultGetByProductId = (ProductId) => {
-    console.log('리뷰 axios 넘어간 ProductId: ', ProductId);
-    return axios.get(`${baseUrl}/product/${ProductId}`).then(res => {
+export const resultGetByProductId = (productId) => {
+    console.log('리뷰 axios 넘어간 productId: ', productId);
+    return axios.get(`${baseUrl}/product/${productId}`).then(res => {
+        return res.data;
+    }).catch(err => {
+        console.error('Error fetching reviews:', err);
+    });
+}
+
+// 분석내용 조회 ( 멤버 id 로)
+export const resultGetByMemberId = (memberId) => {
+    console.log('리뷰 axios 넘어간 memberId: ', memberId);
+    return axios.get(`${baseUrl}/member/${memberId}`).then(res => {
+        return res.data;
+    }).catch(err => {
+        console.error('Error fetching reviews:', err);
+    });
+}
+
+// 분석내용 조회 (한 테스트 조회, id 로)
+export const resultGetById = (id) => {
+    console.log('리뷰 axios 넘어간 memberId: ', id);
+    return axios.get(`${baseUrl}/join/${id}`).then(res => {
         return res.data;
     }).catch(err => {
         console.error('Error fetching reviews:', err);
