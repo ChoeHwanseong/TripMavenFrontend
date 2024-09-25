@@ -64,6 +64,7 @@ function ChattingRoom({ setSelectedUser, data, client, setChatMessages, fetchCha
       setSelectedUser(joinChatting);
     }
     */
+    console.log(joinChatting);
     navigate(`/bigchat/${joinChatting.chattingRoom.id}`);
   };
 

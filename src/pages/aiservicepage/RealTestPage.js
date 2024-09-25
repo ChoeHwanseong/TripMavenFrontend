@@ -298,8 +298,9 @@ const RealTestPage = () => {
       try{
         const data = await anaysis(formDataForVideo, formDataForAudio);
         setTempResponse(data);
-        videoResponse=data.videoResponse;
-        audioResponse=data.audioResponse;
+        console.log(data); //잘 나오고
+        videoResponse=data.videoResponse.data;
+        audioResponse=data.audioResponse.data;
         setIsAnalysisSuccess("success");
       }
       catch (error){
@@ -309,9 +310,9 @@ const RealTestPage = () => {
 
     try {
       if ((videoResponse && audioResponse) || tempResponse) { //분석 성공하고 임시 저장 객체 있을시 실행
-        const resultVideoData = videoResponse ? videoResponse.data : tempResponse.videoResponse.data ; //영상 분석 결과
+        const resultVideoData = videoResponse ? videoResponse : tempResponse.videoResponse.data ; //영상 분석 결과
         console.log('resultVideoData:', resultVideoData);
-        const resultAudioData = audioResponse ? audioResponse.data : tempResponse.audioResponse.data; //음성 분석 결과
+        const resultAudioData = audioResponse ? audioResponse : tempResponse.audioResponse.data; //음성 분석 결과
         console.log('resultAudioData:', resultAudioData);
 
   
@@ -340,7 +341,7 @@ const RealTestPage = () => {
           total_time: resultAudioData.speed_result.total_spoken_time,
 
           keywords: resultVideoData.expression_keywords,
-
+          
           cheek: resultVideoData.graphs.cheekbones_graph,
           mouth: resultVideoData.graphs.mouth_graph,
           brow: resultVideoData.graphs.brow_graph,
@@ -386,6 +387,7 @@ const RealTestPage = () => {
       }
     } catch (error) {
       setLoadingMessage("");
+      setRecordingStatus("다시 요청하기");
       console.error('영상 제출 중 에러 발생:', error);
       alert('영상 제출 중 에러가 발생했습니다.');
     }
