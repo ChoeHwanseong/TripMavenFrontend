@@ -150,7 +150,7 @@ const RegionEventInfo = ({ width = "100%", height = "400px", setSelectedRegion, 
         params: {
           serviceKey: decodeURIComponent(API_KEY),
           numOfRows: 10, pageNo: 1, MobileOS: 'ETC', MobileApp: 'AppTest',
-          arrange: 'A', listYN: 'Y', areaCode: areaCode, eventStartDate: '20240919', _type: 'json'
+          arrange: 'A', listYN: 'Y', areaCode: areaCode, eventStartDate: '20240926', _type: 'json'
         },
         headers: { 'Accept': 'application/json' }
       });

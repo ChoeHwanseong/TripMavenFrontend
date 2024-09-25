@@ -261,8 +261,8 @@
 }
 
 .tealSection, .darkTealSection, .brightTealSection {
-  background-color: #92bcf6;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #7d66ef;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -282,7 +282,7 @@
   font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
-  color: #ffffff;
+  color: #7d66ef;
   text-align: center;
   padding: 150px;
 }
@@ -292,15 +292,15 @@
   margin-bottom: 1.5rem;
   line-height: 1.5;
   margin-left: 20px;
-  color: rgb(255, 255, 255);
+  color: #7d66ef;
   position: relative;
 }
 
 .sectionSubtitle {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   text-align: center;
   margin-bottom: 2rem;
-  color: #333;
+  color: #7d66ef;
 }
 
 .imageWrapper {
@@ -342,6 +342,18 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  transition: all 0.3s ease;
+}
+
+.fadeInUpCard {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animated .fadeInUpCard {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .featureIcon {
@@ -385,7 +397,7 @@
   position: absolute;
   bottom: 50vh;
   left: 5vw;
-  color: #fff;
+  color: #ffffff;
   font-size: 3rem;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
@@ -396,7 +408,7 @@
   right: 0;
   width: 40%;
   height: 100%;
-  background-color: #007bff;
+  background-color: #4fa6f8;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -405,13 +417,87 @@
 }
 
 .contactInfoTitle {
-  color: #fff;
+  color: #ffffff;
   font-size: 2.5rem;
   margin-bottom: 2rem;
 }
 
 .contactInfo {
   width: 100%;
+}
+
+.animated {
+  visibility: visible;
+}
+
+.textContent {
+  opacity: 0;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fadeInLeft {
+  transform: translateX(-50px);
+}
+
+.fadeInRight {
+  transform: translateX(50px);
+}
+
+.animated .textContent,
+.animated .imageWrapper {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animated .fadeInLeft {
+  animation: fadeInLeft 0.6s ease-out forwards;
+}
+
+.animated .fadeInRight {
+  animation: fadeInRight 0.6s ease-out forwards;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Add different animation delays for cascade effect */
+.animated .fadeInLeft:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.animated .fadeInRight {
+  animation-delay: 0.4s;
+}
+
+.animated .fadeInUpCard:nth-child(1) {
+  transition-delay: 0.2s;
+}
+
+.animated .fadeInUpCard:nth-child(2) {
+  transition-delay: 0.4s;
+}
+
+.animated .fadeInUpCard:nth-child(3) {
+  transition-delay: 0.6s;
 }
 
 .infoGroup {
@@ -435,7 +521,7 @@
 
 .infoText {
   color: #fff;
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 
 .navbar {
@@ -506,7 +592,7 @@
 .scrollTopButton {
   position: fixed;
   bottom: 20px;
-  right: 50vw;
+  right: 48vw;
   background-color: rgba(69, 121, 169, 0.8);
   color: white;
   border: none;
@@ -583,11 +669,6 @@
   transform: translateY(0);
 }
 
-/* 그라데이션 배경 추가 */
-.tealSection {
-  background: linear-gradient(135deg, #92bcf6, #4b7bec);
-}
-
 /* 텍스트 애니메이션 */
 @keyframes fadeInUp {
   from {
@@ -614,7 +695,8 @@
   }
   
   .glowTitle {
-    font-size: 40px;
+    font-size: 50px;
+    margin-top: 420px;
   }
 
   .heroTitle {
@@ -693,7 +775,9 @@
   }
 
   .featuresContainer {
-    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
   }
 
   .heroSection {
@@ -720,5 +804,24 @@
   .btn2 {
     padding: 10px 30px;
     font-size: 1em;
+    position:fixed;
+    margin-left: 700px;
+    margin-top:-130px;
+    width:140px;
+    text-align: center;
+  }
+
+  .newsFeaturesTitleContainer {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .sectionTitle.fadeInRight,
+  .sectionSubtitle.fadeInLeft {
+    transform: translateX(0);
+  }
+
+  .featuresContainer {
+    flex-direction: column;
   }
 }
