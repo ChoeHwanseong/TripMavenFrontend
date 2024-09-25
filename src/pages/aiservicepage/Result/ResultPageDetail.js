@@ -8,6 +8,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { PieChart } from "@mui/x-charts";
 import WordCloud from 'react-d3-cloud';
 import ReactSpeedometer from "react-d3-speedometer"
+import { set } from "mobx";
 
 const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
   const location = useLocation(); // useLocation을 사용하여 state를 가져옴
@@ -19,6 +20,8 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
   const [wordCloudData, setWordCloudData] = useState([]);
 
   // 그래프를 저장할 상태 변수
+  const [graphs, setGraphs] = useState([]);
+  const graphNames = ['입 주변 변화율','광대 주변 변화율','미간 주름 변화율','팔자 주름 변화율']
   const [mouthGraph, setMouthGraph] = useState(null);
   const [cheekbonesGraph, setCheekbonesGraph] = useState(null);
   const [browGraph, setBrowGraph] = useState(null);
@@ -43,10 +46,11 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
 
     if (result) {
       // 각 결과에서 그래프를 추출하여 상태에 저장
-      setMouthGraph(`data:image/png;base64,${result.mouth}`);
-      setCheekbonesGraph(`data:image/png;base64,${result.cheek}`);
-      setBrowGraph(`data:image/png;base64,${result.brow}`);
-      setNasolabialFoldsGraph(`data:image/png;base64,${result.nasolabial}`);
+      setGraphs([`data:image/png;base64,${result.mouth}`,
+                  `data:image/png;base64,${result.cheek}`,
+                  `data:image/png;base64,${result.brow}`,
+                  `data:image/png;base64,${result.nasolabial}`]);
+                  
       if (result.text) {
         const wordList = result.text.split(',');
         const weightList = result.weight.split(',');
@@ -74,7 +78,7 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
   return <>
 
     <div className={styles.pageTitle}>
-      첫번째 실전 테스트 결과
+      {pageNumber==="1"?"첫":"두"}번째 실전 테스트 결과
     </div>
 
     <p>*영상 및 음성 분석 결과는 평균적인 데이터이므로 참고용으로만 보시기 바랍니다</p>
@@ -132,7 +136,7 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                       <Typography className={styles.resultText}>
                         {result.commentEye.split("*")[0]}
                       </Typography>
-                      <Typography className={styles.monSubtext}>
+                      <Typography className={styles.monSubtext} style={{fontSize:"12px"}}>
                         {"*" + result.commentEye.split("*")[1]}
                       </Typography>
                     </Box>
@@ -174,77 +178,22 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                 </Typography>
 
                 <Grid container spacing={3} className={styles.chartGrid}>
-                  {/* 입 주변 변화율 그래프 */}
-                  <Grid item xs={3}>
-                    <Box className={styles.monBoxContainer}>
-                      <Typography variant="h6" className={styles.monChartTitle} align="center">
-                        입 주변 변화율
-                      </Typography>
-                      {mouthGraph && (
+                  {/* 그래프들 나열 */}
+                  {graphs.length > 0 && graphs.map((graph, index) => 
+                    <Grid item xs={3} key={index}>
+                      <Box className={styles.monBoxContainer}>
+                        <Typography variant="h6" className={styles.monChartTitle} align="center">
+                          {graphNames[index]}
+                        </Typography>
                         <img
-                          src={mouthGraph}
-                          alt="입 주변 변화율 그래프"
+                          src={graph}
+                          alt={`${graphNames[index]} 그래프`}
                           className={styles.monChartImage}
-                          onClick={() => { handleOpen(mouthGraph) }}
+                          onClick={() => { handleOpen(graph) }}
                           style={{ cursor: 'pointer' }} />
-                      )}
-                    </Box>
-                  </Grid>
-
-                  {/* 광대 주변 변화율 그래프 */}
-                  <Grid item xs={3}>
-                    <Box className={styles.monBoxContainer}>
-                      <Typography variant="h6" className={styles.monChartTitle} align="center">
-                        광대 주변 변화율
-                      </Typography>
-                      {cheekbonesGraph && (
-                        <img
-                          src={cheekbonesGraph}
-                          alt="광대 주변 변화율 그래프"
-                          className={styles.monChartImage}
-                          onClick={() => { handleOpen(cheekbonesGraph) }}
-                          style={{ cursor: 'pointer' }}
-                        />
-                      )}
-                    </Box>
-                  </Grid>
-
-                  {/* 미간 주름 변화율 그래프 */}
-                  <Grid item xs={3}>
-                    <Box className={styles.monBoxContainer}>
-                      <Typography variant="h6" className={styles.monChartTitle} align="center">
-                        미간 주름 변화율
-                      </Typography>
-                      {browGraph && (
-                        <img
-                          src={browGraph}
-                          alt="미간 주름 변화율 그래프"
-                          className={styles.monChartImage}
-                          onClick={() => { handleOpen(browGraph) }}
-                          style={{ cursor: 'pointer' }}
-                        />
-                      )}
-                    </Box>
-                  </Grid>
-
-                  {/* 팔자 주름 변화율 그래프 */}
-                  <Grid item xs={3}>
-                    <Box className={styles.monBoxContainer}>
-                      <Typography variant="h6" className={styles.monChartTitle} align="center">
-                        팔자 주름 변화율
-                      </Typography>
-                      {nasolabialFoldsGraph && (
-                        <img
-                          src={nasolabialFoldsGraph}
-                          alt="팔자 주름 변화율 그래프"
-                          className={styles.monChartImage}
-                          onClick={() => { handleOpen(nasolabialFoldsGraph) }}
-                          style={{ cursor: 'pointer' }}
-                        />
-                      )}
-                    </Box>
-                  </Grid>
-
+                      </Box>
+                    </Grid>
+                  )}
                 </Grid>
 
 
@@ -272,9 +221,6 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                 {selectedImage && <img src={selectedImage} alt="Enlarged" className={styles.fullscreenImage} />}
               </Box>
             </Modal>
-
-
-
           </div>
         </>
       ) : (
@@ -285,7 +231,6 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
 
     {result ? (
       <>
-
         <div className={styles.mainContainer}>
           <Box className={styles.maintitleContainer}>
             <Typography variant="h6" className={styles.maintitle}>
@@ -298,7 +243,7 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
             <Grid container spacing={3} alignItems="stretch">
 
               {/* 음성 분석 */}
-              <Grid item xs={8}>
+              <Grid item xs={12}>
                 <Box className={`${styles.monBoxContainer} ${styles.equalHeightBox}`} style={{ height: '100%' }}> {/* height: '100%' 추가 */}
                   <Typography variant="h6" className={styles.chartTitle} align="center">
                     음성 분석
@@ -306,17 +251,17 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                   <Grid container spacing={3} className={styles.flexContainer}>
 
                     {/* 목소리의 Hz */}
-                    <Grid item xs={8}>
+                    <Grid item xs={6}>
                       <Box className={`${styles.monBoxContainer} ${styles.equalHeightBox}`} style={{ height: '100%' }}> {/* height: '100%' 추가 */}
                         <Typography className={styles.monChartTitle} align="center">
-                          목소리의 Hz
+                          목소리 Hz
                         </Typography>
                         <Box className={styles.flexContainer}>
                           <img
-                            src={nasolabialFoldsGraph}
+                            src={`data:image/png;base64,${result.voice_graph}`}
                             alt="목소리의 Hz 그래프"
                             className={styles.voiceHzChartImage}
-                            onClick={() => { handleOpen(nasolabialFoldsGraph) }}
+                            onClick={() => { handleOpen(`data:image/png;base64,${result.voice_graph}`) }}
                             style={{ cursor: 'pointer' }}
                           />
                           <Box className={styles.monTextContainer}>
@@ -326,7 +271,7 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                             <Typography className={styles.monResultText}>
                               {result.tone}
                             </Typography>
-                            <Typography className={styles.monSubtext}>
+                            <Typography className={styles.monSubtext} style={{fontSize:"12px"}}>
                               *음성 주파수는 어느 정도가 좋다고 특정할 수 없습니다.
                             </Typography>
                           </Box>
@@ -357,28 +302,27 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                         <Typography className={styles.monChartLabel} align="center">
                           {result.speed} WPM
                         </Typography>
-                        <Typography className={styles.monSubtext}>
+                        <Typography className={styles.monSubtext} style={{fontSize:"12px"}}>
                           *WPM(Word Per Minute): 분당 단어 수<br />
                           *한국인 평균 말하기 속도에 맞춘 결과입니다.
                         </Typography>
                       </Box>
                     </Grid>
 
+
+                    {/* 발음 분석 */}
+                    <Grid item xs={2}>
+                      <Box className={`${styles.monBoxContainer} ${styles.equalHeightBox}`} style={{ height: '100%' }}>
+                        <Typography variant="h6" className={styles.monChartTitle} align="center">
+                          발음 분석
+                        </Typography>
+                        <Typography className={styles.monChartLabel} align="center">
+                          발음 정확도: {result.pronunciation}%
+                        </Typography>
+                      </Box>
+                    </Grid>
                   </Grid>
-                </Box>
-              </Grid>
-
-              {/* 발음 분석 */}
-              <Grid item xs={4}>
-                <Box className={`${styles.monBoxContainer} ${styles.equalHeightBox}`} style={{ height: '100%' }}>
-                  <Typography variant="h6" className={styles.chartTitle} align="center">
-                    발음 분석
-                  </Typography>
-                  <Typography className={styles.monChartLabel} align="center">
-                    발음 정확도: {result.pronunciation}%
-                  </Typography>
-
-                  {/* 발음 분석 코멘트 아래에 여백 추가 */}
+                  {/* 음성 분석 코멘트 아래에 여백 추가 */}
                   <Box className={styles.mainResultSummary} style={{ marginTop: '40px' }}> {/* 여백 추가 */}
                     <Box className={styles.resultSummaryBox}>
                       <Typography variant="h6" className={styles.resultTitle}>
@@ -389,9 +333,10 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                       </Typography>
                     </Box>
                   </Box>
-
                 </Box>
               </Grid>
+
+              
 
             </Grid>
           </div>
@@ -430,7 +375,7 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                             </TableBody>
                           </Table>
                         </TableContainer>
-                        <Typography className={styles.monSubtext} align="center">
+                        <Typography className={styles.monSubtext} align="center" style={{fontSize:"12px"}}>
                           *주로 쓰는 추임새 단어를 추출한 결과입니다.
                         </Typography>
                       </Box>
@@ -464,7 +409,7 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                         <Typography className={styles.monChartLabel} align="center" sx={{ marginBottom: '10px' }}>
                           어미 비율
                         </Typography>
-                        <Typography className={styles.monSubtext} align="center">
+                        <Typography className={styles.monSubtext} align="center" style={{fontSize:"12px"}}>
                           *어미 분석을 통해 나온 평서문과 의문문 비율 차트입니다.
                         </Typography>
                       </Box>
@@ -482,7 +427,7 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                   <WordCloud
                     data={wordCloudData}
                     width={300}
-                    height={300}
+                    height={150}
                     font="Times"
                     fontWeight="bold"
                     spiral="rectangular"

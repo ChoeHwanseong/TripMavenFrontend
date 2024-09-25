@@ -5,7 +5,7 @@ import MovieIcon from '@mui/icons-material/Movie';
 import MicIcon from '@mui/icons-material/Mic';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { resultGetById, resultGetByProductId } from "../../../utils/AiData";
+import { resultGetById } from "../../../utils/AiData";
 import ResultPageDetail from "./ResultPageDetail";
 
 const ResultFinalPage = () => {

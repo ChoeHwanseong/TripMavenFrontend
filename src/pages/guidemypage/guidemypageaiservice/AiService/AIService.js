@@ -64,7 +64,7 @@ const AIService = () => {
                         {results && results.map(result => (
                             <tr key={result.id} onClick={()=>navigate(`/resultFinalPage/${result.productBoard.id}`)}>
                                 <td>{result.id}</td>
-                                <td>{result.brow? '실전테스트' : '모의테스트'}</td>
+                                <td>{result.brow? '실전테스트' : '모트'}</td>
                                 <td>{result.productBoard.title}</td>
                                 <td>{result.createdAt.split('T')[0]}</td>
                                 <td>{result.score}</td>
