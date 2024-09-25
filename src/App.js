@@ -44,6 +44,10 @@ import ResultFirstPage from './pages/aiservicepage/Result/ResultFirstPage';
 import RoleBasedRoute from './components/RoleBasedRoute';
 import FaceDetection from './components/FaceDetection';
 import ProductPost from './pages/productPage/ProductPost';
+import Error400Page from './pages/error/Error400Page';
+import Error500Page from './pages/error/Error500Page';
+import Error404Page from './pages/error/Error404Page';
+
 
 
 
@@ -107,6 +111,11 @@ function App() {
         <Route path='/resultFirstPage/:id' element={<ResultFirstPage />} />
         <Route path='/faceDetection' element={<FaceDetection />} />
 
+        <Route path='/400' element={<Error400Page />} />
+        <Route path='/500' element={<Error500Page />} />
+        <Route path='/404' element={<Error404Page />} />
+        <Route path='*' element={<Error404Page />} />
+    
       </Route>
     </Routes>
   </>
