@@ -30,7 +30,6 @@ import PronunciationTestTutorial from './pages/aiservicepage/PronunciationTestTu
 import RealTest1 from './pages/aiservicepage/RealTest1';
 import PostDetails from './pages/productPage/PostDetails';
 import RealTestPage from './pages/aiservicepage/RealTestPage'
-import RealTestResult from './pages/aiservicepage/RealTestResult'
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
@@ -43,13 +42,8 @@ import ReviewDetailsUpdate from './pages/mypage/usermypage/ReviewDetailsUpdate';
 import ResultFinalPage from './pages/aiservicepage/Result/ResultFinalPage';
 import ResultFirstPage from './pages/aiservicepage/Result/ResultFirstPage';
 import RoleBasedRoute from './components/RoleBasedRoute';
-
-
-
-
-
-
-
+import FaceDetection from './components/FaceDetection';
+import ProductPost from './pages/productPage/ProductPost';
 
 
 
@@ -62,28 +56,20 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path='/login/*' element={<LoginRoutes />} />
 
-        <Route element={<MyPageTemplate />}>
+        <Route element={<RoleBasedRoute element={<MyPageTemplate />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} >
           {/* MYPAGE */}
           <Route path='/mypage/*' element={<MyPageRoutes />} />
           {/* USER */}
           <Route path='/userreview' element={<UserReview />} />
           <Route path='/reviewdetails/:id' element={<ReviewDetails />} />
           <Route path='/reviewDetailsUpdate/:id' element={<ReviewDetailsUpdate />} />
-          {/*<Route path='/userask' element={<UserAsk/>}/>*/}
           <Route path='/userlike' element={<UserLike />} />
-          {/*<Route path='/useraskpage' element={<UserAskPage/>}/>*/}
-          {/* 
-          <Route path='/bigChat' element={<BigChat />} />*/}
-          {/*<Route path="/guideaskdetailsview/:id" element={<GuideAskDetailsView />} />*/}
           <Route path='/bigchat/:id' element={<BigChat />} />
           <Route path='/chattingRoom' element={<ChattingRoom />} />
-          <Route path='/chattingRoom' element={<ChattingRoom />} />
-
-          {/*<Route path="/guideaskupdate/:id" element={<GuideAskUpdate/>} />*/}
-    
+          <Route path='/chattingRoom' element={<ChattingRoom />} />    
           <Route path='/askupdate/:id' element={<AskUpdate />} />
-        
         </Route>
+
         <Route path='/videoAppUpload' element={<VideoAppUpload />} />
         <Route path="/cs" element={<CSBoard />} />
         <Route path="/siteinfo" element={<SiteIntroduction />} />
@@ -101,6 +87,7 @@ function App() {
         <Route path='/registerguide' element={<RegisterGuide />} />
         <Route path='/product' element={<ProductBoard />} />
         <Route path='/postDetails/:id' element={<PostDetails />} />
+        <Route path='/productPost/:id' element={<ProductPost />} />
 
         <Route path='/termsservice' element={<TermsService />} />
 
@@ -118,6 +105,7 @@ function App() {
         {/* 실전 테스트 결과 페이지 라우팅 */}
         <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
         <Route path='/resultFirstPage/:id' element={<ResultFirstPage />} />
+        <Route path='/faceDetection' element={<FaceDetection />} />
 
       </Route>
     </Routes>

@@ -2,7 +2,6 @@ import axios from "axios";
 
 export const chattingRoomData = async (myId, yourId,prodId) => {
     try {
-      console.log(myId,yourId,prodId)
       const res = await axios.get(`/spring/chat/topic/${myId}/${yourId}/${prodId}`);
       return res.data;
     }
@@ -16,7 +15,6 @@ export const chattingRoomData = async (myId, yourId,prodId) => {
 export const chattingListYourData = async (myId) => {
   try {
     const res = await axios.get(`/spring/chat/topic/${myId}`);
-    
     return res.data;
   }
   catch (error) {
@@ -35,9 +33,6 @@ export const submitMessage  = async (topic, userMessage , membersId) => {
   }
 };
 
-   
-
-
 export const chattingListMyData = async (myId) => {
   try {
     const res = await axios.get(`/spring/chat/topic/my/${myId}`);
@@ -53,6 +48,16 @@ export const chattingListMyData = async (myId) => {
 export const getMessages = async (chattingRoomId) => {
   try {
     const res = await axios.get(`/spring/chat/history/${chattingRoomId}`);  // POST 요청으로 채팅방 ID를 전송
+    return res.data;
+  } catch (error) {
+    console.error('에러났당', error);
+    throw error;
+  }
+};
+
+export const getChattingRoom = async (chattingRoomId) => {
+  try {
+    const res = await axios.get(`/spring/chat/chattingroom/${chattingRoomId}`);  // POST 요청으로 채팅방 ID를 전송
     return res.data;
   } catch (error) {
     console.error('에러났당', error);
