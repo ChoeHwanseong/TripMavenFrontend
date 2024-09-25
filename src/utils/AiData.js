@@ -43,7 +43,7 @@ export const resultGetByProductId = (productId) => {
     });
 }
 
-// 분석내용 조회 (멤버 id 로)
+// 분석내용 조회 ( 멤버 id 로)
 export const resultGetByMemberId = (memberId) => {
     console.log('리뷰 axios 넘어간 memberId: ', memberId);
     return axios.get(`${baseUrl}/member/${memberId}`).then(res => {

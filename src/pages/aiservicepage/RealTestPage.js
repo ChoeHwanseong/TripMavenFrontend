@@ -460,7 +460,7 @@ const RealTestPage = () => {
   
           {(isRecordingSuccess && isAnalysisSuccess==="fail") &&
             <Button style={{marginLeft:'30px'}} variant="contained" color="primary" onClick={() => uploadVideo(isFirstQuestion ? 'first' : 'second')} className={styles.controlButton}>
-              {"평가 요청하기"}
+              {"평가 요청하기"} 
             </Button>
           }
         </div>
