@@ -57,7 +57,7 @@ function App() {
         <Route path='/login/*' element={<LoginRoutes />} />
 
         <Route element={<RoleBasedRoute element={<MyPageTemplate />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} >
-          {/* MYPAGE */}
+          {/* MYPAGE s*/}
           <Route path='/mypage/*' element={<MyPageRoutes />} />
           {/* USER */}
           <Route path='/userreview' element={<UserReview />} />

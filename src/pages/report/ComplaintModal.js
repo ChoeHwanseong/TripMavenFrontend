@@ -70,6 +70,10 @@ const ComplaintModal = ({ onClose, isReport, post, where }) => {
 
   // 신고하기
   const handleSubmit = async () => {
+    if(!localStorage.getItem('token')){
+      alert('로그인 후 이용해주세요.')
+      return;
+    }
     const confirmed = window.confirm('정말 신고하시겠습니까?');
     if (confirmed) {
       // Using the value for selected reasons, null for unselected
