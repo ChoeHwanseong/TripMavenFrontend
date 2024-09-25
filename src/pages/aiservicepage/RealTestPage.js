@@ -323,6 +323,9 @@ const RealTestPage = () => {
         
         console.log('response:', response);
 
+        const keywords= resultVideoData.expression_keywords; // + 음성 키워드 추가하셈
+        console.log('keywords',keywords);
+
         //디비에 저장하기
         const evaluationResponse = await createEvaluation({
           score: 50,
@@ -340,8 +343,7 @@ const RealTestPage = () => {
           pronunciation: resultAudioData.pronunciation_precision.pronunciation_accuracy,
           total_time: resultAudioData.speed_result.total_spoken_time,
 
-          keywords: resultVideoData.expression_keywords,
-          
+
           cheek: resultVideoData.graphs.cheekbones_graph,
           mouth: resultVideoData.graphs.mouth_graph,
           brow: resultVideoData.graphs.brow_graph,
@@ -351,7 +353,7 @@ const RealTestPage = () => {
           commentsFace: resultVideoData.expression_comment,
           group_id: ResultIdRef.current == ''?"0":ResultIdRef.current,
           filename: videoFile.name
-        }, memberId, productboardId);
+        }, memberId, productboardId ,keywords);
 
 
         ResultIdRef.current = evaluationResponse.data.id;

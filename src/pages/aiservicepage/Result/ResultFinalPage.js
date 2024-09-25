@@ -112,7 +112,7 @@ const ResultFinalPage = () => {
               <EmojiEventsIcon className={styles.icon} /> 획득한 키워드
             </Typography>
             <Box className={styles.resultTextKeyword}>
-              내용들이갈거야내용들이갈거야내용들이갈거야내용들이갈거야내용들이갈거야
+ 로허ㅗㅓ
             </Box>
             <button className={styles.keywordButton}>
               키워드 자세히 보기 &gt;&gt;

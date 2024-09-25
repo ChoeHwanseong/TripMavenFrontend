@@ -3,9 +3,9 @@ import axios from 'axios';
 const baseUrl = "/evaluation"
 
 // 분석내용 등록
-export const createEvaluation = async (formData, memberId, productboardId) => {
+export const createEvaluation = async (formData, memberId, productboardId, keywords) => {
   try {
-
+    console.log('post에 전송될 keywords:', keywords);
     console.log('post에 전송될 memberId: ',memberId);
     console.log('post에 전송될 productboardId: ',productboardId);
 
@@ -16,6 +16,13 @@ export const createEvaluation = async (formData, memberId, productboardId) => {
           productboard_id: productboardId
       };
 
+      const response2 = await axios.put(`/members/${memberId}`, payload, {
+        headers: {
+            'Content-Type': 'application/json', // 전송 데이터 타입
+        },
+    });
+
+
       console.log('post에 전송될 payload: ',payload)
 
       // URL 수정 (기존의 `${baseUrl}`을 올바르게 사용)
@@ -24,7 +31,10 @@ export const createEvaluation = async (formData, memberId, productboardId) => {
               'Content-Type': 'application/json', // 전송 데이터 타입
           },
       });
-      console.log('서버 응답:', response.data);
+      console.log('response.data:', response.data);
+      console.log('response2.data:', response2.data);
+      console.log('response2.data.keywords:', response2.data.keywords);
+
       return { success: true, data: response.data };
   } catch (error) {
       console.error('저장 중 오류 발생:', error);
