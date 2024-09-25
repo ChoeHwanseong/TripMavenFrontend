@@ -43,6 +43,8 @@ import ResultFinalPage from './pages/aiservicepage/Result/ResultFinalPage';
 import RoleBasedRoute from './components/RoleBasedRoute';
 import FaceDetection from './components/FaceDetection';
 import ProductPost from './pages/productPage/ProductPost';
+import Error404Page from './pages/error/Error404Page';
+
 
 
 
@@ -101,7 +103,10 @@ function App() {
         <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
 
         <Route path='/faceDetection' element={<FaceDetection />} />
-        
+
+
+        <Route path='*' element={<Error404Page />} />
+    
       </Route>
     </Routes>
   </>
