@@ -5,7 +5,6 @@ import Footer from '../../components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faRobot, faCompass, faMapMarkedAlt, faChartLine, faBullhorn, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { TypeAnimation } from 'react-type-animation';
 // Import images
 import locationGif from '../../images/Location.gif';
 import envelopeGif from '../../images/Envelope.gif';
@@ -25,14 +24,21 @@ const TravelLandingPage = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showPage, setShowPage] = useState(true);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [animatedSections, setAnimatedSections] = useState({});
   const navigate = useNavigate();
 
   const wordColors = [
     { word: '경험', color: '#FF6B6B' },
     { word: '추억', color: '#4ECDC4' },
-    { word: '계획', color: '#007BFF' }, 
-    { word: '여정', color: '#FFD900' }  
+    { word: '계획', color: '#FE2E9A' }, 
+    { word: '여정', color: '#FF8C00' }  
   ];
+
+  const sectionRefs = {
+    about: useRef(null),
+    features: useRef(null),
+    newsFeatures: useRef(null),
+  };
 
   const handleLogout = () => {
     logout().then(res => {
@@ -67,10 +73,31 @@ const TravelLandingPage = () => {
       setCurrentWordIndex((prev) => (prev + 1) % wordColors.length);
     }, 2000);
 
+    const observers = {};
+
+    Object.entries(sectionRefs).forEach(([key, ref]) => {
+      observers[key] = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setAnimatedSections((prev) => ({ ...prev, [key]: true }));
+              observers[key].unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      if (ref.current) {
+        observers[key].observe(ref.current);
+      }
+    });
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
       clearInterval(interval);
+      Object.values(observers).forEach((observer) => observer.disconnect());
     };
   }, []);
 
@@ -107,7 +134,7 @@ const TravelLandingPage = () => {
       }}
       unmountOnExit
     >
-      <div className={styles.pageWrapper} id="page-top">
+    <div className={styles.pageWrapper} id="page-top">
         <nav className={`${styles.navbar} ${isNavbarShrunk ? styles.navbarShrink : ''}`}>
           <div className={styles.navbarContainer}>
             <a className={styles.navbarBrand} href="#page-top" onClick={() => navigate('/home')}>TripMaven</a>
@@ -167,11 +194,15 @@ const TravelLandingPage = () => {
             </div>
 
             {/* About section */}
-            <div className={`${styles.section} ${styles.tealSection}`} id="about">
+            <div 
+              className={`${styles.section} ${styles.tealSection} ${animatedSections.about ? styles.animated : ''}`} 
+              id="about"
+              ref={sectionRefs.about}
+            >
               <div className={`${styles.container} ${styles.flexContainer}`}>
-                <div className={styles.flexHalf}>
-                  <h2 className={styles.sectionTitle}>소개를 하자면</h2>
-                  <p className={styles.sectionText}>
+                <div className={`${styles.flexHalf} ${styles.textContent}`}>
+                  <h2 className={`${styles.sectionTitle} ${styles.fadeInLeft}`}>소개를 하자면...</h2>
+                  <p className={`${styles.sectionText} ${styles.fadeInLeft}`}>
                     "MAVEN"은 영어로 '전문가'를 뜻합니다 <br/>
                     저희는 AI를 활용하여 여러분께 잊지 못할 <br/> 최적의 여행
                     <span className={styles.wordRotator}>
@@ -188,56 +219,54 @@ const TravelLandingPage = () => {
                     을 선사합니다
                   </p>
                 </div>
-                <div className={`${styles.flexHalf} ${styles.imageWrapper}`}>
+                <div className={`${styles.flexHalf} ${styles.imageWrapper} ${styles.fadeInRight}`}>
                   <img src={beachWithBoats} alt="Beach with boats" className={styles.sectionImage} />
                 </div>
               </div>
             </div>
 
             {/* Features section */}
-          <div className={`${styles.section} ${styles.darkTealSection}`}>
-            <div className={`${styles.container} ${styles.flexContainer}`}>
-              <div className={styles.flexHalf}>
-                <h2 className={styles.sectionTitle}>고객을 위한 TripMaven의 기능</h2>
-                <div className={styles.sectionText}>
-                  <TypeAnimation
-                    sequence={[
-                      '지역만 검색하면 날씨와 행사들을 확인할 수 있습니다',
-                      1000,
-                      '지역만 검색하면 날씨와 행사들을 확인할 수 있습니다\n고객님이 가고자 하는 곳 어디든,',
-                      1000,
-                      '지역만 검색하면 날씨와 행사들을 확인할 수 있습니다\n고객님이 가고자 하는 곳 어디든,\n고객님에게 맞는 가이드가 있습니다',
-                    ]}
-                    wrapper="p"
-                    cursor={true}
-                    repeat={0}
-                    style={{ whiteSpace: 'pre-line', display: 'inline-block' }}
-                  />
+            <div 
+              className={`${styles.section} ${styles.darkTealSection} ${animatedSections.features ? styles.animated : ''}`}
+              ref={sectionRefs.features}
+            >
+              <div className={`${styles.container} ${styles.flexContainer}`}>
+                <div className={`${styles.flexHalf} ${styles.textContent}`}>
+                  <h2 className={`${styles.sectionTitle} ${styles.fadeInLeft}`}>고객을 위한 TripMaven의 기능</h2>
+                  <p className={`${styles.sectionText} ${styles.fadeInLeft}`}>
+                    지역만 검색하면 날씨와 행사들을 확인할 수 있습니다 <br/>
+                    고객님이 가고자 하는 곳 어디든,<br/> 고객님에게 맞는 가이드가 있습니다
+                  </p>
+                </div>
+                <div className={`${styles.flexHalf} ${styles.imageWrapper} ${styles.fadeInRight}`}>
+                  <img src={koreamap} alt="Tropical beach" className={styles.sectionImage} />
                 </div>
               </div>
-              <div className={`${styles.flexHalf} ${styles.imageWrapper}`}>
-                <img src={koreamap} alt="Tropical beach" className={styles.sectionImage} />
-              </div>
             </div>
-          </div>
 
             {/* News Features section */}
-            <div className={`${styles.section} ${styles.brightTealSection}`} id="features">
+            <div 
+              className={`${styles.section} ${styles.brightTealSection} ${animatedSections.newsFeatures ? styles.animated : ''}`} 
+              id="features"
+              ref={sectionRefs.newsFeatures}
+            >
               <div className={styles.container}>
-                <h2 className={`${styles.sectionTitle} ${styles.center}`}>
-                  가이드를 위한 TripMaven의 기능
-                </h2>
-                <p className={styles.sectionSubtitle}>
-                  저희는 행동, 시선, 표정을 평가하여 가이드 님의 능력을 향상시켜줍니다<br />
-                  여행지 소개, 고객 응대 등을 평가받고 여러분의 능력을 향상시켜 보세요!
-                </p>
+                <div className={styles.newsFeaturesTitleContainer}>
+                  <h2 className={`${styles.sectionTitle} ${styles.center} ${styles.fadeInRight}`}>
+                    가이드를 위한 TripMaven의 기능
+                  </h2>
+                  <p className={`${styles.sectionSubtitle} ${styles.fadeInLeft}`}>
+                    저희는 행동, 시선, 표정을 평가하여 가이드 님의 능력을 향상시켜줍니다<br />
+                    여행지 소개, 고객 응대 등을 평가받고 여러분의 능력을 향상시켜 보세요!
+                  </p>
+                </div>
                 <div className={styles.featuresContainer}>
                   {[
                     { title: '음성인식 기술 (STT)', icon: sttIcon, description: '음성을 텍스트로 변환하는 STT 기술' },
                     { title: '자연어 처리기술(NLP)', icon: nlpIcon, description: '말을 분석 및 이해하는 NLP 기술' },
                     { title: '멀티모달 기술', icon: multimodalIcon, description: '다양한 유형의 데이터를 동시 처리하는 기술 ' }
                   ].map((feature, index) => (
-                    <div key={index} className={styles.featureCard}>
+                    <div key={index} className={`${styles.featureCard} ${styles.fadeInUpCard}`}>
                       <img src={feature.icon} alt={feature.title} className={styles.featureIcon} />
                       <div className={styles.featureContent}>
                         <h3 className={styles.featureTitle}>{feature.title}</h3>
@@ -252,30 +281,30 @@ const TravelLandingPage = () => {
             {/* Contact Us section */}
             <div className={styles.contactSection} id="contact">
               <div className={styles.contactImageWrapper}>
-                <img src={santoriniView} alt="World map with travel items" className={styles.contactImage} />
-                <h2 className={styles.contactTitle}>Contact Us</h2>
+              <img src={santoriniView} alt="World map with travel items" className={styles.contactImage} />
+              <h2 className={styles.contactTitle}>Contact Us</h2>
               </div>
               <div className={styles.contactInfoWrapper}>
-                <h2 className={styles.contactInfoTitle}>연락처</h2>
-                <div className={styles.contactInfo}>
-                  <div className={styles.infoGroup}>
-                    <img src={locationGif} alt="Location" className={styles.icon} />
-                    <span className={styles.infoText}>한국 ICT 인재 개발원</span>
-                  </div>
-                  <div className={styles.infoGroup}>
-                    <img src={telephoneGif} alt="Telephone" className={styles.icon} />
-                    <span className={styles.infoText}>02-739-7235</span>
-                  </div>
-                  <div className={styles.infoGroup}>
-                    <img src={envelopeGif} alt="Envelope" className={styles.icon} />
-                    <span className={styles.infoText}>tripmaven1234@gmail.com</span>
-                  </div>
+              <h2 className={styles.contactInfoTitle}>연락처</h2>
+              <div className={styles.contactInfo}>
+                <div className={styles.infoGroup}>
+                <img src={locationGif} alt="Location" className={styles.icon} />
+                <span className={styles.infoText}>한국 ICT 인재 개발원</span>
+                </div>
+                <div className={styles.infoGroup}>
+                <img src={telephoneGif} alt="Telephone" className={styles.icon} />
+                <span className={styles.infoText}>02-739-7235</span>
+                </div>
+                <div className={styles.infoGroup}>
+                <img src={envelopeGif} alt="Envelope" className={styles.icon} />
+                <span className={styles.infoText}>tripmaven1234@gmail.com</span>
                 </div>
               </div>
+              </div>
+            </div>
             </div>
           </div>
-        </div>
-        <Footer />
+          <Footer />
 
         {showScrollTop && (
           <button className={styles.scrollTopButton} onClick={scrollToTop}>
