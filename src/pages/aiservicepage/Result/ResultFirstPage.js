@@ -33,7 +33,7 @@ const ResultFirstPage = () => {
 
   useEffect(() => {
     console.log('상세프랍스 내려온 groupFirstId: ', groupFirstId);
-    console.log('ResultFirstPage에서 가져온 result: ', result);
+    console.log('ResultFinalPage에서 가져온 result: ', result);
 
     if (result) {
       // 각 결과에서 그래프를 추출하여 상태에 저장
@@ -50,7 +50,7 @@ const ResultFirstPage = () => {
       첫번째 실전 테스트 결과
     </div>
 
-    <p>*영상 및 음성 분석 결과는 평균적인 데이터이므로 참고 용</p>
+    <p>*영상 및 음성 분석 결과는 평균적인 데이터이므로 참고용으로만 보시기 바랍니다</p>
     <p>*페이지 내 모든 이미지들은 클릭 시, 확대됩니다.</p>
 
 
@@ -281,7 +281,7 @@ const ResultFirstPage = () => {
                 />
                 <Box className={styles.monTextContainer}>
                   <Typography className={styles.monResultText}>
-                    목소리 평균 Hz: 176
+                    목소리 평균 Hz: {result.tone}
                   </Typography>
                   <Typography className={styles.monResultText}>
                     음성 주파수는 어느 정도가 좋다고 특정할 수 없습니다.
@@ -304,7 +304,7 @@ const ResultFirstPage = () => {
                 onClick={() => { handleOpen(nasolabialFoldsGraph) }}
                 style={{ cursor: 'pointer' }} />
               <Typography className={styles.monChartLabel} align="center">
-                총 302 WPM
+                총 {result.speed} WPM
               </Typography>
             </Box>
           </Grid>

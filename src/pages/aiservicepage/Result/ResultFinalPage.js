@@ -16,7 +16,7 @@ const ResultFinalPage = () => {
   const groupId  = useParams().id;
   const navigate = useNavigate(); 
 
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState([]); //영상, 음성 분석 결과
 
   useEffect(() => {
 
@@ -29,10 +29,10 @@ const ResultFinalPage = () => {
       const data = await resultGetById(groupId);
       console.log('data.productEvaluation: ',data.productEvaluation);
       console.log('data.productEvaluation[0]: ',data.productEvaluation[0]);
+      console.log('data.productEvaluation[1]: ',data.productEvaluation[1]);
       
       setResult(data);
-
-  };
+    };
 
     getResults();
 
