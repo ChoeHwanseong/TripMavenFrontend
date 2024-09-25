@@ -322,12 +322,12 @@ const RealTestPage = () => {
         //디비에 저장하기
         const evaluationResponse = await createEvaluation({
           score: 50,
-          fillerwords: resultAudioData.text_analysis.speak_end.fillerwords,
-          fillerweights:  resultAudioData.text_analysis.speak_end.fillerweights,
+          fillerwords: resultAudioData.text_analysis.fillerwords,
+          fillerweights:  resultAudioData.text_analysis.fillerweights,
           formal_speak: resultAudioData.text_analysis.speak_end.formal_speak,
           question_speak: resultAudioData.text_analysis.speak_end.question_speak,
-          text: resultAudioData.text_analysis.speak_end.text,
-          weight: resultAudioData.text_analysis.speak_end.weight,
+          text: resultAudioData.text_analysis.text,
+          weight: resultAudioData.text_analysis.weight,
 
           voice_graph: resultAudioData.voice_tone.voice,
           tone: resultAudioData.voice_tone.voice_mean,
@@ -348,7 +348,6 @@ const RealTestPage = () => {
         }, memberId, productboardId);
 
         ResultIdRef.current = evaluationResponse.data.id;
-
         console.log('evaluationResponse:', evaluationResponse);
         setLoadingMessage(""); // 모달 메시지 제거
 
@@ -460,7 +459,7 @@ const RealTestPage = () => {
   
           {(isRecordingSuccess && isAnalysisSuccess==="fail") &&
             <Button style={{marginLeft:'30px'}} variant="contained" color="primary" onClick={() => uploadVideo(isFirstQuestion ? 'first' : 'second')} className={styles.controlButton}>
-              {"평가 요청하기"}
+              {"평가 요청하기"} 
             </Button>
           }
         </div>

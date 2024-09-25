@@ -33,6 +33,10 @@ import RealTestPage from './pages/aiservicepage/RealTestPage'
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
+<<<<<<< HEAD
+=======
+import VideoAppUpload from './pages/aiservicepage/webrecord/VideoUpload';
+>>>>>>> a5de8c90fc68d58dc844c2e013f71f2761fe0aa5
 import CombinedPage from './pages/aiservicepage/AIPage';
 import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
 import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
