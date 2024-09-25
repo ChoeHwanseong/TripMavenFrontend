@@ -13,14 +13,9 @@ export const createEvaluation = async (formData, memberId, productboardId, keywo
       const payload = {
           ...formData, // formData에 있는 필드들
           member_id: memberId,
-          productboard_id: productboardId
+          productboard_id: productboardId,
+          keywords: keywords
       };
-
-      const response2 = await axios.put(`/members/${memberId}`, payload, {
-        headers: {
-            'Content-Type': 'application/json', // 전송 데이터 타입
-        },
-    });
 
 
       console.log('post에 전송될 payload: ',payload)
@@ -31,11 +26,19 @@ export const createEvaluation = async (formData, memberId, productboardId, keywo
               'Content-Type': 'application/json', // 전송 데이터 타입
           },
       });
+
+      const response2 = await axios.put(`/members/${memberId}`, payload, {
+        headers: {
+            'Content-Type': 'application/json', // 전송 데이터 타입
+        },
+    });
+
       console.log('response.data:', response.data);
       console.log('response2.data:', response2.data);
       console.log('response2.data.keywords:', response2.data.keywords);
 
-      return { success: true, data: response.data };
+      return { success: true, data: { ...response.data, keywords: response2.data.keywords } };
+      
   } catch (error) {
       console.error('저장 중 오류 발생:', error);
       return { success: false, error: error.message };

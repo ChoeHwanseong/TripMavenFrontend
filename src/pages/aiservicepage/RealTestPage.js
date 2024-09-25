@@ -209,7 +209,7 @@ const RealTestPage = () => {
     recognition.onresult = (event) => {
       let interimTranscript = '';
       let finalTranscript = '';
-
+      console.log("event",event)
       for (let i = 0; i < event.results.length; i++) {
         // 중간 결과를 처리
         if (event.results[i].isFinal) {

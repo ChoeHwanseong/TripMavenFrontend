@@ -112,7 +112,7 @@ const ResultFinalPage = () => {
               <EmojiEventsIcon className={styles.icon} /> 획득한 키워드
             </Typography>
             <Box className={styles.resultTextKeyword}>
- 로허ㅗㅓ
+            {results.productEvaluation[0].member.keywords || '키워드 분석 결과 없음'}
             </Box>
             <button className={styles.keywordButton}>
               키워드 자세히 보기 &gt;&gt;
