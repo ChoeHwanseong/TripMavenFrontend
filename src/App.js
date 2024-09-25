@@ -43,8 +43,6 @@ import ResultFinalPage from './pages/aiservicepage/Result/ResultFinalPage';
 import RoleBasedRoute from './components/RoleBasedRoute';
 import FaceDetection from './components/FaceDetection';
 import ProductPost from './pages/productPage/ProductPost';
-import Error400Page from './pages/error/Error400Page';
-import Error500Page from './pages/error/Error500Page';
 import Error404Page from './pages/error/Error404Page';
 
 
