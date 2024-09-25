@@ -75,3 +75,10 @@
     position: relative;
     left: -480px; 
 }
+
+/* 테이블 행 hover 효과 */
+.table tr:hover {
+    background-color: #f1f1f1; /* 배경색 변경 */
+    cursor: pointer; /* 커서 변경 */
+    transition: background-color 0.3s ease; /* 부드러운 전환 효과 */
+}

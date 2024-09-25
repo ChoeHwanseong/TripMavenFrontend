@@ -42,6 +42,7 @@ const RealTestPage = () => {
   const recognitionRef = useRef(null);
   const intervalRef = useRef(null);  //타이머
   const timeoutRef = useRef(null);  // 타임아웃을 관리하는 ref
+  const ResultIdRef = useRef(''); // 모든 최종 자막을 저장하는 참조
 
   const questions = [
     "Q: 여행을 하는 중에 컴플레인이 들어 왔을 경우 어떻게 해결을 해야 할까요?",
@@ -98,9 +99,14 @@ const RealTestPage = () => {
         console.log('비디오 블롭:', blob);
         videoBlob.current = blob;
         videoChunks.current = [];
+
         if (intervalRef.current) {
           clearInterval(intervalRef.current);  // 타이머 중지
         }
+
+         // 녹화 시간이 얼마나 되었는지 계산
+         const duration = Math.floor(stream.getVideoTracks()[0].getSettings().frameRate * videoChunks.current.length); 
+         setTimeLeft(duration);  // 녹화 시간을 상태에 저장
       };
 
       //녹화시작
@@ -116,6 +122,38 @@ const RealTestPage = () => {
       audioRecorderRef.current.onstop = () => {
         const blob = new Blob(audioChunks.current, { type: 'audio/webm' });
         console.log('오디오 블롭:', blob);
+        audioBlob.current = blob;
+        audioChunks.current = [];
+      };
+
+      audioRecorderRef.current.start();
+      setIsRecording(true);
+
+      // 1초마다 녹화 시간 업데이트
+      intervalRef.current = setInterval(() => {
+        setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));  // 0 이하로 내려가지 않도록 설정
+      }, 1000);  // 1초마다 호출
+
+      // 60초 후 자동 종료 타이머 설정
+      timeoutRef.current = setTimeout(() => {
+        stopRecording();  // 60초 후 자동으로 녹화를 중지
+      }, 60000);
+    }).catch((error) => console.error('Error accessing microphone:', error));
+
+    //오디오 녹화
+    navigator.mediaDevices.getUserMedia({
+      audio: {
+        deviceId: selectedAudioDevice?.deviceId,
+        sampleRate: 16000,
+      }
+    }).then((stream) => {
+      audioRecorderRef.current = new MediaRecorder(stream, {mimeType: 'audio/webm;codecs=opus'});
+      audioRecorderRef.current.ondataavailable = (event) => {
+        audioChunks.current.push(event.data);
+      };
+
+      audioRecorderRef.current.onstop = () => {
+        const blob = new Blob(audioChunks.current, { type: 'audio/webm' });
         audioBlob.current = blob;
         audioChunks.current = [];
       };
@@ -189,49 +227,50 @@ const RealTestPage = () => {
 
   //음성인식
   const startSpeechRecognition = () => {
-    if (!recognitionRef.current) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognitionRef.current = recognition; // ref로 인스턴스 참조
+    recognition.lang = 'ko-KR'; // 한국어 설정
+    recognition.interimResults = true; // 중간 결과를 활성화
+    recognition.continuous = true; // 음성 인식을 10초 동안 강제로 유지
 
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = 'ko-KR';
+    recognition.onresult = (event) => {
+      let interimTranscript = '';
+      let finalTranscript = '';
 
-      recognitionRef.current.onresult = handleResult;
-      recognitionRef.current.onerror = handleError;
-      recognitionRef.current.onend = () => {
-        console.log('Speech recognition ended');
-      };
+      for (let i = 0; i < event.results.length; i++) {
+        // 중간 결과를 처리
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript.trim() + ' ';
+        } else {
+          interimTranscript += event.results[i][0].transcript.trim() + ' ';
+        }
+      }
+
+      // 최종 자막을 누적 및 업데이트
+      if (finalTranscript) {
+        accumulatedTranscriptRef.current += finalTranscript;
+        setTranscript(accumulatedTranscriptRef.current.trim());
+      }
+
+      // 실시간으로 중간 결과 업데이트
+      if (interimTranscript) {
+        setTranscript(accumulatedTranscriptRef.current + interimTranscript);
+      }
     }
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+      recognition.stop();
+    };
 
     recognitionRef.current.start();
     setTranscript(''); // 음성 인식 시작 시 트랜스크립트 초기화
 
     // 60초 후 음성 인식 종료
     setTimeout(() => {
-      recognitionRef.current.stop();
-    }, 60000);
-  };
-
-  const handleResult = (event) => {
-    let finalTranscript = '';
-    let interimTranscript = '';
-
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      const transcript = event.results[i][0].transcript;
-      if (event.results[i].isFinal) {
-        finalTranscript += transcript + ' ';
-      } else {
-        interimTranscript += transcript;
-      }
-    }
-
-    accumulatedTranscriptRef.current += finalTranscript;
-    setTranscript(accumulatedTranscriptRef.current + interimTranscript);
-  };
-
-  const handleError = (event) => {
-    console.error('Speech recognition error', event.error);
+      recognition.stop();
+    }, 60000); // 10000ms = 10초
   };
 
   //녹화, 녹음 파일 파이썬 서버에 보내기 + 결과 받아서 데이터베이스에 저장하기
@@ -318,7 +357,11 @@ const RealTestPage = () => {
           nasolabial: resultVideoData.graphs.nasolabial_folds_graph,
           commentEye: resultVideoData.eye.comment,
           commentsFace: resultVideoData.expression_comment,
+          group_id: ResultIdRef.current == ''?"0":ResultIdRef.current
         }, memberId, productboardId);
+        ResultIdRef.current = evaluationResponse.data.id;
+
+
 
         console.log('evaluationResponse:', evaluationResponse);
         setLoadingMessage(""); // 모달 메시지 제거
@@ -335,7 +378,7 @@ const RealTestPage = () => {
 
         if (videoType === 'second') {
           alert('영상이 성공적으로 제출되었습니다!');
-          navigate(`/resultFinalPage/${productboardId}`, {
+          navigate(`/resultFinalPage/${evaluationResponse.data.id}`, {
             state: {
               responses: allResults, // 두 개의 결과를 배열로 전달
               videoUrls: [

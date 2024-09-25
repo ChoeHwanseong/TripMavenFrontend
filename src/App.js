@@ -44,6 +44,7 @@ import ResultFirstPage from './pages/aiservicepage/Result/ResultFirstPage';
 import RoleBasedRoute from './components/RoleBasedRoute';
 import FaceDetection from './components/FaceDetection';
 import ProductPost from './pages/productPage/ProductPost';
+import ResultSecondPage from './pages/aiservicepage/Result/ResultSecondPage';
 
 
 
@@ -105,8 +106,9 @@ function App() {
         {/* 실전 테스트 결과 페이지 라우팅 */}
         <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
         <Route path='/resultFirstPage/:id' element={<ResultFirstPage />} />
+        <Route path='/resultSecondPage/:id' element={<ResultSecondPage />} />
         <Route path='/faceDetection' element={<FaceDetection />} />
-
+        
       </Route>
     </Routes>
   </>

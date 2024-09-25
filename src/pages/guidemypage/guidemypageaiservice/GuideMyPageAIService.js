@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../../../styles/guidemypage/guidemypageaiservice/GuideMyPageAIService.module.css';
-import AIServices from './AIService';
+import AIServices from './AiService/AIService';
 
 const GuideMyPageAIService = () => {
     return (

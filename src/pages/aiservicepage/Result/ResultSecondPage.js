@@ -4,15 +4,17 @@ import MovieIcon from '@mui/icons-material/Movie';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import styles from "../../../styles/aiservicepage/Result/ResultFirst.module.css";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-const ResultFirstPage = () => {
+const ResultSecondPage = () => {
   const location = useLocation(); // useLocation을 사용하여 state를 가져옴
-  const { result, videoUrls, videoDuration } = location.state || {};
+  const firstResult = location.state?.responses ? location.state.responses[1] : null; // 첫 번째 결과만 가져옴
 
-  const groupFirstId = useParams().id;
+  const { videoUrls, videoDuration } = location.state || {};
+
 
   // 그래프를 저장할 상태 변수
+  const [eyeGraph, setEyeGraph] = useState(null);
   const [mouthGraph, setMouthGraph] = useState(null);
   const [cheekbonesGraph, setCheekbonesGraph] = useState(null);
   const [browGraph, setBrowGraph] = useState(null);
@@ -32,25 +34,27 @@ const ResultFirstPage = () => {
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    console.log('상세프랍스 내려온 groupFirstId: ', groupFirstId);
-    console.log('ResultFinalPage에서 가져온 result: ', result);
 
-    if (result) {
+    console.log('상세프랍스 내려온 videoUrl: ', videoUrls);
+    console.log('상세 프랍스 내려온 videoDuration: ', videoDuration);
+    console.log('ResultFirstPage에서 가져온 firstResult: ', firstResult);
+
+    if (firstResult) {
       // 각 결과에서 그래프를 추출하여 상태에 저장
-      setMouthGraph(`data:image/png;base64,${result.mouth}`);
-      setCheekbonesGraph(`data:image/png;base64,${result.cheek}`);
-      setBrowGraph(`data:image/png;base64,${result.brow}`);
-      setNasolabialFoldsGraph(`data:image/png;base64,${result.nasolabial}`);
+      setMouthGraph(`data:image/png;base64,${firstResult.graphs.mouth_graph}`);
+      setCheekbonesGraph(`data:image/png;base64,${firstResult.graphs.cheekbones_graph}`);
+      setBrowGraph(`data:image/png;base64,${firstResult.graphs.brow_graph}`);
+      setNasolabialFoldsGraph(`data:image/png;base64,${firstResult.graphs.nasolabial_folds_graph}`);
     }
-  }, [result]);
+  }, [firstResult]);
 
   return <>
 
     <div className={styles.pageTitle}>
-      첫번째 실전 테스트 결과
+      두번째 실전 테스트 결과
     </div>
 
-    <p>*영상 및 음성 분석 결과는 평균적인 데이터이므로 참고용으로만 보시기 바랍니다</p>
+    <p>*영상 및 음성 분석 결과는 평균적인 데이터이므로 참고 용</p>
     <p>*페이지 내 모든 이미지들은 클릭 시, 확대됩니다.</p>
 
 
@@ -61,7 +65,7 @@ const ResultFirstPage = () => {
         </Typography>
       </Box>
 
-      {result  ? (
+      {firstResult ? (
         <>
          {/* 비디오 분석 섹션 */}
         <div className={styles.boxContainer}>
@@ -89,7 +93,7 @@ const ResultFirstPage = () => {
                         눈 깜빡임 횟수
                       </Typography>
                       <Typography className={styles.monChartLabel} align="center">
-                        {result.eye.average_blinks} 회
+                        {firstResult.eye.average_blinks} 회
                       </Typography>
                     </Box>
                   </Grid>
@@ -218,7 +222,7 @@ const ResultFirstPage = () => {
                         <EmojiEmotionsIcon className={styles.icon} /> Face Comment
                       </Typography>
                       <Typography className={styles.resultText}>
-                        {result.expression_comment}
+                        {firstResult.expression_comment}
                       </Typography>
                     </Box>
                   </Box>
@@ -243,7 +247,7 @@ const ResultFirstPage = () => {
     </div>
 
 
-    {result ? (
+    {firstResult ? (
       <>
 
     <div className={styles.mainContainer}>
@@ -281,7 +285,7 @@ const ResultFirstPage = () => {
                 />
                 <Box className={styles.monTextContainer}>
                   <Typography className={styles.monResultText}>
-                    목소리 평균 Hz: {result.tone}
+                    목소리 평균 Hz: 176
                   </Typography>
                   <Typography className={styles.monResultText}>
                     음성 주파수는 어느 정도가 좋다고 특정할 수 없습니다.
@@ -304,7 +308,7 @@ const ResultFirstPage = () => {
                 onClick={() => { handleOpen(nasolabialFoldsGraph) }}
                 style={{ cursor: 'pointer' }} />
               <Typography className={styles.monChartLabel} align="center">
-                총 {result.speed} WPM
+                총 302 WPM
               </Typography>
             </Box>
           </Grid>
@@ -437,4 +441,4 @@ const ResultFirstPage = () => {
   </>
 };
 
-export default ResultFirstPage;
+export default ResultSecondPage;
