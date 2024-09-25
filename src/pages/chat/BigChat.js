@@ -3,7 +3,7 @@ import mqtt from 'mqtt';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from '../../styles/chat/BigChat.module.css';
 import ChattingRoom from './ChattingRoom';
-import { chattingListYourData, getMessages, submitMessage } from '../../utils/chatData';
+import { chattingListYourData, deleteChattingRoom, getMessages, submitMessage } from '../../utils/chatData';
 import defaultImage from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
 import { ElevatorSharp } from '@mui/icons-material';
@@ -172,10 +172,8 @@ function BigChat() {
         timestamp: new Date(),
       };
 
-      //MQTT에 메세지 보내기
       client.publish(`${selectedUser.chattingRoom.id}`, JSON.stringify(message));
 
-      //데이터베이스에 채팅 저장
       try {
         await submitMessage(selectedUser.chattingRoom.id, JSON.stringify(message.text), localStorage.getItem('membersId'));
         console.log('메시지 저장됨');
@@ -228,8 +226,7 @@ function BigChat() {
         const messageTime = response.map(msg => ({
           ...msg,
           chattingRoomId  // 각 메시지에 chattingRoomId 필드 추가
-        }));
-
+        })); 
         setChatMessages(prevMessages => ({
           ...prevMessages,
           [chattingRoomId]: messageTime,
@@ -243,6 +240,14 @@ function BigChat() {
       setLoading(false);
     }
   };
+
+  const deleteJoinChatting = async (chattingRoomId) => {
+    const response = await deleteChattingRoom(chattingRoomId);
+    console.log('삭제된 response:',response);
+    setChatMessages({});
+    setSelectedUser(null);
+    navigate('/bigchat/0');
+  }; 
 
   return (
     <div className={styles.pageBorder}>
@@ -272,7 +277,7 @@ function BigChat() {
                       marginRight: '10px'
                     }}
                   >
-                    <DeleteIcon />
+                    <DeleteIcon onClick={()=>deleteJoinChatting(selectedUser.id)}/>
                   </IconButton>
               </div>
             )}
