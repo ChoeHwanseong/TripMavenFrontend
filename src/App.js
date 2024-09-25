@@ -33,7 +33,7 @@ import RealTestPage from './pages/aiservicepage/RealTestPage'
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
-import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
+import VideoAppUpload from './pages/aiservicepage/webrecord/VideoUpload';
 import CombinedPage from './pages/aiservicepage/AIPage';
 import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
 import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
