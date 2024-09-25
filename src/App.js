@@ -33,7 +33,6 @@ import RealTestPage from './pages/aiservicepage/RealTestPage'
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
-import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
 import CombinedPage from './pages/aiservicepage/AIPage';
 import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
 import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
@@ -71,7 +70,6 @@ function App() {
           <Route path='/askupdate/:id' element={<AskUpdate />} />
         </Route>
 
-        <Route path='/videoAppUpload' element={<VideoAppUpload />} />
         <Route path="/cs" element={<CSBoard />} />
         <Route path="/siteinfo" element={<SiteIntroduction />} />
         <Route path="/faq" element={<FAQ />} />
