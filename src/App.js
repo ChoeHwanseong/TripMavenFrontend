@@ -33,7 +33,7 @@ import RealTestPage from './pages/aiservicepage/RealTestPage'
 import AnalysisResult from './pages/aiservicepage/AnalysisResult';
 import DeviceCheckComponent2 from './pages/aiservicepage/webrecord/DeviceCheckComponent copy';
 import PronunciationRoutes from './pages/aiservicepage/PronunciationRoutes';
-import VideoAppUpload from './pages/aiservicepage/webrecord/VideoAppUpload';
+import VideoAppUpload from './pages/aiservicepage/webrecord/VideoUpload';
 import CombinedPage from './pages/aiservicepage/AIPage';
 import ProductComponent from './pages/aiservicepage/webrecord/ProductComponent';
 import ScreenRecorderApp from './pages/aiservicepage/VoiceTest';
@@ -43,6 +43,8 @@ import ResultFinalPage from './pages/aiservicepage/Result/ResultFinalPage';
 import RoleBasedRoute from './components/RoleBasedRoute';
 import FaceDetection from './components/FaceDetection';
 import ProductPost from './pages/productPage/ProductPost';
+import Error404Page from './pages/error/Error404Page';
+
 
 
 
@@ -56,7 +58,7 @@ function App() {
         <Route path='/login/*' element={<LoginRoutes />} />
 
         <Route element={<RoleBasedRoute element={<MyPageTemplate />} requiredRole={["USER", "GUIDE", "ADMIN"]} />} >
-          {/* MYPAGE */}
+          {/* MYPAGE s*/}
           <Route path='/mypage/*' element={<MyPageRoutes />} />
           {/* USER */}
           <Route path='/userreview' element={<UserReview />} />
@@ -69,7 +71,6 @@ function App() {
           <Route path='/askupdate/:id' element={<AskUpdate />} />
         </Route>
 
-        <Route path='/videoAppUpload' element={<VideoAppUpload />} />
         <Route path="/cs" element={<CSBoard />} />
         <Route path="/siteinfo" element={<SiteIntroduction />} />
         <Route path="/faq" element={<FAQ />} />
@@ -101,7 +102,10 @@ function App() {
         <Route path='/resultFinalPage/:id' element={<ResultFinalPage />} />
 
         <Route path='/faceDetection' element={<FaceDetection />} />
-        
+
+
+        <Route path='*' element={<Error404Page />} />
+    
       </Route>
     </Routes>
   </>

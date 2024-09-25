@@ -99,7 +99,8 @@ export default function Template() {
         for (let noti of notificationList) { //불러온거
             if (noti.type == 'chat') { //타입이 채팅이면
                 //console.log('알림 저장')
-                if (notiStateList.find(ele => ele.senderId == noti.senderId && ele.link == noti.link )) { //이미 새로운리스트에 있다면 + 상품리스트까지 같아야함
+                if (notiStateList.find(ele => ele.senderId == noti.senderId && ele.link == noti.link )) { 
+                    //이미 새로운리스트에 있다면 + 상품리스트까지 같아야함
                     notiStateList.forEach(ele => {
                         if (ele.senderId == noti.senderId && ele.link == noti.link) {
                             ele.content.push(noti);

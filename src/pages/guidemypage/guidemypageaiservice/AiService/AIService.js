@@ -3,7 +3,6 @@ import styles from '../../../../styles/guidemypage/guidemypageaiservice/AIServic
 import ScoreCircle from '../ScoreCircle';
 import { useNavigate } from 'react-router-dom';
 import ScoreChart from '../ScoreChart';
-import { AlignJustify } from 'lucide-react';
 import { resultGetByMemberId } from '../../../../utils/AiData';
 
 const AIService = () => {
@@ -18,7 +17,6 @@ const AIService = () => {
 
  
     useEffect(()=>{
-
         const getResult = async () =>{
             const result = await resultGetByMemberId(memberId);
             console.log('회원id에따른 평가 컬럼들: ',result);
@@ -31,8 +29,8 @@ const AIService = () => {
 
     const avgScore = () => {
         if (results.length > 0) {
-            const totalScore = results.reduce((sum, result) => sum + result.score, 0);
-            const averageScore = totalScore / results.length;
+            const totalScore = results.reduce((sum, result) => sum + result.productEvaluation[0].score + result.productEvaluation[1].score, 0);
+            const averageScore = totalScore / (results.length*2);
             return averageScore;
         }
         return 0;
@@ -48,7 +46,7 @@ const AIService = () => {
                 <ScoreCircle score={avgScore()} />
                 </div>
 
-                <button className={styles.button} onClick={handleClick}>AI 교육 들으러가기</button>
+                <button className={styles.button} onClick={handleClick}>AI 홈으로 이동</button>
             <div className={styles.tableContainer}>
                 <table className={styles.table}>
                     <thead>
@@ -62,12 +60,12 @@ const AIService = () => {
                     </thead>
                     <tbody>
                         {results && results.map(result => (
-                            <tr key={result.id} onClick={()=>navigate(`/resultFinalPage/${result.productBoard.id}`)}>
+                            <tr key={result.id} onClick={()=>navigate(`/resultFinalPage/${result.id}`)}>
                                 <td>{result.id}</td>
-                                <td>{result.brow? '실전테스트' : '모트'}</td>
+                                <td>{result.productEvaluation[0].brow? '실전 테스트' : '발음 테스트'}</td>
                                 <td>{result.productBoard.title}</td>
-                                <td>{result.createdAt.split('T')[0]}</td>
-                                <td>{result.score}</td>
+                                <td>{result.productEvaluation[0].createdAt.split('T')[0]}</td>
+                                <td>{result.productEvaluation[0].score}</td>
                             </tr>
                         ))}
                     </tbody>

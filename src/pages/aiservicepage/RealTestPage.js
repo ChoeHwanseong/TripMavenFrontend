@@ -298,8 +298,9 @@ const RealTestPage = () => {
       try{
         const data = await anaysis(formDataForVideo, formDataForAudio);
         setTempResponse(data);
-        videoResponse=data.videoResponse;
-        audioResponse=data.audioResponse;
+        console.log(data); //잘 나오고
+        videoResponse=data.videoResponse.data;
+        audioResponse=data.audioResponse.data;
         setIsAnalysisSuccess("success");
       }
       catch (error){
@@ -309,32 +310,33 @@ const RealTestPage = () => {
 
     try {
       if ((videoResponse && audioResponse) || tempResponse) { //분석 성공하고 임시 저장 객체 있을시 실행
-        const resultVideoData = videoResponse ? videoResponse.data : tempResponse.videoResponse.data ; //영상 분석 결과
-        //console.log('resultVideoData:', resultVideoData);
-        const resultAudioData = audioResponse ? audioResponse.data : tempResponse.audioResponse.data; //음성 분석 결과
-        //console.log('resultAudioData:', resultAudioData);
+        const resultVideoData = videoResponse ? videoResponse : tempResponse.videoResponse.data ; //영상 분석 결과
+        console.log('resultVideoData:', resultVideoData);
+        const resultAudioData = audioResponse ? audioResponse : tempResponse.audioResponse.data; //음성 분석 결과
+        console.log('resultAudioData:', resultAudioData);
 
         //동영상 파일 서버에 저장 
         const formData = new FormData();
         formData.append('files', videoFile);
         const response = await filesPost(formData);
+        console.log(response);
 
         //디비에 저장하기
         const evaluationResponse = await createEvaluation({
           score: 50,
-          fillerwords: resultAudioData.text_analysis.speak_end.fillerwords,
-          fillerweights:  resultAudioData.text_analysis.speak_end.fillerweights,
+          fillerwords: resultAudioData.text_analysis.fillerwords,
+          fillerweights:  resultAudioData.text_analysis.fillerweights,
           formal_speak: resultAudioData.text_analysis.speak_end.formal_speak,
           question_speak: resultAudioData.text_analysis.speak_end.question_speak,
-          text: resultAudioData.text_analysis.speak_end.text,
-          weight: resultAudioData.text_analysis.speak_end.weight,
+          text: resultAudioData.text_analysis.text,
+          weight: resultAudioData.text_analysis.weight,
 
           voice_graph: resultAudioData.voice_tone.voice,
           tone: resultAudioData.voice_tone.voice_mean,
           tone_comment: resultAudioData.voice_tone.voice_check,
           speed: resultAudioData.speed_result.phonemes_per_min,
           pronunciation: resultAudioData.pronunciation_precision.pronunciation_accuracy,
-          total_time: resultAudioData.speak_result.total_spoken_time,
+          total_time: resultAudioData.speed_result.total_spoken_time,
 
           cheek: resultVideoData.graphs.cheekbones_graph,
           mouth: resultVideoData.graphs.mouth_graph,
@@ -348,7 +350,6 @@ const RealTestPage = () => {
         }, memberId, productboardId);
 
         ResultIdRef.current = evaluationResponse.data.id;
-
         console.log('evaluationResponse:', evaluationResponse);
         setLoadingMessage(""); // 모달 메시지 제거
 
@@ -381,6 +382,7 @@ const RealTestPage = () => {
       }
     } catch (error) {
       setLoadingMessage("");
+      setRecordingStatus("다시 요청하기");
       console.error('영상 제출 중 에러 발생:', error);
       alert('영상 제출 중 에러가 발생했습니다.');
     }
@@ -460,7 +462,7 @@ const RealTestPage = () => {
   
           {(isRecordingSuccess && isAnalysisSuccess==="fail") &&
             <Button style={{marginLeft:'30px'}} variant="contained" color="primary" onClick={() => uploadVideo(isFirstQuestion ? 'first' : 'second')} className={styles.controlButton}>
-              {"평가 요청하기"}
+              {"평가 요청하기"} 
             </Button>
           }
         </div>

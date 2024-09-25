@@ -184,7 +184,7 @@ const ResultFinalPage = () => {
           AI 홈으로 이동 &gt;&gt;
         </button>
 
-        <button className={styles.button} style={{ marginLeft: '30px' }} onClick={() => navigate(`/mypage/${memberId}`)}>
+        <button className={styles.button} style={{ marginLeft: '30px' }} onClick={() => navigate(`/mypage/guide/aiservice`)}>
           마이페이지로 이동 &gt;&gt;
         </button>
       </div>

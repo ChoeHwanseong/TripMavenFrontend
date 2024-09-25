@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate 훅을 가져옵니다.
-import styles from '../../styles/error/NotFoundPage.module.css';
+import styles from '../../styles/error/Error404Page.module.css';
 
-const NotFoundPage = () => {
+const Error404Page = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용하여 페이지 이동 처리
 
   const handleHomeClick = () => {
@@ -24,4 +24,4 @@ const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
+export default Error404Page;
