@@ -20,7 +20,7 @@ const AIService = () => {
     useEffect(()=>{
 
         const getResult = async () =>{
-            const result = await resultGetByMemberId(6);
+            const result = await resultGetByMemberId(memberId);
             console.log('회원id에따른 평가 컬럼들: ',result);
             setResults(result);
         };
@@ -45,7 +45,7 @@ const AIService = () => {
             <div className={styles.scoreContainer}>
                 <ScoreChart/>
                     
-                    <ScoreCircle score={avgScore()} />
+                <ScoreCircle score={avgScore()} />
                 </div>
 
                 <button className={styles.button} onClick={handleClick}>AI 교육 들으러가기</button>
@@ -61,7 +61,7 @@ const AIService = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {results.map(result => (
+                        {results && results.map(result => (
                             <tr key={result.id} onClick={()=>navigate(`/resultFinalPage/${result.productBoard.id}`)}>
                                 <td>{result.id}</td>
                                 <td>{result.brow? '실전테스트' : '모의테스트'}</td>

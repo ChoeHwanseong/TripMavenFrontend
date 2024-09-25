@@ -321,8 +321,8 @@ const RealTestPage = () => {
         let weight = "";
         if (wordlist) {
           for (let word of wordlist) {
-            text = text + "," + word.text;
-            weight = weight + "," + word.weight;
+            text = text==="" ? word.text : text + "," + word.text;
+            weight = weight==="" ? word.weight : weight + "," + word.weight;
           }
         }
 
@@ -332,8 +332,8 @@ const RealTestPage = () => {
         let fillerWeights = "";
         if (wordlist) {
           for (let fillerWord of fillerWordList) {
-            fillerWords = fillerWords + "," + fillerWord.text;
-            fillerWeights = fillerWeights + "," + fillerWord.weight;
+            fillerWords = fillerWords==="" ? fillerWord.text : fillerWords + "," + fillerWord.text;
+            fillerWeights = fillerWeights==="" ? fillerWord.weight :  fillerWeights + "," + fillerWord.weight;
           }
         }
 
@@ -346,9 +346,11 @@ const RealTestPage = () => {
           text: text,
           weight: weight,
 
-          tone: resultAudioData.voice_tone.voice_check,
+          tone: resultAudioData.voice_tone.voice_mean,
+          tone_comment: resultAudioData.voice_tone.voice_check,
           speed: resultAudioData.speed_result.phonemes_per_min,
           pronunciation: resultAudioData.pronunciation_precision.pronunciation_accuracy,
+          total_time: resultAudioData.speak_result.total_spoken_time,
 
           cheek: resultVideoData.graphs.cheekbones_graph,
           mouth: resultVideoData.graphs.mouth_graph,
