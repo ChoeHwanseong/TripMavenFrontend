@@ -271,23 +271,6 @@ const RealTestPage = () => {
     setTimeout(() => {
       recognition.stop();
     }, 60000); // 10000ms = 10초
-
-
-
-  const handleResult = (event) => {
-    let interimTranscript = '';
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      const transcriptChunk = event.results[i][0].transcript;
-      if (event.results[i].isFinal) {
-        setTranscript(prev => prev + transcriptChunk + ' '); // 최종 자막 업데이트
-      } else {
-        interimTranscript += transcriptChunk; // 실시간 자막
-      }
-    }
-  };
-
-  const handleError = (event) => {
-    console.error('Speech recognition error', event.error);
   };
 
   //녹화, 녹음 파일 파이썬 서버에 보내기 + 결과 받아서 데이터베이스에 저장하기
@@ -338,8 +321,8 @@ const RealTestPage = () => {
         let weight = "";
         if (wordlist) {
           for (let word of wordlist) {
-            text = text + "," + word.text;
-            weight = weight + "," + word.weight;
+            text = text==="" ? word.text : text + "," + word.text;
+            weight = weight==="" ? word.weight : weight + "," + word.weight;
           }
         }
 
@@ -349,8 +332,8 @@ const RealTestPage = () => {
         let fillerWeights = "";
         if (wordlist) {
           for (let fillerWord of fillerWordList) {
-            fillerWords = fillerWords + "," + fillerWord.text;
-            fillerWeights = fillerWeights + "," + fillerWord.weight;
+            fillerWords = fillerWords==="" ? fillerWord.text : fillerWords + "," + fillerWord.text;
+            fillerWeights = fillerWeights==="" ? fillerWord.weight :  fillerWeights + "," + fillerWord.weight;
           }
         }
 
@@ -363,9 +346,11 @@ const RealTestPage = () => {
           text: text,
           weight: weight,
 
-          tone: resultAudioData.voice_tone.voice_check,
+          tone: resultAudioData.voice_tone.voice_mean,
+          tone_comment: resultAudioData.voice_tone.voice_check,
           speed: resultAudioData.speed_result.phonemes_per_min,
           pronunciation: resultAudioData.pronunciation_precision.pronunciation_accuracy,
+          total_time: resultAudioData.speak_result.total_spoken_time,
 
           cheek: resultVideoData.graphs.cheekbones_graph,
           mouth: resultVideoData.graphs.mouth_graph,
