@@ -45,15 +45,14 @@ const PostDetails = () => {
         const fetchReport = await findByProductId(id);
         const fetchreview = await reviewGetByProductId(id);
         const postdata = { ...fetchedData, report: { ...fetchReport }, review: { ...fetchreview } }
-        console.log('postdata', postdata);
-        console.log('fetchReport', fetchReport);
+
         fetchReport.forEach(element => {
           console.log(element.member.id == membersId)
           if(element.member.id == membersId){
             setIsReport(true);
           }
         });
-        console.log(isReport)
+        
         setData(postdata);
         const isLikey = fetchedData.likey.find(like => like.member.id == membersId);
         setLiked(isLikey ? true : false);
@@ -75,7 +74,11 @@ const PostDetails = () => {
 
 
 
-  const handleLike = async () => {
+  const handleLike = async (e) => {
+    if(!localStorage.getItem('token')){
+      alert('로그인 후 이용해주세요.')
+      return;
+    }
     if (!liked) {
       await postLikey(membersId, data.id);
       setLiked(true);

@@ -44,3 +44,5 @@ npm install react-router-dom@6 이것두
 
 09/15 npm install react-modal --legacy-peer-deps
 09/23 npm install react-type-animation --legacy-peer-deps
+
+09/25 npm install --save react-d3-speedometer --legacy-peer-deps

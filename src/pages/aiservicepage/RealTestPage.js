@@ -7,6 +7,7 @@ import { createEvaluation } from '../../utils/AiData';
 import { evaluateVoiceAndText, videoFace } from '../../utils/PythonServerAPI';
 import { TemplateContext } from '../../context/TemplateContext';
 import FaceDetection from '../../components/FaceDetection';
+import { filesPost } from '../../utils/fileData';
 
 
 const RealTestPage = () => {
@@ -37,12 +38,17 @@ const RealTestPage = () => {
   const audioChunks = useRef([]);
   const audioRecorderRef = useRef(null);
   const [isRecording, setIsRecording] = useState(false);  // 녹화 상태 관리
+  const [isRecordingSuccess, setIsRecordingSuccess] = useState(false);  // 녹화 성공 했냐?
+  const [isAnalysisSuccess, setIsAnalysisSuccess] = useState("none");  //분석 성공했나?
+  const [isSaveSuccess, setIsSaveSuccess] = useState(false);  //저장 성공했나?
+  const [tempResponse, setTempResponse] = useState(null);  //응답 데이터 임시 저장용 객체
 
   const accumulatedTranscriptRef = useRef(''); // 모든 최종 자막을 저장하는 참조
   const recognitionRef = useRef(null);
   const intervalRef = useRef(null);  //타이머
   const timeoutRef = useRef(null);  // 타임아웃을 관리하는 ref
-
+  const ResultIdRef = useRef(''); // 모든 최종 자막을 저장하는 참조
+  
   const questions = [
     "Q: 여행을 하는 중에 컴플레인이 들어 왔을 경우 어떻게 해결을 해야 할까요?",
     "Q: 투어 중 한 관광객이 갑자기 화장실을 급히 가고 싶다고 말합니다. 어떻게 안내하실 건가요?",
@@ -77,7 +83,7 @@ const RealTestPage = () => {
 
   //녹화, 녹음 설정 및 시작하는 함수
   const startRecording = () => {
-    
+    setIsRecordingSuccess(false);
     navigator.mediaDevices.getUserMedia({
       audio: {
         deviceId: selectedAudioDevice?.deviceId,
@@ -98,12 +104,14 @@ const RealTestPage = () => {
         console.log('비디오 블롭:', blob);
         videoBlob.current = blob;
         videoChunks.current = [];
+
         if (intervalRef.current) {
           clearInterval(intervalRef.current);  // 타이머 중지
         }
       };
 
-      //녹화시작
+      //비디오 녹화시작
+      setTimeLeft(60);
       videoRecorderRef.current.start();
 
       // 오디오 녹화
@@ -156,26 +164,28 @@ const RealTestPage = () => {
     }
 
     setIsRecording(false);  // 녹화 상태를 중지로 설정
+    setIsRecordingSuccess(true);
   };
 
   const handleButtonClick = async () => {
-    if (recordingStatus === "녹화하기") {
+    if (recordingStatus === "녹화하기" || recordingStatus === "다시 녹화하기") {
       accumulatedTranscriptRef.current = ''; // 누적된 자막 초기화
+      setIsAnalysisSuccess("none");
       startSpeechRecognition(); //음성인식 시작
       startRecording(); //녹화, 녹음 시작
       setRecordingStatus("녹화 중지"); //버튼 문구 바꾸기
     } else if (recordingStatus === "녹화 중지") {
       recognitionRef.current.stop();
       stopRecording();
-      setRecordingStatus("전송하기");
-    } else if (recordingStatus === "전송하기") {
+      setRecordingStatus("평가 요청하기");
+    } else if (recordingStatus === "평가 요청하기" || recordingStatus === "다시 요청하기") {
       setLoadingMessage("영상 전송 중");
-      await uploadVideo(isFirstQuestion ? 'first' : 'second');
       if (isFirstQuestion) {
         setRecordingStatus("다음 문제");
       } else {
         setRecordingStatus("결과 보기");
       }
+      await uploadVideo(isFirstQuestion ? 'first' : 'second');
     } else if (recordingStatus === "다음 문제") {
       setIsFirstQuestion(false);
       setCurrentQuestionIndex(Math.floor(Math.random() * questions.length));
@@ -189,53 +199,70 @@ const RealTestPage = () => {
 
   //음성인식
   const startSpeechRecognition = () => {
-    if (!recognitionRef.current) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognitionRef.current = recognition; // ref로 인스턴스 참조
+    recognition.lang = 'ko-KR'; // 한국어 설정
+    recognition.interimResults = true; // 중간 결과를 활성화
+    recognition.continuous = true; // 음성 인식을 10초 동안 강제로 유지
 
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = 'ko-KR';
+    recognition.onresult = (event) => {
+      let interimTranscript = '';
+      let finalTranscript = '';
+      console.log("event",event)
+      for (let i = 0; i < event.results.length; i++) {
+        // 중간 결과를 처리
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript.trim() + ' ';
+        } else {
+          interimTranscript += event.results[i][0].transcript.trim() + ' ';
+        }
+      }
 
-      recognitionRef.current.onresult = handleResult;
-      recognitionRef.current.onerror = handleError;
-      recognitionRef.current.onend = () => {
-        console.log('Speech recognition ended');
-      };
+      // 최종 자막을 누적 및 업데이트
+      if (finalTranscript) {
+        accumulatedTranscriptRef.current += finalTranscript;
+        setTranscript(accumulatedTranscriptRef.current.trim());
+      }
+
+      // 실시간으로 중간 결과 업데이트
+      if (interimTranscript) {
+        setTranscript(accumulatedTranscriptRef.current + interimTranscript);
+      }
     }
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+      recognition.stop();
+    };
 
     recognitionRef.current.start();
     setTranscript(''); // 음성 인식 시작 시 트랜스크립트 초기화
 
     // 60초 후 음성 인식 종료
     setTimeout(() => {
-      recognitionRef.current.stop();
-    }, 60000);
+      recognition.stop();
+    }, 60000); // 10000ms = 10초
   };
 
-  const handleResult = (event) => {
-    let finalTranscript = '';
-    let interimTranscript = '';
-
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      const transcript = event.results[i][0].transcript;
-      if (event.results[i].isFinal) {
-        finalTranscript += transcript + ' ';
-      } else {
-        interimTranscript += transcript;
-      }
+  //녹화, 녹음 분석 함수
+  const anaysis = async (formDataForVideo, formDataForAudio)=>{
+    const videoResponse = await videoFace(formDataForVideo);
+    const audioResponse = await evaluateVoiceAndText(formDataForAudio);
+    if (videoResponse.success && audioResponse.success) {
+      setIsAnalysisSuccess("success");
+      return {videoResponse, audioResponse};
     }
-
-    accumulatedTranscriptRef.current += finalTranscript;
-    setTranscript(accumulatedTranscriptRef.current + interimTranscript);
+    else {
+      setIsAnalysisSuccess("fail");
+      setRecordingStatus("다시 녹화하기");
+    }
   };
 
-  const handleError = (event) => {
-    console.error('Speech recognition error', event.error);
-  };
 
   //녹화, 녹음 파일 파이썬 서버에 보내기 + 결과 받아서 데이터베이스에 저장하기
   const uploadVideo = async (videoType) => {
+    if(isAnalysisSuccess === "fail") setLoadingMessage("영상 전송 중");
     //비디오 녹화 파일
     const videoFile = new File([videoBlob.current], 'recordedVideo.mp4', { type: 'video/mp4' });
     console.log('비디오 파일:', videoFile);
@@ -265,51 +292,57 @@ const RealTestPage = () => {
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url); // 메모리 해제
     */
+    let videoResponse = null; 
+    let audioResponse = null;
+    if(isAnalysisSuccess!=="success"){ //분석 성공하고 응답받았을때 다시 디비 저장 요청시 스킵할거임
+      try{
+        const data = await anaysis(formDataForVideo, formDataForAudio);
+        setTempResponse(data);
+        console.log(data); //잘 나오고
+        videoResponse=data.videoResponse.data;
+        audioResponse=data.audioResponse.data;
+        setIsAnalysisSuccess("success");
+      }
+      catch (error){
+        console.error('영상 분석 중 에러 발생:', error)
+      }
+    }
 
     try {
-      const videoResponse = await videoFace(formDataForVideo);
-      const audioResponse = await evaluateVoiceAndText(formDataForAudio);
-      if (videoResponse.success && audioResponse.success) {
-        const resultVideoData = videoResponse.data; //영상 분석 결과
+      if ((videoResponse && audioResponse) || tempResponse) { //분석 성공하고 임시 저장 객체 있을시 실행
+        const resultVideoData = videoResponse ? videoResponse : tempResponse.videoResponse.data ; //영상 분석 결과
         console.log('resultVideoData:', resultVideoData);
-        const resultAudioData = audioResponse.data; //음성 분석 결과
+        const resultAudioData = audioResponse ? audioResponse : tempResponse.audioResponse.data; //음성 분석 결과
         console.log('resultAudioData:', resultAudioData);
 
-        //문장 내 단어와 빈도수(콤마로 구분)
-        const wordlist = resultAudioData.text_analysis.word_list;
-        console.log(wordlist);
-        let text = "";
-        let weight = "";
-        if (wordlist) {
-          for (let word of wordlist) {
-            text = text + "," + word.text;
-            weight = weight + "," + word.weight;
-          }
-        }
+  
+        //동영상 파일 서버에 저장 
+        const formData = new FormData();
+        formData.append('files', videoFile);
+        const response = await filesPost(formData);
+        
+        console.log('response:', response);
 
-        //불필요한 단어와 빈도수(콤마로 구분)
-        const fillerWordList = resultAudioData.text_analysis.fillerwords;
-        let fillerWords = "";
-        let fillerWeights = "";
-        if (wordlist) {
-          for (let fillerWord of fillerWordList) {
-            fillerWords = fillerWords + "," + fillerWord.text;
-            fillerWeights = fillerWeights + "," + fillerWord.weight;
-          }
-        }
+        const keywords= resultVideoData.expression_keywords; // + 음성 키워드 추가하셈
+        console.log('keywords',keywords);
 
+        //디비에 저장하기
         const evaluationResponse = await createEvaluation({
           score: 50,
-          fillerwords: fillerWords,
-          fillerweights: fillerWeights,
+          fillerwords: resultAudioData.text_analysis.fillerwords,
+          fillerweights:  resultAudioData.text_analysis.fillerweights,
           formal_speak: resultAudioData.text_analysis.speak_end.formal_speak,
           question_speak: resultAudioData.text_analysis.speak_end.question_speak,
-          text: text,
-          weight: weight,
+          text: resultAudioData.text_analysis.text,
+          weight: resultAudioData.text_analysis.weight,
 
-          tone: resultAudioData.voice_tone.voice_check,
+          voice_graph: resultAudioData.voice_tone.voice,
+          tone: resultAudioData.voice_tone.voice_mean,
+          tone_comment: resultAudioData.voice_tone.voice_check,
           speed: resultAudioData.speed_result.phonemes_per_min,
           pronunciation: resultAudioData.pronunciation_precision.pronunciation_accuracy,
+          total_time: resultAudioData.speed_result.total_spoken_time,
+
 
           cheek: resultVideoData.graphs.cheekbones_graph,
           mouth: resultVideoData.graphs.mouth_graph,
@@ -318,8 +351,12 @@ const RealTestPage = () => {
           nasolabial: resultVideoData.graphs.nasolabial_folds_graph,
           commentEye: resultVideoData.eye.comment,
           commentsFace: resultVideoData.expression_comment,
-        }, memberId, productboardId);
+          group_id: ResultIdRef.current == ''?"0":ResultIdRef.current,
+          filename: videoFile.name
+        }, memberId, productboardId ,keywords);
 
+
+        ResultIdRef.current = evaluationResponse.data.id;
         console.log('evaluationResponse:', evaluationResponse);
         setLoadingMessage(""); // 모달 메시지 제거
 
@@ -335,7 +372,7 @@ const RealTestPage = () => {
 
         if (videoType === 'second') {
           alert('영상이 성공적으로 제출되었습니다!');
-          navigate(`/resultFinalPage/${productboardId}`, {
+          navigate(`/resultFinalPage/${evaluationResponse.data.id}`, {
             state: {
               responses: allResults, // 두 개의 결과를 배열로 전달
               videoUrls: [
@@ -352,6 +389,7 @@ const RealTestPage = () => {
       }
     } catch (error) {
       setLoadingMessage("");
+      setRecordingStatus("다시 요청하기");
       console.error('영상 제출 중 에러 발생:', error);
       alert('영상 제출 중 에러가 발생했습니다.');
     }
@@ -423,9 +461,19 @@ const RealTestPage = () => {
             ))}
           </Select>
         </div>
-        <Button variant="contained" color="primary" onClick={handleButtonClick} className={styles.controlButton}>
-          {recordingStatus}
-        </Button>
+        <div>
+          <Button variant="contained" color="primary" onClick={handleButtonClick} className={styles.controlButton}>
+            {/*!isRecordingSuccess ? recordingStatus : !isAnalysisSuccess ? '다시 녹화하기' : recordingStatus*/}
+            {recordingStatus}
+          </Button>
+  
+          {(isRecordingSuccess && isAnalysisSuccess==="fail") &&
+            <Button style={{marginLeft:'30px'}} variant="contained" color="primary" onClick={() => uploadVideo(isFirstQuestion ? 'first' : 'second')} className={styles.controlButton}>
+              {"평가 요청하기"} 
+            </Button>
+          }
+        </div>
+        
         {/*
         <Button variant="contained" color="primary" onClick={uploadVideo} className={styles.controlButton                                                                                                                                                                                                                                                               }>
           {'보내기'}

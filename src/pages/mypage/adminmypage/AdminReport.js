@@ -12,6 +12,7 @@ const AdminReport = () => {
   const [selectedReport, setSelectedReport] = useState([true, {}]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { memberInfo } = useContext(TemplateContext);
+  const [renderCount, SetRenderCount] = useState(0);
 
   useEffect(() => {
     const getReportData = async () => {
@@ -24,7 +25,7 @@ const AdminReport = () => {
     };
 
     getReportData();
-  }, []);
+  }, [renderCount]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -41,10 +42,8 @@ const AdminReport = () => {
   };
 
   const handleMember = (member) =>{
-    console.log(member);
+    SetRenderCount(prev=>prev+1);
     activeOnOff(member.id);
-    console.log(member);
-
   }
   // Pagination
   const indexOfLastRow = page * rowsPerPage;

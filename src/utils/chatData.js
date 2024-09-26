@@ -64,3 +64,13 @@ export const getChattingRoom = async (chattingRoomId) => {
     throw error;
   }
 };
+
+export const deleteChattingRoom = async (chattingRoomId) => {
+  try {
+    const res = await axios.delete(`/spring/chat/chattingroom/${chattingRoomId}`);  // POST 요청으로 채팅방 ID를 전송
+    return res.data;
+  } catch (error) {
+    console.error('에러났당', error);
+    throw error;
+  }
+};
