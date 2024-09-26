@@ -105,7 +105,6 @@ const GuideMyPageMyPost = () => {
           count={Math.ceil(posts.length / rowsPerPage)}
           page={page}
           onChange={handleChangePage}
-          color="primary"
         />
       </Box>
     </Box>
