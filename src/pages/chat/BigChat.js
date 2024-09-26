@@ -259,10 +259,12 @@ function BigChat() {
         <div className={styles.chatSection}>
           <div className={styles.chatHeader}>
             <h2 className={styles.chatName2}>{selectedUser ? selectedUser.member.name : '채팅방을 선택하세요'}</h2>
-            {selectedUser && selectedUser.chattingRoom.productBoard.member.id !== template.memberInfo.id && (
+            
               <div>
+              {selectedUser && selectedUser.chattingRoom.productBoard.member.id !== template.memberInfo.id && (
                 <button className={styles.reviewButton} onClick={() => navigate(`/reviewdetails/${selectedUser.chattingRoom.productBoard.id}`)}>
                   리뷰 작성 </button>
+                  )}
                 <button className={styles.reviewButton} onClick={() => navigate(`/mypage/postDetails/${selectedUser.chattingRoom.productBoard.id}`)}>
                   게시글 보러가기 </button>
                   <IconButton 
@@ -281,7 +283,7 @@ function BigChat() {
                     <DeleteIcon onClick={()=>deleteJoinChatting(selectedUser.id)}/>
                   </IconButton>
               </div>
-            )}
+            
             
           </div>
 
