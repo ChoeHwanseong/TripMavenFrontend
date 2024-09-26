@@ -279,15 +279,15 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                             style={{ cursor: 'pointer' }}
                           />
                           <Box className={styles.monTextContainer}>
-                            {/* <Typography className={styles.monResultText}>
+                            <Typography className={styles.monResultText}>
                               목소리 평균 Hz: {result.tone_mean}
                             </Typography>
                             <Typography className={styles.monResultText}>
                               {result.tone}
-                            </Typography> */}
-                            <Typography className={styles.monResultText}>
-                              목소리 평균 Hz: {result.tone}
                             </Typography>
+                            {/* <Typography className={styles.monResultText}>
+                              목소리 평균 Hz: {result.tone}
+                            </Typography> */}
                             <Typography className={styles.monSubtext} style={{fontSize:"12px"}}>
                               <br/>
                               *평균적으로 남성은 110~130헤르츠(hz), 여성은 210~240헤르츠(hz)의 영역 대의 목소리가 일반적으로 듣기 좋은 목소리라고 합니다.
