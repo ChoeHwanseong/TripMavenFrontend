@@ -326,9 +326,42 @@ const RealTestPage = () => {
         const keywords= resultVideoData.expression_keywords; // + 음성 키워드 추가하셈
         console.log('keywords',keywords);
 
+        // 점수 계산
+      let scoreData = 0;
+
+      // 1. 음성 주파수 (110 ~ 130 Hz 사이면 25점)
+      const voiceTone = resultAudioData.voice_tone.voice_check;
+      if (voiceTone >= 110 && voiceTone <= 130) {
+        scoreData += 25;
+      }
+
+      // 2. 눈 깜박임 (10 ~ 30회 사이면 25점)
+      const eyeBlinks = resultVideoData.eye.average_blinks;
+      if (eyeBlinks >= 10 && eyeBlinks <= 30) {
+        scoreData += 25;
+      }
+
+      // 3. 음성 속도 분석 (240 ~ 300 WPM이면 25점)
+      const speechSpeed = resultAudioData.speed_result.phonemes_per_min;
+      if (speechSpeed >= 240 && speechSpeed <= 300) {
+        scoreData += 25;
+      }
+
+      // 4. 발음 정확도 (50 ~ 80%이면 15점, 80% 이상이면 25점)
+      const pronunciationAccuracy = resultAudioData.pronunciation_precision.pronunciation_accuracy;
+      if (pronunciationAccuracy >= 50 && pronunciationAccuracy < 80) {
+        scoreData += 15;
+      } else if (pronunciationAccuracy >= 80) {
+        scoreData += 25;
+      }
+
+      console.log('Final Score:', scoreData);
+
+
         //디비에 저장하기
         const evaluationResponse = await createEvaluation({
-          score: 50,
+         // score: 50,
+         // score: scoreData,
           fillerwords: resultAudioData.text_analysis.fillerwords,
           fillerweights:  resultAudioData.text_analysis.fillerweights,
           formal_speak: resultAudioData.text_analysis.speak_end.formal_speak,

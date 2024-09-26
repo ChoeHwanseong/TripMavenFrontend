@@ -284,15 +284,9 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                             </Typography>
                             <Typography className={styles.monResultText}>
                               {result.tone}
-<<<<<<< HEAD
-                            </Typography>
-                            {/* <Typography className={styles.monResultText}>
-                              목소리 평균 Hz: {result.tone}
-=======
                             </Typography> 
                             {/* <Typography className={styles.monResultText}>
                               목소리 평균 Hz: {result.tone_mean}
->>>>>>> 1dd471257f686db220a6f8905715d5d323195979
                             </Typography> */}
                             <Typography className={styles.monSubtext} style={{fontSize:"12px"}}>
                               <br/>
