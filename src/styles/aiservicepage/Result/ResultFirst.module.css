@@ -105,10 +105,18 @@
   padding: 20px;
   text-align: center;
   border: 3px solid #c3dafd;
+  height: auto;
 }
 
 .resultTitle {
   color: #007bff;
+  font-weight: bold;
+  margin-bottom: 5px;
+  
+}
+
+.resultTitles {
+  color: #cf0202;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -117,6 +125,17 @@
   font-size: 16px;
   color: #333;
   margin-bottom: 10px; /* 각 텍스트 항목 사이의 여백 */
+  height:auto;
+  padding-top: 0;
+}
+
+.resultVoice {
+  font-size: 16px;
+  color: #cf0202;
+  font-weight: bold;
+  margin-bottom: 10px; /* 각 텍스트 항목 사이의 여백 */
+  height: auto;
+  padding-top: 0;
 }
 
 .subText {
