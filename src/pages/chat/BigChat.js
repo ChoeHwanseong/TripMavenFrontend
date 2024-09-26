@@ -81,6 +81,7 @@ function BigChat() {
     // 마운트 시 MQTT 클라이언트 객체 없으면 생성
     const setMQTT = async () => {
       const list_ = await getData();
+      console.log('채팅방 목록:',list_);
       await fetchChatRoomsMessages(list_);
 
       // 클라이언트가 존재하지 않는 경우에만 새로운 MQTT 클라이언트를 생성
