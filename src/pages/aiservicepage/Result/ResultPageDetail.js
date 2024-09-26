@@ -3,17 +3,19 @@ import { Box, Typography, Grid, Modal, TableContainer, Table, TableHead, TableRo
 import MovieIcon from '@mui/icons-material/Movie';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import MicIcon from '@mui/icons-material/Mic';
+import TagIcon from '@mui/icons-material/Tag'; 
+import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
+
 import styles from "../../../styles/aiservicepage/Result/ResultFirst.module.css";
 import { useLocation, useParams } from "react-router-dom";
 import { PieChart } from "@mui/x-charts";
 import WordCloud from 'react-d3-cloud';
 import ReactSpeedometer from "react-d3-speedometer"
-import { set } from "mobx";
 import { fetchFile } from "../../../utils/fileData";
 
+
 const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
-  const location = useLocation(); // useLocation을 사용하여 state를 가져옴
-  //const { result, videoUrls } = location.state || {};
 
   const groupFirstId = useParams().id;
 
@@ -203,21 +205,29 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
 
                 {/* 표정 분석 결과 요약 */}
                 <Grid item xs={12}>
-                  <Box className={styles.mainResultSummary}>
-                    <Box className={styles.resultSummaryBox}>
-                      {result.commentsFace && result.commentsFace.split('*').map((comment, index) =>
-                        <Typography variant="h6" className={styles.resultTitle} key={index}>
-                          {index === 0 && <EmojiEmotionsIcon className={styles.icon} />} {comment}
-                        </Typography>
-                      )}
-                      <Typography className={styles.resultText}>
-                        {result.expression_comment}
-                      </Typography>
-                    </Box>
+                <Box className={`${styles.mainResultSummary} ${styles.commentBoxBelow}`}>
+                  <Box className={styles.resultSummaryBox}>
+                    <Typography variant="h6" className={styles.resultTitle}>
+                      <EmojiEmotionsIcon className={styles.icon} /> Face Comment
+                    </Typography>
+                    <Typography className={styles.resultText}>
+                      {/* 마침표로 나눈 결과를 map을 사용하여 각 문장을 렌더링 */}
+                      {result.commentsFace.split(".").map((sentence, index) => (
+                        <span key={index}>
+                          {sentence.trim()}
+                          <br />
+                        </span>
+                      ))}
+                    </Typography>
+                    <Typography variant="h6" className={styles.resultTitles}>
+                      <SentimentNeutralIcon className={styles.icon} /> {result.commentsFace.split("*").slice(-1)[0]}
+                    </Typography>
                   </Box>
+                </Box>
                 </Grid>
               </Box>
             </Box>
+
 
             {/* 모달 구현 */}
             <Modal open={open} onClose={handleClose}>
@@ -258,7 +268,7 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                     <Grid item xs={6}>
                       <Box className={`${styles.monBoxContainer} ${styles.equalHeightBox}`} style={{ height: '100%' }}> {/* height: '100%' 추가 */}
                         <Typography className={styles.monChartTitle} align="center">
-                          목소리 Hz
+                          목소리 톤 분석
                         </Typography>
                         <Box className={styles.flexContainer}>
                           <img
@@ -269,14 +279,20 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                             style={{ cursor: 'pointer' }}
                           />
                           <Box className={styles.monTextContainer}>
-                            <Typography className={styles.monResultText}>
+                            {/* <Typography className={styles.monResultText}>
                               목소리 평균 Hz: {result.tone_mean}
                             </Typography>
                             <Typography className={styles.monResultText}>
                               {result.tone}
+                            </Typography> */}
+                            <Typography className={styles.monResultText}>
+                              목소리 평균 Hz: {result.tone}
                             </Typography>
                             <Typography className={styles.monSubtext} style={{fontSize:"12px"}}>
-                              *음성 주파수는 어느 정도가 좋다고 특정할 수 없습니다.
+                              <br/>
+                              *평균적으로 남성은 110~130헤르츠(hz), 여성은 210~240헤르츠(hz)의 영역 대의 목소리가 일반적으로 듣기 좋은 목소리라고 합니다.
+                              <br/>
+                              *그래프 상에서 목소리가 해당 범위를 자주 벗어나거나 크게 벗어나는 구간이 있다면 유의해서 살펴보시기 바랍니다.
                             </Typography>
                           </Box>
                         </Box>
@@ -308,7 +324,7 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                         </Typography>
                         <Typography className={styles.monSubtext} style={{fontSize:"12px"}}>
                           *WPM(Word Per Minute): 분당 단어 수<br />
-                          *한국인 평균 말하기 속도에 맞춘 결과입니다.
+                          *한국인 평균 말하기 속도는 분당 240 ~ 300 (어절) 입니다.
                         </Typography>
                       </Box>
                     </Grid>
@@ -320,23 +336,71 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                         <Typography variant="h6" className={styles.monChartTitle} align="center">
                           발음 분석
                         </Typography>
+                        <br/>
                         <Typography className={styles.monChartLabel} align="center">
                           발음 정확도: {result.pronunciation}%
+                        </Typography>
+                        <br/>
+                        <Typography className={styles.monSubtext} style={{fontSize:"12px"}}>
+                          *녹음 환경에 따라 발음 정확도의 차이가 존재할 수 있습니다. <br/>
+                          <br/>
+                          *뉴스 영상의 아나운서의 발음 정확도는 80~90% 를 보입니다.
                         </Typography>
                       </Box>
                     </Grid>
                   </Grid>
                   {/* 음성 분석 코멘트 아래에 여백 추가 */}
-                  <Box className={styles.mainResultSummary} style={{ marginTop: '40px' }}> {/* 여백 추가 */}
+                  <Box className={styles.mainResultSummary} style={{ marginTop: '40px' }}>
                     <Box className={styles.resultSummaryBox}>
                       <Typography variant="h6" className={styles.resultTitle}>
-                        <LeaderboardIcon className={styles.icon} /> Voice Comment
+                        <MicIcon className={styles.icon} /> Voice Comment
                       </Typography>
+                      
                       <Typography className={styles.resultText}>
-                        분석된 음성에 대한 요약 내용이 여기에 표시됩니다.
+                        음성 주파수는 {result.tone} Hz에 해당하는 수치를 보입니다.
+                        <Typography className={styles.resultVoice}>
+                          {result.member.gender === 'male' ? (
+                            result.tone >= 110 && result.tone <= 130 ? (
+                              '남성의 경우, 현재 음성 주파수는 듣기 좋은 범위에 속합니다.'
+                            ) : (
+                              '남성의 경우, 음성 주파수가 조금 더 조정될 여지가 있습니다. 적절한 발성을 통해 더 자연스러운 톤을 낼 수 있습니다.'
+                            )
+                          ) : (
+                            result.tone >= 210 && result.tone <= 240 ? (
+                              '여성의 경우, 현재 음성 주파수는 듣기 좋은 범위에 속합니다.'
+                            ) : (
+                              '여성의 경우, 음성 주파수가 조금 더 조정될 여지가 있습니다. 적절한 발성을 통해 더 자연스러운 톤을 낼 수 있습니다.'
+                            )
+                          )}
+                        </Typography>
+
+                        <br />
+                        음성 속도 분석은 약 {result.speed} WPM의 수치를 보입니다.
+                        <Typography className={styles.resultVoice}>
+                          {result.speed < 240 && 
+                            '말하기 속도가 다소 느린 편입니다. 청중이 좀 더 집중할 수 있도록 속도를 약간 높이는 것이 좋습니다.'}
+                          {result.speed >= 240 && result.speed <= 300 && 
+                            '말하기 속도는 평균적인 수치를 보입니다. 청중의 이해와 관심을 잘 이끌어낼 수 있는 속도입니다.'}
+                          {result.speed > 300 && 
+                            '말하기 속도가 다소 빠른 편입니다. 청중이 내용을 놓칠 수 있으니, 조금 더 천천히 말하는 것이 좋습니다.'}
+                        </Typography>
+
+                        <br />
+                        발음 정확도는 약 {result.pronunciation}%의 수치를 보입니다.
+                        <Typography className={styles.resultVoice}>
+                          {result.pronunciation < 20 && 
+                            '발음 정확도가 다소 낮은 편입니다. 발음 훈련을 통해 더욱 명확한 전달이 가능해질 수 있습니다.'}
+                          {result.pronunciation >= 20 && result.pronunciation <= 50 && 
+                            '발음 정확도가 평균 이하이므로, 좀 더 명확한 발음 연습이 필요합니다.'}
+                          {result.pronunciation > 50 && result.pronunciation <= 80 && 
+                            '발음 정확도가 평균적인 수준입니다. 전달력 있는 말하기를 위해 조금 더 개선할 여지가 있습니다.'}
+                          {result.pronunciation > 80 && 
+                            '발음 정확도가 매우 좋은 편입니다. 명확하고 전달력 있는 발음으로 청중의 이해를 돕고 있습니다.'}
+                        </Typography>
                       </Typography>
                     </Box>
                   </Box>
+
                 </Box>
               </Grid>
 
@@ -355,12 +419,13 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                     문법 분석
                   </Typography>
                   <Grid container spacing={3}>
-                    <Grid item xs={6}>
-                      <Box className={styles.monBoxContainer}>
-                        <Typography variant="h6" className={styles.monChartTitle} align="center">
-                          불필요한 추임새 빈도
-                        </Typography>
+                  <Grid item xs={6}>
+                    <Box className={styles.monBoxContainer}>
+                      <Typography variant="h6" className={styles.monChartTitle} align="center">
+                        불필요한 추임새 빈도
+                      </Typography>
 
+                      {result.fillerwords && result.fillerwords.split(',').length > 0 ? (
                         <TableContainer sx={{ width: '100%', marginTop: '10px', marginBottom: '10px' }}>
                           <Table>
                             <TableHead sx={{ backgroundColor: '#f9f9f9' }}>
@@ -370,7 +435,7 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                               </TableRow>
                             </TableHead>
                             <TableBody>
-                              {result.fillerwords && result.fillerwords.split(',').map((word, index) => (
+                              {result.fillerwords.split(',').map((word, index) => (
                                 <TableRow key={index} hover>
                                   <TableCell align="center">{word}</TableCell>
                                   <TableCell align="center">{result.fillerweights.split(',')[index] + '번'}</TableCell>
@@ -379,11 +444,19 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
                             </TableBody>
                           </Table>
                         </TableContainer>
-                        <Typography className={styles.monSubtext} align="center" style={{fontSize:"12px"}}>
-                          *주로 쓰는 추임새 단어를 추출한 결과입니다.
+                      ) : (
+                        <Typography align="center" style={{ marginTop: '10px', marginBottom: '10px', fontSize: '14px' }}>
+                          불필요한 추임새 사용 결과가 없습니다.
                         </Typography>
-                      </Box>
-                    </Grid>
+                      )}
+                      
+                      <Typography className={styles.monSubtext} align="center" style={{ fontSize: '12px' }}>
+                        *주로 쓰는 추임새 단어를 추출한 결과입니다.
+                      </Typography>
+                    </Box>
+                  </Grid>
+
+
 
                     {/* 어미 분석 */}
                     <Grid item xs={6}>
@@ -446,10 +519,18 @@ const ResultFirstPage = ({result, videoUrls, setPageNumber, pageNumber}) => {
               <Box className={styles.mainResultSummary}>
                 <Box className={styles.resultSummaryBox}>
                   <Typography variant="h6" className={styles.resultTitle}>
-                    <LeaderboardIcon className={styles.icon} /> Keyword Comment
+                  <TagIcon className={styles.icon} /> Suceess Keyword
                   </Typography>
                   <Typography className={styles.resultText}>
-                    분석된 비디오에 대한 요약 내용이 여기에 표시됩니다.
+                
+                  {result.member.keywords.split('*').map((key, index) => (
+                  <span key={index}>
+                      {index !== 0 && ','} {/* 첫 번째 항목에는 쉼표를 붙이지 않음 */}
+                      <span>{key.trim()}</span>
+                    </span>
+                  ))}
+
+
                   </Typography>
                 </Box>
               </Box>
