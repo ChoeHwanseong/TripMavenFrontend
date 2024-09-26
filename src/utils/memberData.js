@@ -111,15 +111,12 @@ export const logout = async () => {
 };
 
 // 가이드 등록
-export const toGuide = async (form) => {
-  await axios.post('http://localhost:9099/toGuide', form, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  })
+export const toGuide = async (memberId) => {
+  await axios.put(`/spring/toguide/${memberId}`)
     .then(res => {
       window.localStorage.setItem("role", res.data.role);
       console.log(res.data.role);
+      return res.data.role;
     })
     .catch(error => {
       console.error('에러났당', error);

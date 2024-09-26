@@ -5,10 +5,10 @@ import { filesPost, fetchLicenseFile } from '../../utils/fileData';
 import { Box, Button, TextField, Typography, Divider } from '@mui/material';
 import { ocr, verifyLicense } from '../../utils/PythonServerAPI';
 import LinearProgress from '@mui/material/LinearProgress';
-import { fetchedData, updateProfile } from '../../utils/memberData';
+import { fetchedData, toGuide, updateProfile } from '../../utils/memberData';
 import { TemplateContext } from '../../context/TemplateContext';
 
-const RegisterGuidePage = ({userId}) => {
+const RegisterGuidePage = ({userId, handleClose}) => {
   const [selectedFile, setSelectedFile] = useState([]);
   const [previewUrl, setPreviewUrl] = useState([]);
   const [loading, setLoading] = useState(false); //로딩 스테이트
@@ -87,7 +87,7 @@ const RegisterGuidePage = ({userId}) => {
           //자격증 확인 페이지 결과 반환
           setLoading2(true);
           const result = await verifyOCRResult(respData.data);  
-          setVerifyResult(prev => ({...prev, success:result.success, data:result.data}));
+          setVerifyResult(prev => ({...prev, success:result}));
           setLoading2(false);
         }
         else if(memberInfo && memberInfo.guidelicense){ //헤더에서 열었을 경우
@@ -137,20 +137,36 @@ const RegisterGuidePage = ({userId}) => {
   };
   */
   const submitToGuide = async () => {
-    //멤버 디비에 파일 이름 저장
-    const updateData = {
-      'guidelicense': previewUrl[0].name
-    };
-    const resp = await updateProfile(localStorage.getItem("membersId"),updateData);
-    setMemberInfo(resp);
+    if(!userId){
+      //멤버 디비에 파일 이름 저장
+      const updateData = {
+        'guidelicense': previewUrl[0].name
+      };
+      const resp = await updateProfile(localStorage.getItem("membersId"),updateData);
+      setMemberInfo(resp);
 
-    //디비에 실제 파일 업로드
+      //디비에 실제 파일 업로드
+      const formData = new FormData();
+      console.log(selectedFile);
+      if (selectedFile && selectedFile.length > 0) formData.append('files',selectedFile[0]);
+      formData.append('type','guidelicense');
+      const resp2 = await filesPost(formData);
+      if(resp2.success) setPendingLicense(false);
+    }
+    //가이드로 변경
+    const response = await toGuide(userId);
+    if(response === "GUIDE"){
+      alert('가이드로 변경되었습니다');
+      handleClose();
+    }
+    
+  };
+
+  const rejectGuide = async () => {
+    //회원정보 수정(가이드라이센스 컬럼값 삭제)
     const formData = new FormData();
-    console.log(selectedFile);
-    if (selectedFile && selectedFile.length > 0) formData.append('files',selectedFile[0]);
-    formData.append('type','guidelicense');
-    const resp2 = await filesPost(formData);
-    if(resp2.success) setPendingLicense(true);
+    formData.append('guidelicense',null);
+    await updateProfile(userId, formData);
   };
 
   return (
@@ -222,9 +238,10 @@ const RegisterGuidePage = ({userId}) => {
               <TextField fullWidth label="성명" margin="normal" defaultValue={!ocrResult?'not detected':ocrResult.name==='default'?'not detected':ocrResult.name}
                 disabled={pendingLicense}
               />
-              <TextField fullWidth label="문서 확인 번호" margin="normal"  defaultValue={!ocrResult?'not detected':ocrResult.number==='default'?'not detected':ocrResult.number}
+              <TextField fullWidth label="관리 번호" margin="normal"  defaultValue={!ocrResult?'not detected':ocrResult.number==='default'?'not detected':ocrResult.number}
                 disabled={pendingLicense}
               />
+              <Typography variant="h7" gutterBottom sx={{fontSize:'12px', color:'#666'}}>*성명과 관리번호를 확인 후 제출해주세요</Typography>
 
               {userId ? 
               (<Box sx={{ marginTop:'10px' }}>
@@ -234,11 +251,12 @@ const RegisterGuidePage = ({userId}) => {
                         <LinearProgress />
                       </Box>) :
                     (<Box sx={{ display: 'flex', justifyContent: 'center', marginTop:'20px' }}>
-                        <Typography variant="h7" gutterBottom sx={{fontWeight:'bold'}}>확인결과:</Typography>
+                        <Typography variant="h7" gutterBottom sx={{fontWeight:'bold'}}>확인결과: {verifyResult.success ? '확인 완료':'확인 불가'}</Typography>
                       </Box>)
                   }
                 </Box>
                 <Button variant="contained" sx={{ backgroundColor: '#0066ff', marginTop:'20px'}} onClick={submitToGuide}>가이드 변경</Button>
+                <Button variant="contained" sx={{ backgroundColor: '#0066ff', marginTop:'20px', marginLeft:'20px'}} onClick={rejectGuide}>요청 반려</Button>
               </Box>
               )
               :

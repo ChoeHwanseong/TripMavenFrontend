@@ -89,7 +89,7 @@ const ResultFinalPage = () => {
                 <MovieIcon className={styles.icon} /> 영상 분석 결과
               </Typography>
               <Box className={styles.resultText}>
-                {results.productEvaluation[0].commentEye || '눈 분석 결과 없음'}
+                {results?.productEvaluation[0]?.commentEye || '눈 분석 결과 없음'}
               </Box>
             </Box>
           )}
@@ -112,7 +112,7 @@ const ResultFinalPage = () => {
               <EmojiEventsIcon className={styles.icon} /> 획득한 키워드
             </Typography>
             <Box className={styles.resultTextKeyword}>
-            {results.productEvaluation[0].member.keywords || '키워드 분석 결과 없음'}
+            {results?.productEvaluation[0]?.member?.keywords || '키워드 분석 결과 없음'}
             </Box>
             <button className={styles.keywordButton}>
               키워드 자세히 보기 &gt;&gt;
@@ -134,7 +134,7 @@ const ResultFinalPage = () => {
                 <MovieIcon className={styles.icon} /> 영상 분석 결과 요약
               </Typography>
               <Box className={styles.resultText}>
-                {results.productEvaluation[0].commentEye || '눈 분석 결과 없음'}
+                {results?.productEvaluation[0]?.commentEye || '눈 분석 결과 없음'}
               </Box>
             </Box>
             <Box className={styles.resultContent}>
@@ -142,7 +142,7 @@ const ResultFinalPage = () => {
                 <MicIcon className={styles.icon} /> 음성 분석 결과 요약
               </Typography>
               <Box className={styles.resultText}>
-                {results.productEvaluation[0].tone || ' 목소리 톤 분석 결과 없음'}
+                {results?.productEvaluation[0]?.tone || ' 목소리 톤 분석 결과 없음'}
               </Box>
             </Box>
             <Button variant="contained" className={styles.detailButton} onClick={handleGoToFirstPage}>
@@ -162,7 +162,7 @@ const ResultFinalPage = () => {
                 <MovieIcon className={styles.icon} /> 영상 분석 결과 요약
               </Typography>
               <Box className={styles.resultText}>
-                {results.productEvaluation[1].commentEye || '눈 분석 결과 없음'}
+                {results?.productEvaluation[1]?.commentEye || '눈 분석 결과 없음'}
               </Box>
             </Box>
             <Box className={styles.resultContent}>
@@ -170,7 +170,7 @@ const ResultFinalPage = () => {
                 <MicIcon className={styles.icon} /> 음성 분석 결과 요약
               </Typography>
               <Box className={styles.resultText}>
-                {results.productEvaluation[1].tone || ' 목소리 톤 분석 결과 없음'}
+                {results?.productEvaluation[1]?.tone || ' 목소리 톤 분석 결과 없음'}
               </Box>
             </Box>
             <Button variant="contained" className={styles.detailButton} onClick={handleGoToSecondPage}>
@@ -190,7 +190,7 @@ const ResultFinalPage = () => {
       </div>
     </div>
     :
-    <ResultPageDetail result = {pageNumber === "1" ? results.productEvaluation[0]: results.productEvaluation[1]} videoUrls={videoUrls} setPageNumber={setPageNumber} pageNumber={pageNumber}/>
+    <ResultPageDetail result = {pageNumber === "1" ? results?.productEvaluation[0]: results?.productEvaluation[1]} videoUrls={videoUrls} setPageNumber={setPageNumber} pageNumber={pageNumber}/>
     }
 
   </>
