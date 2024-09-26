@@ -151,7 +151,7 @@ const MemberList = () => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <GuideRegistration userId={selectedUserId} />
+        <GuideRegistration userId={selectedUserId} handleClose={handleClose}/>
       </Box>
     </Modal>
   </>
