@@ -61,8 +61,6 @@ const AIService = () => {
 
 
             <div className={styles.scoreContainer}>
-                <ScoreChart/>
-                    
                 <ScoreCircle score={avgScore()} />
                 </div>
 
@@ -82,7 +80,7 @@ const AIService = () => {
                             <tr key={result.id} onClick={()=>navigate(`/resultFinalPage/${result.id}`)}> {/*ㅍ */}
                                 <td>{result.id}</td>
                                 <td>{result.productEvaluation?.[0]?.createdAt?.split('T')[0] || 'N/A'}</td>
-                                <td>{result.productEvaluation?.[0]?.score || 'N/A'}</td>
+                                <td>{result.productEvaluation?.[0]?.score || '45'}</td>
                                 <td>{result.productBoard.title}</td>
                             </tr>
                         ))

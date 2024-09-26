@@ -18,6 +18,7 @@ const RegisterGuidePage = ({userId, handleClose}) => {
   const fileInputRef = useRef(null);
   const { memberInfo, setMemberInfo } = useContext(TemplateContext);
   const [verifyResult, setVerifyResult] = useState({});
+  const isGuide = useRef(false);
   
   //input 타입 파일 선택
   const handleFileChange_ = async (event) => {
@@ -156,10 +157,8 @@ const RegisterGuidePage = ({userId, handleClose}) => {
     else{
       //가이드로 변경
       const response = await toGuide(userId);
-      if(response === "GUIDE"){
-        alert('가이드로 변경되었습니다');
-        handleClose();
-      }
+      alert('가이드로 변경되었습니다');
+      handleClose();
     }
   };
 

@@ -361,7 +361,7 @@ const RealTestPage = () => {
         //디비에 저장하기
         const evaluationResponse = await createEvaluation({
          // score: 50,
-         // score: scoreData,
+          score: scoreData,
           fillerwords: resultAudioData.text_analysis.fillerwords,
           fillerweights:  resultAudioData.text_analysis.fillerweights,
           formal_speak: resultAudioData.text_analysis.speak_end.formal_speak,
