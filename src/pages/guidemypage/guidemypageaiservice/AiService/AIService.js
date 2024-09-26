@@ -59,7 +59,7 @@ const AIService = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {results && results.map(result => (
+                        {results ? results.map(result => (
                             <tr key={result.id} onClick={()=>navigate(`/resultFinalPage/${result.id}`)}>
                                 <td>{result.id}</td>
                                 <td>{result.productEvaluation[0].brow? '실전 테스트' : '발음 테스트'}</td>
@@ -67,14 +67,14 @@ const AIService = () => {
                                 <td>{result.productEvaluation[0].createdAt.split('T')[0]}</td>
                                 <td>{result.productEvaluation[0].score}</td>
                             </tr>
-                        ))}
+                        ))
+                        :
+                        <tr onClick={()=>navigate(`/resultFinalPage/`)}>
+                            <td colSpan={5}>{'실전 테스트 결과가 없습니다'}</td>
+                        </tr>
+                        }
                     </tbody>
                 </table>
-            </div>
-            <div className={styles.buttons}>
-                <button className={styles.button}>선택삭제</button>
-                <button className={styles.button}>모의 테스트 결과 목록</button>
-                <button className={styles.button}>실전 테스트 결과 목록</button>
             </div>
         </div>
     );

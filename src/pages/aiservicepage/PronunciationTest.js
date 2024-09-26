@@ -6,6 +6,7 @@ import { PronunContext } from '../../context/PronunContext';
 import {  evaluateVoiceAndText } from '../../utils/PythonServerAPI';
 import { TemplateContext } from '../../context/TemplateContext';
 
+
 const PronunciationTest = () => {
     const {memberInfo} = useContext(TemplateContext);
     const navigate = useNavigate();
@@ -24,6 +25,7 @@ const PronunciationTest = () => {
     const { newsHeadLine } = useContext(PronunContext);
     const { sequence } = useParams();
     const sequenceNumber = parseInt(sequence, 10);
+    const {setResults} = useContext(PronunContext);
 
     const mediaRecorderRef = useRef(null);
     const audioChunks = useRef([]);
@@ -31,7 +33,6 @@ const PronunciationTest = () => {
     
     
     useEffect(() => {
-        console.log(newsHeadLine[sequenceNumber - 1]);
         if (isNaN(sequenceNumber) || sequenceNumber < 1 || sequenceNumber > 5) {
             // 범위를 벗어나면 다른 페이지로 리다이렉트 또는 에러 메시지 표시
             navigate('/home'); // 잘못된 sequence 값일 경우 에러 페이지로 리다이렉트
@@ -52,6 +53,7 @@ const PronunciationTest = () => {
             });
     },[sequence]);
 
+    //녹음 함수
     const handleStartRecording = () => {
         if (isMicActive) { // 마이크가 활성화된 경우 음성 기록 중지
             recognitionRef.current.stop(); // 음성 인식 중지
@@ -112,19 +114,6 @@ const PronunciationTest = () => {
         }
     };
 
-    //블롭 객체를 base64 인코딩
-    const blobToBase64 = (blob) => {
-        return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const base64String = reader.result.split(',')[1]; // Base64 인코딩된 부분만 반환
-            resolve(base64String);
-        };
-        reader.onerror = (error) => reject(error);
-        reader.readAsDataURL(blob); // Blob을 읽어서 Base64 인코딩
-        });
-    };
-
     //블롭 객체를 파일로 변환
     const convertBlobToFile = (blob, fileName) => {
         const file = new File([blob], fileName, { type: blob.type });
@@ -137,13 +126,6 @@ const PronunciationTest = () => {
             alert('녹음된 파일이 없습니다.');
             return;
         }
-
-        //블롭을 base64로 인코딩하기
-        const base64Encoded = await blobToBase64(audioBlob).then((base64String) => { 
-            return base64String;
-        }).catch((error) => console.error('Blob to Base64 인코딩 중 오류 발생:', error));
-        //console.log('베이스64인코딩된 음성파일:',base64Encoded);
-
 
         //블롭을 webm 파일로 변환하기
         const file = convertBlobToFile(audioBlob, 'audio2.webm');
@@ -162,24 +144,23 @@ const PronunciationTest = () => {
         formData.append('gender', memberInfo.gender=='male'?'0':'1'); //사용자 성별 넣어줘야함
         formData.append('isVoiceTest', '1'); //발음테스트시 1로, 영상테스트시 0으로 하면 됨
 
-        //nlp + 목소리톤 + 말하기속도 + 발음정확도 분석
+        //목소리톤 + 말하기속도 + 발음정확도 분석
         const response = await evaluateVoiceAndText(formData);
         console.log(response);
-
-        /*
-        console.log(audioBlob);
-        const url = window.URL.createObjectURL(audioBlob);
-        // a 태그를 생성하여 다운로드 실행
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = 'audio2.webm'; // 다운로드할 파일명 설정
-        document.body.appendChild(a);
-        a.click(); // 클릭 이벤트 실행 (다운로드 시작)
-        // 다운로드 후 태그와 URL 해제
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url); // 메모리 해제
-        */
+        if(response.success){
+            const data = {
+                voice_graph: response.data.voice_tone.voice,
+                tone: response.data.voice_tone.voice_mean,
+                tone_comment: response.data.voice_tone.voice_check,
+                speed: response.data.speed_result.phonemes_per_min,
+                pronunciation: response.data.pronunciation_precision.pronunciation_accuracy,
+                total_time: response.data.speed_result.total_spoken_time,
+            };
+            setResults(prev=>[...prev, data]);
+        }
+        else{
+            alert('다시 녹음해서 전달해주세요');
+        }
     };
 
     const startSpeechRecognition = () => {
@@ -265,19 +246,15 @@ const PronunciationTest = () => {
         // 5번으로 가면 결과창!
     };
 
-    // 자막이 띄어쓰기를 무시하고 글자 순서만 맞는지 확인하는 함수
-    const isTranscriptValid = (text) => {
-        const sanitizedText = text.replace(/\s+/g, ''); // 띄어쓰기를 제거
-        const targetText = newsHeadLine[sequenceNumber - 1].replace(/[^가-힣a-zA-Z]/g, '');
-        return sanitizedText.includes(targetText); // 글자가 순서대로 포함되어 있는지 확인
-    };
-
     return (
         <Container sx={{ mt: '20px', width: '1100px' }}>
             <Typography variant="h4" gutterBottom align="left" sx={{ mt: '120px', fontWeight: 'bold' }}>
-                발음 테스트
+                발음 테스트 
             </Typography>
             <img src="../../images/WebTestPageLine.png" alt="Line Image" />
+            <Typography variant="h5" gutterBottom align="center" sx={{ mt: '13px', mb: '13px', fontWeight:'bold' }}>
+                테스트 {sequenceNumber}
+            </Typography>
             <Typography variant="h5" gutterBottom align="center" sx={{ mt: '13px', mb: '13px' }}>
                 버튼을 누르고 아래에 있는 문장을 읽으세요
             </Typography>
@@ -378,7 +355,7 @@ const PronunciationTest = () => {
                 </Button>
 
                 <Button variant="contained" sx={{ backgroundColor: '#0066ff', '&:hover': { backgroundColor: '#0056b3' } }} onClick={handleSendAudio}>
-                    {'보내기'} 
+                    {'분석 요청하기'} 
                 </Button>
             </Stack>
         </Container >

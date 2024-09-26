@@ -47,7 +47,7 @@ const RealTestPage = () => {
   const recognitionRef = useRef(null);
   const intervalRef = useRef(null);  //타이머
   const timeoutRef = useRef(null);  // 타임아웃을 관리하는 ref
-  const ResultIdRef = useRef(''); // 모든 최종 자막을 저장하는 참조
+  const ResultIdRef = useRef(''); 
   
   const questions = [
     "Q: 여행을 하는 중에 컴플레인이 들어 왔을 경우 어떻게 해결을 해야 할까요?",

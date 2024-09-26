@@ -18,6 +18,7 @@ import ReviewList from './ReviewList';
 import Loading from '../../components/LoadingPage';
 import { findByProductId } from '../../utils/reportData';
 import { reviewGetByProductId } from '../../utils/reviewData';
+import { resultGetByProductId } from '../../utils/AiData';
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -44,8 +45,21 @@ const PostDetails = () => {
         const fetchedData = await postGetById(id);
         const fetchReport = await findByProductId(id);
         const fetchreview = await reviewGetByProductId(id);
-        const postdata = { ...fetchedData, report: { ...fetchReport }, review: { ...fetchreview } }
 
+        //Ai 점수 얻어오기
+        const fetchedAiResult = await resultGetByProductId(id);
+        let sumEvaluationScore;
+        if(fetchedAiResult.length>0){
+          sumEvaluationScore = fetchedAiResult.reduce((sum, joinProductEvaluation)=>{
+              if(joinProductEvaluation.productEvaluation.length==1)
+                  return sum+joinProductEvaluation.productEvaluation[0].score;
+              else
+                  return sum+joinProductEvaluation.productEvaluation[0].score+joinProductEvaluation.productEvaluation[1].score;
+          } ,0);
+        }
+        const mean = sumEvaluationScore/(fetchedAiResult.length * 2)/100*5
+
+        const postdata = { ...fetchedData, report: { ...fetchReport }, review: { ...fetchreview }, aiScore: mean }
         fetchReport.forEach(element => {
           console.log(element.member.id == membersId)
           if(element.member.id == membersId){
@@ -215,25 +229,22 @@ const PostDetails = () => {
           <Typography variant="body1">가이드에게 채팅하기</Typography>
         </Button>
 
-        <Box className={styles.symbol} sx={{ mr: 2 }}>
+        <Box className={styles.symbol} sx={{ display:'flex' }}>
           <Typography variant="body1">
             {data.review && Object.values(data.review).length > 0
               ? `${Object.values(data.review).length} 건의 리뷰`
               : '0 건의 리뷰'}
           </Typography>
-        </Box>
-        <Box className={`${styles.symbol} ${styles.star}`} sx={{ mr: 2 }}>
-          <Typography variant="body1">
+          <Typography variant="body1" className={`${styles.symbol} ${styles.star}`} sx={{ mx: '10px' }}>
             ★{data.review && Object.values(data.review).length > 0
               ? Object.values(data.review).reduce((acc, review) => acc + review.ratingScore, 0) / Object.values(data.review).length
               : 0}
           </Typography>
         </Box>
-        <Box className={styles.symbol} sx={{ mr: 2 }}>
+
+        <Box className={styles.symbol} sx={{ display:"flex" }}>
           <Typography variant="body1">AI 평가 점수</Typography>
-        </Box>
-        <Box className={`${styles.symbol} ${styles.blueStar}`} sx={{ mr: 2 }}>
-          <Typography variant="body1">★ 4.7</Typography>
+          <Typography variant="body1" className={`${styles.symbol} ${styles.blueStar}`} sx={{ mx: '10px' }}>★ {data.aiScore}</Typography>
         </Box>
         <button className={styles.likeButton} onClick={handleLike} style={{ marginRight: '16px' }}>
           {liked ? <FontAwesomeIcon icon={faHeart} /> : <FontAwesomeIcon icon={faHeart} />}

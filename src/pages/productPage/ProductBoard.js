@@ -6,11 +6,12 @@ import Box from '@mui/material/Box';
 import { postsAllGet, postsCityGet, postsSearchWordGet } from '../../utils/postData';
 import YouTubeSearch from '../../api/YouTubeSearch';
 import { fetchFiles } from '../../utils/fileData';
-import { Button, Rating } from '@mui/material';
+import { Button, Rating, Typography } from '@mui/material';
 import defaultimg from '../../images/default_profile.png';
 import { TemplateContext } from '../../context/TemplateContext';
 import Loading from '../../components/LoadingPage';
 import { reviewGetByProductId } from '../../utils/reviewData';
+import { resultGetByProductId } from '../../utils/AiData';
 
 const ProductBoard = () => {
     const location = useLocation();
@@ -44,9 +45,22 @@ const ProductBoard = () => {
         const productsWithFiles = await Promise.all(
             results.map(async (product) => {
                 const fileData = await fetchFiles(product.id);
+                const productEvaluationListByProductId = await resultGetByProductId(product.id);
+                //console.log('productEvaluationListByProductId:',productEvaluationListByProductId);
+                let sumEvaluationScore;
+                if(productEvaluationListByProductId.length>0){
+                    sumEvaluationScore = productEvaluationListByProductId.reduce((sum, joinProductEvaluation)=>{
+                        if(joinProductEvaluation.productEvaluation.length==1)
+                            return sum+joinProductEvaluation.productEvaluation[0].score;
+                        else
+                            return sum+joinProductEvaluation.productEvaluation[0].score+joinProductEvaluation.productEvaluation[1].score;
+                    } ,0);
+                }
+                const mean = sumEvaluationScore/(productEvaluationListByProductId.length * 2)/100*5
                 return {
                     ...product,
                     fileUrl: fileData.length > 0 ? fileData[0] : './images/travel.jpg', // 첫 번째 파일 URL 또는 기본 이미지
+                    aiScore: productEvaluationListByProductId.length>0 ? mean : 0,
                 };
             })
         );
@@ -181,6 +195,12 @@ const ProductBoard = () => {
                                 />
                                 {/* 이름 */}
                                 <p style={{ margin: 0 }}>{product.member.name}</p>
+                                {/* 칭호 */}
+                                <Box className={styles.hashtags} sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', ml:'20px' }}>
+                                    {product.member.keywords && product.member.keywords.split('*').map((keyword, index)=>
+                                        <Typography variant="body2" className={styles.hashtag} key={index}>#{keyword}</Typography>
+                                    )}
+                                </Box>
                             </Box>
 
                             <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
@@ -202,7 +222,7 @@ const ProductBoard = () => {
                                 </Box>
                                 <Rating
                                     name="half-rating-read"
-                                    defaultValue={4.5}
+                                    defaultValue={product.aiScore}
                                     precision={0.5}
                                     readOnly
                                     sx={{

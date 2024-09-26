@@ -48,12 +48,9 @@ const ProfileCardModal = ({ isOpen, onClose, postData }) => {
 
                     {/* 해시태그 강조 하드 코딩입니다. */}
                     <Box className={styles.hashtags} sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginTop: 2 }}>
-                        <Typography variant="body2" className={styles.hashtag}>#명로성</Typography>
-                        <Typography variant="body2" className={styles.hashtag}>#유창성</Typography>
-                        <Typography variant="body2" className={styles.hashtag}>#명로성</Typography>
-                        <Typography variant="body2" className={styles.hashtag}>#유창성</Typography>
-                        <Typography variant="body2" className={styles.hashtag}>#명로성</Typography>
-                        <Typography variant="body2" className={styles.hashtag}>#유창성</Typography>
+                        {postData.member.keywords && postData.member.keywords.split('*').map((keyword, index)=>{
+                            return <Typography variant="body2" className={styles.hashtag} key={index}>#{keyword}</Typography>
+                        })}
                     </Box>
 
                     {/* 소개 섹션 */}
@@ -69,13 +66,17 @@ const ProfileCardModal = ({ isOpen, onClose, postData }) => {
                     <Box className={styles.ratings} sx={{ marginTop: 3, display: 'flex', justifyContent: 'center', gap: 5 }}>
                         <Box className={styles.rating} sx={{ textAlign: 'center' }}>
                             <Typography variant="body2">AI 평균 평점</Typography>
-                            <Rating value={postData.member.aiRating || 4.5} readOnly precision={0.1} />
-                            <Typography variant="body2">{postData.member.aiRating || 4.5} / 5.0</Typography>
+                            <Rating value={postData.AiScore} readOnly precision={0.5} />
+                            <Typography variant="body2">{postData.AiScore} / 5.0</Typography>
                         </Box>
                         <Box className={styles.rating} sx={{ textAlign: 'center' }}>
                             <Typography variant="body2">리뷰 평균 평점</Typography>
-                            <Rating value={postData.member.averageRating || 4.7} readOnly precision={0.1} />
-                            <Typography variant="body2">{postData.member.averageRating || 4.7} / 5.0</Typography>
+                            <Rating value={postData.review && Object.values(postData.review).length > 0
+                                            ? Object.values(postData.review).reduce((acc, review) => acc + review.ratingScore, 0) / Object.values(postData.review).length
+                                            : 0 } readOnly precision={0.1} />
+                            <Typography variant="body2">{postData.review && Object.values(postData.review).length > 0
+                                                        ? Object.values(postData.review).reduce((acc, review) => acc + review.ratingScore, 0) / Object.values(postData.review).length
+                                                        : 0 } / 5.0</Typography>
                         </Box>
                     </Box>
 

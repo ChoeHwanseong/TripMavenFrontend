@@ -45,6 +45,22 @@
   flex-grow: 1;
 }
 
+.hashtags {
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 10px; 
+  margin-top: 10px; 
+}
+
+.hashtag {
+  background-color: #3f51b5;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 20px; /* 태그 모양 더 둥글게 */
+  font-size: 14px; /* 글자 크기 약간 키움 */
+  font-weight: 500; /* 태그 폰트 두께 조금 더 */
+}
+
 .productInfo h3 {
   margin: 0;
   font-size: 18px;

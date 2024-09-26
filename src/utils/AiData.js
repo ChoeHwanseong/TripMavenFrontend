@@ -5,9 +5,9 @@ const baseUrl = "/evaluation"
 // 분석내용 등록
 export const createEvaluation = async (formData, memberId, productboardId, keywords) => {
   try {
-    console.log('post에 전송될 keywords:', keywords);
-    console.log('post에 전송될 memberId: ',memberId);
-    console.log('post에 전송될 productboardId: ',productboardId);
+    //console.log('post에 전송될 keywords:', keywords);
+    //console.log('post에 전송될 memberId: ',memberId);
+    //console.log('post에 전송될 productboardId: ',productboardId);
 
       // formData에 추가 데이터 함께 보내기
       const payload = {
@@ -48,7 +48,7 @@ export const createEvaluation = async (formData, memberId, productboardId, keywo
 
 // 분석내용 조회 (상품id 로)
 export const resultGetByProductId = (productId) => {
-    console.log('리뷰 axios 넘어간 productId: ', productId);
+    //console.log('리뷰 axios 넘어간 productId: ', productId);
     return axios.get(`${baseUrl}/product/${productId}`).then(res => {
         return res.data;
     }).catch(err => {
@@ -58,7 +58,7 @@ export const resultGetByProductId = (productId) => {
 
 // 분석내용 조회 ( 멤버 id 로)
 export const resultGetByMemberId = (memberId) => {
-    console.log('리뷰 axios 넘어간 memberId: ', memberId);
+    //console.log('리뷰 axios 넘어간 memberId: ', memberId);
     return axios.get(`${baseUrl}/member/${memberId}`).then(res => {
         return res.data;
     }).catch(err => {
