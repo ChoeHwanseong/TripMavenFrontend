@@ -113,9 +113,22 @@
   margin-bottom: 10px;
 }
 
+.resultTitles {
+  color: #cf0202;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
 .resultText {
   font-size: 16px;
   color: #333;
+  margin-bottom: 10px; /* 각 텍스트 항목 사이의 여백 */
+}
+
+.resultVoice {
+  font-size: 16px;
+  color: #cf0202;
+  font-weight: bold;
   margin-bottom: 10px; /* 각 텍스트 항목 사이의 여백 */
 }
 
