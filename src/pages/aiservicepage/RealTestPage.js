@@ -337,8 +337,8 @@ const RealTestPage = () => {
           weight: resultAudioData.text_analysis.weight,
 
           voice_graph: resultAudioData.voice_tone.voice,
-          tone: resultAudioData.voice_tone.voice_mean,
-          tone_comment: resultAudioData.voice_tone.voice_check,
+          tone_mean: resultAudioData.voice_tone.voice_mean,
+          tone: resultAudioData.voice_tone.voice_check,
           speed: resultAudioData.speed_result.phonemes_per_min,
           pronunciation: resultAudioData.pronunciation_precision.pronunciation_accuracy,
           total_time: resultAudioData.speed_result.total_spoken_time,
