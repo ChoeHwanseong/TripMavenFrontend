@@ -127,7 +127,9 @@ export const toGuide = async (memberId) => {
 // 프로필 업데이트
 export const updateProfile = async (id, updatedData) => {
   try {
-    const res = await axios.put(`/spring/members/${id}`, updatedData);
+    const res = await axios.put(`/spring/members/${id}`, updatedData,
+      {headers: {'Content-Type': 'application/json'}}
+    );
     return res.data;
   } catch (error) {
     console.error('프로필 업데이트 중 에러났당', error);

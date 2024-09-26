@@ -153,13 +153,14 @@ const RegisterGuidePage = ({userId, handleClose}) => {
       const resp2 = await filesPost(formData);
       if(resp2.success) setPendingLicense(false);
     }
-    //가이드로 변경
-    const response = await toGuide(userId);
-    if(response === "GUIDE"){
-      alert('가이드로 변경되었습니다');
-      handleClose();
+    else{
+      //가이드로 변경
+      const response = await toGuide(userId);
+      if(response === "GUIDE"){
+        alert('가이드로 변경되었습니다');
+        handleClose();
+      }
     }
-    
   };
 
   const rejectGuide = async () => {
@@ -256,7 +257,6 @@ const RegisterGuidePage = ({userId, handleClose}) => {
                   }
                 </Box>
                 <Button variant="contained" sx={{ backgroundColor: '#0066ff', marginTop:'20px'}} onClick={submitToGuide}>가이드 변경</Button>
-                <Button variant="contained" sx={{ backgroundColor: '#0066ff', marginTop:'20px', marginLeft:'20px'}} onClick={rejectGuide}>요청 반려</Button>
               </Box>
               )
               :
