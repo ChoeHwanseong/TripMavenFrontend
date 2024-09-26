@@ -22,7 +22,6 @@ const ResultFinalPage = () => {
 
   useEffect(() => {
 
-    console.log('location.state : ', location.state);
     console.log('groupId: ', groupId);
 
     // 그룹id로 결과 2개 가져오기
@@ -31,9 +30,11 @@ const ResultFinalPage = () => {
       const data = await resultGetById(groupId);
       console.log('data.productEvaluation: ', data.productEvaluation);
       console.log('data.productEvaluation[0]: ', data.productEvaluation[0]);
-      console.log('data.productEvaluation[1]: ', data.productEvaluation[1]);
-
+      console.log('data.productEvaluation[0]: ', data.productEvaluation[0].member.keywords.split('*'));
+      console.log('data.productEvaluation[0]: ', data.productEvaluation[0].commentsFace.split('*')[7]);
       setResults(data);
+
+ 
     };
 
     getResults();
@@ -72,7 +73,7 @@ const ResultFinalPage = () => {
 
 
   return <>
-    {pageNumber == "0" ?
+  {pageNumber === "0" ? (
     <div className={styles.container}>
       <div className={styles.pageTitle}>실전 테스트 결과</div>
       <div className={styles.mainResult}>
@@ -90,6 +91,8 @@ const ResultFinalPage = () => {
               </Typography>
               <Box className={styles.resultText}>
                 {results.productEvaluation[0].commentEye || '눈 분석 결과 없음'}
+                <br />
+                {results.productEvaluation[0].commentsFace.split('*')[7] || '표정 분석 결과 없음'}
               </Box>
             </Box>
           )}
@@ -105,6 +108,17 @@ const ResultFinalPage = () => {
           </Box>
         </div>
 
+        <Box className={styles.testBoxContainer}>
+          <Button variant="contained" className={styles.detailButton} onClick={handleGoToFirstPage}>
+            첫 번째 테스트 결과 자세히 보러가기 &gt;&gt;
+          </Button>  
+
+            <Button variant="contained" className={styles.detailButton} onClick={handleGoToSecondPage}>
+              두 번째 테스트 결과 자세히 보러가기 &gt;&gt;
+            </Button>
+
+        </Box>
+
         <div className={styles.keywordSection}>
           {/* 획득한 키워드 */}
           <Box className={styles.resultBox}>
@@ -112,74 +126,23 @@ const ResultFinalPage = () => {
               <EmojiEventsIcon className={styles.icon} /> 획득한 키워드
             </Typography>
             <Box className={styles.resultTextKeyword}>
-            {results.productEvaluation[0].member.keywords || '키워드 분석 결과 없음'}
+            {results?.productEvaluation?.[0]?.member?.keywords
+            .split('*')
+            .map((keyword, index) => (
+              <span key={index}>
+               <br/> # 
+                <span style={{ fontWeight: 'bold', color: 'blue' }}>{keyword.trim()}</span>
+              </span>
+            ))}
             </Box>
-            <button className={styles.keywordButton}>
-              키워드 자세히 보기 &gt;&gt;
-            </button>
           </Box>
-        </div>
+
+         
+
+        </div>    
       </div>
 
-      {/* 첫 번째 테스트 결과와 두 번째 테스트 결과를 병렬로 배치 */}
-      <div className={styles.testResultContainer}>
-        {/* 첫 번째 테스트 결과 */}
-        {results?.productEvaluation?.[0] && (
-          <Box className={styles.testBox}>
-            <Typography variant="h6" align="center" className={styles.testTitle}>
-              첫 번째 테스트 결과
-            </Typography>
-            <Box className={styles.resultContent}>
-              <Typography align="center" className={styles.resultTitle}>
-                <MovieIcon className={styles.icon} /> 영상 분석 결과 요약
-              </Typography>
-              <Box className={styles.resultText}>
-                {results.productEvaluation[0].commentEye || '눈 분석 결과 없음'}
-              </Box>
-            </Box>
-            <Box className={styles.resultContent}>
-              <Typography align="center" className={styles.resultTitle}>
-                <MicIcon className={styles.icon} /> 음성 분석 결과 요약
-              </Typography>
-              <Box className={styles.resultText}>
-                {results.productEvaluation[0].tone || ' 목소리 톤 분석 결과 없음'}
-              </Box>
-            </Box>
-            <Button variant="contained" className={styles.detailButton} onClick={handleGoToFirstPage}>
-              첫 번째 테스트 결과 자세히 보기 &gt;&gt;
-            </Button>
-          </Box>
-        )}
-
-        {/* 두 번째 테스트 결과 */}
-        {results?.productEvaluation?.[1] && (
-          <Box className={styles.testBox}>
-            <Typography variant="h6" align="center" className={styles.testTitle}>
-              두 번째 테스트 결과
-            </Typography>
-            <Box className={styles.resultContent}>
-              <Typography align="center" className={styles.resultTitle}>
-                <MovieIcon className={styles.icon} /> 영상 분석 결과 요약
-              </Typography>
-              <Box className={styles.resultText}>
-                {results.productEvaluation[1].commentEye || '눈 분석 결과 없음'}
-              </Box>
-            </Box>
-            <Box className={styles.resultContent}>
-              <Typography align="center" className={styles.resultTitle}>
-                <MicIcon className={styles.icon} /> 음성 분석 결과 요약
-              </Typography>
-              <Box className={styles.resultText}>
-                {results.productEvaluation[1].tone || ' 목소리 톤 분석 결과 없음'}
-              </Box>
-            </Box>
-            <Button variant="contained" className={styles.detailButton} onClick={handleGoToSecondPage}>
-              두 번째 테스트 결과 자세히 보기 &gt;&gt;
-            </Button>
-          </Box>
-        )}
-      </div>
-      <div >
+      <div>
         <button className={styles.button} onClick={() => navigate(`/aipage`)}>
           AI 홈으로 이동 &gt;&gt;
         </button>
@@ -189,11 +152,16 @@ const ResultFinalPage = () => {
         </button>
       </div>
     </div>
-    :
-    <ResultPageDetail result = {pageNumber === "1" ? results.productEvaluation[0]: results.productEvaluation[1]} videoUrls={videoUrls} setPageNumber={setPageNumber} pageNumber={pageNumber}/>
-    }
+  ) : (
+    <ResultPageDetail
+      result={pageNumber === "1" ? results.productEvaluation[0] : results.productEvaluation[1]}
+      videoUrls={videoUrls}
+      setPageNumber={setPageNumber}
+      pageNumber={pageNumber}
+    />
+  )}
+</>
 
-  </>
 
 
 };

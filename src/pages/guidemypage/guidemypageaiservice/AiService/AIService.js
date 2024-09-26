@@ -77,7 +77,7 @@ const AIService = () => {
                     </thead>
                     <tbody>
                         {results ? results.map(result => (
-                            <tr key={result.id} onClick={()=>navigate(`/resultFinalPage/${result.id}`)}>
+                            <tr key={result.id} onClick={()=>navigate(`/resultFinalPage/${result.id}`)}> {/* 조인 평가 id */}
                                 <td>{result.id}</td>
                                 <td>{result.productEvaluation && result.productEvaluation[0].createdAt.split('T')[0]}</td>
                                 <td>{result.productEvaluation && result.productEvaluation[0].score}</td>
