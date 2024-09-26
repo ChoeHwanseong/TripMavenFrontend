@@ -4,6 +4,7 @@ import ScoreCircle from '../ScoreCircle';
 import { useNavigate } from 'react-router-dom';
 import ScoreChart from '../ScoreChart';
 import { resultGetByMemberId } from '../../../../utils/AiData';
+import { Button } from '@mui/material';
 
 const AIService = () => {
 
@@ -59,7 +60,7 @@ const AIService = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {results ? results.map(result => (
+                        {results.length>0 ? results.map(result => (
                             <tr key={result.id} onClick={()=>navigate(`/resultFinalPage/${result.id}`)}>
                                 <td>{result.id}</td>
                                 <td>{result.productEvaluation[0].brow? '실전 테스트' : '발음 테스트'}</td>
@@ -69,12 +70,20 @@ const AIService = () => {
                             </tr>
                         ))
                         :
-                        <tr onClick={()=>navigate(`/resultFinalPage/`)}>
+                        <tr >
                             <td colSpan={5}>{'실전 테스트 결과가 없습니다'}</td>
                         </tr>
                         }
                     </tbody>
                 </table>
+                <div className="d-flex justify-content-center mt-5">
+                    <Button variant="contained" className="" onClick={()=>navigate("/pronunciationtesttutorial")}>
+                        발음 테스트 보러가기 &gt;&gt;
+                    </Button>
+                    <Button variant="contained" className="mx-5" onClick={()=>navigate("/precautionspage1")}>
+                        실전 테스트 보러가기 &gt;&gt;
+                    </Button>
+                </div>
             </div>
         </div>
     );
