@@ -43,6 +43,7 @@ import RoleBasedRoute from './components/RoleBasedRoute';
 import FaceDetection from './components/FaceDetection';
 import ProductPost from './pages/productPage/ProductPost';
 import Error404Page from './pages/error/Error404Page';
+import GuidePostUpdate from './pages/guidemypage/GuidePostUpdate';
 
 
 
@@ -87,6 +88,8 @@ function App() {
         <Route path='/product' element={<ProductBoard />} />
         <Route path='/postDetails/:id' element={<PostDetails />} />
         <Route path='/productPost/:id' element={<RoleBasedRoute element={<ProductPost />}  requiredRole={["GUIDE", "ADMIN"]} />} />
+        <Route path='/guidePostUpdate/:id' element={<RoleBasedRoute element={<GuidePostUpdate />}  requiredRole={["GUIDE", "ADMIN"]} />} />
+
         <Route path='/termsservice' element={<TermsService />} />
         <Route path='/record' element={<WebcamRecorder />} />
         <Route path='/recordcheck' element={<DeviceCheckComponent />} />

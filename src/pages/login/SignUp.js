@@ -9,6 +9,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import Check from '@mui/icons-material/Check';
+import DaumPost from '../../api/DaumPostApi';
 
 const steps = ['기본 정보', '추가 정보', '가입 정보'];
 
@@ -437,6 +438,7 @@ const Signup = () => {
                                     readOnly
                                     placeholder="주소를 입력하세요"
                                 />
+                                <DaumPost setAreaAddress={setAreaAddress}/>
                             </div>
                             <input
                                 type="text"
